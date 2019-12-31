@@ -10,9 +10,10 @@ import UIKit
 
 class FirstScreenViewController: UIViewController {
     
-    var coordinator: MainCoordinatorProtocol?
-    var presenter: FirstScreenPresenter?
+    // MARK: - Dependency
+    var presenter: FirstScreenPresenterProtocol?
     
+    // MARK: - Constants
     private let backgroundImage = UIImageView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
@@ -24,6 +25,7 @@ class FirstScreenViewController: UIViewController {
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -40,6 +42,8 @@ class FirstScreenViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    // MARK: - Puplic methods
+    // MARK: - Private methods
     private func setupBackground() {
         let backgroundImageName = "Background.png"
         guard let image = UIImage(named: backgroundImageName) else {
@@ -137,12 +141,15 @@ class FirstScreenViewController: UIViewController {
         registerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
+    // MARK: - IBActions
+    // MARK: - Buttons methods
     @objc private func registerButtonPressed() {
-        coordinator?.register()
+        presenter?.register()
     }
     
     @objc private func loginButtonPressed() {
-        coordinator?.login()
+        presenter?.login()
     }
     
+    // MARK: - Navigation
 }

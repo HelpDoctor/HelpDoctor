@@ -12,6 +12,8 @@ protocol RegisterScreenPresenter {
     init(view: RegisterScreenViewController)
     func topEmailChanged(topEmail: String?)
     func bottomEmailChanged(bottomEmail: String?)
+    func register()
+    func back()
 }
 
 class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
@@ -86,6 +88,17 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         return isValidated
             ? validImage
             : nil
+    }
+    
+    // MARK: - Coordinator
+    func register() {
+        let viewController = RegisterEndViewController()
+        viewController.presenter = RegisterEndPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
     }
     
 }

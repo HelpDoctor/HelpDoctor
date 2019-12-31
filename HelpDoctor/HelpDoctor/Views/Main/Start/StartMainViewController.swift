@@ -10,7 +10,7 @@ import UIKit
 
 class StartMainViewController: UIViewController {
 
-    var coordinator: StartMainCoordinatorProtocol?
+//    var coordinator: StartMainCoordinatorProtocol?
     var presenter: StartMainPresenterProtocol?
     
     private let backgroundImage = UIImageView()
@@ -187,7 +187,8 @@ class StartMainViewController: UIViewController {
     }
     
     @objc private func fillProfileButtonPressed() {
-        coordinator?.fillProfile()
+//        coordinator?.fillProfile()
+        presenter?.fillProfile()
     }
 
 }

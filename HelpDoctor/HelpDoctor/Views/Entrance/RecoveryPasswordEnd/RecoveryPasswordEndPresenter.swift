@@ -10,6 +10,7 @@ import UIKit
 
 protocol RecoveryPasswordEndPresenterProtocol {
     init(view: RecoveryPasswordEndViewController)
+    func login()
 }
 
 class RecoveryPasswordEndPresenter: RecoveryPasswordEndPresenterProtocol {
@@ -18,6 +19,13 @@ class RecoveryPasswordEndPresenter: RecoveryPasswordEndPresenterProtocol {
     
     required init(view: RecoveryPasswordEndViewController) {
         self.view = view
+    }
+    
+    // MARK: - Coordinator
+    func login() {
+        let viewController = LoginViewController()
+        viewController.presenter = LoginPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

@@ -19,26 +19,18 @@ enum TabItem: String, CaseIterable {
         switch self {
         case .main:
             let viewController = StartMainViewController()
-            let navigationController = UINavigationController()
-            viewController.coordinator = StartMainCoordinator(navigationController: navigationController)
             viewController.presenter = StartMainPresenter(view: viewController)
             return viewController
         case .schedule:
             let viewController = StartScheduleViewController()
-            let navigationController = UINavigationController()
-//            viewController.coordinator = StartScheduleCoordinator(navigationController: navigationController)
 //            viewController.presenter = StartSchedulePresenter(view: viewController)
             return viewController
         case .messages:
             let viewController = StartMessagesViewController()
-            let navigationController = UINavigationController()
-//            viewController.coordinator = StartMessagesCoordinator(navigationController: navigationController)
 //            viewController.presenter = StartMessagesPresenter(view: viewController)
             return viewController
         case .settings:
             let viewController = StartSettingsViewController()
-            let navigationController = UINavigationController()
-//            viewController.coordinator = StartSettingsCoordinator(navigationController: navigationController)
 //            viewController.presenter = StartSettingsPresenter(view: viewController)
             return viewController
         }

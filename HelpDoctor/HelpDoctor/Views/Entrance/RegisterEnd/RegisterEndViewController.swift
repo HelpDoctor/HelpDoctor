@@ -10,9 +10,11 @@ import UIKit
 
 class RegisterEndViewController: UIViewController {
     
-    var coordinator: RegisterEndCoordinatorProtocol?
+    // MARK: - Dependency
+//    var coordinator: RegisterEndCoordinatorProtocol?
     var presenter: RegisterEndPresenterProtocol?
     
+    // MARK: - Constants
     private let backgroundImage = UIImageView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
@@ -27,6 +29,7 @@ class RegisterEndViewController: UIViewController {
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -43,6 +46,8 @@ class RegisterEndViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    // MARK: - Puplic methods
+    // MARK: - Private methods
     private func setupBackground() {
         let backgroundImageName = "Background.png"
         guard let image = UIImage(named: backgroundImageName) else {
@@ -140,13 +145,16 @@ class RegisterEndViewController: UIViewController {
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
+    // MARK: - IBActions
+    // MARK: - Buttons methods
     @objc private func loginButtonPressed() {
         print("pressed")
-        coordinator?.login()
+        presenter?.login()
     }
     
     @objc private func backButtonPressed() {
-        coordinator?.back()
+        presenter?.back()
     }
-
+    
+    // MARK: - Navigation
 }

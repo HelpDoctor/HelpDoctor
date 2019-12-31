@@ -10,9 +10,11 @@ import UIKit
 
 class RecoveryPasswordEndViewController: UIViewController {
     
-    var coordinator: RecoveryPasswordEndCoordinatorProtocol?
+    // MARK: - Dependency
+//    var coordinator: RecoveryPasswordEndCoordinatorProtocol?
     var presenter: RecoveryPasswordEndPresenterProtocol?
     
+    // MARK: - Constants
     private let backgroundImage = UIImageView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
@@ -26,6 +28,7 @@ class RecoveryPasswordEndViewController: UIViewController {
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -41,6 +44,8 @@ class RecoveryPasswordEndViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    // MARK: - Puplic methods
+    // MARK: - Private methods
     private func setupBackground() {
         let backgroundImageName = "Background.png"
         guard let image = UIImage(named: backgroundImageName) else {
@@ -123,9 +128,11 @@ class RecoveryPasswordEndViewController: UIViewController {
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
-    
+    // MARK: - IBActions
+    // MARK: - Buttons methods
     @objc private func loginButtonPressed() {
-        coordinator?.login()
+        presenter?.login()
     }
-
+    
+    // MARK: - Navigation
 }

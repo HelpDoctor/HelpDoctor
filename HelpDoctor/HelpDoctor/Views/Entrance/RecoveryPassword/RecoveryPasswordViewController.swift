@@ -11,7 +11,7 @@ import UIKit
 class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var coordinator: RecoveryPasswordCoordinatorProtocol?
+//    var coordinator: RecoveryPasswordCoordinatorProtocol?
     var presenter: RecoveryPasswordPresenterProtocol?
     
     // MARK: - Constants
@@ -208,7 +208,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func backButtonPressed() {
-        coordinator?.back()
+        presenter?.back()
     }
     
     @objc func hideKeyboard() {
@@ -237,7 +237,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Buttons methods
     // MARK: - Navigation
     func toRecoveryPasswordEnd() {
-        coordinator?.send()
+        presenter?.send()
     }
 
 }

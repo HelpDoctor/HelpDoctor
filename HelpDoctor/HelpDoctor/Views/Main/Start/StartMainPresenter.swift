@@ -10,6 +10,7 @@ import UIKit
 
 protocol StartMainPresenterProtocol {
     init(view: StartMainViewController)
+    func fillProfile()
 }
 
 class StartMainPresenter: StartMainPresenterProtocol {
@@ -18,6 +19,12 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     required init(view: StartMainViewController) {
         self.view = view
+    }
+    
+    func fillProfile() {
+        let viewController = CreateProfileNameViewController()
+        viewController.presenter = CreateProfileNamePresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

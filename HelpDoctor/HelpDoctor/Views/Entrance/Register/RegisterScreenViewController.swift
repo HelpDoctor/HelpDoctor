@@ -11,7 +11,7 @@ import UIKit
 class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var coordinator: RegisterScreenCoordinator?
+//    var coordinator: RegisterScreenCoordinator?
     var presenter: RegisterScreenPresenter?
     
     // MARK: - Constants
@@ -298,11 +298,11 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
             }
         }
         
-        coordinator?.register()
+        presenter?.register()
     }
     
     @objc private func backButtonPressed() {
-        coordinator?.back()
+        presenter?.back()
     }
     
     @objc func topEmailChanged(_ textField: UITextField) {

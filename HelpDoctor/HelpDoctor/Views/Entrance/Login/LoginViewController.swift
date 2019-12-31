@@ -11,7 +11,7 @@ import UIKit
 class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var coordinator: LoginCoordinatorProtocol?
+//    var coordinator: LoginCoordinatorProtocol?
     var presenter: LoginPresenterProtocol?
     
     // MARK: - Constants
@@ -222,7 +222,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - IBActions
     @objc private func forgotButtonPressed() {
-        coordinator?.recoveryPassword()
+        presenter?.recoveryPassword()
     }
     
     @objc private func loginButtonPressed() {
@@ -242,7 +242,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
                     print("result= \(String(describing: getToken.responce))")
                     guard let code = getToken.responce?.0 else { return }
                     if responceCode(code: code) {
-                        self?.coordinator?.login()
+                        self?.presenter?.login()
                     }
                 }
             }
@@ -251,7 +251,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func backButtonPressed() {
-        coordinator?.back()
+        presenter?.back()
     }
     
     @objc func hideKeyboard() {

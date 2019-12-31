@@ -11,6 +11,8 @@ import UIKit
 protocol RecoveryPasswordPresenterProtocol {
     init(view: RecoveryPasswordViewController)
     func sendButtonTapped(email: String)
+    func send()
+    func back()
 }
 
 class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
@@ -45,7 +47,17 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
             }
         }
         
-        
+    }
+    
+    // MARK: - Coordinator
+    func send() {
+        let viewController = RecoveryPasswordEndViewController()
+        viewController.presenter = RecoveryPasswordEndPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
     }
     
 }
