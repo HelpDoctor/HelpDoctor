@@ -14,7 +14,6 @@ class FirstScreenViewController: UIViewController {
     var presenter: FirstScreenPresenterProtocol?
     
     // MARK: - Constants
-    private let backgroundImage = UIImageView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
@@ -42,19 +41,7 @@ class FirstScreenViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    // MARK: - Puplic methods
-    // MARK: - Private methods
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
+    // MARK: - Setup views
     private func setupHeaderView() {
         headerView = HeaderView(title: "HelpDoctor")
         view.addSubview(headerView)
@@ -141,7 +128,6 @@ class FirstScreenViewController: UIViewController {
         registerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
-    // MARK: - IBActions
     // MARK: - Buttons methods
     @objc private func registerButtonPressed() {
         presenter?.register()
@@ -151,5 +137,4 @@ class FirstScreenViewController: UIViewController {
         presenter?.login()
     }
     
-    // MARK: - Navigation
 }

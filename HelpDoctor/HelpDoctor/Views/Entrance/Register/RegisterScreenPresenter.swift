@@ -10,6 +10,7 @@ import UIKit
 
 protocol RegisterScreenPresenter {
     init(view: RegisterScreenViewController)
+    func registerButtonPressed(email: String)
     func topEmailChanged(topEmail: String?)
     func bottomEmailChanged(bottomEmail: String?)
     func register()
@@ -30,8 +31,29 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         self.view = view
     }
     
-    func registerPressed() {
+    func registerButtonPressed(email: String) {
         
+        let register = Registration(email: email, password: nil, token: nil )
+        
+        getData(typeOfContent: .registrationMail,
+                returning: (Int?, String?).self,
+                requestParams: register.requestParams )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            register.responce = result
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("result=\(String(describing: register.responce))")
+                    guard let code = register.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.register()
+                    } else {
+                        self?.view.showAlert(message: register.responce?.1)
+                    }
+                }
+            }
+        }
     }
     
     func topEmailChanged(topEmail: String?) {

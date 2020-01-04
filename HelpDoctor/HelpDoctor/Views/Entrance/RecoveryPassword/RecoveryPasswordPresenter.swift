@@ -25,7 +25,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     
     func sendButtonTapped(email: String) {
         
-        let recovery = Registration.init(email: email, password: nil, token: nil)
+        let recovery = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .recoveryMail,
                 returning: (Int?, String?).self,

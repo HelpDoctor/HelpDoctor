@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 30.12.2019.
 //  Copyright © 2019 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 class TabNavigationMenu: UIView {
@@ -78,7 +78,7 @@ class TabNavigationMenu: UIView {
             itemTitleLabel.heightAnchor.constraint(equalToConstant: 11),
             itemTitleLabel.widthAnchor.constraint(equalTo: tabBarItem.widthAnchor),
             itemTitleLabel.topAnchor.constraint(equalTo: itemIconView.bottomAnchor, constant: 4)
-            ])
+        ])
         tabBarItem.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTap)))
         return tabBarItem
     }
@@ -126,3 +126,4 @@ class TabNavigationMenu: UIView {
         
     }
 }
+*/

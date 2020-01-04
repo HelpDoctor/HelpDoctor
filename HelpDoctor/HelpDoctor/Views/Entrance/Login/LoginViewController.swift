@@ -11,12 +11,10 @@ import UIKit
 class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-//    var coordinator: LoginCoordinatorProtocol?
     var presenter: LoginPresenterProtocol?
     
     // MARK: - Constants
     private let scrollView = UIScrollView()
-    private let backgroundImage = UIImageView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let label = UILabel()
@@ -44,20 +42,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         setupForgotButton()
         setupLoginButton()
         setupBackButton()
-        
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,19 +50,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    // MARK: - Puplic methods
-    // MARK: - Private methods
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
+    // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
@@ -139,9 +112,9 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
         emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: emailTextField.frame.height))
+                                                       y: 0,
+                                                       width: 8,
+                                                       height: emailTextField.frame.height))
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -220,42 +193,27 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
-    // MARK: - IBActions
-    @objc private func forgotButtonPressed() {
-        presenter?.recoveryPassword()
-    }
-    
-    @objc private func loginButtonPressed() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        
-        let getToken = Registration.init(email: email, password: password, token: nil)
-        
-        getData(typeOfContent: .getToken,
-                returning: (Int?, String?).self,
-                requestParams: getToken.requestParams )
-        { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            getToken.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result= \(String(describing: getToken.responce))")
-                    guard let code = getToken.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.presenter?.login()
-                    }
-                }
-            }
-        }
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
 
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
     }
     
-    @objc private func backButtonPressed() {
-        presenter?.back()
-    }
-    
+    // MARK: - IBActions
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
     @objc func keyboardWasShown​(notification: Notification) {
@@ -276,6 +234,19 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
     }
+    
     // MARK: - Buttons methods
+    @objc private func forgotButtonPressed() {
+        presenter?.recoveryPassword()
+    }
+    
+    @objc private func loginButtonPressed() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        presenter?.loginButtonPressed(email: email, password: password)
+    }
+    
     // MARK: - Navigation
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
 }

@@ -11,11 +11,9 @@ import UIKit
 class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-//    var coordinator: RegisterScreenCoordinator?
     var presenter: RegisterScreenPresenter?
     
     // MARK: - Constants
-    private let backgroundImage = UIImageView()
     private let scrollView = UIScrollView()
     private var headerView = HeaderView()
     private let titleLabel = UILabel()
@@ -47,20 +45,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         setupBottomEmailTextField()
         setupRegisterButton()
         setupBackButton()
-        
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,7 +53,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    // MARK: - Puplic methods
+    // MARK: - Public methods
     func updateTopEmailSuccess(image: UIImage?) {
         imageViewTopEmailSuccess.image = image
     }
@@ -77,32 +62,11 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         imageViewBottomEmailSuccess.image = image
     }
     
-    func showAlert(message: String?) {
-        let alert = AlertView(message: message ?? "Ошибка")
-        view.addSubview(alert)
-        alert.translatesAutoresizingMaskIntoConstraints = false
-        alert.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
-        alert.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        alert.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        alert.heightAnchor.constraint(equalToConstant: 57).isActive = true
-    }
-    
     func updateButtonRegister(isEnabled: Bool) {
         self.registerButton.update(isEnabled: isEnabled)
     }
     
-    // MARK: - Private methods
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
+    // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
@@ -123,7 +87,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-//        headerView.trailingAnchor.constraint(equalTo: mainView.trailingAnchor).isActive = true
         headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
@@ -219,8 +182,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupBottomEmailTextField() {
         bottomEmailTextField.addTarget(self,
-                                    action: #selector(self.bottomEmailChanged(_:)),
-                                    for: UIControl.Event.editingChanged)
+                                       action: #selector(self.bottomEmailChanged(_:)),
+                                       for: UIControl.Event.editingChanged)
         bottomEmailTextField.rightView = imageViewBottomEmailSuccess
         bottomEmailTextField.rightViewMode = .always
         imageViewBottomEmailSuccess.contentMode = .scaleAspectFit
@@ -232,9 +195,9 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.backgroundColor = .white
         bottomEmailTextField.layer.cornerRadius = 5
         bottomEmailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: bottomEmailTextField.frame.height))
+                                                             y: 0,
+                                                             width: 8,
+                                                             height: bottomEmailTextField.frame.height))
         bottomEmailTextField.leftViewMode = .always
         scrollView.addSubview(bottomEmailTextField)
         
@@ -278,33 +241,23 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
     // MARK: - IBActions
-    @objc private func registerButtonPressed() {
-        guard let email = bottomEmailTextField.text else { return }
-        
-        let logout = Registration.init(email: email, password: nil, token: nil )
-        
-        getData(typeOfContent: .registrationMail,
-                returning: (Int?, String?).self,
-                requestParams: logout.requestParams )
-        { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            logout.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result=\(String(describing: logout.responce))")
-                }
-            }
-        }
-        
-        presenter?.register()
-    }
-    
-    @objc private func backButtonPressed() {
-        presenter?.back()
-    }
-    
     @objc func topEmailChanged(_ textField: UITextField) {
         presenter?.topEmailChanged(topEmail: textField.text)
     }
@@ -315,6 +268,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
     @objc func keyboardWasShown​(notification: Notification) {
@@ -337,6 +292,13 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    @objc private func registerButtonPressed() {
+        guard let email = bottomEmailTextField.text else { return }
+        presenter?.registerButtonPressed(email: email)
+    }
+    
     // MARK: - Navigation
-
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
 }

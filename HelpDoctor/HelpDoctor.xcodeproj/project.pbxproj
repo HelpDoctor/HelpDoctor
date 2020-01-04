@@ -28,9 +28,39 @@
 		46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2123BB740D0095264E /* CreateProfileNameViewController.swift */; };
 		46F87F2423BB79460095264E /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2323BB79460095264E /* RootViewController.swift */; };
 		46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2523BB79B30095264E /* SplashViewController.swift */; };
+		46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2823BC89760095264E /* CreateProfileWorkViewController.swift */; };
+		46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2A23BC898D0095264E /* CreateProfileWorkPresenter.swift */; };
+		46F87F2D23BC95510095264E /* SearchButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2C23BC95510095264E /* SearchButton.swift */; };
+		46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F2F23BCA3D80095264E /* PlusButton.swift */; };
+		46F87F3323BCBEE80095264E /* CreateProfileSpecViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3223BCBEE80095264E /* CreateProfileSpecViewController.swift */; };
+		46F87F3523BCBEFB0095264E /* CreateProfileSpecPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3423BCBEFB0095264E /* CreateProfileSpecPresenter.swift */; };
+		46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3623BCDF730095264E /* ImagePicker.swift */; };
+		46F87F3A23BDE93B0095264E /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3923BDE93B0095264E /* ProfileViewController.swift */; };
+		46F87F3C23BDE9450095264E /* ProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3B23BDE9450095264E /* ProfilePresenter.swift */; };
+		46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3D23BDEA510095264E /* ProfileHeaderView.swift */; };
+		46F87F4023BDEDA60095264E /* Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F3F23BDEDA60095264E /* Presenter.swift */; };
+		46F87F4223BE11450095264E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4123BE11440095264E /* TabBarController.swift */; };
+		46F87F4423BE246B0095264E /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4323BE246B0095264E /* UIApplication+Extensions.swift */; };
+		46F87F4623BE328B0095264E /* EditButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4523BE328B0095264E /* EditButton.swift */; };
+		46F87F4823BE33A60095264E /* EditTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4723BE33A60095264E /* EditTextField.swift */; };
+		46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4A23BE63150095264E /* RegionsViewController.swift */; };
+		46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4C23BE63210095264E /* RegionsPresenter.swift */; };
+		46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F4E23BE65D50095264E /* RegionCell.swift */; };
+		46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5023BEFCD80095264E /* UIViewController+Extensions.swift */; };
+		46F87F5423BF61A40095264E /* CitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5323BF61A40095264E /* CitiesViewController.swift */; };
+		46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5523BF61B60095264E /* CitiesPresenter.swift */; };
+		46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5823BF7FC10095264E /* MedicalOrganizationViewController.swift */; };
+		46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5A23BF7FCC0095264E /* MedicalOrganizationPresenter.swift */; };
+		46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5D23BF93BD0095264E /* MedicalSpecializationViewController.swift */; };
+		46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F5F23BF93CD0095264E /* MedicalSpecializationPresenter.swift */; };
+		46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6223BFC0910095264E /* InterestsViewController.swift */; };
+		46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6423BFC0A50095264E /* InterestsPresenter.swift */; };
+		46F87F6723C063AD0095264E /* EditTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6623C063AD0095264E /* EditTextView.swift */; };
+		46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6823C09E120095264E /* UIImage+Extensions.swift */; };
+		46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6A23C09F240095264E /* String+Extensions.swift */; };
+		46F87F6D23C0EB890095264E /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6C23C0EB880095264E /* SavedView.swift */; };
 		C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15E123B5FD30002D04E3 /* AppDelegate.swift */; };
 		C48F15EB23B5FD5A002D04E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C48F15EA23B5FD5A002D04E3 /* Assets.xcassets */; };
-		C48F15EE23B5FD5A002D04E3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C48F15EC23B5FD5A002D04E3 /* LaunchScreen.storyboard */; };
 		C48F161323B5FE87002D04E3 /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15F723B5FE85002D04E3 /* Registration.swift */; };
 		C48F161423B5FE87002D04E3 /* UpdateProfileUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15F923B5FE85002D04E3 /* UpdateProfileUser.swift */; };
 		C48F161523B5FE87002D04E3 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15FA23B5FE85002D04E3 /* Profile.swift */; };
@@ -110,18 +140,48 @@
 		46F87F0A23B90CFC0095264E /* RecoveryPasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPasswordPresenter.swift; sourceTree = "<group>"; };
 		46F87F0E23BA3B8B0095264E /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		46F87F1023BA3C7D0095264E /* TabNavigationMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabNavigationMenu.swift; sourceTree = "<group>"; };
-		46F87F1423BB72BA0095264E /* HDButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HDButton.swift; path = HelpDoctor/Views/Common/HDButton.swift; sourceTree = SOURCE_ROOT; };
-		46F87F1623BB72CA0095264E /* EnterProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnterProfileButton.swift; path = HelpDoctor/Views/Common/EnterProfileButton.swift; sourceTree = SOURCE_ROOT; };
+		46F87F1423BB72BA0095264E /* HDButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HDButton.swift; path = HelpDoctor/Views/Common/Buttons/HDButton.swift; sourceTree = SOURCE_ROOT; };
+		46F87F1623BB72CA0095264E /* EnterProfileButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EnterProfileButton.swift; path = HelpDoctor/Views/Common/Buttons/EnterProfileButton.swift; sourceTree = SOURCE_ROOT; };
 		46F87F1823BB72D30095264E /* AlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AlertView.swift; path = HelpDoctor/Views/Common/AlertView.swift; sourceTree = SOURCE_ROOT; };
 		46F87F1A23BB72DA0095264E /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HeaderView.swift; path = HelpDoctor/Views/Common/HeaderView.swift; sourceTree = SOURCE_ROOT; };
 		46F87F1F23BB74090095264E /* CreateProfileNamePresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileNamePresenter.swift; sourceTree = "<group>"; };
 		46F87F2123BB740D0095264E /* CreateProfileNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateProfileNameViewController.swift; sourceTree = "<group>"; };
 		46F87F2323BB79460095264E /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		46F87F2523BB79B30095264E /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		46F87F2823BC89760095264E /* CreateProfileWorkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileWorkViewController.swift; sourceTree = "<group>"; };
+		46F87F2A23BC898D0095264E /* CreateProfileWorkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileWorkPresenter.swift; sourceTree = "<group>"; };
+		46F87F2C23BC95510095264E /* SearchButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchButton.swift; sourceTree = "<group>"; };
+		46F87F2F23BCA3D80095264E /* PlusButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlusButton.swift; sourceTree = "<group>"; };
+		46F87F3223BCBEE80095264E /* CreateProfileSpecViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileSpecViewController.swift; sourceTree = "<group>"; };
+		46F87F3423BCBEFB0095264E /* CreateProfileSpecPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileSpecPresenter.swift; sourceTree = "<group>"; };
+		46F87F3623BCDF730095264E /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
+		46F87F3923BDE93B0095264E /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		46F87F3B23BDE9450095264E /* ProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePresenter.swift; sourceTree = "<group>"; };
+		46F87F3D23BDEA510095264E /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
+		46F87F3F23BDEDA60095264E /* Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Presenter.swift; sourceTree = "<group>"; };
+		46F87F4123BE11440095264E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		46F87F4323BE246B0095264E /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
+		46F87F4523BE328B0095264E /* EditButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditButton.swift; sourceTree = "<group>"; };
+		46F87F4723BE33A60095264E /* EditTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextField.swift; sourceTree = "<group>"; };
+		46F87F4A23BE63150095264E /* RegionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsViewController.swift; sourceTree = "<group>"; };
+		46F87F4C23BE63210095264E /* RegionsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsPresenter.swift; sourceTree = "<group>"; };
+		46F87F4E23BE65D50095264E /* RegionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionCell.swift; sourceTree = "<group>"; };
+		46F87F5023BEFCD80095264E /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
+		46F87F5323BF61A40095264E /* CitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesViewController.swift; sourceTree = "<group>"; };
+		46F87F5523BF61B60095264E /* CitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesPresenter.swift; sourceTree = "<group>"; };
+		46F87F5823BF7FC10095264E /* MedicalOrganizationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalOrganizationViewController.swift; sourceTree = "<group>"; };
+		46F87F5A23BF7FCC0095264E /* MedicalOrganizationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalOrganizationPresenter.swift; sourceTree = "<group>"; };
+		46F87F5D23BF93BD0095264E /* MedicalSpecializationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalSpecializationViewController.swift; sourceTree = "<group>"; };
+		46F87F5F23BF93CD0095264E /* MedicalSpecializationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalSpecializationPresenter.swift; sourceTree = "<group>"; };
+		46F87F6223BFC0910095264E /* InterestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsViewController.swift; sourceTree = "<group>"; };
+		46F87F6423BFC0A50095264E /* InterestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsPresenter.swift; sourceTree = "<group>"; };
+		46F87F6623C063AD0095264E /* EditTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTextView.swift; sourceTree = "<group>"; };
+		46F87F6823C09E120095264E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		46F87F6A23C09F240095264E /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		46F87F6C23C0EB880095264E /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
 		C48F15DE23B5FD30002D04E3 /* HelpDoctor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HelpDoctor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C48F15E123B5FD30002D04E3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C48F15EA23B5FD5A002D04E3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C48F15ED23B5FD5A002D04E3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C48F15EF23B5FD5A002D04E3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C48F15F723B5FE85002D04E3 /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		C48F15F923B5FE85002D04E3 /* UpdateProfileUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileUser.swift; sourceTree = "<group>"; };
@@ -255,10 +315,14 @@
 		46F87F1323BB72A90095264E /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				46F87F1423BB72BA0095264E /* HDButton.swift */,
-				46F87F1623BB72CA0095264E /* EnterProfileButton.swift */,
+				46F87F2E23BCA3AD0095264E /* Buttons */,
 				46F87F1823BB72D30095264E /* AlertView.swift */,
 				46F87F1A23BB72DA0095264E /* HeaderView.swift */,
+				46F87F3623BCDF730095264E /* ImagePicker.swift */,
+				46F87F3D23BDEA510095264E /* ProfileHeaderView.swift */,
+				46F87F4723BE33A60095264E /* EditTextField.swift */,
+				46F87F6623C063AD0095264E /* EditTextView.swift */,
+				46F87F6C23C0EB880095264E /* SavedView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -270,6 +334,91 @@
 				46F87F1F23BB74090095264E /* CreateProfileNamePresenter.swift */,
 			);
 			path = CreateProfileName;
+			sourceTree = "<group>";
+		};
+		46F87F2723BC89440095264E /* CreateProfileWork */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F2823BC89760095264E /* CreateProfileWorkViewController.swift */,
+				46F87F2A23BC898D0095264E /* CreateProfileWorkPresenter.swift */,
+			);
+			path = CreateProfileWork;
+			sourceTree = "<group>";
+		};
+		46F87F2E23BCA3AD0095264E /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F1423BB72BA0095264E /* HDButton.swift */,
+				46F87F1623BB72CA0095264E /* EnterProfileButton.swift */,
+				46F87F2C23BC95510095264E /* SearchButton.swift */,
+				46F87F2F23BCA3D80095264E /* PlusButton.swift */,
+				46F87F4523BE328B0095264E /* EditButton.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
+		46F87F3123BCBEB80095264E /* CreateProfileSpec */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F3223BCBEE80095264E /* CreateProfileSpecViewController.swift */,
+				46F87F3423BCBEFB0095264E /* CreateProfileSpecPresenter.swift */,
+			);
+			path = CreateProfileSpec;
+			sourceTree = "<group>";
+		};
+		46F87F3823BDE9270095264E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F3923BDE93B0095264E /* ProfileViewController.swift */,
+				46F87F3B23BDE9450095264E /* ProfilePresenter.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		46F87F4923BE63000095264E /* Regions */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F4A23BE63150095264E /* RegionsViewController.swift */,
+				46F87F4C23BE63210095264E /* RegionsPresenter.swift */,
+				46F87F4E23BE65D50095264E /* RegionCell.swift */,
+			);
+			path = Regions;
+			sourceTree = "<group>";
+		};
+		46F87F5223BF618B0095264E /* Cities */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F5323BF61A40095264E /* CitiesViewController.swift */,
+				46F87F5523BF61B60095264E /* CitiesPresenter.swift */,
+			);
+			path = Cities;
+			sourceTree = "<group>";
+		};
+		46F87F5723BF7E460095264E /* MedicalOrganization */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F5823BF7FC10095264E /* MedicalOrganizationViewController.swift */,
+				46F87F5A23BF7FCC0095264E /* MedicalOrganizationPresenter.swift */,
+			);
+			path = MedicalOrganization;
+			sourceTree = "<group>";
+		};
+		46F87F5C23BF93AC0095264E /* MedicalSpecialization */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F5D23BF93BD0095264E /* MedicalSpecializationViewController.swift */,
+				46F87F5F23BF93CD0095264E /* MedicalSpecializationPresenter.swift */,
+			);
+			path = MedicalSpecialization;
+			sourceTree = "<group>";
+		};
+		46F87F6123BFC0710095264E /* Interests */ = {
+			isa = PBXGroup;
+			children = (
+				46F87F6223BFC0910095264E /* InterestsViewController.swift */,
+				46F87F6423BFC0A50095264E /* InterestsPresenter.swift */,
+			);
+			path = Interests;
 			sourceTree = "<group>";
 		};
 		C48F15D523B5FD30002D04E3 = {
@@ -298,7 +447,6 @@
 				C48F15E123B5FD30002D04E3 /* AppDelegate.swift */,
 				46F87F2523BB79B30095264E /* SplashViewController.swift */,
 				46F87F2323BB79460095264E /* RootViewController.swift */,
-				C48F15EC23B5FD5A002D04E3 /* LaunchScreen.storyboard */,
 				C48F15EF23B5FD5A002D04E3 /* Info.plist */,
 			);
 			path = HelpDoctor;
@@ -401,6 +549,7 @@
 			children = (
 				46F87EFA23B8C5FE0095264E /* Services */,
 				C48F163523B61739002D04E3 /* Extensions */,
+				46F87F3F23BDEDA60095264E /* Presenter.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -410,6 +559,10 @@
 			children = (
 				C48F163623B6174C002D04E3 /* UIColor+Extensions.swift */,
 				C48F163823B61751002D04E3 /* UIFont+Extensions.swift */,
+				46F87F4323BE246B0095264E /* UIApplication+Extensions.swift */,
+				46F87F5023BEFCD80095264E /* UIViewController+Extensions.swift */,
+				46F87F6823C09E120095264E /* UIImage+Extensions.swift */,
+				46F87F6A23C09F240095264E /* String+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -478,6 +631,7 @@
 				C48F167923B9F877002D04E3 /* MainTabBarController.swift */,
 				46F87F0E23BA3B8B0095264E /* TabItem.swift */,
 				46F87F1023BA3C7D0095264E /* TabNavigationMenu.swift */,
+				46F87F4123BE11440095264E /* TabBarController.swift */,
 			);
 			path = MainTabBar;
 			sourceTree = "<group>";
@@ -498,6 +652,14 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				46F87F6123BFC0710095264E /* Interests */,
+				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
+				46F87F5723BF7E460095264E /* MedicalOrganization */,
+				46F87F5223BF618B0095264E /* Cities */,
+				46F87F4923BE63000095264E /* Regions */,
+				46F87F3823BDE9270095264E /* Profile */,
+				46F87F3123BCBEB80095264E /* CreateProfileSpec */,
+				46F87F2723BC89440095264E /* CreateProfileWork */,
 				46F87F1C23BB73E20095264E /* CreateProfileName */,
 				C48F168C23BAF508002D04E3 /* Start */,
 			);
@@ -596,7 +758,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C48F15EE23B5FD5A002D04E3 /* LaunchScreen.storyboard in Resources */,
 				C48F165223B6188B002D04E3 /* FiraSans-ExtraLight.ttf in Resources */,
 				C48F165723B6188B002D04E3 /* FiraSans-SemiBoldItalic.ttf in Resources */,
 				C48F166923B61A87002D04E3 /* Ubuntu-R.ttf in Resources */,
@@ -654,30 +815,44 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,
 				C48F161A23B5FE87002D04E3 /* NetworkService.swift in Sources */,
 				C48F161823B5FE87002D04E3 /* UpdateProfileJob.swift in Sources */,
+				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
+				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
+				46F87F3C23BDE9450095264E /* ProfilePresenter.swift in Sources */,
+				46F87F5423BF61A40095264E /* CitiesViewController.swift in Sources */,
 				C48F161623B5FE87002D04E3 /* UpdateProfileInterest.swift in Sources */,
+				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
+				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
 				46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */,
 				C48F167523B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift in Sources */,
 				46F87F0F23BA3B8B0095264E /* TabItem.swift in Sources */,
+				46F87F3323BCBEE80095264E /* CreateProfileSpecViewController.swift in Sources */,
 				C48F162523B5FE87002D04E3 /* ProfileKeyInterests.swift in Sources */,
 				C48F167A23B9F877002D04E3 /* MainTabBarController.swift in Sources */,
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
 				C48F161723B5FE87002D04E3 /* UpdateProfileSpec.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
+				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
+				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
+				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
+				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
+				46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */,
 				46F87EFD23B8C6120095264E /* ValidateProtocol.swift in Sources */,
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
+				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
@@ -685,15 +860,22 @@
 				46F87F1723BB72CA0095264E /* EnterProfileButton.swift in Sources */,
 				C48F162623B5FE87002D04E3 /* GetMedicalOrganization.swift in Sources */,
 				C48F162A23B5FE87002D04E3 /* KeychainWrapper.swift in Sources */,
+				46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
 				C48F161E23B5FE87002D04E3 /* KeychainItemAccessibility.swift in Sources */,
+				46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */,
 				C48F161523B5FE87002D04E3 /* Profile.swift in Sources */,
+				46F87F4423BE246B0095264E /* UIApplication+Extensions.swift in Sources */,
+				46F87F3A23BDE93B0095264E /* ProfileViewController.swift in Sources */,
 				C48F161B23B5FE87002D04E3 /* GetRegions.swift in Sources */,
 				46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */,
 				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
+				46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */,
 				46F87F1923BB72D30095264E /* AlertView.swift in Sources */,
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
+				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
 				C48F161423B5FE87002D04E3 /* UpdateProfileUser.swift in Sources */,
+				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
@@ -701,33 +883,32 @@
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
 				C48F161323B5FE87002D04E3 /* Registration.swift in Sources */,
+				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
+				46F87F4223BE11450095264E /* TabBarController.swift in Sources */,
+				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
+				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
+				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
+				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				46F87F1123BA3C7D0095264E /* TabNavigationMenu.swift in Sources */,
 				C48F162C23B5FE87002D04E3 /* ProfileKeyUser.swift in Sources */,
+				46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */,
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
+				46F87F4023BDEDA60095264E /* Presenter.swift in Sources */,
 				C48F162823B5FE87002D04E3 /* PublicMethod.swift in Sources */,
 				C48F161D23B5FE87002D04E3 /* GetListOfInterests.swift in Sources */,
+				46F87F6D23C0EB890095264E /* SavedView.swift in Sources */,
 				C48F163923B61751002D04E3 /* UIFont+Extensions.swift in Sources */,
 				C48F162723B5FE87002D04E3 /* GetMedicalSpecialization.swift in Sources */,
+				46F87F3523BCBEFB0095264E /* CreateProfileSpecPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXVariantGroup section */
-		C48F15EC23B5FD5A002D04E3 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				C48F15ED23B5FD5A002D04E3 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		C48F15F023B5FD5A002D04E3 /* Debug */ = {

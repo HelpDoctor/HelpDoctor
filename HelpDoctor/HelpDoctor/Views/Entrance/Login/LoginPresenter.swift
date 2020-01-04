@@ -10,6 +10,7 @@ import UIKit
 
 protocol LoginPresenterProtocol {
     init(view: LoginViewController)
+    func loginButtonPressed(email: String, password: String)
     func login()
     func recoveryPassword()
     func back()
@@ -21,6 +22,30 @@ class LoginPresenter: LoginPresenterProtocol {
     
     required init(view: LoginViewController) {
         self.view = view
+    }
+    
+    func loginButtonPressed(email: String, password: String) {
+        let getToken = Registration(email: email, password: password, token: nil)
+        
+        getData(typeOfContent: .getToken,
+                returning: (Int?, String?).self,
+                requestParams: getToken.requestParams )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            getToken.responce = result
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("result= \(String(describing: getToken.responce))")
+                    guard let code = getToken.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.login()
+                    } else {
+                        self?.view.showAlert(message: getToken.responce?.1)
+                    }
+                }
+            }
+        }
     }
     
     // MARK: - Coordinator

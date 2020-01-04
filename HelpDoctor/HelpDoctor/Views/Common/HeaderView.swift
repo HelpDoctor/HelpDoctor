@@ -15,6 +15,7 @@ class HeaderView: UIView {
     convenience init(title: String) {
         self.init()
         self.titleLabel.text = title
+        UIApplication.statusBarBackgroundColor = .clear
         setupLogo()
         setupTitle()
     }

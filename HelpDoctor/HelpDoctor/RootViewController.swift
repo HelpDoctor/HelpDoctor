@@ -31,9 +31,10 @@ class RootViewController: UIViewController {
     }
     
     func switchToMainScreen() {
-        let mainViewController = MainTabBarController()
-        let mainScreen = UINavigationController(rootViewController: mainViewController)
-        animateFadeTransition(to: mainScreen)
+        let mainViewController = TabBarController()
+//        let mainViewController = MainTabBarController()
+//        let mainScreen = UINavigationController(rootViewController: tabBar)
+        animateFadeTransition(to: mainViewController)
     }
     
     func switchToLogout() {
@@ -52,7 +53,7 @@ class RootViewController: UIViewController {
                    duration: 0.3,
                    options: [.transitionCrossDissolve, .curveEaseOut],
                    animations: {
-        }) { completed in
+        }) { _ in
             self.current.removeFromParent()
             new.didMove(toParent: self)
             self.current = new
@@ -70,7 +71,7 @@ class RootViewController: UIViewController {
                    options: [],
                    animations: {
                     new.view.frame = self.view.bounds
-        }) { completed in
+        }) { _ in
             self.current.removeFromParent()
             new.didMove(toParent: self)
             self.current = new

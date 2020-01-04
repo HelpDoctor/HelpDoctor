@@ -10,10 +10,10 @@ import UIKit
 
 class StartMainViewController: UIViewController {
 
-//    var coordinator: StartMainCoordinatorProtocol?
+    // MARK: - Dependency
     var presenter: StartMainPresenterProtocol?
     
-    private let backgroundImage = UIImageView()
+    // MARK: - Constants
     private var headerView = HeaderView()
     private var enterProfileButton = EnterProfileButton()
     private let newUserLabel = UILabel()
@@ -28,6 +28,7 @@ class StartMainViewController: UIViewController {
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -46,29 +47,19 @@ class StartMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        UIApplication.statusBarBackgroundColor = .clear
     }
     
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
+    // MARK: - Setup views
     private func setupHeaderView() {
         headerView = HeaderView(title: "HelpDoctor")
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupEnterProfileButton() {
@@ -186,8 +177,8 @@ class StartMainViewController: UIViewController {
         fillProfileButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
+    // MARK: - Buttons methods
     @objc private func fillProfileButtonPressed() {
-//        coordinator?.fillProfile()
         presenter?.fillProfile()
     }
 

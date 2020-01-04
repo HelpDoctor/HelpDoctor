@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 30.12.2019.
 //  Copyright © 2019 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 enum TabItem: String, CaseIterable {
@@ -13,7 +13,6 @@ enum TabItem: String, CaseIterable {
     case schedule = "расписание"
     case messages = "сообщения"
     case settings = "настройки"
-    
     
     var viewController: UIViewController {
         switch self {
@@ -23,15 +22,15 @@ enum TabItem: String, CaseIterable {
             return viewController
         case .schedule:
             let viewController = StartScheduleViewController()
-//            viewController.presenter = StartSchedulePresenter(view: viewController)
+            //            viewController.presenter = StartSchedulePresenter(view: viewController)
             return viewController
         case .messages:
             let viewController = StartMessagesViewController()
-//            viewController.presenter = StartMessagesPresenter(view: viewController)
+            //            viewController.presenter = StartMessagesPresenter(view: viewController)
             return viewController
         case .settings:
             let viewController = StartSettingsViewController()
-//            viewController.presenter = StartSettingsPresenter(view: viewController)
+            //            viewController.presenter = StartSettingsPresenter(view: viewController)
             return viewController
         }
     }
@@ -73,3 +72,4 @@ enum TabItem: String, CaseIterable {
         return self.rawValue.capitalized(with: nil)
     }
 }
+*/
