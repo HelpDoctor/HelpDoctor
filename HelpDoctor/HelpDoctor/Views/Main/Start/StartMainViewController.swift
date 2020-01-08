@@ -14,7 +14,6 @@ class StartMainViewController: UIViewController {
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
-    private var headerView = HeaderView()
     private var enterProfileButton = EnterProfileButton()
     private let newUserLabel = UILabel()
     private let topLine = UIView()
@@ -51,17 +50,6 @@ class StartMainViewController: UIViewController {
     }
     
     // MARK: - Setup views
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-    }
-    
     private func setupEnterProfileButton() {
         enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
         enterProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
@@ -83,7 +71,7 @@ class StartMainViewController: UIViewController {
         view.addSubview(newUserLabel)
         
         newUserLabel.translatesAutoresizingMaskIntoConstraints = false
-        newUserLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 3).isActive = true
+        newUserLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 63).isActive = true
         newUserLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         newUserLabel.widthAnchor.constraint(equalToConstant: 140).isActive = true
         newUserLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true

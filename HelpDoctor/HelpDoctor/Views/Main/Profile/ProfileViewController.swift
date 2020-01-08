@@ -14,30 +14,36 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ProfilePresenterProtocol?
     
     // MARK: - Constants
+    private let session = Session.instance
     private let scrollView = UIScrollView()
-    private var headerView = ProfileHeaderView()
+    var headerView = ProfileHeaderView()
     var nameTextField = EditTextField()
-    let userPhoto = UIImageView()
+    var userPhoto = UIImageView()
     private let birthDateLabel = UILabel()
     var birthDateTextField = EditTextField()
     private let contactsLabel = UILabel()
     var emailTextField = EditTextField()
     var phoneTextField = EditTextField()
     private let specLabel = UILabel()
-    private var specTextField = EditTextField()
+    var specTextField = MedicalSpecializationSearchTextField()
+    private var editMainSpecButton = EditButton()
     private let locationLabel = UILabel()
-    var locationTextField = EditTextField()
+    var locationTextField = CitiesSearchTextField()
+    private var editLocationButton = EditButton()
     private let workPlaceLabel = UILabel()
-    private var workPlace1TextField = EditTextField()
-    private var workPlace2TextField = EditTextField()
+    var workPlace1TextField = MedicalOrganizationSearchTextField()
+    private var editMainJobButton = EditButton()
+    var workPlace2TextField = MedicalOrganizationSearchTextField()
+    private var editAddJobButton = EditButton()
     private var addWorkPlaceButton = PlusButton()
     private let interestsLabel = UILabel()
-    var interestsTextView = EditTextView()
+    var interestsTextView = InterestsSearchTextField()
+    private var editInterestsButton = EditButton()
     private lazy var imagePicker = ImagePicker()
     private var keyboardHeight: CGFloat = 0
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+//    private let width = UIScreen.main.bounds.width
+//    private let height = UIScreen.main.bounds.height
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -46,7 +52,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         imagePicker.delegate = self
         setupBackground()
         setupScrollView()
-        setupHeaderView()
+        setupProfileHeaderView()
         setupNameTextField()
         setupUserPhotoView()
         setupBirthDateLabel()
@@ -56,14 +62,19 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         setupPhoneTextField()
         setupSpecLabel()
         setupSpecTextField()
+        setupEditMainSpecButton()
         setupLocationLabel()
         setupLocationTextField()
+        setupEditLocationButton()
         setupWorkPlaceLabel()
         setupWorkPlace1TextField()
+        setupEditMainJobButton()
         setupWorkPlace2TextField()
+        setupEditAddJobButton()
         setupAddWorkPlaceButton()
         setupInterestsLabel()
         setupInterestsTextView()
+        setupEditInterestsButton()
         addTapGestureToHideKeyboard()
     }
     
@@ -71,12 +82,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         tabBarController?.tabBar.isHidden = false
+        UIApplication.statusBarBackgroundColor = .tabBarColor
     }
     
     // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: session.width, height: session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +98,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
     
-    private func setupHeaderView() {
+    private func setupProfileHeaderView() {
         headerView = ProfileHeaderView(title: "Мой профиль",
                                        text: nil,
                                        userImage: nil,
@@ -96,7 +108,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        headerView.widthAnchor.constraint(equalToConstant: session.width).isActive = true
         headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
@@ -109,7 +121,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
         nameTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        nameTextField.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        nameTextField.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -125,7 +137,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         userPhoto.translatesAutoresizingMaskIntoConstraints = false
         userPhoto.topAnchor.constraint(equalTo: nameTextField.bottomAnchor,
-                                        constant: 10).isActive = true
+                                       constant: 10).isActive = true
         userPhoto.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
         userPhoto.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
         userPhoto.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
@@ -139,7 +151,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.topAnchor.constraint(equalTo: nameTextField.bottomAnchor,
-                                        constant: 10).isActive = true
+                                    constant: 10).isActive = true
         button.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
         button.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
         button.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
@@ -159,7 +171,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateLabel.translatesAutoresizingMaskIntoConstraints = false
         birthDateLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5).isActive = true
         birthDateLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateLabel.widthAnchor.constraint(equalToConstant: width - 190).isActive = true
+        birthDateLabel.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
         birthDateLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -167,12 +179,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField = EditTextField(placeholder: "ДД.ММ.ГГГГ",
                                            source: .user,
                                            presenter: presenter)
+        birthDateTextField.textField.delegate = self
+        birthDateTextField.textField.keyboardType = .numberPad
         scrollView.addSubview(birthDateTextField)
         
         birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
         birthDateTextField.topAnchor.constraint(equalTo: birthDateLabel.bottomAnchor, constant: 3).isActive = true
         birthDateTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateTextField.widthAnchor.constraint(equalToConstant: width - 190).isActive = true
+        birthDateTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
         birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -186,7 +200,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         contactsLabel.translatesAutoresizingMaskIntoConstraints = false
         contactsLabel.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 5).isActive = true
         contactsLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        contactsLabel.widthAnchor.constraint(equalToConstant: width - 190).isActive = true
+        contactsLabel.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
         contactsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -201,7 +215,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.topAnchor.constraint(equalTo: contactsLabel.bottomAnchor, constant: 3).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: width - 190).isActive = true
+        emailTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -209,12 +223,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         phoneTextField = EditTextField(placeholder: "+7 (999) 111-22-33",
                                        source: .user,
                                        presenter: presenter)
+        phoneTextField.textField.delegate = self
+        phoneTextField.textField.keyboardType = .numberPad
         scrollView.addSubview(phoneTextField)
         
         phoneTextField.translatesAutoresizingMaskIntoConstraints = false
         phoneTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 3).isActive = true
         phoneTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        phoneTextField.widthAnchor.constraint(equalToConstant: width - 190).isActive = true
+        phoneTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
         phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -228,21 +244,41 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         specLabel.translatesAutoresizingMaskIntoConstraints = false
         specLabel.topAnchor.constraint(equalTo: userPhoto.bottomAnchor, constant: 9).isActive = true
         specLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specLabel.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        specLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         specLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
     private func setupSpecTextField() {
-        specTextField = EditTextField(placeholder: "Специализация",
-                                      source: .spec,
-                                      presenter: presenter)
+        specTextField.presenter = presenter
+        specTextField.mainSpec = true
+        specTextField.textColor = .black
+        specTextField.isEnabled = false
+        specTextField.layer.cornerRadius = 5
+        specTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        specTextField.font = .systemFontOfSize(size: 12)
         scrollView.addSubview(specTextField)
         
         specTextField.translatesAutoresizingMaskIntoConstraints = false
         specTextField.topAnchor.constraint(equalTo: specLabel.bottomAnchor, constant: 3).isActive = true
         specTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specTextField.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        specTextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
         specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupEditMainSpecButton() {
+        editMainSpecButton = EditButton()
+        editMainSpecButton.addTarget(self, action: #selector(editMainSpecButtonPressed), for: .touchUpInside)
+        editMainSpecButton.backgroundColor = .white
+        editMainSpecButton.layer.cornerRadius = 5
+        editMainSpecButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editMainSpecButton)
+        
+        editMainSpecButton.translatesAutoresizingMaskIntoConstraints = false
+        editMainSpecButton.topAnchor.constraint(equalTo: specLabel.bottomAnchor,
+                                                constant: 3).isActive = true
+        editMainSpecButton.leadingAnchor.constraint(equalTo: specTextField.trailingAnchor).isActive = true
+        editMainSpecButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editMainSpecButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     private func setupLocationLabel() {
@@ -255,21 +291,40 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: specTextField.bottomAnchor, constant: 3).isActive = true
         locationLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        locationLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
     private func setupLocationTextField() {
-        locationTextField = EditTextField(placeholder: "Субъект город",
-                                          source: .user,
-                                          presenter: presenter)
+        locationTextField.presenter = presenter
+        locationTextField.textColor = .black
+        locationTextField.isEnabled = false
+        locationTextField.layer.cornerRadius = 5
+        locationTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        locationTextField.font = .systemFontOfSize(size: 12)
         scrollView.addSubview(locationTextField)
         
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
         locationTextField.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 3).isActive = true
         locationTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationTextField.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        locationTextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
         locationTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupEditLocationButton() {
+        editLocationButton = EditButton()
+        editLocationButton.addTarget(self, action: #selector(editLocationButtonPressed), for: .touchUpInside)
+        editLocationButton.backgroundColor = .white
+        editLocationButton.layer.cornerRadius = 5
+        editLocationButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editLocationButton)
+        
+        editLocationButton.translatesAutoresizingMaskIntoConstraints = false
+        editLocationButton.topAnchor.constraint(equalTo: locationLabel.bottomAnchor,
+                                                constant: 3).isActive = true
+        editLocationButton.leadingAnchor.constraint(equalTo: locationTextField.trailingAnchor).isActive = true
+        editLocationButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editLocationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     private func setupWorkPlaceLabel() {
@@ -282,34 +337,74 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlaceLabel.translatesAutoresizingMaskIntoConstraints = false
         workPlaceLabel.topAnchor.constraint(equalTo: locationTextField.bottomAnchor, constant: 3).isActive = true
         workPlaceLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlaceLabel.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        workPlaceLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         workPlaceLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
     private func setupWorkPlace1TextField() {
-        workPlace1TextField = EditTextField(placeholder: "Основное место работы",
-                                            source: .job,
-                                            presenter: presenter)
+        workPlace1TextField.presenter = presenter
+        workPlace1TextField.mainWork = true
+        workPlace1TextField.textColor = .black
+        workPlace1TextField.isEnabled = false
+        workPlace1TextField.layer.cornerRadius = 5
+        workPlace1TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        workPlace1TextField.font = .systemFontOfSize(size: 12)
         scrollView.addSubview(workPlace1TextField)
         
         workPlace1TextField.translatesAutoresizingMaskIntoConstraints = false
         workPlace1TextField.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor, constant: 3).isActive = true
         workPlace1TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace1TextField.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        workPlace1TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
         workPlace1TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    private func setupEditMainJobButton() {
+        editMainJobButton = EditButton()
+        editMainJobButton.addTarget(self, action: #selector(editMainJobButtonPressed), for: .touchUpInside)
+        editMainJobButton.backgroundColor = .white
+        editMainJobButton.layer.cornerRadius = 5
+        editMainJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editMainJobButton)
+        
+        editMainJobButton.translatesAutoresizingMaskIntoConstraints = false
+        editMainJobButton.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor,
+                                                constant: 3).isActive = true
+        editMainJobButton.leadingAnchor.constraint(equalTo: workPlace1TextField.trailingAnchor).isActive = true
+        editMainJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editMainJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
     private func setupWorkPlace2TextField() {
-        workPlace2TextField = EditTextField(placeholder: "Дополнительное место работы",
-                                            source: .job,
-                                            presenter: presenter)
+        workPlace2TextField.presenter = presenter
+        workPlace2TextField.mainWork = false
+        workPlace2TextField.textColor = .black
+        workPlace2TextField.isEnabled = false
+        workPlace2TextField.layer.cornerRadius = 5
+        workPlace2TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        workPlace2TextField.font = .systemFontOfSize(size: 12)
         scrollView.addSubview(workPlace2TextField)
         
         workPlace2TextField.translatesAutoresizingMaskIntoConstraints = false
         workPlace2TextField.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor, constant: 5).isActive = true
         workPlace2TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace2TextField.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        workPlace2TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
         workPlace2TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupEditAddJobButton() {
+        editAddJobButton = EditButton()
+        editAddJobButton.addTarget(self, action: #selector(editAddJobButtonPressed), for: .touchUpInside)
+        editAddJobButton.backgroundColor = .white
+        editAddJobButton.layer.cornerRadius = 5
+        editAddJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editAddJobButton)
+        
+        editAddJobButton.translatesAutoresizingMaskIntoConstraints = false
+        editAddJobButton.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor,
+                                                constant: 5).isActive = true
+        editAddJobButton.leadingAnchor.constraint(equalTo: workPlace2TextField.trailingAnchor).isActive = true
+        editAddJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editAddJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     private func setupAddWorkPlaceButton() {
@@ -321,7 +416,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         addWorkPlaceButton.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor,
                                                 constant: 3).isActive = true
         addWorkPlaceButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant: 30).isActive = true
+                                                    constant: 30).isActive = true
         addWorkPlaceButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         addWorkPlaceButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -336,19 +431,40 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsLabel.translatesAutoresizingMaskIntoConstraints = false
         interestsLabel.topAnchor.constraint(equalTo: addWorkPlaceButton.bottomAnchor, constant: 3).isActive = true
         interestsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsLabel.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
+        interestsLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         interestsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
     private func setupInterestsTextView() {
-        interestsTextView = EditTextView()
+        interestsTextView.presenter = presenter
+        interestsTextView.textColor = .black
+        interestsTextView.isEnabled = false
+        interestsTextView.layer.cornerRadius = 5
+        interestsTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        interestsTextView.font = .systemFontOfSize(size: 12)
         scrollView.addSubview(interestsTextView)
         
         interestsTextView.translatesAutoresizingMaskIntoConstraints = false
         interestsTextView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor, constant: 3).isActive = true
         interestsTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsTextView.widthAnchor.constraint(equalToConstant: width - 50).isActive = true
-        interestsTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        interestsTextView.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        interestsTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupEditInterestsButton() {
+        editInterestsButton = EditButton()
+        editInterestsButton.addTarget(self, action: #selector(editInterestsButtonPressed), for: .touchUpInside)
+        editInterestsButton.backgroundColor = .white
+        editInterestsButton.layer.cornerRadius = 5
+        editInterestsButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editInterestsButton)
+        
+        editInterestsButton.translatesAutoresizingMaskIntoConstraints = false
+        editInterestsButton.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor,
+                                                constant: 3).isActive = true
+        editInterestsButton.leadingAnchor.constraint(equalTo: interestsTextView.trailingAnchor).isActive = true
+        editInterestsButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editInterestsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
     private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
@@ -359,12 +475,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
@@ -421,6 +537,86 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
     }
     
+    @objc func editMainJobButtonPressed() {
+        if workPlace1TextField.isEnabled {
+            workPlace1TextField.isEnabled = false
+            editMainJobButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
+            presenter?.save(source: .job)
+        } else {
+            workPlace1TextField.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editMainJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor), for: .normal)
+            } else {
+                editMainJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func editAddJobButtonPressed() {
+        if workPlace2TextField.isEnabled {
+            workPlace2TextField.isEnabled = false
+            editAddJobButton.setImage(UIImage(named: "Edit_Button.pdf"),
+                                      for: .normal)
+            presenter?.save(source: .job)
+        } else {
+            workPlace2TextField.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editAddJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
+                                          for: .normal)
+            } else {
+                editAddJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func editMainSpecButtonPressed() {
+        if specTextField.isEnabled {
+            specTextField.isEnabled = false
+            editMainSpecButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
+            presenter?.save(source: .spec)
+        } else {
+            specTextField.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editMainSpecButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
+                                            for: .normal)
+            } else {
+                editMainSpecButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func editLocationButtonPressed() {
+        if locationTextField.isEnabled {
+            locationTextField.isEnabled = false
+            editLocationButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
+            presenter?.save(source: .user)
+        } else {
+            locationTextField.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editLocationButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
+                                            for: .normal)
+            } else {
+                editLocationButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func editInterestsButtonPressed() {
+        if interestsTextView.isEnabled {
+            interestsTextView.isEnabled = false
+            editInterestsButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
+            presenter?.save(source: .interest)
+        } else {
+            interestsTextView.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editInterestsButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
+                                            for: .normal)
+            } else {
+                editInterestsButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
     // MARK: - Navigation
     @objc private func backButtonPressed() {
         presenter?.back()
@@ -428,22 +624,64 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 }
 
 extension ProfileViewController: ImagePickerDelegate {
-
+    
     func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
         userPhoto.image = image
+        headerView.userImage.image = image
+        presenter?.save(source: .user)
         imagePicker.dismiss()
     }
-
+    
     func imagePickerDelegate(didCancel delegatedForm: ImagePicker) {
         imagePicker.dismiss()
     }
-
+    
     func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
         if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
     }
-
+    
     func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
         // works only on real device (crash on simulator)
         if accessIsAllowed { presentImagePicker(sourceType: .camera) }
+    }
+}
+//swiftlint:disable force_unwrapping
+extension ProfileViewController: UITextFieldDelegate {
+    // MARK: - text field masking
+    internal func textField(_ textField: UITextField,
+                            shouldChangeCharactersIn range: NSRange,
+                            replacementString string: String) -> Bool {
+        
+        // MARK: - If Delete button click
+        let char = string.cString(using: String.Encoding.utf8)!
+        let isBackSpace = strcmp(char, "\\b")
+        
+        if isBackSpace == -92 {
+            textField.text!.removeLast()
+            return false
+        }
+        
+        if textField == birthDateTextField.textField {
+            if (textField.text?.count)! == 2 {
+                textField.text = "\(textField.text!)."
+            } else if (textField.text?.count)! == 5 {
+                textField.text = "\(textField.text!)."
+            } else if (textField.text?.count)! > 9 {
+                return false
+            }
+        } else if textField == phoneTextField.textField {
+            if (textField.text?.count)! == 1 {
+                textField.text = "+\(textField.text!) ("
+            } else if (textField.text?.count)! == 7 {
+                textField.text = "\(textField.text!)) "
+            } else if (textField.text?.count)! == 12 {
+                textField.text = "\(textField.text!)-"
+            } else if (textField.text?.count)! == 15 {
+                textField.text = "\(textField.text!)-"
+            } else if (textField.text?.count)! > 17 {
+                return false
+            }
+        }
+        return true
     }
 }

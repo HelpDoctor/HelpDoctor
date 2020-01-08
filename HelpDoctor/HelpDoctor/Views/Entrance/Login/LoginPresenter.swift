@@ -25,6 +25,7 @@ class LoginPresenter: LoginPresenterProtocol {
     }
     
     func loginButtonPressed(email: String, password: String) {
+        view.activityIndicator.startAnimating()
         let getToken = Registration(email: email, password: password, token: nil)
         
         getData(typeOfContent: .getToken,
@@ -36,6 +37,7 @@ class LoginPresenter: LoginPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    self?.view.activityIndicator.stopAnimating()
                     print("result= \(String(describing: getToken.responce))")
                     guard let code = getToken.responce?.0 else { return }
                     if responceCode(code: code) {

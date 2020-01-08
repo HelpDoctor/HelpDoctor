@@ -14,7 +14,6 @@ class RegionsViewController: UIViewController {
     var presenter: RegionsPresenterProtocol?
     
     // MARK: - Constants
-    private var headerView = HeaderView()
     var tableView = UITableView()
     private var okButton = HDButton()
     
@@ -39,17 +38,6 @@ class RegionsViewController: UIViewController {
     }
     
     // MARK: - Setup views
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
-    }
-    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
@@ -58,7 +46,7 @@ class RegionsViewController: UIViewController {
         tableView.delegate = self
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
+        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -58).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true

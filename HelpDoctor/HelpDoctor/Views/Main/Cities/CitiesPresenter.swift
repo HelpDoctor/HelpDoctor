@@ -61,6 +61,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
                 view.showAlert(message: "Выберите один город")
                 return }
         view.navigationController?.popViewController(animated: true)
+        //swiftlint:disable force_cast
         let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
         let presenter = previous.presenter
         presenter?.setCity(city: city)

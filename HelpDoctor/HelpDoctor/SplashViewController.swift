@@ -25,10 +25,27 @@ class SplashViewController: UIViewController {
         activityIndicator.startAnimating()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
             self.activityIndicator.stopAnimating()
-            if Auth_Info.instance.token == nil {
-                AppDelegate.shared.rootViewController.switchToLogout()
-            } else {
-                AppDelegate.shared.rootViewController.switchToMainScreen()
+            
+            let checkProfile = Registration(email: nil, password: nil, token: myToken)
+            
+            getData(typeOfContent: .checkProfile,
+                    returning: (Int?, String?).self,
+                    requestParams: checkProfile.requestParams)
+            { [weak self] result in
+                let dispathGroup = DispatchGroup()
+                checkProfile.responce = result
+                
+                dispathGroup.notify(queue: DispatchQueue.main) {
+                    DispatchQueue.main.async { [weak self] in
+//                        print("result=\(String(describing: checkProfile.responce))")
+                        guard let status = checkProfile.responce?.1 else { return }
+                        if status == "Token id not found" {
+                            AppDelegate.shared.rootViewController.switchToLogout()
+                        } else {
+                            AppDelegate.shared.rootViewController.switchToMainScreen()
+                        }
+                    }
+                }
             }
         }
     }

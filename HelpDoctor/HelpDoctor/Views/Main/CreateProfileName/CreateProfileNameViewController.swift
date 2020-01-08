@@ -15,7 +15,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Constants
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let step1TitleLabel = UILabel()
@@ -72,21 +71,10 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupTitleLabel() {
@@ -97,18 +85,17 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 12).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
     private func setupTopLabel() {
+        let text = "Для создания профиля нужно внести данные о себе. Поля, отмеченные *, обязательны для заполнения"
         topLabel.font = UIFont.systemFontOfSize(size: 14)
         topLabel.textColor = .white
-        //swiftlint:disable line_length
-        topLabel.text = "Для создания профиля нужно внести данные о себе. Поля, отмеченные *, обязательны для заполнения"
-        //swiftlint:enable line_length
+        topLabel.attributedText = redStar(text: text)
         topLabel.textAlignment = .left
         topLabel.numberOfLines = 0
         scrollView.addSubview(topLabel)
@@ -152,7 +139,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private func setupSurnameTextField() {
         surnameTextField.font = UIFont.systemFontOfSize(size: 14)
         surnameTextField.textColor = .textFieldTextColor
-        surnameTextField.placeholder = "Фамилия*"
+        surnameTextField.attributedPlaceholder = redStar(text: "Фамилия*")
         surnameTextField.textAlignment = .left
         surnameTextField.backgroundColor = .white
         surnameTextField.layer.cornerRadius = 5
@@ -173,7 +160,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private func setupNameTextField() {
         nameTextField.font = UIFont.systemFontOfSize(size: 14)
         nameTextField.textColor = .textFieldTextColor
-        nameTextField.placeholder = "Имя*"
+        nameTextField.attributedPlaceholder = redStar(text: "Имя*")
         nameTextField.textAlignment = .left
         nameTextField.backgroundColor = .white
         nameTextField.layer.cornerRadius = 5
@@ -245,7 +232,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField.font = UIFont.systemFontOfSize(size: 14)
         birthDateTextField.textColor = .textFieldTextColor
         birthDateTextField.keyboardType = .numberPad
-        birthDateTextField.placeholder = "__.__.____*"
+        birthDateTextField.attributedPlaceholder = redStar(text: "__.__.____*")
         birthDateTextField.textAlignment = .left
         birthDateTextField.backgroundColor = .white
         birthDateTextField.layer.cornerRadius = 5
@@ -292,10 +279,11 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupPhoneTextField() {
+        phoneTextField.delegate = self
         phoneTextField.font = UIFont.systemFontOfSize(size: 14)
         phoneTextField.textColor = .textFieldTextColor
-        phoneTextField.keyboardType = .phonePad
-        phoneTextField.placeholder = "+7 (xxx) xxx-xx-xx*"
+        phoneTextField.keyboardType = .numberPad
+        phoneTextField.attributedPlaceholder = redStar(text: "+7 (xxx) xxx-xx-xx*")
         phoneTextField.textAlignment = .left
         phoneTextField.backgroundColor = .white
         phoneTextField.layer.cornerRadius = 5
@@ -327,7 +315,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 36).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
@@ -386,7 +374,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         presenter?.next(name: name, lastname: lastname, middleName: middleName, birthDate: birthDate, phone: phone)
     }
 }
-
+//swiftlint:disable force_unwrapping
 extension CreateProfileNameViewController: UITextFieldDelegate {
     // MARK: - text field masking
     internal func textField(_ textField: UITextField,
@@ -408,6 +396,18 @@ extension CreateProfileNameViewController: UITextFieldDelegate {
             } else if (textField.text?.count)! == 5 {
                 textField.text = "\(textField.text!)."
             } else if (textField.text?.count)! > 9 {
+                return false
+            }
+        } else if textField == phoneTextField {
+            if (textField.text?.count)! == 1 {
+                textField.text = "+\(textField.text!) ("
+            } else if (textField.text?.count)! == 7 {
+                textField.text = "\(textField.text!)) "
+            } else if (textField.text?.count)! == 12 {
+                textField.text = "\(textField.text!)-"
+            } else if (textField.text?.count)! == 15 {
+                textField.text = "\(textField.text!)-"
+            } else if (textField.text?.count)! > 17 {
                 return false
             }
         }

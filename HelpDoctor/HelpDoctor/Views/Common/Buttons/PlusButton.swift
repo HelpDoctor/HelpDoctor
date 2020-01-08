@@ -20,13 +20,8 @@ class PlusButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        if #available(iOS 13.0, *) {
-            let icon = UIImage(systemName: "plus.circle.fill")
-            setImage(icon, for: .normal)
-        } else {
-            let icon = UIImage(named: "Plus_Button.pdf")
-            setImage(icon, for: .normal)
-        }
+        let icon = UIImage(named: "Plus_Button.pdf")
+        setImage(icon, for: .normal)
         updateLayerProperties()
     }
     

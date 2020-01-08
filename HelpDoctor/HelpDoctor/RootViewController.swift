@@ -52,13 +52,13 @@ class RootViewController: UIViewController {
                    to: new,
                    duration: 0.3,
                    options: [.transitionCrossDissolve, .curveEaseOut],
-                   animations: {
-        }) { _ in
-            self.current.removeFromParent()
-            new.didMove(toParent: self)
-            self.current = new
-            completion?()
-        }
+                   animations: { },
+                   completion: { _ in
+                    self.current.removeFromParent()
+                    new.didMove(toParent: self)
+                    self.current = new
+                    completion?()
+        })
     }
     
     private func animateDismissTransition(to new: UIViewController, completion: (() -> Void)? = nil) {
@@ -69,13 +69,12 @@ class RootViewController: UIViewController {
                    to: new,
                    duration: 0.3,
                    options: [],
-                   animations: {
-                    new.view.frame = self.view.bounds
-        }) { _ in
-            self.current.removeFromParent()
-            new.didMove(toParent: self)
-            self.current = new
-            completion?()
-        }
+                   animations: { new.view.frame = self.view.bounds },
+                   completion: { _ in
+                    self.current.removeFromParent()
+                    new.didMove(toParent: self)
+                    self.current = new
+                    completion?()
+        })
     }
 }

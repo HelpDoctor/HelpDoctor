@@ -15,10 +15,9 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Constants
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let step6TitleLabel = UILabel()
     private let step6Label = UILabel()
-    let specTextField = UITextField()
+    let specTextField = InterestsSearchTextField()
     private var specSearchButton = SearchButton()
     private let step7TitleLabel = UILabel()
     private let step7Label = UILabel()
@@ -64,21 +63,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupStep6TitleLabel() {
@@ -89,7 +77,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(step6TitleLabel)
         
         step6TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step6TitleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 16).isActive = true
+        step6TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         step6TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step6TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         step6TitleLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
@@ -114,16 +102,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecTextField() {
+        specTextField.presenter = presenter
         specTextField.font = UIFont.systemFontOfSize(size: 14)
         specTextField.textColor = .textFieldTextColor
-        specTextField.textAlignment = .left
-        specTextField.backgroundColor = .white
         specTextField.layer.cornerRadius = 5
-        specTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: specTextField.frame.height))
-        specTextField.leftViewMode = .always
         scrollView.addSubview(specTextField)
         
         specTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +209,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
@@ -243,7 +225,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
 
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-        constant: height - (bottomPadding ?? 0) - 32).isActive = true
+        constant: height - (bottomPadding ?? 0) - 92).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 20).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 35).isActive = true

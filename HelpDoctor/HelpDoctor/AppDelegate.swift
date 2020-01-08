@@ -15,7 +15,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        let session = Session.instance
+        session.width = UIScreen.main.bounds.width
+        session.height = UIScreen.main.bounds.height
         window = UIWindow(frame: UIScreen.main.bounds)
+//        Auth_Info.instance.token = nil
 
 //        for family in UIFont.familyNames.sorted() {
 //            let names = UIFont.fontNames(forFamilyName: family)

@@ -57,17 +57,12 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: [Int]?) {
-//        guard let index = index,
-//            let interests = arrayInterests?[index] else {
-//                view.showAlert(message: "Укажите область своих научных интересов")
-//                return }
-//        var interests = index?.forEach({arrayInterests?.append($0)})
-//        var interests = index.map({arrayInterests?[$0]})
-        let interests = index?.map({arrayInterests?[$0]})
+        let interests = index?.map( { arrayInterests?[$0] })
         view.navigationController?.popViewController(animated: true)
+        //swiftlint:disable force_cast
         let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
         let presenter = previous.presenter
-        presenter?.setInterests(interests: interests! as! [ListOfInterests])//Убрать force-unwrap
+        presenter?.setInterests(interests: interests as! [ListOfInterests])
     }
     
 }

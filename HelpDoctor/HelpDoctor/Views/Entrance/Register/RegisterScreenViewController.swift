@@ -14,8 +14,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     var presenter: RegisterScreenPresenter?
     
     // MARK: - Constants
+    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
@@ -35,6 +35,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
+        setupActivityIndicator()
         setupScrollView()
         setupHeaderView()
         setupTitleLabel()
@@ -67,27 +68,23 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Setup views
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.layer.zPosition = 1
+        activityIndicator.frame = view.bounds
+        activityIndicator.backgroundColor = UIColor(white: 0, alpha: 0.4)
+    }
+    
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupTitleLabel() {
@@ -98,7 +95,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true

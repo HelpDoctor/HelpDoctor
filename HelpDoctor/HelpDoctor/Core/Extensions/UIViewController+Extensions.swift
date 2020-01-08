@@ -23,13 +23,54 @@ extension UIViewController {
         view.addSubview(backgroundImage)
     }
     
+    func setupHeaderView() {
+        let headerView = HeaderView(title: "HelpDoctor")
+        view.addSubview(headerView)
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
+        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+    }
+    
+    func setupClearHeaderView() {
+        let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
+        view.addSubview(headerView)
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
+        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
+        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+    }
+    
+    func setupHeaderViewWithAvatar(title: String,
+                                   text: String?,
+                                   userImage: String?,
+                                   presenter: Presenter?) {
+        let headerView = HeaderViewWithoutLogo(title: title,
+                                               text: text,
+                                               userImage: userImage,
+                                               presenter: presenter)
+        view.addSubview(headerView)
+        let width = UIScreen.main.bounds.width
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
     func showAlert(message: String?) {
         view.viewWithTag(999)?.removeFromSuperview()
         let alert = AlertView(message: message ?? "Ошибка")
         alert.tag = 999
         view.addSubview(alert)
         alert.translatesAutoresizingMaskIntoConstraints = false
-        alert.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
+        alert.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
         alert.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         alert.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         alert.heightAnchor.constraint(equalToConstant: 57).isActive = true
@@ -41,10 +82,18 @@ extension UIViewController {
         savedView.tag = 998
         view.addSubview(savedView)
         savedView.translatesAutoresizingMaskIntoConstraints = false
-        savedView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -55).isActive = true
+        savedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
         savedView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         savedView.widthAnchor.constraint(equalToConstant: 123).isActive = true
         savedView.heightAnchor.constraint(equalToConstant: 26).isActive = true
+    }
+    
+    func redStar(text: String) -> NSMutableAttributedString {
+        let text = text
+        let range = (text as NSString).range(of: "*")
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red, range: range)
+        return attributedString
     }
     
 }

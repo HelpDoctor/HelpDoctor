@@ -17,6 +17,7 @@ protocol RegisterEndPresenterProtocol {
 class RegisterEndPresenter: RegisterEndPresenterProtocol {
     
     var view: RegisterEndViewController
+    var email: String?
     
     required init(view: RegisterEndViewController) {
         self.view = view
@@ -25,7 +26,9 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
     // MARK: - Coordinator
     func login() {
         let viewController = LoginViewController()
-        viewController.presenter = LoginPresenter(view: viewController)
+        let presenter = LoginPresenter(view: viewController)
+        viewController.presenter = presenter
+        viewController.setEmail(email: email ?? "")
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

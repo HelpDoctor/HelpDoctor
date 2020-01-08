@@ -9,30 +9,29 @@
 import UIKit
 
 class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
-    
+
     // MARK: - Dependency
     var presenter: CreateProfileWorkPresenterProtocol?
     
     // MARK: - Constants
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let step4TitleLabel = UILabel()
     private let step4Label = UILabel()
-    let regionTextField = UITextField()
+    let regionTextField = RegionsSearchTextField()
     private var regionSearchButton = SearchButton()
-    let cityTextField = UITextField()
+    let cityTextField = CitiesSearchTextField()
     private var citySearchButton = SearchButton()
     private let step5TitleLabel = UILabel()
     private let step5TopLabel = UILabel()
-    let workTextField = UITextField()
+    let workTextField = MedicalOrganizationSearchTextField()
     private var workSearchButton = SearchButton()
-    let addWorkTextField = UITextField()
+    let addWorkTextField = MedicalOrganizationSearchTextField()
     private var addWorkSearchButton = SearchButton()
     private var workPlusButton = PlusButton()
     private let step5BottomLabel = UILabel()
-    let specTextField = UITextField()
+    let specTextField = MedicalSpecializationSearchTextField()
     private var specSearchButton = SearchButton()
-    let addSpecTextField = UITextField()
+    let addSpecTextField = MedicalSpecializationSearchTextField()
     private var addSpecSearchButton = SearchButton()
     private var specPlusButton = PlusButton()
     private let backButton = UIButton()
@@ -86,21 +85,10 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupStep4TitleLabel() {
@@ -111,7 +99,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(step4TitleLabel)
         
         step4TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step4TitleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 16).isActive = true
+        step4TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
         step4TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step4TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         step4TitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -133,17 +121,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupRegionTextField() {
-        regionTextField.font = UIFont.systemFontOfSize(size: 14)
-        regionTextField.textColor = .textFieldTextColor
-        regionTextField.placeholder = "Субъект*"
-        regionTextField.textAlignment = .left
-        regionTextField.backgroundColor = .white
-        regionTextField.layer.cornerRadius = 5
-        regionTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                        y: 0,
-                                                        width: 8,
-                                                        height: regionTextField.frame.height))
-        regionTextField.leftViewMode = .always
+        regionTextField.presenter = presenter
+        regionTextField.attributedPlaceholder = redStar(text: "Субъект*")
         scrollView.addSubview(regionTextField)
         
         regionTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -168,17 +147,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupCityTextField() {
+        cityTextField.presenter = presenter
         cityTextField.font = UIFont.systemFontOfSize(size: 14)
         cityTextField.textColor = .textFieldTextColor
-        cityTextField.placeholder = "Город / район*"
-        cityTextField.textAlignment = .left
-        cityTextField.backgroundColor = .white
         cityTextField.layer.cornerRadius = 5
-        cityTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: cityTextField.frame.height))
-        cityTextField.leftViewMode = .always
+        cityTextField.attributedPlaceholder = redStar(text: "Город / район*")
         scrollView.addSubview(cityTextField)
         
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -231,17 +204,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupWorkTextField() {
-        workTextField.font = UIFont.systemFontOfSize(size: 14)
+        workTextField.presenter = presenter
+        workTextField.mainWork = true
+        workTextField.attributedPlaceholder = redStar(text: "Основное место работы*")
         workTextField.textColor = .textFieldTextColor
-        workTextField.placeholder = "Основное место работы*"
-        workTextField.textAlignment = .left
-        workTextField.backgroundColor = .white
         workTextField.layer.cornerRadius = 5
-        workTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: workTextField.frame.height))
-        workTextField.leftViewMode = .always
+        workTextField.font = UIFont.systemFontOfSize(size: 14)
         scrollView.addSubview(workTextField)
         
         workTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -266,17 +234,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupAddWorkTextField() {
-        addWorkTextField.font = UIFont.systemFontOfSize(size: 14)
+        addWorkTextField.presenter = presenter
+        addWorkTextField.mainWork = false
         addWorkTextField.textColor = .textFieldTextColor
-        addWorkTextField.placeholder = "Доп. место работы"
-        addWorkTextField.textAlignment = .left
-        addWorkTextField.backgroundColor = .white
         addWorkTextField.layer.cornerRadius = 5
-        addWorkTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: addWorkTextField.frame.height))
-        addWorkTextField.leftViewMode = .always
+        addWorkTextField.font = UIFont.systemFontOfSize(size: 14)
         scrollView.addSubview(addWorkTextField)
         
         addWorkTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -329,17 +291,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecTextField() {
+        specTextField.presenter = presenter
+        specTextField.mainSpec = true
         specTextField.font = UIFont.systemFontOfSize(size: 14)
         specTextField.textColor = .textFieldTextColor
-        specTextField.placeholder = "Осн. специализация*"
-        specTextField.textAlignment = .left
-        specTextField.backgroundColor = .white
         specTextField.layer.cornerRadius = 5
-        specTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: specTextField.frame.height))
-        specTextField.leftViewMode = .always
+        specTextField.attributedPlaceholder = redStar(text: "Осн. специализация*")
         scrollView.addSubview(specTextField)
         
         specTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -364,17 +321,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupAddSpecTextField() {
+        addSpecTextField.presenter = presenter
+        addSpecTextField.mainSpec = false
         addSpecTextField.font = UIFont.systemFontOfSize(size: 14)
         addSpecTextField.textColor = .textFieldTextColor
-        addSpecTextField.placeholder = "Доп. специализация"
-        addSpecTextField.textAlignment = .left
-        addSpecTextField.backgroundColor = .white
         addSpecTextField.layer.cornerRadius = 5
-        addSpecTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: addSpecTextField.frame.height))
-        addSpecTextField.leftViewMode = .always
         scrollView.addSubview(addSpecTextField)
         
         addSpecTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -426,7 +377,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
@@ -445,7 +396,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 36).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }

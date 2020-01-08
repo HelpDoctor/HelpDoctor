@@ -33,6 +33,7 @@
 	<true/>
 	<key>UIAppFonts</key>
 	<array>
+		<string>FiraSans-Italic.ttf</string>
 		<string>Ubuntu-R.ttf</string>
 		<string>FiraSans-Bold.ttf</string>
 		<string>FiraSans-Regular.ttf</string>

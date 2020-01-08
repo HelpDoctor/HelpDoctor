@@ -10,12 +10,14 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    var statusCheck = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.tintColor = UIColor.white
         self.tabBar.unselectedItemTintColor = UIColor.lightGray
         self.tabBar.barTintColor = UIColor.tabBarColor
-        createTabBarController()
+        profileCheck()
     }
     
     override func didReceiveMemoryWarning() {
@@ -24,15 +26,17 @@ class TabBarController: UITabBarController {
     
     func createTabBarController() {
         let secondVc = StartScheduleViewController()
+        secondVc.presenter = StartSchedulePresenter(view: secondVc)
         secondVc.tabBarItem = UITabBarItem(title: "Расписание", image: UIImage(named: "Schedule.pdf"), tag: 1)
         
         let thirdVc = StartMessagesViewController()
         thirdVc.tabBarItem = UITabBarItem(title: "Сообщения", image: UIImage(named: "Messages.pdf"), tag: 2)
         
         let fourthVc = StartSettingsViewController()
+        fourthVc.presenter = StartSettingsPresenter(view: fourthVc)
         fourthVc.tabBarItem = UITabBarItem(title: "Настройки", image: UIImage(named: "Settings.pdf"), tag: 3)
         
-        if profileCheck() {
+        if statusCheck {
             let firstVc = ProfileViewController()
             firstVc.presenter = ProfilePresenter(view: firstVc)
             firstVc.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(named: "Main.pdf"), tag: 0)
@@ -48,9 +52,8 @@ class TabBarController: UITabBarController {
         
     }
     
-    private func profileCheck() -> Bool {
+    private func profileCheck() {
         let checkProfile = Registration(email: nil, password: nil, token: myToken)
-        var statusCheck = false
         
         getData(typeOfContent: .checkProfile,
                 returning: (Int?, String?).self,
@@ -61,18 +64,19 @@ class TabBarController: UITabBarController {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self] in
-                    print("result=\(String(describing: checkProfile.responce))")
+//                    print("result=\(String(describing: checkProfile.responce))")
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
                     if responceCode(code: code) && status == "True" {
-                        statusCheck = true
+                        self?.statusCheck = true
+                        self?.createTabBarController()
                     } else {
-                        statusCheck = false
+                        self?.statusCheck = false
+                        self?.createTabBarController()
                     }
                 }
             }
         }
-        return statusCheck
     }
     
 }

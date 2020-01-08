@@ -14,8 +14,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     var presenter: LoginPresenterProtocol?
     
     // MARK: - Constants
+    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
@@ -50,28 +50,29 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    // MARK: - Public methods
+    func setEmail(email: String) {
+        emailTextField.text = email
+    }
+    
     // MARK: - Setup views
+    private func setupActivityIndicator() {
+        view.addSubview(activityIndicator)
+        activityIndicator.layer.zPosition = 1
+        activityIndicator.frame = view.bounds
+        activityIndicator.backgroundColor = UIColor(white: 0, alpha: 0.4)
+    }
+    
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupTitleLabel() {
@@ -82,7 +83,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
@@ -107,7 +108,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
+        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -129,7 +130,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.font = UIFont.systemFontOfSize(size: 14)
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textColor = .textFieldTextColor
-        passwordTextField.placeholder = "Пароль*"
+        passwordTextField.attributedPlaceholder = redStar(text: "Пароль*")
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5

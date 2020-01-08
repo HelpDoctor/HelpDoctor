@@ -8,9 +8,8 @@
 
 import UIKit
 
-protocol CreateProfileSpecPresenterProtocol {
+protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
     init(view: CreateProfileSpecViewController)
-    func setInterests(interests: [ListOfInterests])
     func setPhoto(photoString: String?)
     func interestsSearch()
     func back()
@@ -18,12 +17,17 @@ protocol CreateProfileSpecPresenterProtocol {
 }
 
 class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
-    
+
+    // MARK: - Dependency
     var view: CreateProfileSpecViewController
+    
+    // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
-    var jobArray: [[String: Any]]?
-    var specArray: [[String: Any]]?
-    var interest: [ListOfInterests]?
+    var mainJobArray: [[String: Any]]?
+    var addJobArray: [[String: Any]]?
+    var mainSpecArray: [[String: Any]]?
+    var addSpecArray: [[String: Any]]?
+    private var interest: [ListOfInterests]?
     var mainSpec: String?
     var addSpec: String?
     
@@ -31,6 +35,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         self.view = view
     }
     
+    // MARK: - Public methods
     func interestsSearch() {
         guard let mainSpec = mainSpec else {
             view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
@@ -43,30 +48,15 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func setInterests(interests: [ListOfInterests]) {
-        self.interest = interests
-        guard let interest = interest else { return }
-        var stringArray: [String] = []
-        for i in 0 ..< interest.count {
-            stringArray.append(interest[i].name ?? "")
-        }
-        let string = stringArray.joined(separator: " ")
-        view.specTextField.text = string
-    }
-    
     func setPhoto(photoString: String?) {
         user?.foto = photoString?.toBase64()
-    }
-    
-    // MARK: - Coordinator
-    func back() {
-        view.navigationController?.popViewController(animated: true)
     }
     
     func save() {
         updateUser()
     }
     
+    // MARK: - Private methods
     private func updateUser() {
         let updateProfile = UpdateProfileKeyUser(first_name: user?.first_name,
                                                  last_name: user?.last_name,
@@ -74,7 +64,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                                                  phone_number: user?.phone_number,
                                                  birthday: user?.birthday,
                                                  city_id: user?.city_id,
-                                                 foto: nil)
+                                                 foto: user?.foto)
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
@@ -99,9 +89,11 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     private func updateJob() {
-        guard let jobArray = jobArray else { return }
+        guard let mainJobArray = mainJobArray else { return }
+        let jobArray = mainJobArray + (addJobArray ?? [])
         let updateProfileJob = UpdateProfileKeyJob(arrayJob: jobArray)
         print(jobArray.count)
+        print(jobArray)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfileJob.jsonData as Any])
@@ -125,7 +117,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     private func updateSpec() {
-        guard let specArray = specArray else { return }
+        guard let mainSpecArray = mainSpecArray else { return }
+        let specArray = mainSpecArray + (addSpecArray ?? [])
+        print(specArray)
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
         print(specArray.count)
         getData(typeOfContent: .updateProfile,
@@ -182,6 +176,27 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                 }
             }
         }
+    }
+    
+    // MARK: - InterestsSearchProtocol
+    func getSpecs() -> (String?, String?) {
+        return (mainSpec, addSpec)
+    }
+    
+    func setInterests(interests: [ListOfInterests]) {
+        self.interest = interests
+        guard let interest = interest else { return }
+        var stringArray: [String] = []
+        for i in 0 ..< interest.count {
+            stringArray.append(interest[i].name ?? "")
+        }
+        let string = stringArray.joined(separator: " ")
+        view.specTextField.text = string
+    }
+    
+    // MARK: - Coordinator
+    func back() {
+        view.navigationController?.popViewController(animated: true)
     }
     
     private func next() {

@@ -12,6 +12,7 @@ enum SourceEditTextField {
     case user
     case job
     case spec
+    case interest
 }
 
 class EditTextField: UIView {

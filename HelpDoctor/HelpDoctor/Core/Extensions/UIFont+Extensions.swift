@@ -33,9 +33,9 @@ extension UIFont {
     }
     
     class func italicSystemFontOfSize(size: CGFloat) -> UIFont {
-        guard let customFont = UIFont(name: "Roboto-Italic", size: size) else {
+        guard let customFont = UIFont(name: "FiraSans-Italic", size: size) else {
             fatalError("""
-                Failed to load the "Roboto-Italic" font.
+                Failed to load the "FiraSans-Italic" font.
                 Make sure the font file is included in the project and the font name is spelled correctly.
                 """
             )

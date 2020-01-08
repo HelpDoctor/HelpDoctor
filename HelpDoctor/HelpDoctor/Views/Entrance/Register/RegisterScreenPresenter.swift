@@ -13,7 +13,7 @@ protocol RegisterScreenPresenter {
     func registerButtonPressed(email: String)
     func topEmailChanged(topEmail: String?)
     func bottomEmailChanged(bottomEmail: String?)
-    func register()
+    func register(email: String)
     func back()
 }
 
@@ -32,7 +32,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     }
     
     func registerButtonPressed(email: String) {
-        
+        view.activityIndicator.startAnimating()
         let register = Registration(email: email, password: nil, token: nil )
         
         getData(typeOfContent: .registrationMail,
@@ -45,9 +45,10 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("result=\(String(describing: register.responce))")
+                    self?.view.activityIndicator.stopAnimating()
                     guard let code = register.responce?.0 else { return }
                     if responceCode(code: code) {
-                        self?.register()
+                        self?.register(email: email)
                     } else {
                         self?.view.showAlert(message: register.responce?.1)
                     }
@@ -113,9 +114,11 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     }
     
     // MARK: - Coordinator
-    func register() {
+    func register(email: String) {
         let viewController = RegisterEndViewController()
-        viewController.presenter = RegisterEndPresenter(view: viewController)
+        let presenter = RegisterEndPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.email = email
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

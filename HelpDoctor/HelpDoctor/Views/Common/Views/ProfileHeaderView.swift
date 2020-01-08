@@ -9,10 +9,11 @@
 import UIKit
 
 class ProfileHeaderView: UIView {
+    private let session = Session.instance
     private let backButton = UIButton()
     private var titleLabel = UILabel()
     private var textLabel = UILabel()
-    private var userImage = UIImageView()
+    var userImage = UIImageView()
     private let logoImage = UIImageView()
     private var presenter: Presenter?
     
@@ -75,7 +76,12 @@ class ProfileHeaderView: UIView {
     }
     
     private func setupUserImage() {
+        userImage.image = session.user?.foto?.toImage()
         self.addSubview(userImage)
+        
+        userImage.layer.cornerRadius = 20
+        userImage.contentMode = .scaleAspectFill
+        userImage.layer.masksToBounds = true
         
         userImage.translatesAutoresizingMaskIntoConstraints = false
         userImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 5).isActive = true

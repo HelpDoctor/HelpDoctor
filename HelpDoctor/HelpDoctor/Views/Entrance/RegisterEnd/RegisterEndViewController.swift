@@ -14,7 +14,6 @@ class RegisterEndViewController: UIViewController {
     var presenter: RegisterEndPresenterProtocol?
     
     // MARK: - Constants
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
@@ -45,18 +44,6 @@ class RegisterEndViewController: UIViewController {
     }
     
     // MARK: - Setup views
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
-    }
-    
     private func setupTitleLabel() {
         titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -65,7 +52,7 @@ class RegisterEndViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 114).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true

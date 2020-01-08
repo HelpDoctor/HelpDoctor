@@ -24,7 +24,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     }
     
     func sendButtonTapped(email: String) {
-        
+        view.activityIndicator.startAnimating()
         let recovery = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .recoveryMail,
@@ -36,6 +36,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    self?.view.activityIndicator.stopAnimating()
                     print("result=\(String(describing: recovery.responce))")
                     guard let code = recovery.responce?.0 else { return }
                     if responceCode(code: code) {
@@ -52,7 +53,9 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     // MARK: - Coordinator
     func send() {
         let viewController = RecoveryPasswordEndViewController()
-        viewController.presenter = RecoveryPasswordEndPresenter(view: viewController)
+        let presenter = RecoveryPasswordEndPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.email = view.emailTextField.text
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
