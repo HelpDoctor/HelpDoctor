@@ -1,29 +1,31 @@
 //
-//  AppointmentAdd.swift
+//  EventAddPresenter.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 05.01.2020.
+//  Created by Mikhail Semerikov on 09.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-protocol AppointmentAddPresenterProtocol: Presenter {
-    init(view: AppointmentAddViewController)
+protocol EventAddPresenterProtocol: Presenter {
+    init(view: EventAddViewController, eventType: EventType)
     func getEvent()
     func getStatusEvent() -> String
-    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?)
     func setIdEvent(idEvent: Int)
+    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?)
     func setNotifyDate(date: Date)
     func convertStringToDate(date: String) -> Date?
     func backToRoot()
+    func getEventTitle() -> String
 }
 
-class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
+class EventAddPresenter: EventAddPresenterProtocol {
     
     // MARK: - Constants and variables
-    var view: AppointmentAddViewController
+    var view: EventAddViewController
     var idEvent: Int?
+    var eventType: EventType
     var startDate: Date?
     var finishDate: Date?
     var notifyDate: Date?
@@ -31,8 +33,9 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     var desc: String?
     
     // MARK: - Init
-    required init(view: AppointmentAddViewController) {
+    required init(view: EventAddViewController, eventType: EventType) {
         self.view = view
+        self.eventType = eventType
     }
     
     // MARK: - Public methods
@@ -66,13 +69,9 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         self.idEvent = idEvent
     }
     
-    func setNotifyDate(date: Date) {
-        notifyDate = date
-    }
-    
-    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?) {
-        guard let title = title else {
-            view.showAlert(message: "Заполните имя пациента")
+    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?) {
+        if title == "" {
+            view.showAlert(message: "Заполните название события")
             return
         }
         let currentEvent = ScheduleEvents(id: idEvent,
@@ -81,10 +80,10 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
                                           notify_date: convertDateToString(date: notifyDate),
                                           title: title,
                                           description: desc,
-                                          is_major: false,
+                                          is_major: isMajor,
                                           event_place: "",
-                                          event_type: "reception")
-        print(currentEvent)
+                                          event_type: eventType.rawValue)
+        
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
         getData(typeOfContent: .schedule_CreateOrUpdateEvent,
                 returning: (Int?, String?).self,
@@ -103,6 +102,23 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         }
     }
     
+    func setNotifyDate(date: Date) {
+        notifyDate = date
+    }
+    
+    func getEventTitle() -> String {
+        switch eventType {
+        case .administrative:
+            return "Административная деятельность"
+        case .science:
+            return "Научная деятельность"
+        case .reception:
+            return "Приём пациентов"
+        case .other:
+            return "Другое"
+        }
+    }
+    
     func convertStringToDate(date: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -111,7 +127,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         return dateFormatter.date(from: date)
     }
     
-    // MARK: - Private methods
+    // MARK: Private methods
     private func convertDateToString(date: Date?) -> String {
         guard let date = date else { return "" }
         let dateFormatter = DateFormatter()

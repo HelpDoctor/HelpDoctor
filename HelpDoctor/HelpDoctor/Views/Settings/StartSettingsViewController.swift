@@ -78,6 +78,7 @@ class StartSettingsViewController: UIViewController {
     private func setupEmptyButton() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(deleteButtonPressed))
         emptyButton.addGestureRecognizer(tap)
+        emptyButton.backgroundColor = .red
         view.addSubview(emptyButton)
         
         emptyButton.translatesAutoresizingMaskIntoConstraints = false
@@ -172,21 +173,20 @@ class StartSettingsViewController: UIViewController {
     }
     
     @objc private func deleteButtonPressed() {
-        print("tapped")
-//        let unRegistration = Registration(email: nil, password: nil, token: nil)
-//        getData(typeOfContent: .deleteMail,
-//                returning: (Int?, String?).self,
-//                requestParams: [:])
-//        { [weak self] result in
-//            let dispathGroup = DispatchGroup()
-//            unRegistration.responce = result
-//
-//            dispathGroup.notify(queue: DispatchQueue.main) {
-//                DispatchQueue.main.async { [weak self] in
-//                    print("result= \(String(describing: unRegistration.responce))")
-//                }
-//            }
-//        }
+        let unRegistration = Registration(email: nil, password: nil, token: nil)
+        getData(typeOfContent: .deleteMail,
+                returning: (Int?, String?).self,
+                requestParams: [:])
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            unRegistration.responce = result
+
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("result= \(String(describing: unRegistration.responce))")
+                }
+            }
+        }
     }
 
     /*

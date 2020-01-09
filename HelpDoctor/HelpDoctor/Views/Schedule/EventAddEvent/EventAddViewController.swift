@@ -1,17 +1,17 @@
 //
-//  AppointmentAddViewController.swift
+//  EventAddViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 05.01.2020.
+//  Created by Mikhail Semerikov on 09.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
+class EventAddViewController: UIViewController, UIScrollViewDelegate {
 
     // MARK: - Dependency
-    var presenter: AppointmentAddPresenterProtocol?
+    var presenter: EventAddPresenterProtocol?
     
     // MARK: - Constants
     private let scrollView = UIScrollView()
@@ -21,13 +21,14 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private let startDatePicker = UIDatePicker()
     private let finishLabel = UILabel()
     private let finishDatePicker = UIDatePicker()
-    private let patientNameLabel = UILabel()
-    private let patientNameTextField = UITextField()
+    private let eventNameLabel = UILabel()
+    private let eventNameTextField = UITextField()
+    private let majorCheckBox = CheckBox()
+    private let replyCheckBox = CheckBox()
+    private let alldayCheckBox = CheckBox()
     private let descriptionTopLabel = UILabel()
     private let descriptionBottomLabel = UILabel()
     private let descriptionTextField = UITextField()
-    private let firstAppointmentButton = RadioButton()
-    private let reAppointmentButton = RadioButton()
     private let timerLabel = UILabel()
     private var tenMinutesButton = HDButton()
     private var thirtyMinutesButton = HDButton()
@@ -58,13 +59,14 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         setupStartDatePicker()
         setupFinishLabel()
         setupFinishDatePicker()
-        setupPatientNameLabel()
-        setupPatientNameTextField()
+        setupEventNameLabel()
+        setupEventNameTextField()
+        setupMajorCheckBox()
+        setupReplyCheckBox()
+        setupAlldayCheckBox()
         setupDescriptionTopLabel()
         setupDescriptionBottomLabel()
         setupDescriptionTextField()
-        setupFirstAppointmentButton()
-        setupReAppointmentButton()
         setupTimerLabel()
         setupTenMinutesButton()
         setupThirtyMinutesButton()
@@ -74,10 +76,6 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         setupSaveButton()
         setupDeleteButton()
         addTapGestureToHideKeyboard()
-        firstAppointmentButton.isSelected = true
-        reAppointmentButton.isSelected = false
-        firstAppointmentButton.alternateButton = [reAppointmentButton]
-        reAppointmentButton.alternateButton = [firstAppointmentButton]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -92,8 +90,9 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
             let endDate = presenter?.convertStringToDate(date: event.end_date) else { return }
         startDatePicker.setDate(startDate, animated: true)
         finishDatePicker.setDate(endDate, animated: true)
-        patientNameTextField.text = event.title
+        eventNameTextField.text = event.title
         descriptionTextField.text = event.description
+        majorCheckBox.isSelected = event.is_major ?? false
     }
     
     // MARK: - Setup views
@@ -112,13 +111,13 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private func setupTitleLabel() {
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Прием пациентов"
+        titleLabel.text = presenter?.getEventTitle() ?? ""
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
@@ -192,40 +191,82 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         finishDatePicker.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     
-    private func setupPatientNameLabel() {
-        patientNameLabel.font = .boldSystemFontOfSize(size: 12)
-        patientNameLabel.textColor = .white
-        patientNameLabel.attributedText = redStar(text: "Введите ФИО пациента*")
-        patientNameLabel.textAlignment = .left
-        patientNameLabel.numberOfLines = 1
-        scrollView.addSubview(patientNameLabel)
+    private func setupEventNameLabel() {
+        eventNameLabel.font = .boldSystemFontOfSize(size: 12)
+        eventNameLabel.textColor = .white
+        eventNameLabel.attributedText = redStar(text: "Введите название*")
+        eventNameLabel.textAlignment = .left
+        eventNameLabel.numberOfLines = 1
+        scrollView.addSubview(eventNameLabel)
         
-        patientNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        patientNameLabel.topAnchor.constraint(equalTo: finishDatePicker.bottomAnchor, constant: 8).isActive = true
-        patientNameLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        patientNameLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
-        patientNameLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        eventNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        eventNameLabel.topAnchor.constraint(equalTo: finishDatePicker.bottomAnchor, constant: 8).isActive = true
+        eventNameLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        eventNameLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventNameLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
-    private func setupPatientNameTextField() {
-        patientNameTextField.font = UIFont.systemFontOfSize(size: 14)
-        patientNameTextField.textColor = .black
-        patientNameTextField.placeholder = "Иванов Иван Иванович"
-        patientNameTextField.textAlignment = .left
-        patientNameTextField.backgroundColor = .white
-        patientNameTextField.layer.cornerRadius = 5
-        patientNameTextField.leftView = UIView(frame: CGRect(x: 0,
+    private func setupEventNameTextField() {
+        eventNameTextField.font = UIFont.systemFontOfSize(size: 14)
+        eventNameTextField.textColor = .black
+        eventNameTextField.placeholder = "Конференция по хирургии"
+        eventNameTextField.textAlignment = .left
+        eventNameTextField.backgroundColor = .white
+        eventNameTextField.layer.cornerRadius = 5
+        eventNameTextField.leftView = UIView(frame: CGRect(x: 0,
                                                              y: 0,
                                                              width: 8,
-                                                             height: patientNameTextField.frame.height))
-        patientNameTextField.leftViewMode = .always
-        scrollView.addSubview(patientNameTextField)
+                                                             height: eventNameTextField.frame.height))
+        eventNameTextField.leftViewMode = .always
+        scrollView.addSubview(eventNameTextField)
         
-        patientNameTextField.translatesAutoresizingMaskIntoConstraints = false
-        patientNameTextField.topAnchor.constraint(equalTo: patientNameLabel.bottomAnchor, constant: 1).isActive = true
-        patientNameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        patientNameTextField.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
-        patientNameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        eventNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        eventNameTextField.topAnchor.constraint(equalTo: eventNameLabel.bottomAnchor, constant: 1).isActive = true
+        eventNameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        eventNameTextField.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventNameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupMajorCheckBox() {
+        majorCheckBox.setTitle(" Важное", for: .normal)
+        majorCheckBox.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
+        majorCheckBox.setTitleColor(.white, for: .normal)
+        majorCheckBox.addTarget(self, action: #selector(majorCheckBoxPressed), for: .touchUpInside)
+        scrollView.addSubview(majorCheckBox)
+        
+        majorCheckBox.translatesAutoresizingMaskIntoConstraints = false
+        majorCheckBox.topAnchor.constraint(equalTo: eventNameTextField.bottomAnchor,
+                                           constant: 8).isActive = true
+        majorCheckBox.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 66).isActive = true
+        majorCheckBox.heightAnchor.constraint(equalToConstant: 11).isActive = true
+    }
+    
+    private func setupReplyCheckBox() {
+        replyCheckBox.setTitle(" Повтор", for: .normal)
+        replyCheckBox.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
+        replyCheckBox.setTitleColor(.white, for: .normal)
+        replyCheckBox.addTarget(self, action: #selector(replyCheckBoxPressed), for: .touchUpInside)
+        scrollView.addSubview(replyCheckBox)
+        
+        replyCheckBox.translatesAutoresizingMaskIntoConstraints = false
+        replyCheckBox.topAnchor.constraint(equalTo: majorCheckBox.bottomAnchor,
+                                           constant: 8).isActive = true
+        replyCheckBox.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 66).isActive = true
+        replyCheckBox.heightAnchor.constraint(equalToConstant: 11).isActive = true
+    }
+    
+    private func setupAlldayCheckBox() {
+        alldayCheckBox.setTitle(" Весь день", for: .normal)
+        alldayCheckBox.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
+        alldayCheckBox.setTitleColor(.white, for: .normal)
+        alldayCheckBox.addTarget(self, action: #selector(alldayCheckBoxPressed), for: .touchUpInside)
+        scrollView.addSubview(alldayCheckBox)
+        
+        alldayCheckBox.translatesAutoresizingMaskIntoConstraints = false
+        alldayCheckBox.topAnchor.constraint(equalTo: eventNameTextField.bottomAnchor,
+                                           constant: 8).isActive = true
+        alldayCheckBox.leadingAnchor.constraint(equalTo: majorCheckBox.trailingAnchor, constant: 25).isActive = true
+        alldayCheckBox.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
     
     private func setupDescriptionTopLabel() {
@@ -237,7 +278,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(descriptionTopLabel)
         
         descriptionTopLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionTopLabel.topAnchor.constraint(equalTo: patientNameTextField.bottomAnchor,
+        descriptionTopLabel.topAnchor.constraint(equalTo: replyCheckBox.bottomAnchor,
                                                  constant: 5).isActive = true
         descriptionTopLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         descriptionTopLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
@@ -262,7 +303,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private func setupDescriptionTextField() {
         descriptionTextField.font = UIFont.systemFontOfSize(size: 14)
         descriptionTextField.textColor = .black
-        descriptionTextField.placeholder = "Назначить ОАК, ОАМ"
+        descriptionTextField.placeholder = "Прехать заранее на регистрацию"
         descriptionTextField.textAlignment = .left
         descriptionTextField.backgroundColor = .white
         descriptionTextField.layer.cornerRadius = 5
@@ -281,32 +322,6 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         descriptionTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
-    private func setupFirstAppointmentButton() {
-        firstAppointmentButton.setTitle(" Первичный прием", for: .normal)
-        firstAppointmentButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
-        firstAppointmentButton.setTitleColor(.white, for: .normal)
-        scrollView.addSubview(firstAppointmentButton)
-        
-        firstAppointmentButton.translatesAutoresizingMaskIntoConstraints = false
-        firstAppointmentButton.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
-                                                  constant: 8).isActive = true
-        firstAppointmentButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
-        firstAppointmentButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
-    }
-    
-    private func setupReAppointmentButton() {
-        reAppointmentButton.setTitle(" Повторный прием", for: .normal)
-        reAppointmentButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
-        reAppointmentButton.setTitleColor(.white, for: .normal)
-        scrollView.addSubview(reAppointmentButton)
-        
-        reAppointmentButton.translatesAutoresizingMaskIntoConstraints = false
-        reAppointmentButton.topAnchor.constraint(equalTo: firstAppointmentButton.bottomAnchor,
-                                                  constant: 4).isActive = true
-        reAppointmentButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
-        reAppointmentButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
-    }
-    
     private func setupTimerLabel() {
         timerLabel.font = .boldSystemFontOfSize(size: 12)
         timerLabel.textColor = .white
@@ -316,8 +331,8 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(timerLabel)
         
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
-        timerLabel.topAnchor.constraint(equalTo: reAppointmentButton.bottomAnchor,
-                                                    constant: 12).isActive = true
+        timerLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
+                                                    constant: 8).isActive = true
         timerLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         timerLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -500,12 +515,24 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     @objc private func saveButtonPressed() {
         presenter?.saveEvent(startDate: startDatePicker.date,
                              endDate: finishDatePicker.date,
-                             title: patientNameTextField.text,
+                             isMajor: majorCheckBox.isSelected,
+                             title: eventNameTextField.text,
                              desc: descriptionTextField.text)
     }
     
     @objc private func deleteButtonPressed() {
         presenter?.backToRoot()
     }
+    
+    @objc private func majorCheckBoxPressed() {
+        majorCheckBox.isSelected = !majorCheckBox.isSelected
+    }
+    
+    @objc private func replyCheckBoxPressed() {
+        replyCheckBox.isSelected = !replyCheckBox.isSelected
+    }
 
+    @objc private func alldayCheckBoxPressed() {
+        alldayCheckBox.isSelected = !alldayCheckBox.isSelected
+    }
 }

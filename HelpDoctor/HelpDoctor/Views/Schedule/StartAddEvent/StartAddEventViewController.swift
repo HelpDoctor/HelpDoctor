@@ -99,7 +99,7 @@ class StartAddEventViewController: UIViewController {
     }
     
     private func setupOtherButton() {
-        otherButton = HDButton(title: "Научная деятельность", fontSize: 14)
+        otherButton = HDButton(title: "Другое", fontSize: 14)
         otherButton.addTarget(self, action: #selector(otherButtonPressed), for: .touchUpInside)
         otherButton.isEnabled = true
         view.addSubview(otherButton)
@@ -117,15 +117,15 @@ class StartAddEventViewController: UIViewController {
     }
     
     @objc private func administrativeButtonPressed() {
-        print("Tapped")
+        presenter?.administrativeButtonPressed()
     }
     
     @objc private func scienceButtonPressed() {
-        print("Tapped")
+        presenter?.scienceButtonPressed()
     }
     
     @objc private func otherButtonPressed() {
-        print("Tapped")
+        presenter?.otherButtonPressed()
     }
 
 }

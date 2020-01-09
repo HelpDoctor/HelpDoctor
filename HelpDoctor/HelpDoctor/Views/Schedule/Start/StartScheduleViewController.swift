@@ -27,12 +27,18 @@ class StartScheduleViewController: UIViewController {
         setupHeaderViewWithAvatar(title: "Расписание", text: nil, userImage: nil, presenter: presenter)
         setupTableView()
         setupAddButton()
+        presenter?.getEvents()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+    }
+    
+    // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
     }
     
     // MARK: - Setup views
@@ -83,11 +89,11 @@ extension StartScheduleViewController: UITableViewDelegate {
 
 extension StartScheduleViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return (presenter?.getCountEvents() ?? 0) + 4
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -96,21 +102,21 @@ extension StartScheduleViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell",
                                                            for: indexPath) as? DateCell
                 else { return UITableViewCell() }
-            cell.configure("вс, 05/01/2020")
+            cell.configure(presenter?.getCurrentDate() ?? "")
             cell.backgroundColor = .clear
             return cell
         case 1:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell",
                                                            for: indexPath) as? AppointmentCell
                 else { return UITableViewCell() }
-            cell.configure(5)
+            cell.configure(presenter?.getCountPatients() ?? 0)
             cell.backgroundColor = .clear
             return cell
         case 2:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodayEventCell",
                                                            for: indexPath) as? TodayEventCell
                 else { return UITableViewCell() }
-            cell.configure(3)
+            cell.configure(presenter?.getCountMajorEvents() ?? 0)
             cell.backgroundColor = .clear
             return cell
         case 3:
@@ -123,14 +129,18 @@ extension StartScheduleViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
                                                            for: indexPath) as? EventCell
                 else { return UITableViewCell() }
-            cell.configure(timeEvent: "9:00-9:30", flag: false, event: "Иванов Иван Иванович")
+            cell.configure(timeEvent: presenter?.getTimeEvent(index: indexPath.row - 4) ?? "",
+                           flag: presenter?.getMajorFlag(index: indexPath.row - 4) ?? false,
+                           event: presenter?.getTitleEvent(index: indexPath.row - 4) ?? "")
             cell.backgroundColor = .clear
             return cell
         default:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
                                                            for: indexPath) as? EventCell
                 else { return UITableViewCell() }
-            cell.configure(timeEvent: "9:30-10:00", flag: true, event: "Конференция по хирургии")
+            cell.configure(timeEvent: presenter?.getTimeEvent(index: indexPath.row - 4) ?? "",
+                           flag: presenter?.getMajorFlag(index: indexPath.row - 4) ?? false,
+                           event: presenter?.getTitleEvent(index: indexPath.row - 4) ?? "")
             cell.backgroundColor = .clear
             return cell
         }
@@ -151,6 +161,10 @@ extension StartScheduleViewController: UITableViewDataSource {
         default:
             return 25
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        presenter?.didSelectRow(index: indexPath.row - 4)
     }
 
 }

@@ -33,6 +33,10 @@
 		46203F0223C4DB740072653A /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0123C4DB740072653A /* Session.swift */; };
 		46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */; };
 		46203F0623C5F6C30072653A /* TileButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0523C5F6C30072653A /* TileButton.swift */; };
+		46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0823C761880072653A /* EventAddPresenter.swift */; };
+		46203F0B23C761880072653A /* EventAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0923C761880072653A /* EventAddViewController.swift */; };
+		46203F0D23C761A80072653A /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0C23C761A70072653A /* CheckBox.swift */; };
+		46203F0F23C76B880072653A /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0E23C76B880072653A /* EventType.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -180,6 +184,10 @@
 		46203F0123C4DB740072653A /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSettingsPresenter.swift; sourceTree = "<group>"; };
 		46203F0523C5F6C30072653A /* TileButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TileButton.swift; sourceTree = "<group>"; };
+		46203F0823C761880072653A /* EventAddPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAddPresenter.swift; sourceTree = "<group>"; };
+		46203F0923C761880072653A /* EventAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAddViewController.swift; sourceTree = "<group>"; };
+		46203F0C23C761A70072653A /* CheckBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
+		46203F0E23C76B880072653A /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -362,6 +370,16 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
+		46203F0723C761880072653A /* EventAddEvent */ = {
+			isa = PBXGroup;
+			children = (
+				46203F0923C761880072653A /* EventAddViewController.swift */,
+				46203F0823C761880072653A /* EventAddPresenter.swift */,
+				46203F0E23C76B880072653A /* EventType.swift */,
+			);
+			path = EventAddEvent;
+			sourceTree = "<group>";
+		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -454,6 +472,7 @@
 				46F87F4523BE328B0095264E /* EditButton.swift */,
 				46072E2423C3446D0070F2F6 /* RadioButton.swift */,
 				46203F0523C5F6C30072653A /* TileButton.swift */,
+				46203F0C23C761A70072653A /* CheckBox.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -802,6 +821,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				46203F0723C761880072653A /* EventAddEvent */,
 				46072E1F23C267420070F2F6 /* AppointmentAddEvent */,
 				46072E1823C23FDF0070F2F6 /* StartAddEvent */,
 				46072E0723C1F49B0070F2F6 /* Start */,
@@ -976,6 +996,7 @@
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
 				46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */,
 				C48F167523B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift in Sources */,
+				46203F0F23C76B880072653A /* EventType.swift in Sources */,
 				46072E1723C22B710070F2F6 /* EventCell.swift in Sources */,
 				46F87F3323BCBEE80095264E /* CreateProfileSpecViewController.swift in Sources */,
 				46F87F7923C1C5A00095264E /* InterestsSearchTextField.swift in Sources */,
@@ -1022,6 +1043,7 @@
 				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
 				46203F0623C5F6C30072653A /* TileButton.swift in Sources */,
 				46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */,
+				46203F0B23C761880072653A /* EventAddViewController.swift in Sources */,
 				46F87F1923BB72D30095264E /* AlertView.swift in Sources */,
 				46203EF023C443F50072653A /* ResultFindedUsers.swift in Sources */,
 				46203EEE23C443E20072653A /* Schedule.swift in Sources */,
@@ -1029,6 +1051,7 @@
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
 				C48F161423B5FE87002D04E3 /* UpdateProfileUser.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
+				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
@@ -1053,6 +1076,7 @@
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
+				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
