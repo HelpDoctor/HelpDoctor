@@ -13,8 +13,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: RegisterScreenPresenter?
     
-    // MARK: - Constants
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    // MARK: - Constants and variables
+    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
@@ -65,6 +65,14 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     func updateButtonRegister(isEnabled: Bool) {
         self.registerButton.update(isEnabled: isEnabled)
+    }
+    
+    func startAnimating() {
+        activityIndicator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        activityIndicator.stopAnimating()
     }
     
     // MARK: - Setup views

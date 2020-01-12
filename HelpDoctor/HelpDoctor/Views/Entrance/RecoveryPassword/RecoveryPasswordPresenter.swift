@@ -17,14 +17,17 @@ protocol RecoveryPasswordPresenterProtocol {
 
 class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     
+    // MARK: - Dependency
     var view: RecoveryPasswordViewController
         
+    // MARK: - Init
     required init(view: RecoveryPasswordViewController) {
         self.view = view
     }
     
+    // MARK: - Publiv methods
     func sendButtonTapped(email: String) {
-        view.activityIndicator.startAnimating()
+        view.startAnimating()
         let recovery = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .recoveryMail,
@@ -36,7 +39,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
-                    self?.view.activityIndicator.stopAnimating()
+                    self?.view.stopAnimating()
                     print("result=\(String(describing: recovery.responce))")
                     guard let code = recovery.responce?.0 else { return }
                     if responceCode(code: code) {
@@ -55,7 +58,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
         let viewController = RecoveryPasswordEndViewController()
         let presenter = RecoveryPasswordEndPresenter(view: viewController)
         viewController.presenter = presenter
-        presenter.email = view.emailTextField.text
+        presenter.email = view.getEmailText()
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -10,6 +10,7 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     var statusCheck = false
     
     override func viewDidLoad() {
@@ -53,6 +54,7 @@ class TabBarController: UITabBarController {
     }
     
     private func profileCheck() {
+        activityIndicator.startAnimating()
         let checkProfile = Registration(email: nil, password: nil, token: myToken)
         
         getData(typeOfContent: .checkProfile,
@@ -64,7 +66,8 @@ class TabBarController: UITabBarController {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self] in
-//                    print("result=\(String(describing: checkProfile.responce))")
+                    self?.activityIndicator.stopAnimating()
+                    print("result=\(String(describing: checkProfile.responce))")
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
                     if responceCode(code: code) && status == "True" {

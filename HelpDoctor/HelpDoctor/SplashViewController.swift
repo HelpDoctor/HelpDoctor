@@ -37,11 +37,14 @@ class SplashViewController: UIViewController {
                 
                 dispathGroup.notify(queue: DispatchQueue.main) {
                     DispatchQueue.main.async { [weak self] in
-//                        print("result=\(String(describing: checkProfile.responce))")
+                        print("result=\(String(describing: checkProfile.responce))")
                         guard let status = checkProfile.responce?.1 else { return }
-                        if status == "Token id not found" {
+                        switch status {
+                        case "Token id not found":
                             AppDelegate.shared.rootViewController.switchToLogout()
-                        } else {
+                        case "X-Auth-Token required":
+                            AppDelegate.shared.rootViewController.switchToLogout()
+                        default:
                             AppDelegate.shared.rootViewController.switchToMainScreen()
                         }
                     }

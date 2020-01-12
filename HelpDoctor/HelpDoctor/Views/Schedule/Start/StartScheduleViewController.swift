@@ -53,6 +53,9 @@ class StartScheduleViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.refreshControl = UIRefreshControl()
+        tableView.refreshControl?.attributedTitle = NSAttributedString(string: "Идет обновление...")
+        tableView.refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: UIControl.Event.valueChanged)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 62).isActive = true
@@ -70,6 +73,22 @@ class StartScheduleViewController: UIViewController {
         addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         addButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         addButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    }
+    
+    // MARK: - Private methods
+    @objc private func refresh(_ sender: Any) {
+        refreshBegin(refreshEnd: {() -> Void in
+            self.tableView.refreshControl?.endRefreshing()
+        })
+    }
+    
+    private func refreshBegin(refreshEnd: @escaping () -> Void) {
+        DispatchQueue.global().async {
+            self.presenter?.getEvents()
+            DispatchQueue.main.async {
+                refreshEnd()
+            }
+        }
     }
     
     // MARK: - Buttons methods

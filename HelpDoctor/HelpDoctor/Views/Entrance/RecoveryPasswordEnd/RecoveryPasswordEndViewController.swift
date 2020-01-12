@@ -20,7 +20,7 @@ class RecoveryPasswordEndViewController: UIViewController {
     private let topEmailTextField = UITextField()
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
-    private var loginButton = HDButton()
+    private let loginButton = HDButton(title: "Войти")
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
@@ -89,7 +89,6 @@ class RecoveryPasswordEndViewController: UIViewController {
     }
     
     private func setupLoginButton() {
-        loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         

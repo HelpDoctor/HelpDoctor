@@ -18,6 +18,10 @@ class HDButton: UIButton {
         return .hdButtonDisabledColor
     }
     
+    var selectedBackgroundColor: UIColor {
+        return .red
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         update(isEnabled: self.isEnabled)
@@ -63,6 +67,13 @@ class HDButton: UIButton {
         self.backgroundColor = isEnabled
             ? enabledBackgroundColor
             : disabledBackgroundColor
+    }
+    
+    func update(isSelected: Bool) {
+        self.isSelected = isSelected
+        self.backgroundColor = isSelected
+            ? selectedBackgroundColor
+            : enabledBackgroundColor
     }
     
     func updateLayerProperties() {

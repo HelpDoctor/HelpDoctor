@@ -16,6 +16,7 @@ protocol EventAddPresenterProtocol: Presenter {
     func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?)
     func setNotifyDate(date: Date)
     func convertStringToDate(date: String) -> Date?
+    func deleteEvent()
     func backToRoot()
     func getEventTitle() -> String
 }
@@ -96,7 +97,12 @@ class EventAddPresenter: EventAddPresenterProtocol {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("createEvent = \(String(describing: createEvent.responce))")
-                    self?.backToRoot()
+                    guard let code = createEvent.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.backToRoot()
+                    } else {
+                        self?.view.showAlert(message: createEvent.responce?.1)
+                    }
                 }
             }
         }
@@ -125,6 +131,30 @@ class EventAddPresenter: EventAddPresenterProtocol {
         dateFormatter.timeZone = .autoupdatingCurrent
         dateFormatter.locale = Locale.current
         return dateFormatter.date(from: date)
+    }
+    
+    func deleteEvent() {
+        guard let idEvent = idEvent else { return }
+        let resultDeleteEvents = Schedule()
+        getData(typeOfContent: .schedule_deleteForCurrentEvent,
+                returning: (Int?, String?).self,
+                requestParams: ["event_id": String(idEvent)])
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            resultDeleteEvents.responce = result
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("getEvents =\(String(describing: resultDeleteEvents.responce))")
+                    guard let code = resultDeleteEvents.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.backToRoot()
+                    } else {
+                        self?.view.showAlert(message: resultDeleteEvents.responce?.1)
+                    }
+                }
+            }
+        }
     }
     
     // MARK: Private methods

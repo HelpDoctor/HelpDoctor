@@ -13,37 +13,34 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: ProfilePresenterProtocol?
     
-    // MARK: - Constants
+    // MARK: - Constants and variables
     private let session = Session.instance
     private let scrollView = UIScrollView()
-    var headerView = ProfileHeaderView()
-    var nameTextField = EditTextField()
-    var userPhoto = UIImageView()
+    private var headerView = ProfileHeaderView()
+    private var nameTextField = EditTextField()
+    private var userPhoto = UIImageView()
     private let birthDateLabel = UILabel()
-    var birthDateTextField = EditTextField()
+    private var birthDateTextField = EditTextField()
     private let contactsLabel = UILabel()
-    var emailTextField = EditTextField()
-    var phoneTextField = EditTextField()
+    private var emailTextField = EditTextField()
+    private var phoneTextField = EditTextField()
     private let specLabel = UILabel()
-    var specTextField = MedicalSpecializationSearchTextField()
+    private var specTextField = MedicalSpecializationSearchTextField()
     private var editMainSpecButton = EditButton()
     private let locationLabel = UILabel()
-    var locationTextField = CitiesSearchTextField()
+    private var locationTextField = CitiesSearchTextField()
     private var editLocationButton = EditButton()
     private let workPlaceLabel = UILabel()
-    var workPlace1TextField = MedicalOrganizationSearchTextField()
+    private var workPlace1TextField = MedicalOrganizationSearchTextField()
     private var editMainJobButton = EditButton()
-    var workPlace2TextField = MedicalOrganizationSearchTextField()
+    private var workPlace2TextField = MedicalOrganizationSearchTextField()
     private var editAddJobButton = EditButton()
     private var addWorkPlaceButton = PlusButton()
     private let interestsLabel = UILabel()
-    var interestsTextView = InterestsSearchTextField()
+    private var interestsTextView = InterestsSearchTextField()
     private var editInterestsButton = EditButton()
     private lazy var imagePicker = ImagePicker()
     private var keyboardHeight: CGFloat = 0
-    
-//    private let width = UIScreen.main.bounds.width
-//    private let height = UIScreen.main.bounds.height
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -83,6 +80,69 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         tabBarController?.tabBar.isHidden = false
         UIApplication.statusBarBackgroundColor = .tabBarColor
+    }
+    
+    // MARK: - Public methods
+    func setImage(image: UIImage?) {
+        let defaultImageName = "Avatar.pdf"
+        guard let defaultImage = UIImage(named: defaultImageName) else {
+            assertionFailure("Missing ​​\(defaultImageName) asset")
+            return
+        }
+        headerView.userImage.image = image ?? defaultImage
+        userPhoto.image = image ?? defaultImage
+    }
+    
+    func getUserPhoto() -> UIImage? {
+        return userPhoto.image
+    }
+    
+    func setName(name: String) {
+        nameTextField.textField.text = name
+    }
+    
+    func getName() -> String? {
+        return nameTextField.textField.text
+    }
+    
+    func setBirthday(birthday: String) {
+        birthDateTextField.textField.text = birthday
+    }
+    
+    func getBirthday() -> String? {
+        return birthDateTextField.textField.text
+    }
+    
+    func setEmail(email: String) {
+        emailTextField.textField.text = email
+    }
+    
+    func setPhone(phone: String) {
+        phoneTextField.textField.text = phone
+    }
+    
+    func getPhone() -> String? {
+        return phoneTextField.textField.text
+    }
+    
+    func setSpec(spec: String) {
+        specTextField.text = spec
+    }
+    
+    func setLocation(location: String) {
+        locationTextField.text = location
+    }
+    
+    func setMainJob(job: String) {
+        workPlace1TextField.text = job
+    }
+    
+    func setAddJob(job: String) {
+        workPlace2TextField.text = job
+    }
+    
+    func setInterests(interest: String) {
+        interestsTextView.text = interest
     }
     
     // MARK: - Setup views

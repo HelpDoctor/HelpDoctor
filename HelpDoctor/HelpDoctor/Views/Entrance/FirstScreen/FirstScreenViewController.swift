@@ -13,7 +13,7 @@ class FirstScreenViewController: UIViewController {
     // MARK: - Dependency
     var presenter: FirstScreenPresenterProtocol?
     
-    // MARK: - Constants
+    // MARK: - Constants and variables
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()

@@ -12,6 +12,11 @@ protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
     init(view: CreateProfileSpecViewController)
     func setPhoto(photoString: String?)
     func interestsSearch()
+    func getInterestTitle(index: Int) -> String?
+    func getInterestsCount() -> Int?
+    func getInterestFromView()
+    func setInterest(index: Int)
+    func deleteInterest(index: Int)
     func back()
     func save()
 }
@@ -27,10 +32,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var addJobArray: [[String: Any]]?
     var mainSpecArray: [[String: Any]]?
     var addSpecArray: [[String: Any]]?
-    private var interest: [ListOfInterests]?
+    var interest: [ListOfInterests] = []
+    var arrayOfAllInterests: [ListOfInterests]?
     var mainSpec: String?
     var addSpec: String?
     
+    // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
         self.view = view
     }
@@ -56,7 +63,59 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         updateUser()
     }
     
+    func getInterestTitle(index: Int) -> String? {
+        return arrayOfAllInterests?[index].name
+    }
+    
+    func getInterestsCount() -> Int? {
+        return arrayOfAllInterests?.count
+    }
+    
+    func getInterestFromView() {
+        getInterests(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
+    }
+    
+    func setInterest(index: Int) {
+        guard let int = arrayOfAllInterests?[index] else { return }
+        interest.append(int)
+        guard let name = int.name else { return }
+        view.setSpecTextField(text: "\(view.getSpecTextField()) \(name)")
+    }
+    
+    func deleteInterest(index: Int) {
+        guard let interestId = arrayOfAllInterests?[index].id else { return }
+        interest = interest.filter { $0.id != interestId }
+        var stringArray: [String] = []
+        for i in 0 ..< interest.count {
+            stringArray.append(interest[i].name ?? "")
+        }
+        let string = stringArray.joined(separator: " ")
+        view.setSpecTextField(text: string)
+    }
+    
     // MARK: - Private methods
+    private func getInterests(mainSpec: String, addSpec: String) {
+        let getListOfInterest = Profile()
+        
+        getData(typeOfContent: .getListOfInterestsExtTwo,
+                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getListOfInterest.listOfInterests = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                    let interestAddSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
+                    self?.arrayOfAllInterests = (interestMainSpec ?? []) + (interestAddSpec ?? [])
+                    self?.view.reloadCollectionView()
+                }
+            }
+        }
+    }
+    
     private func updateUser() {
         let updateProfile = UpdateProfileKeyUser(first_name: user?.first_name,
                                                  last_name: user?.last_name,
@@ -145,10 +204,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     private func updateInterests() {
-        guard let interest = interest else {
-            self.next()
-            return
-        }
         var intArray: [Int] = []
         for i in 0 ..< interest.count {
             intArray.append(interest[i].id)
@@ -185,13 +240,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     func setInterests(interests: [ListOfInterests]) {
         self.interest = interests
-        guard let interest = interest else { return }
         var stringArray: [String] = []
         for i in 0 ..< interest.count {
             stringArray.append(interest[i].name ?? "")
         }
         let string = stringArray.joined(separator: " ")
-        view.specTextField.text = string
+        view.setSpecTextField(text: string)
     }
     
     // MARK: - Coordinator

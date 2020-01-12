@@ -13,15 +13,15 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: LoginPresenterProtocol?
     
-    // MARK: - Constants
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    // MARK: - Constants and variables
+    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
     private let passwordTextField = UITextField()
     private let forgotButton = UIButton()
-    private var loginButton = HDButton()
+    private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
     private var keyboardHeight: CGFloat = 0
     private var isKeyboardShown = false
@@ -53,6 +53,10 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public methods
     func setEmail(email: String) {
         emailTextField.text = email
+    }
+    
+    func startAnimating() {
+        activityIndicator.startAnimating()
     }
     
     // MARK: - Setup views
@@ -163,13 +167,12 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupLoginButton() {
-        loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor,
-                                            constant: 78).isActive = true
+                                         constant: 78).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true

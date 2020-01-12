@@ -30,6 +30,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.makeKeyAndVisible()
         return true
     }
+    
+    func applicationWillResignActive(_ application: UIApplication) {
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = window!.frame
+        blurEffectView.tag = 1
+        self.window?.addSubview(blurEffectView)
+    }
+    
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        if let viewWithTag = self.window?.viewWithTag(1) {
+            viewWithTag.removeFromSuperview()
+        }
+        UIApplication.shared.applicationIconBadgeNumber = 0
+    }
 
 }
 //swiftlint:disable force_cast

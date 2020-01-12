@@ -32,8 +32,6 @@ class RootViewController: UIViewController {
     
     func switchToMainScreen() {
         let mainViewController = TabBarController()
-//        let mainViewController = MainTabBarController()
-//        let mainScreen = UINavigationController(rootViewController: tabBar)
         animateFadeTransition(to: mainViewController)
     }
     

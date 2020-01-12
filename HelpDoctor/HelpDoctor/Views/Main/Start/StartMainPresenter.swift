@@ -15,12 +15,15 @@ protocol StartMainPresenterProtocol {
 
 class StartMainPresenter: StartMainPresenterProtocol {
     
+    // MARK: - Dependency
     var view: StartMainViewController
     
+    // MARK: - Init
     required init(view: StartMainViewController) {
         self.view = view
     }
     
+    // MARK: - Public methods
     func fillProfile() {
         let viewController = CreateProfileNameViewController()
         viewController.presenter = CreateProfileNamePresenter(view: viewController)

@@ -59,7 +59,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
-                    //                    print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
+                    print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
                     //swiftlint:disable force_cast
                     let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as! [ProfileKeyUser]
                     let jobData: [ProfileKeyJob] = getDataProfile.dataFromProfile?["job"] as! [ProfileKeyJob]
@@ -76,7 +76,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func save(source: SourceEditTextField) {
-        guard let nameString = view.nameTextField.textField.text else { return }
+        guard let nameString = view.getName() else { return }
         let result = nameString.split(separator: " ")
         var lastName: String?
         var firstName: String?
@@ -101,15 +101,15 @@ class ProfilePresenter: ProfilePresenterProtocol {
         
         switch source {
         case .user:
-            let phoneNumber = view.phoneTextField.textField.text?.westernArabicNumeralsOnly
-            let birthday = convertDateFromView(birthday: view.birthDateTextField.textField.text)
+            let phoneNumber = view.getPhone()?.westernArabicNumeralsOnly
+            let birthday = convertDateFromView(birthday: view.getBirthday())
             let profile = UpdateProfileKeyUser(first_name: firstName,
                                                last_name: lastName,
                                                middle_name: middleName,
                                                phone_number: phoneNumber,
                                                birthday: birthday,
                                                city_id: cityId,
-                                               foto: view.userPhoto.image?.toString())
+                                               foto: view.getUserPhoto()?.toString())
             updateProfile(profile: profile)
         case .spec:
             updateSpec()
@@ -137,13 +137,12 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let lastName: String = user?.last_name ?? ""
         let name: String = user?.first_name ?? ""
         let middleName: String = user?.middle_name ?? ""
-        view.nameTextField.textField.text = "\(lastName) \(name) \(middleName)"
-        view.birthDateTextField.textField.text = convertDate(birthday: user?.birthday)
-        view.emailTextField.textField.text = user?.email ?? ""
-        view.phoneTextField.textField.text = convertPhone(phone: user?.phone_number ?? "")
-        view.locationTextField.text = user?.cityName ?? ""
-        view.userPhoto.image = user?.foto?.toImage() ?? UIImage(named: "Avatar.pdf")
-        view.headerView.userImage.image = user?.foto?.toImage() ?? UIImage(named: "Avatar.pdf")
+        view.setName(name: "\(lastName) \(name) \(middleName)")
+        view.setBirthday(birthday: convertDate(birthday: user?.birthday))
+        view.setEmail(email: user?.email ?? "")
+        view.setPhone(phone: convertPhone(phone: user?.phone_number ?? ""))
+        view.setLocation(location: user?.cityName ?? "")
+        view.setImage(image: user?.foto?.toImage())
         cityId = user?.city_id
         session.user = user
     }
@@ -152,12 +151,12 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let indexMainJob = jobData.firstIndex(where: { $0.is_main == true })
         if indexMainJob != nil {
             idMainJob = jobData[indexMainJob!].id
-            view.workPlace1TextField.text = jobData[indexMainJob!].nameShort
+            view.setMainJob(job: jobData[indexMainJob!].nameShort ?? "")
         }
         let indexAddJob = jobData.firstIndex(where: { $0.is_main == false })
         if indexAddJob != nil {
             idAddJob = jobData[indexAddJob!].id
-            view.workPlace2TextField.text = jobData[indexAddJob!].nameShort
+            view.setAddJob(job: jobData[indexAddJob!].nameShort ?? "")
         }
     }
     
@@ -165,7 +164,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let indexMainSpec = specData.firstIndex(where: { $0.is_main == true })
         if indexMainSpec != nil {
             idMainSpec = specData[indexMainSpec!].id
-            view.specTextField.text = specData[indexMainSpec!].name
+            view.setSpec(spec: specData[indexMainSpec!].name ?? "")
         }
     }
     
@@ -175,7 +174,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
             stringArray.append(interestData[i].name ?? "")
         }
         let string = stringArray.joined(separator: " ")
-        view.interestsTextView.text = string
+        view.setInterests(interest: string)
     }
     //swiftlint:enable force_unwrapping
     private func convertDate(birthday: String?) -> String {
@@ -316,13 +315,13 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     func setCity(city: Cities) {
         cityId = city.id
-        view.locationTextField.text = city.cityName
+        view.setLocation(location: city.cityName ?? "")
     }
     
     // MARK: - MedicalOrganizationSearchProtocol
     func setMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.workPlace = medicalOrganization
-        view.workPlace1TextField.text = medicalOrganization.nameShort
+        view.setMainJob(job: medicalOrganization.nameShort ?? "")
         let job: [String: Any] = ["id": idMainJob ?? 0, "job_oid": medicalOrganization.oid as Any, "is_main": true]
         mainJobArray.removeAll()
         mainJobArray.append(job)
@@ -330,7 +329,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     func setAddMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.addWorkPlace = medicalOrganization
-        view.workPlace2TextField.text = medicalOrganization.nameShort
+        view.setAddJob(job: medicalOrganization.nameShort ?? "")
         let job: [String: Any] = ["id": idAddJob ?? 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
         addJobArray.removeAll()
         addJobArray.append(job)
@@ -339,7 +338,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - MedicalSpecializationSearchProtocol
     func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.mainSpec = medicalSpecialization
-        view.specTextField.text = medicalSpecialization.name
+        view.setSpec(spec: medicalSpecialization.name ?? "")
         let spec: [String: Any] = ["id": idMainSpec ?? 0, "spec_id": medicalSpecialization.id as Any, "is_main": true]
         mainSpecArray.removeAll()
         mainSpecArray.append(spec)
@@ -366,7 +365,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
             stringArray.append(interest[i].name ?? "")
         }
         let string = stringArray.joined(separator: " ")
-        view.interestsTextView.text = string
+        view.setInterests(interest: string)
     }
     
     // MARK: - Coordinator

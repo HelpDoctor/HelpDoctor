@@ -24,6 +24,8 @@ identifier_name:
   max_length: 60
   excluded: # excluded via string array
   - i
+  - x
+  - y
   - id
   - URL
   - GlobalAPIKey
@@ -62,7 +64,7 @@ type_name:
     warning: 60
     error: 100
     excluded:
-    - Auth_Info
+    #- Auth_Info
     allowed_symbols: ["_"]
 
 colon: 

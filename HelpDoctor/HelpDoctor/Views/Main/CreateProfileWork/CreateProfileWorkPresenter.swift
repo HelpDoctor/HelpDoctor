@@ -84,7 +84,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     func setRegion(region: Regions) {
         self.region = region
-        view.regionTextField.text = region.regionName
+        view.setRegion(region: region.regionName ?? "")
     }
     
     // MARK: - CitiesSearchProtocol
@@ -94,14 +94,14 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     func setCity(city: Cities) {
         self.city = city
-        view.cityTextField.text = city.cityName
+        view.setCity(city: city.cityName ?? "")
         user?.city_id = city.id
     }
     
     // MARK: - MedicalOrganizationSearchProtocol
     func setMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.workPlace = medicalOrganization
-        view.workTextField.text = medicalOrganization.nameShort
+        view.setMainJob(job: medicalOrganization.nameShort ?? "")
         let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": true]
         mainJobArray.removeAll()
         mainJobArray.append(job)
@@ -109,7 +109,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     func setAddMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.addWorkPlace = medicalOrganization
-        view.addWorkTextField.text = medicalOrganization.nameShort
+        view.setAddJob(job: medicalOrganization.nameShort ?? "")
         let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
         addJobArray.removeAll()
         addJobArray.append(job)
@@ -118,16 +118,15 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     // MARK: - MedicalSpecializationSearchProtocol
     func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.mainSpec = medicalSpecialization
-        view.specTextField.text = medicalSpecialization.name
+        view.setMainSpec(spec: medicalSpecialization.name ?? "")
         let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": true]
         mainSpecArray.removeAll()
         mainSpecArray.append(spec)
-        print(mainSpecArray)
     }
     
     func setAddMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.addSpec = medicalSpecialization
-        view.addSpecTextField.text = medicalSpecialization.name
+        view.setAddSpec(spec: medicalSpecialization.name ?? "")
         let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
         addSpecArray.removeAll()
         addSpecArray.append(spec)

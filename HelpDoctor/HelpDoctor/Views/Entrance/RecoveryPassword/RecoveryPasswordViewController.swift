@@ -13,17 +13,16 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: RecoveryPasswordPresenterProtocol?
     
-    // MARK: - Constants
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    // MARK: - Constants and variables
+    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let label = UILabel()
-    let emailTextField = UITextField()
-    private var sendButton = HDButton()
+    private let emailTextField = UITextField()
+    private let sendButton = HDButton(title: "Отправить")
     private let backButton = UIButton()
     private var imageViewEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
-    private var isShowAlert = false
     private var alertViewTag = 999
     
     private let width = UIScreen.main.bounds.width
@@ -48,10 +47,22 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
+    // MARK: - Public methods
+    func startAnimating() {
+        activityIndicator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        activityIndicator.stopAnimating()
+    }
+    
+    func getEmailText() -> String {
+        return emailTextField.text ?? ""
+    }
+    
     // MARK: - Setup views
     private func setupActivityIndicator() {
         view.addSubview(activityIndicator)
-//        activityIndicator.layer.zPosition = 1
         activityIndicator.frame = view.bounds
         activityIndicator.backgroundColor = UIColor(white: 0, alpha: 0.4)
     }
@@ -122,7 +133,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSendButton() {
-        sendButton = HDButton(title: "Отправить")
+//        sendButton = HDButton(title: "Отправить")
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)

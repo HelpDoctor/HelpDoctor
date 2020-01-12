@@ -15,9 +15,13 @@ protocol CreateProfileNamePresenterProtocol {
 
 class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
+    // MARK: - Dependency
     var view: CreateProfileNameViewController
+    
+    // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
     
+    // MARK: - Init
     required init(view: CreateProfileNameViewController) {
         self.view = view
     }

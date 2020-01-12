@@ -94,6 +94,36 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         finishDatePicker.setDate(endDate, animated: true)
         patientNameTextField.text = event.title
         descriptionTextField.text = event.description
+        guard let notifyDate = event.notify_date else { return }
+        guard let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
+        let dateDiff = Calendar.current.dateComponents([.minute], from: notify, to: startDate).minute
+        switch dateDiff {
+        case 0:
+            tenMinutesButton.update(isSelected: false)
+            thirtyMinutesButton.update(isSelected: false)
+            oneHourButton.update(isSelected: false)
+            otherTimeButton.update(isSelected: false)
+        case 10:
+            tenMinutesButton.update(isSelected: true)
+            thirtyMinutesButton.update(isSelected: false)
+            oneHourButton.update(isSelected: false)
+            otherTimeButton.update(isSelected: false)
+        case 30:
+            tenMinutesButton.update(isSelected: false)
+            thirtyMinutesButton.update(isSelected: true)
+            oneHourButton.update(isSelected: false)
+            otherTimeButton.update(isSelected: false)
+        case 60:
+            tenMinutesButton.update(isSelected: false)
+            thirtyMinutesButton.update(isSelected: false)
+            oneHourButton.update(isSelected: true)
+            otherTimeButton.update(isSelected: false)
+        default:
+            tenMinutesButton.update(isSelected: false)
+            thirtyMinutesButton.update(isSelected: false)
+            oneHourButton.update(isSelected: false)
+            otherTimeButton.update(isSelected: true)
+        }
     }
     
     // MARK: - Setup views
@@ -156,6 +186,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private func setupStartDatePicker() {
         startDatePicker.backgroundColor = .white
         startDatePicker.setDate(Date(), animated: true)
+        startDatePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         scrollView.addSubview(startDatePicker)
         
         startDatePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -183,6 +214,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private func setupFinishDatePicker() {
         finishDatePicker.backgroundColor = .white
         finishDatePicker.setDate(startDatePicker.date + 1800, animated: true)
+        finishDatePicker.minimumDate = startDatePicker.date
         scrollView.addSubview(finishDatePicker)
         
         finishDatePicker.translatesAutoresizingMaskIntoConstraints = false
@@ -480,21 +512,41 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         scrollView.scrollIndicatorInsets = contentInsets
     }
     
+    @objc private func datePickerValueChanged(_ datePicker: UIDatePicker) {
+        finishDatePicker.minimumDate = datePicker.date
+    }
+    
     // MARK: - Buttons methods
     @objc private func tenMinutesButtonPressed() {
         presenter?.setNotifyDate(date: startDatePicker.date - 600)
+        tenMinutesButton.update(isSelected: true)
+        thirtyMinutesButton.update(isSelected: false)
+        oneHourButton.update(isSelected: false)
+        otherTimeButton.update(isSelected: false)
     }
     
     @objc private func thirtyMinutesButtonPressed() {
         presenter?.setNotifyDate(date: startDatePicker.date - 1800)
+        tenMinutesButton.update(isSelected: false)
+        thirtyMinutesButton.update(isSelected: true)
+        oneHourButton.update(isSelected: false)
+        otherTimeButton.update(isSelected: false)
     }
     
     @objc private func oneHourButtonPressed() {
         presenter?.setNotifyDate(date: startDatePicker.date - 3600)
+        tenMinutesButton.update(isSelected: false)
+        thirtyMinutesButton.update(isSelected: false)
+        oneHourButton.update(isSelected: true)
+        otherTimeButton.update(isSelected: false)
     }
     
     @objc private func otherTimeButtonPressed() {
         print("Tapped")
+        tenMinutesButton.update(isSelected: false)
+        thirtyMinutesButton.update(isSelected: false)
+        oneHourButton.update(isSelected: false)
+        otherTimeButton.update(isSelected: false)
     }
     
     @objc private func saveButtonPressed() {
@@ -505,7 +557,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func deleteButtonPressed() {
-        presenter?.backToRoot()
+        presenter?.deleteEvent()
     }
 
 }

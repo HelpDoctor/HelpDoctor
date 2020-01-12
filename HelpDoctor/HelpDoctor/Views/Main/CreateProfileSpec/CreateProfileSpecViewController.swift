@@ -17,14 +17,15 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     private let scrollView = UIScrollView()
     private let step6TitleLabel = UILabel()
     private let step6Label = UILabel()
-    let specTextField = InterestsSearchTextField()
-    private var specSearchButton = SearchButton()
+    private let specTextField = InterestsSearchTextField()
+    private let specSearchButton = SearchButton()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
     private let step7TitleLabel = UILabel()
     private let step7Label = UILabel()
     private var userPhoto = UIImageView()
     private lazy var imagePicker = ImagePicker()
     private let backButton = UIButton()
-    private var saveButton = HDButton()
+    private let saveButton = HDButton(title: "Готово", fontSize: 14)
     private var keyboardHeight: CGFloat = 0
     
     private let width = UIScreen.main.bounds.width
@@ -41,12 +42,14 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         setupStep6Label()
         setupSpecTextField()
         setupSpecSearchButton()
+        setupCollectionView()
         setupStep7TitleLabel()
         setupStep7Label()
         setupUserPhotoView()
         setupBackButton()
         setupSaveButton()
         addTapGestureToHideKeyboard()
+        presenter?.getInterestFromView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +57,19 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
         self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Public methods
+    func setSpecTextField(text: String) {
+        specTextField.text = text
+    }
+    
+    func getSpecTextField() -> String {
+        return specTextField.text ?? ""
+    }
+    
+    func reloadCollectionView() {
+        collectionView.reloadData()
     }
     
     // MARK: - Setup views
@@ -101,6 +117,24 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         step6Label.heightAnchor.constraint(equalToConstant: 51).isActive = true
     }
     
+    private func setupCollectionView() {
+        let customSuperLayout = InterestCollectionViewLayout()
+        customSuperLayout.delegate = self
+        collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
+        view.addSubview(collectionView)
+        collectionView.register(InterestCollectionViewCell.self, forCellWithReuseIdentifier: "InterestCell")
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.allowsMultipleSelection = true
+        
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: step6Label.bottomAnchor, constant: 10).isActive = true
+        collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        collectionView.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+    }
+    
     private func setupSpecTextField() {
         specTextField.presenter = presenter
         specTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -116,7 +150,6 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecSearchButton() {
-        specSearchButton = SearchButton()
         specSearchButton.addTarget(self, action: #selector(specSearchButtonPressed), for: .touchUpInside)
         view.addSubview(specSearchButton)
         
@@ -215,7 +248,6 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSaveButton() {
-        saveButton = HDButton(title: "Готово", fontSize: 14)
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         saveButton.isEnabled = true
         view.addSubview(saveButton)
@@ -329,4 +361,65 @@ extension CreateProfileSpecViewController: ImagePickerDelegate {
         // works only on real device (crash on simulator)
         if accessIsAllowed { presentImagePicker(sourceType: .camera) }
     }
+}
+
+// MARK: - Collection view
+extension CreateProfileSpecViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        if let selectedItems = collectionView.indexPathsForSelectedItems {
+            if selectedItems.contains(indexPath) {
+                collectionView.deselectItem(at: indexPath, animated: true)
+                return false
+            }
+        }
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, shouldDeselectItemAt indexPath: IndexPath) -> Bool {
+        if let selectedItems = collectionView.indexPathsForSelectedItems {
+            if selectedItems.contains(indexPath) {
+                collectionView.deselectItem(at: indexPath, animated: true)
+                presenter?.deleteInterest(index: indexPath.item)
+                return false
+            }
+        }
+        return true
+    }
+}
+
+extension CreateProfileSpecViewController: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return presenter?.getInterestsCount() ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
+                                                      for: indexPath) as! InterestCollectionViewCell
+        cell.configure(presenter?.getInterestTitle(index: indexPath.row) ?? "")
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.setInterest(index: indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        presenter?.deleteInterest(index: indexPath.item)
+    }
+    
+}
+
+extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
+    
+    func width(forItemAt indexPath: IndexPath) -> CGFloat {
+        let constraintRect = CGSize(width: (self.view.frame.size.width - 30) / 2, height: 27)
+        let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
+        let box = data.boundingRect(with: constraintRect,
+                                    options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                    attributes: [NSAttributedString.Key.font: UIFont.systemFontOfSize(size: 10)],
+                                    context: nil)
+        return box.width
+    }
+    
 }

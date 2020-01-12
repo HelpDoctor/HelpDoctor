@@ -19,7 +19,10 @@ protocol RegisterScreenPresenter {
 
 class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     
+    // MARK: - Dependency
     var view: RegisterScreenViewController
+    
+    // MARK: - Constants and variables
     private let validateManager = ValidateManager()
     private var topEmail: String?
     private var bottomEmail: String?
@@ -27,12 +30,14 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     private var isValidatedTopEmail = false
     private var isValidatedBottomEmail = false
     
+    // MARK: - Init
     required init(view: RegisterScreenViewController) {
         self.view = view
     }
     
+    // MARK: - Public methods
     func registerButtonPressed(email: String) {
-        view.activityIndicator.startAnimating()
+        view.startAnimating()
         let register = Registration(email: email, password: nil, token: nil )
         
         getData(typeOfContent: .registrationMail,
@@ -45,7 +50,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("result=\(String(describing: register.responce))")
-                    self?.view.activityIndicator.stopAnimating()
+                    self?.view.stopAnimating()
                     guard let code = register.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.register(email: email)
@@ -85,6 +90,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         checkInput()
     }
     
+    // MARK: - Private methods
     private func checkInput() {
         if isValidatedBottomEmail, isValidatedTopEmail, topEmail == bottomEmail {
             view.updateButtonRegister(isEnabled: true)

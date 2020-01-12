@@ -37,6 +37,10 @@
 		46203F0B23C761880072653A /* EventAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0923C761880072653A /* EventAddViewController.swift */; };
 		46203F0D23C761A80072653A /* CheckBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0C23C761A70072653A /* CheckBox.swift */; };
 		46203F0F23C76B880072653A /* EventType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F0E23C76B880072653A /* EventType.swift */; };
+		46203F1723C8EA460072653A /* InterestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1623C8EA460072653A /* InterestCollectionViewCell.swift */; };
+		46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1823C99ED40072653A /* InterestCollectionViewLayout.swift */; };
+		46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1B23C9CC810072653A /* ViewEventViewController.swift */; };
+		46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1D23C9CC910072653A /* ViewEventPresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -188,6 +192,10 @@
 		46203F0923C761880072653A /* EventAddViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventAddViewController.swift; sourceTree = "<group>"; };
 		46203F0C23C761A70072653A /* CheckBox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CheckBox.swift; sourceTree = "<group>"; };
 		46203F0E23C76B880072653A /* EventType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventType.swift; sourceTree = "<group>"; };
+		46203F1623C8EA460072653A /* InterestCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestCollectionViewCell.swift; sourceTree = "<group>"; };
+		46203F1823C99ED40072653A /* InterestCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestCollectionViewLayout.swift; sourceTree = "<group>"; };
+		46203F1B23C9CC810072653A /* ViewEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEventViewController.swift; sourceTree = "<group>"; };
+		46203F1D23C9CC910072653A /* ViewEventPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEventPresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -380,6 +388,15 @@
 			path = EventAddEvent;
 			sourceTree = "<group>";
 		};
+		46203F1A23C9CC550072653A /* ViewEvent */ = {
+			isa = PBXGroup;
+			children = (
+				46203F1B23C9CC810072653A /* ViewEventViewController.swift */,
+				46203F1D23C9CC910072653A /* ViewEventPresenter.swift */,
+			);
+			path = ViewEvent;
+			sourceTree = "<group>";
+		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,6 +499,8 @@
 			children = (
 				46F87F3223BCBEE80095264E /* CreateProfileSpecViewController.swift */,
 				46F87F3423BCBEFB0095264E /* CreateProfileSpecPresenter.swift */,
+				46203F1623C8EA460072653A /* InterestCollectionViewCell.swift */,
+				46203F1823C99ED40072653A /* InterestCollectionViewLayout.swift */,
 			);
 			path = CreateProfileSpec;
 			sourceTree = "<group>";
@@ -821,6 +840,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				46203F1A23C9CC550072653A /* ViewEvent */,
 				46203F0723C761880072653A /* EventAddEvent */,
 				46072E1F23C267420070F2F6 /* AppointmentAddEvent */,
 				46072E1823C23FDF0070F2F6 /* StartAddEvent */,
@@ -1007,6 +1027,7 @@
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
+				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
@@ -1057,6 +1078,8 @@
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
 				46203F0023C46A670072653A /* CreateFindUsers.swift in Sources */,
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
+				46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */,
+				46203F1723C8EA460072653A /* InterestCollectionViewCell.swift in Sources */,
 				46072E1323C228E80070F2F6 /* TodayEventCell.swift in Sources */,
 				46F87F0923B90CEE0095264E /* RecoveryPasswordViewController.swift in Sources */,
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
@@ -1077,6 +1100,7 @@
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
 				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
+				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,

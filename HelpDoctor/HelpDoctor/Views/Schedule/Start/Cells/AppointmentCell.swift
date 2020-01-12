@@ -21,6 +21,7 @@ class AppointmentCell: UITableViewCell {
         setupCellView()
         setupLeadingLabel()
         setupTrailingLabel()
+        isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {

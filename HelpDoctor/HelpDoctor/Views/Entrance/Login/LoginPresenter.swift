@@ -18,14 +18,17 @@ protocol LoginPresenterProtocol {
 
 class LoginPresenter: LoginPresenterProtocol {
     
+    // MARK: - Dependency
     var view: LoginViewController
     
+    // MARK: - Init
     required init(view: LoginViewController) {
         self.view = view
     }
     
+    // MARK: - Public methods
     func loginButtonPressed(email: String, password: String) {
-        view.activityIndicator.startAnimating()
+        view.startAnimating()
         let getToken = Registration(email: email, password: password, token: nil)
         
         getData(typeOfContent: .getToken,
@@ -37,7 +40,6 @@ class LoginPresenter: LoginPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
-                    self?.view.activityIndicator.stopAnimating()
                     print("result= \(String(describing: getToken.responce))")
                     guard let code = getToken.responce?.0 else { return }
                     if responceCode(code: code) {

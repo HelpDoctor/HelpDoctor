@@ -34,35 +34,11 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     // MARK: - Public methods
     func didSelectRow(index: Int) {
-        let eventType = arrayEvents?[index].event_type
-        switch eventType {
-        case "reception":
-            let viewController = AppointmentAddViewController()
-            let presenter = AppointmentAddPresenter(view: viewController)
-            viewController.presenter = presenter
-            presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
-            view.navigationController?.pushViewController(viewController, animated: true)
-        case "administrative":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
-            viewController.presenter = presenter
-            presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
-            view.navigationController?.pushViewController(viewController, animated: true)
-        case "scientific":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .science)
-            viewController.presenter = presenter
-            presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
-            view.navigationController?.pushViewController(viewController, animated: true)
-        case "another":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .other)
-            viewController.presenter = presenter
-            presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
-            view.navigationController?.pushViewController(viewController, animated: true)
-        default:
-            view.showAlert(message: "Не верный тип события")
-        }
+        let viewController = ViewEventViewController()
+        let presenter = ViewEventPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func addButtonPressed() {

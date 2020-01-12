@@ -9,7 +9,7 @@
 import UIKit
 
 class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
-
+    
     // MARK: - Dependency
     var presenter: CreateProfileWorkPresenterProtocol?
     
@@ -17,23 +17,23 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private let scrollView = UIScrollView()
     private let step4TitleLabel = UILabel()
     private let step4Label = UILabel()
-    let regionTextField = RegionsSearchTextField()
-    private var regionSearchButton = SearchButton()
-    let cityTextField = CitiesSearchTextField()
-    private var citySearchButton = SearchButton()
+    private let regionTextField = RegionsSearchTextField()
+    private let regionSearchButton = SearchButton()
+    private let cityTextField = CitiesSearchTextField()
+    private let citySearchButton = SearchButton()
     private let step5TitleLabel = UILabel()
     private let step5TopLabel = UILabel()
-    let workTextField = MedicalOrganizationSearchTextField()
-    private var workSearchButton = SearchButton()
-    let addWorkTextField = MedicalOrganizationSearchTextField()
-    private var addWorkSearchButton = SearchButton()
-    private var workPlusButton = PlusButton()
+    private let workTextField = MedicalOrganizationSearchTextField()
+    private let workSearchButton = SearchButton()
+    private let addWorkTextField = MedicalOrganizationSearchTextField()
+    private let addWorkSearchButton = SearchButton()
+    private let workPlusButton = PlusButton()
     private let step5BottomLabel = UILabel()
-    let specTextField = MedicalSpecializationSearchTextField()
-    private var specSearchButton = SearchButton()
-    let addSpecTextField = MedicalSpecializationSearchTextField()
-    private var addSpecSearchButton = SearchButton()
-    private var specPlusButton = PlusButton()
+    private let specTextField = MedicalSpecializationSearchTextField()
+    private let specSearchButton = SearchButton()
+    private let addSpecTextField = MedicalSpecializationSearchTextField()
+    private let addSpecSearchButton = SearchButton()
+    private let specPlusButton = PlusButton()
     private let backButton = UIButton()
     private let nextButton = UIButton()
     private var keyboardHeight: CGFloat = 0
@@ -76,6 +76,33 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
+    }
+    
+    // MARK: - Public methods
+    func setRegion(region: String) {
+        regionTextField.text = region
+    }
+    
+    func setCity(city: String) {
+        cityTextField.text = city
+    }
+    
+    func setMainJob(job: String) {
+        workTextField.text = job
+    }
+    
+    func setAddJob(job: String) {
+        addWorkTextField.text = job
+    }
+    
+    func setMainSpec(spec: String) {
+        specTextField.text = spec
+    }
+    
+    func setAddSpec(spec: String) {
+        addSpecTextField.text = spec
     }
     
     // MARK: - Setup views
@@ -133,7 +160,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupRegionSearchButton() {
-        regionSearchButton = SearchButton()
         regionSearchButton.addTarget(self, action: #selector(regionSearchButtonPressed), for: .touchUpInside)
         view.addSubview(regionSearchButton)
         
@@ -162,15 +188,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupCitySearchButton() {
-        citySearchButton = SearchButton()
         citySearchButton.addTarget(self, action: #selector(citySearchButtonPressed), for: .touchUpInside)
         view.addSubview(citySearchButton)
         
         citySearchButton.translatesAutoresizingMaskIntoConstraints = false
         citySearchButton.topAnchor.constraint(equalTo: cityTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                              constant: 5).isActive = true
         citySearchButton.trailingAnchor.constraint(equalTo: cityTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                   constant: -5).isActive = true
         citySearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         citySearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -220,15 +245,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupWorkSearchButton() {
-        workSearchButton = SearchButton()
         workSearchButton.addTarget(self, action: #selector(workSearchButtonPressed), for: .touchUpInside)
         view.addSubview(workSearchButton)
         
         workSearchButton.translatesAutoresizingMaskIntoConstraints = false
         workSearchButton.topAnchor.constraint(equalTo: workTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                              constant: 5).isActive = true
         workSearchButton.trailingAnchor.constraint(equalTo: workTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                   constant: -5).isActive = true
         workSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         workSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -249,29 +273,27 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupAddWorkSearchButton() {
-        addWorkSearchButton = SearchButton()
         addWorkSearchButton.addTarget(self, action: #selector(addWorkSearchButtonPressed), for: .touchUpInside)
         view.addSubview(addWorkSearchButton)
         
         addWorkSearchButton.translatesAutoresizingMaskIntoConstraints = false
         addWorkSearchButton.topAnchor.constraint(equalTo: addWorkTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                                 constant: 5).isActive = true
         addWorkSearchButton.trailingAnchor.constraint(equalTo: addWorkTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                      constant: -5).isActive = true
         addWorkSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         addWorkSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
     private func setupWorkPlusButton() {
-        workPlusButton = PlusButton()
         workPlusButton.addTarget(self, action: #selector(workPlusButtonPressed), for: .touchUpInside)
         view.addSubview(workPlusButton)
         
         workPlusButton.translatesAutoresizingMaskIntoConstraints = false
         workPlusButton.topAnchor.constraint(equalTo: addWorkTextField.bottomAnchor,
-                                                constant: 5).isActive = true
+                                            constant: 5).isActive = true
         workPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant: 30).isActive = true
+                                                constant: 30).isActive = true
         workPlusButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         workPlusButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -307,15 +329,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecSearchButton() {
-        specSearchButton = SearchButton()
         specSearchButton.addTarget(self, action: #selector(specSearchButtonPressed), for: .touchUpInside)
         view.addSubview(specSearchButton)
         
         specSearchButton.translatesAutoresizingMaskIntoConstraints = false
         specSearchButton.topAnchor.constraint(equalTo: specTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                              constant: 5).isActive = true
         specSearchButton.trailingAnchor.constraint(equalTo: specTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                   constant: -5).isActive = true
         specSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         specSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -336,29 +357,27 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupAddSpecSearchButton() {
-        addSpecSearchButton = SearchButton()
         addSpecSearchButton.addTarget(self, action: #selector(addSpecSearchButtonPressed), for: .touchUpInside)
         view.addSubview(addSpecSearchButton)
         
         addSpecSearchButton.translatesAutoresizingMaskIntoConstraints = false
         addSpecSearchButton.topAnchor.constraint(equalTo: addSpecTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                                 constant: 5).isActive = true
         addSpecSearchButton.trailingAnchor.constraint(equalTo: addSpecTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                      constant: -5).isActive = true
         addSpecSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         addSpecSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
     private func setupSpecPlusButton() {
-        specPlusButton = PlusButton()
         specPlusButton.addTarget(self, action: #selector(specPlusButtonPressed), for: .touchUpInside)
         view.addSubview(specPlusButton)
         
         specPlusButton.translatesAutoresizingMaskIntoConstraints = false
         specPlusButton.topAnchor.constraint(equalTo: addSpecTextField.bottomAnchor,
-                                                constant: 5).isActive = true
+                                            constant: 5).isActive = true
         specPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                     constant: 30).isActive = true
+                                                constant: 30).isActive = true
         specPlusButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         specPlusButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -405,12 +424,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,

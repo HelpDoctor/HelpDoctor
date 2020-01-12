@@ -14,7 +14,7 @@ class StartMainViewController: UIViewController {
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
-    private var enterProfileButton = EnterProfileButton()
+    private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
     private let userView = UIView() //Temporary
@@ -22,7 +22,7 @@ class StartMainViewController: UIViewController {
     private let bottomLine = UIView()
     private let eventView = UIView() //Temporary
     private let bottomLabel = UILabel()
-    private var fillProfileButton = HDButton()
+    private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
@@ -51,7 +51,6 @@ class StartMainViewController: UIViewController {
     
     // MARK: - Setup views
     private func setupEnterProfileButton() {
-        enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
         enterProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
         view.addSubview(enterProfileButton)
         
@@ -153,7 +152,6 @@ class StartMainViewController: UIViewController {
     }
     
     private func setupFillProfileButton() {
-        fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
         fillProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
         fillProfileButton.isEnabled = true
         view.addSubview(fillProfileButton)

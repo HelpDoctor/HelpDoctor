@@ -13,7 +13,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: CreateProfileNamePresenterProtocol?
     
-    // MARK: - Constants
+    // MARK: - Constants and variables
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()

@@ -20,7 +20,7 @@ class RegisterEndViewController: UIViewController {
     private let topEmailTextField = UITextField()
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
-    private var loginButton = HDButton()
+    private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
     
     private let width = UIScreen.main.bounds.width
@@ -91,13 +91,12 @@ class RegisterEndViewController: UIViewController {
     }
     
     private func setupLoginButton() {
-        loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
-                                            constant: 39).isActive = true
+                                         constant: 39).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
