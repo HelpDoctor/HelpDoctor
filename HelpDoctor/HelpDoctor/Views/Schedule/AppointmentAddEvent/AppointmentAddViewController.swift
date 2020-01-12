@@ -542,11 +542,11 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func otherTimeButtonPressed() {
-        print("Tapped")
         tenMinutesButton.update(isSelected: false)
         thirtyMinutesButton.update(isSelected: false)
         oneHourButton.update(isSelected: false)
-        otherTimeButton.update(isSelected: false)
+        otherTimeButton.update(isSelected: true)
+        presenter?.otherNotifyTime(startDate: startDatePicker.date)
     }
     
     @objc private func saveButtonPressed() {

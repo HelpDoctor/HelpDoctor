@@ -41,6 +41,8 @@
 		46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1823C99ED40072653A /* InterestCollectionViewLayout.swift */; };
 		46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1B23C9CC810072653A /* ViewEventViewController.swift */; };
 		46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1D23C9CC910072653A /* ViewEventPresenter.swift */; };
+		46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */; };
+		46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -196,6 +198,8 @@
 		46203F1823C99ED40072653A /* InterestCollectionViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestCollectionViewLayout.swift; sourceTree = "<group>"; };
 		46203F1B23C9CC810072653A /* ViewEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEventViewController.swift; sourceTree = "<group>"; };
 		46203F1D23C9CC910072653A /* ViewEventPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEventPresenter.swift; sourceTree = "<group>"; };
+		46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTimeNotifyViewController.swift; sourceTree = "<group>"; };
+		46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTimeNotifyPresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -395,6 +399,15 @@
 				46203F1D23C9CC910072653A /* ViewEventPresenter.swift */,
 			);
 			path = ViewEvent;
+			sourceTree = "<group>";
+		};
+		46203F2123CB04B40072653A /* OtherTimeNotify */ = {
+			isa = PBXGroup;
+			children = (
+				46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */,
+				46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */,
+			);
+			path = OtherTimeNotify;
 			sourceTree = "<group>";
 		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
@@ -840,6 +853,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				46203F2123CB04B40072653A /* OtherTimeNotify */,
 				46203F1A23C9CC550072653A /* ViewEvent */,
 				46203F0723C761880072653A /* EventAddEvent */,
 				46072E1F23C267420070F2F6 /* AppointmentAddEvent */,
@@ -1002,6 +1016,7 @@
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
+				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
 				46203EFE23C46A5A0072653A /* FindUsers.swift in Sources */,
@@ -1026,6 +1041,7 @@
 				C48F161723B5FE87002D04E3 /* UpdateProfileSpec.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
+				46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,

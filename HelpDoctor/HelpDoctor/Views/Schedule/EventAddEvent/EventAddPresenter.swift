@@ -17,21 +17,24 @@ protocol EventAddPresenterProtocol: Presenter {
     func setNotifyDate(date: Date)
     func convertStringToDate(date: String) -> Date?
     func deleteEvent()
+    func otherNotifyTime(startDate: Date)
     func backToRoot()
     func getEventTitle() -> String
 }
 
 class EventAddPresenter: EventAddPresenterProtocol {
     
-    // MARK: - Constants and variables
+    // MARK: - Dependency
     var view: EventAddViewController
+    
+    // MARK: - Constants and variables
     var idEvent: Int?
     var eventType: EventType
-    var startDate: Date?
-    var finishDate: Date?
+//    var startDate: Date?
+//    var finishDate: Date?
     var notifyDate: Date?
-    var title: String?
-    var desc: String?
+//    var title: String?
+//    var desc: String?
     
     // MARK: - Init
     required init(view: EventAddViewController, eventType: EventType) {
@@ -157,6 +160,15 @@ class EventAddPresenter: EventAddPresenterProtocol {
         }
     }
     
+    func otherNotifyTime(startDate: Date) {
+        let viewController = OtherTimeNotifyViewController()
+        let presenter = OtherTimeNotifyPresenter(view: viewController, startTime: startDate)
+        let delegate = self
+        viewController.presenter = presenter
+        viewController.delegate = delegate
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     // MARK: Private methods
     private func convertDateToString(date: Date?) -> String {
         guard let date = date else { return "" }
@@ -179,4 +191,10 @@ class EventAddPresenter: EventAddPresenterProtocol {
     
     func save(source: SourceEditTextField) { }
     
+}
+
+extension EventAddPresenter: OtherTimeControllerDelegate {
+    func callback(notifyDate: Date) {
+        setNotifyDate(date: notifyDate)
+    }
 }

@@ -17,19 +17,18 @@ protocol AppointmentAddPresenterProtocol: Presenter {
     func setNotifyDate(date: Date)
     func deleteEvent()
     func convertStringToDate(date: String) -> Date?
+    func otherNotifyTime(startDate: Date)
     func backToRoot()
 }
 
 class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     
-    // MARK: - Constants and variables
+    // MARK: - Dependency
     var view: AppointmentAddViewController
+    
+    // MARK: - Constants and variables
     var idEvent: Int?
-    var startDate: Date?
-    var finishDate: Date?
     var notifyDate: Date?
-    var title: String?
-    var desc: String?
     
     // MARK: - Init
     required init(view: AppointmentAddViewController) {
@@ -141,6 +140,15 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         }
     }
     
+    func otherNotifyTime(startDate: Date) {
+        let viewController = OtherTimeNotifyViewController()
+        let presenter = OtherTimeNotifyPresenter(view: viewController, startTime: startDate)
+        let delegate = self
+        viewController.presenter = presenter
+        viewController.delegate = delegate
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     // MARK: - Private methods
     private func convertDateToString(date: Date?) -> String {
         guard let date = date else { return "" }
@@ -163,4 +171,10 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     
     func save(source: SourceEditTextField) { }
     
+}
+
+extension AppointmentAddPresenter: OtherTimeControllerDelegate {
+    func callback(notifyDate: Date) {
+        setNotifyDate(date: notifyDate)
+    }
 }
