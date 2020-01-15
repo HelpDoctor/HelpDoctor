@@ -96,4 +96,23 @@ extension UIViewController {
         return attributedString
     }
     
+    func addBlurEffect() {
+//        let activityView = UIView()
+//        activityView.frame = view.bounds
+//        activityView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//        activityView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2)
+//        activityView.tag = 997
+//        view.addSubview(activityView)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.extraLight)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.tag = 997
+        view.addSubview(blurEffectView)
+    }
+    
+    func removeBlurEffect() {
+        view.viewWithTag(997)?.removeFromSuperview()
+    }
+    
 }

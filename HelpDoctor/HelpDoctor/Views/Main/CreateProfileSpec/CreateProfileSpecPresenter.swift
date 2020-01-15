@@ -56,7 +56,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     func setPhoto(photoString: String?) {
-        user?.foto = photoString?.toBase64()
+        user?.foto = photoString
     }
     
     func save() {

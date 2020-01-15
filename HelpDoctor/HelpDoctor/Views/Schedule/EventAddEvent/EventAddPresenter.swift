@@ -20,6 +20,7 @@ protocol EventAddPresenterProtocol: Presenter {
     func otherNotifyTime(startDate: Date)
     func backToRoot()
     func getEventTitle() -> String
+    func addMembersButtonPressed()
 }
 
 class EventAddPresenter: EventAddPresenterProtocol {
@@ -187,6 +188,12 @@ class EventAddPresenter: EventAddPresenterProtocol {
     
     func backToRoot() {
         view.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func addMembersButtonPressed() {
+        let viewController = AddMembersViewController()
+        viewController.presenter = AddMembersPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func save(source: SourceEditTextField) { }

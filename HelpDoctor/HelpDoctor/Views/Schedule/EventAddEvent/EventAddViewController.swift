@@ -26,6 +26,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     private let majorCheckBox = CheckBox()
     private let replyCheckBox = CheckBox()
     private let alldayCheckBox = CheckBox()
+    private let addMembersButton = UIButton()
     private let descriptionTopLabel = UILabel()
     private let descriptionBottomLabel = UILabel()
     private let descriptionTextField = UITextField()
@@ -64,6 +65,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         setupMajorCheckBox()
         setupReplyCheckBox()
         setupAlldayCheckBox()
+        setupAddMemberButton()
         setupDescriptionTopLabel()
         setupDescriptionBottomLabel()
         setupDescriptionTextField()
@@ -302,6 +304,20 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         alldayCheckBox.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
     
+    private func setupAddMemberButton() {
+        addMembersButton.setTitle("Добавить участников", for: .normal)
+        addMembersButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
+        addMembersButton.setTitleColor(.white, for: .normal)
+        addMembersButton.addTarget(self, action: #selector(addMembersButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(addMembersButton)
+        
+        addMembersButton.translatesAutoresizingMaskIntoConstraints = false
+        addMembersButton.topAnchor.constraint(equalTo: alldayCheckBox.bottomAnchor,
+                                           constant: 8).isActive = true
+        addMembersButton.leadingAnchor.constraint(equalTo: replyCheckBox.trailingAnchor, constant: 25).isActive = true
+        addMembersButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
+    }
+    
     private func setupDescriptionTopLabel() {
         descriptionTopLabel.font = .boldSystemFontOfSize(size: 12)
         descriptionTopLabel.textColor = .white
@@ -336,7 +352,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     private func setupDescriptionTextField() {
         descriptionTextField.font = UIFont.systemFontOfSize(size: 14)
         descriptionTextField.textColor = .black
-        descriptionTextField.placeholder = "Прехать заранее на регистрацию"
+        descriptionTextField.placeholder = "Приехать заранее на регистрацию"
         descriptionTextField.textAlignment = .left
         descriptionTextField.backgroundColor = .white
         descriptionTextField.layer.cornerRadius = 5
@@ -590,6 +606,10 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         startDatePicker.isEnabled = !alldayCheckBox.isSelected
         finishDatePicker.isEnabled = !alldayCheckBox.isSelected
         setAlldayPicker()
+    }
+    
+    @objc private func addMembersButtonPressed() {
+        presenter?.addMembersButtonPressed()
     }
     
     func setAlldayPicker() {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewEventViewController: UIViewController, UIScrollViewDelegate {
+class ViewEventViewController: UIViewController {
 
     // MARK: - Dependency
     var presenter: ViewEventPresenterProtocol?

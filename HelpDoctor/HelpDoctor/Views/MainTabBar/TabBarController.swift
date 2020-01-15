@@ -10,11 +10,14 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    var activityIndicator = ActivityIndicatorView()
     var statusCheck = false
+    private let width = UIScreen.main.bounds.width
+    private let height = UIScreen.main.bounds.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .backgroundColor
         self.tabBar.tintColor = UIColor.white
         self.tabBar.unselectedItemTintColor = UIColor.lightGray
         self.tabBar.barTintColor = UIColor.tabBarColor
@@ -80,6 +83,21 @@ class TabBarController: UITabBarController {
                 }
             }
         }
+    }
+    
+    func startAnimating() {
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
+                                                                y: (height - 70) / 2,
+                                                                width: 70,
+                                                                height: 70))
+        addBlurEffect()
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        activityIndicator.stopAnimating()
+        removeBlurEffect()
     }
     
 }

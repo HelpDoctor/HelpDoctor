@@ -14,7 +14,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     var presenter: LoginPresenterProtocol?
     
     // MARK: - Constants and variables
-    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    private var activityIndicator = ActivityIndicatorView()
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let label = UILabel()
@@ -56,7 +56,22 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func startAnimating() {
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
+                                                                y: (height - 70) / 2,
+                                                                width: 70,
+                                                                height: 70))
+        addBlurEffect()
+        view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        activityIndicator.stopAnimating()
+        removeBlurEffect()
+    }
+    
+    func getEmailText() -> String {
+        return emailTextField.text ?? ""
     }
     
     // MARK: - Setup views

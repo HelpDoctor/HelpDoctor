@@ -10,21 +10,20 @@ import UIKit
 
 class SplashViewController: UIViewController {
     
-    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    private var activityIndicator = ActivityIndicatorView()
+    private let width = UIScreen.main.bounds.width
+    private let height = UIScreen.main.bounds.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.white
-        view.addSubview(activityIndicator)
-        activityIndicator.frame = view.bounds
-        activityIndicator.backgroundColor = UIColor(white: 0, alpha: 0.4)
+        view.backgroundColor = .backgroundColor
         makeServiceCall()
     }
     
     private func makeServiceCall() {
-        activityIndicator.startAnimating()
+        startAnimating()
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            self.activityIndicator.stopAnimating()
+            self.stopAnimating()
             
             let checkProfile = Registration(email: nil, password: nil, token: myToken)
             
@@ -51,6 +50,20 @@ class SplashViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    func startAnimating() {
+        let size: CGFloat = 70
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - size) / 2,
+                                                                y: (height - size) / 2,
+                                                                width: size,
+                                                                height: size))
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+    }
+    
+    func stopAnimating() {
+        activityIndicator.stopAnimating()
     }
     
 }

@@ -14,7 +14,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     var presenter: RegisterScreenPresenter?
     
     // MARK: - Constants and variables
-    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    private var activityIndicator = ActivityIndicatorView()
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
@@ -68,11 +68,18 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func startAnimating() {
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
+                                                                y: (height - 70) / 2,
+                                                                width: 70,
+                                                                height: 70))
+        addBlurEffect()
+        view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
     }
     
     func stopAnimating() {
         activityIndicator.stopAnimating()
+        removeBlurEffect()
     }
     
     // MARK: - Setup views

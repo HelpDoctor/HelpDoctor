@@ -369,6 +369,7 @@ extension CreateProfileSpecViewController: UICollectionViewDelegate {
         if let selectedItems = collectionView.indexPathsForSelectedItems {
             if selectedItems.contains(indexPath) {
                 collectionView.deselectItem(at: indexPath, animated: true)
+                presenter?.setInterest(index: indexPath.item)
                 return false
             }
         }

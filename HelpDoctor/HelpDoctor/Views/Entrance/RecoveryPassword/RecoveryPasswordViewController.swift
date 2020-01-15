@@ -14,7 +14,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     var presenter: RecoveryPasswordPresenterProtocol?
     
     // MARK: - Constants and variables
-    private let activityIndicator = UIActivityIndicatorView(style: .whiteLarge)
+    private var activityIndicator = ActivityIndicatorView()
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let label = UILabel()
@@ -49,15 +49,26 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func startAnimating() {
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
+                                                                y: (height - 70) / 2,
+                                                                width: 70,
+                                                                height: 70))
+        addBlurEffect()
+        view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
     }
     
     func stopAnimating() {
         activityIndicator.stopAnimating()
+        removeBlurEffect()
     }
     
     func getEmailText() -> String {
         return emailTextField.text ?? ""
+    }
+    
+    func setEmail(email: String) {
+        emailTextField.text = email
     }
     
     // MARK: - Setup views

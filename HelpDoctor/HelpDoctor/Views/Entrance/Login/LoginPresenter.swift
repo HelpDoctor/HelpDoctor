@@ -59,7 +59,9 @@ class LoginPresenter: LoginPresenterProtocol {
     
     func recoveryPassword() {
         let viewController = RecoveryPasswordViewController()
-        viewController.presenter = RecoveryPasswordPresenter(view: viewController)
+        let presenter = RecoveryPasswordPresenter(view: viewController)
+        viewController.presenter = presenter
+        viewController.setEmail(email: view.getEmailText())
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

@@ -43,6 +43,10 @@
 		46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F1D23C9CC910072653A /* ViewEventPresenter.swift */; };
 		46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */; };
 		46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */; };
+		46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2623CB278D0072653A /* AnimationBallSpinFadeLoader.swift */; };
+		46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */; };
+		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
+		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -200,6 +204,10 @@
 		46203F1D23C9CC910072653A /* ViewEventPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewEventPresenter.swift; sourceTree = "<group>"; };
 		46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTimeNotifyViewController.swift; sourceTree = "<group>"; };
 		46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherTimeNotifyPresenter.swift; sourceTree = "<group>"; };
+		46203F2623CB278D0072653A /* AnimationBallSpinFadeLoader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimationBallSpinFadeLoader.swift; sourceTree = "<group>"; };
+		46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
+		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
+		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -410,6 +418,23 @@
 			path = OtherTimeNotify;
 			sourceTree = "<group>";
 		};
+		46203F2C23CCC71C0072653A /* Members */ = {
+			isa = PBXGroup;
+			children = (
+				46203F2D23CCC7280072653A /* AddMembers */,
+			);
+			path = Members;
+			sourceTree = "<group>";
+		};
+		46203F2D23CCC7280072653A /* AddMembers */ = {
+			isa = PBXGroup;
+			children = (
+				46203F2E23CCC73E0072653A /* AddMembersViewController.swift */,
+				46203F3023CCC7520072653A /* AddMembersPresenter.swift */,
+			);
+			path = AddMembers;
+			sourceTree = "<group>";
+		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -470,6 +495,8 @@
 				46F87F2E23BCA3AD0095264E /* Buttons */,
 				46F87F7123C1AA3A0095264E /* Views */,
 				46F87F3623BCDF730095264E /* ImagePicker.swift */,
+				46203F2623CB278D0072653A /* AnimationBallSpinFadeLoader.swift */,
+				46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -710,6 +737,7 @@
 		C48F162E23B61467002D04E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				46203F2C23CCC71C0072653A /* Members */,
 				46F87F1323BB72A90095264E /* Common */,
 				C48F168123BA05DC002D04E3 /* Settings */,
 				C48F168023BA05C7002D04E3 /* Messages */,
@@ -1013,9 +1041,11 @@
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,
 				C48F161A23B5FE87002D04E3 /* NetworkService.swift in Sources */,
 				C48F161823B5FE87002D04E3 /* UpdateProfileJob.swift in Sources */,
+				46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */,
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
+				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
 				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
@@ -1034,6 +1064,7 @@
 				46203F0F23C76B880072653A /* EventType.swift in Sources */,
 				46072E1723C22B710070F2F6 /* EventCell.swift in Sources */,
 				46F87F3323BCBEE80095264E /* CreateProfileSpecViewController.swift in Sources */,
+				46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */,
 				46F87F7923C1C5A00095264E /* InterestsSearchTextField.swift in Sources */,
 				C48F162523B5FE87002D04E3 /* ProfileKeyInterests.swift in Sources */,
 				46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */,
@@ -1109,6 +1140,7 @@
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
+				46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */,
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,
 				46203EF423C4447B0072653A /* Registration.swift in Sources */,
