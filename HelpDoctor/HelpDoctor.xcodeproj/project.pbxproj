@@ -110,7 +110,6 @@
 		C48F161723B5FE87002D04E3 /* UpdateProfileSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15FC23B5FE85002D04E3 /* UpdateProfileSpec.swift */; };
 		C48F161823B5FE87002D04E3 /* UpdateProfileJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15FD23B5FE85002D04E3 /* UpdateProfileJob.swift */; };
 		C48F161923B5FE87002D04E3 /* Cities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15FE23B5FE85002D04E3 /* Cities.swift */; };
-		C48F161A23B5FE87002D04E3 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F160023B5FE85002D04E3 /* NetworkService.swift */; };
 		C48F161B23B5FE87002D04E3 /* GetRegions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F160123B5FE85002D04E3 /* GetRegions.swift */; };
 		C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F160223B5FE85002D04E3 /* Regions.swift */; };
 		C48F161D23B5FE87002D04E3 /* GetListOfInterests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F160323B5FE85002D04E3 /* GetListOfInterests.swift */; };
@@ -165,6 +164,7 @@
 		C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168623BA064C002D04E3 /* StartMessagesViewController.swift */; };
 		C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */; };
 		C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168D23BAF535002D04E3 /* StartMainPresenter.swift */; };
+		C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3A423D025E600434BFB /* NetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -273,7 +273,6 @@
 		C48F15FC23B5FE85002D04E3 /* UpdateProfileSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateProfileSpec.swift; path = ../../../../HelpDoctor/HelpDoctor/HelpDoctor/API/Profile/UpdateProfileSpec.swift; sourceTree = "<group>"; };
 		C48F15FD23B5FE85002D04E3 /* UpdateProfileJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UpdateProfileJob.swift; path = ../../../../HelpDoctor/HelpDoctor/HelpDoctor/API/Profile/UpdateProfileJob.swift; sourceTree = "<group>"; };
 		C48F15FE23B5FE85002D04E3 /* Cities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cities.swift; sourceTree = "<group>"; };
-		C48F160023B5FE85002D04E3 /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NetworkService.swift; path = ../../../../HelpDoctor/HelpDoctor/HelpDoctor/API/NetworkService/NetworkService.swift; sourceTree = "<group>"; };
 		C48F160123B5FE85002D04E3 /* GetRegions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetRegions.swift; sourceTree = "<group>"; };
 		C48F160223B5FE85002D04E3 /* Regions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Regions.swift; sourceTree = "<group>"; };
 		C48F160323B5FE85002D04E3 /* GetListOfInterests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetListOfInterests.swift; sourceTree = "<group>"; };
@@ -328,6 +327,7 @@
 		C48F168623BA064C002D04E3 /* StartMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMessagesViewController.swift; sourceTree = "<group>"; };
 		C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSettingsViewController.swift; sourceTree = "<group>"; };
 		C48F168D23BAF535002D04E3 /* StartMainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMainPresenter.swift; sourceTree = "<group>"; };
+		C4CBC3A423D025E600434BFB /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -660,6 +660,7 @@
 		C48F15F523B5FE72002D04E3 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				C4CBC3A323D025D200434BFB /* NetworkService */,
 				C48F15FE23B5FE85002D04E3 /* Cities.swift */,
 				C48F160923B5FE86002D04E3 /* GetAuthToken.swift */,
 				C48F160A23B5FE86002D04E3 /* GetCities.swift */,
@@ -679,7 +680,6 @@
 				C48F160F23B5FE86002D04E3 /* ListOfInterests.swift */,
 				C48F160723B5FE86002D04E3 /* MedicalOrganization.swift */,
 				C48F160523B5FE85002D04E3 /* MedicalSpecialization.swift */,
-				C48F15FF23B5FE85002D04E3 /* NetworkService */,
 				C48F15F823B5FE85002D04E3 /* Profile */,
 				C48F160B23B5FE86002D04E3 /* ProfileKeyInterests.swift */,
 				C48F160623B5FE85002D04E3 /* ProfileKeyJob.swift */,
@@ -714,15 +714,6 @@
 			);
 			name = Profile;
 			path = "../../../../HDintrfc-master/HDintrfc/API/Profile";
-			sourceTree = "<group>";
-		};
-		C48F15FF23B5FE85002D04E3 /* NetworkService */ = {
-			isa = PBXGroup;
-			children = (
-				C48F160023B5FE85002D04E3 /* NetworkService.swift */,
-			);
-			name = NetworkService;
-			path = "../../../../HDintrfc-master/HDintrfc/API/NetworkService";
 			sourceTree = "<group>";
 		};
 		C48F162D23B5FEA4002D04E3 /* Resources */ = {
@@ -917,6 +908,14 @@
 			path = Start;
 			sourceTree = "<group>";
 		};
+		C4CBC3A323D025D200434BFB /* NetworkService */ = {
+			isa = PBXGroup;
+			children = (
+				C4CBC3A423D025E600434BFB /* NetworkService.swift */,
+			);
+			path = NetworkService;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1039,7 +1038,6 @@
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,
-				C48F161A23B5FE87002D04E3 /* NetworkService.swift in Sources */,
 				C48F161823B5FE87002D04E3 /* UpdateProfileJob.swift in Sources */,
 				46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */,
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
@@ -1106,6 +1104,7 @@
 				46F87F3A23BDE93B0095264E /* ProfileViewController.swift in Sources */,
 				46072E2323C267710070F2F6 /* AppointmentAdd.swift in Sources */,
 				C48F161B23B5FE87002D04E3 /* GetRegions.swift in Sources */,
+				C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */,
 				46F87F7523C1BEF60095264E /* MedicalOrganizationSearchTextField.swift in Sources */,
 				46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */,
 				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
