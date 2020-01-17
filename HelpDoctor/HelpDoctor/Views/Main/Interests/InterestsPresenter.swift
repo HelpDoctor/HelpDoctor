@@ -10,7 +10,6 @@ import UIKit
 
 protocol InterestsPresenterProtocol {
     init(view: InterestsViewController)
-    func getInterests(mainSpec: String, addSpec: String)
     func getCountInterests() -> Int?
     func getInterestsTitle(index: Int) -> String?
     func appendIndexArray(index: Int)
@@ -32,28 +31,6 @@ class InterestsPresenter: InterestsPresenterProtocol {
     func selectRows() {
         for row in indexArray {
             view.setSelected(index: row)
-        }
-    }
-    
-    func getInterests(mainSpec: String, addSpec: String) {
-        let getListOfInterest = Profile()
-        
-        getData(typeOfContent: .getListOfInterestsExtTwo,
-                returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
-        { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getListOfInterest.listOfInterests = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                    let interestAddSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
-                    self?.arrayInterests = (interestMainSpec ?? []) + (interestAddSpec ?? [])
-                    self?.view.tableView.reloadData()
-                }
-            }
         }
     }
     
@@ -79,10 +56,17 @@ class InterestsPresenter: InterestsPresenterProtocol {
         let interests = indexArray.map( { arrayInterests?[$0] })
         view.navigationController?.popViewController(animated: true)
         //swiftlint:disable force_cast
-        let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
-        let presenter = previous.presenter
-        presenter?.setInterests(interests: interests as! [ListOfInterests])
-        presenter?.setIndexArray(indexes: indexArray)
+        let prevVC = view.navigationController?.viewControllers.last
+        if prevVC is CreateProfileSpecViewController {
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
+            let presenter = previous.presenter
+            presenter?.setInterests(interests: interests as! [ListOfInterests])
+            presenter?.setIndexArray(indexes: indexArray)
+        } else if prevVC is ProfileViewController {
+            let previous = view.navigationController?.viewControllers.last as! ProfileViewController
+            let presenter = previous.presenter
+            presenter?.save(source: .interest)
+        }
     }
     
 }

@@ -37,8 +37,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private var editAddJobButton = EditButton()
     private var addWorkPlaceButton = PlusButton()
     private let interestsLabel = UILabel()
-//    private var interestsTextView = InterestsSearchTextField()
-    private var interestsTextView = InterestsSearchTextView()
+    private var interestsTextView = UITextView()
     private var editInterestsButton = EditButton()
     private lazy var imagePicker = ImagePicker()
     private var keyboardHeight: CGFloat = 0
@@ -497,7 +496,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupInterestsTextView() {
-        interestsTextView.presenter = presenter
         interestsTextView.textColor = .black
         interestsTextView.isEditable = false
         interestsTextView.layer.cornerRadius = 5
@@ -663,19 +661,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func editInterestsButtonPressed() {
-        if interestsTextView.isEditable {
-            interestsTextView.isEditable = false
-            editInterestsButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
-            presenter?.save(source: .interest)
-        } else {
-            interestsTextView.isEditable = true
-            if #available(iOS 13.0, *) {
-                editInterestsButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
-                                            for: .normal)
-            } else {
-                editInterestsButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
-        }
+        presenter?.editInterests()
     }
     
     // MARK: - Navigation

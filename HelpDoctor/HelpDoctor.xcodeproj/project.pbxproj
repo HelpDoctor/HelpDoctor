@@ -165,7 +165,6 @@
 		C4CBC3AF23D026A900434BFB /* UpdateProfileSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3AA23D026A900434BFB /* UpdateProfileSpec.swift */; };
 		C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */; };
 		C4CBC3B323D026D600434BFB /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3B223D026D600434BFB /* Registration.swift */; };
-		C4CBC3CE23D1C04D00434BFB /* InterestsSearchTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */; };
 		C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
@@ -330,7 +329,6 @@
 		C4CBC3AA23D026A900434BFB /* UpdateProfileSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileSpec.swift; sourceTree = "<group>"; };
 		C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileJob.swift; sourceTree = "<group>"; };
 		C4CBC3B223D026D600434BFB /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
-		C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsSearchTextView.swift; sourceTree = "<group>"; };
 		C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -614,7 +612,6 @@
 				46F87F7423C1BEF60095264E /* MedicalOrganizationSearchTextField.swift */,
 				46F87F7623C1C33A0095264E /* MedicalSpecializationSearchTextField.swift */,
 				46F87F7823C1C5A00095264E /* InterestsSearchTextField.swift */,
-				C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -713,8 +710,8 @@
 		C48F162E23B61467002D04E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				46203F2C23CCC71C0072653A /* Members */,
 				46F87F1323BB72A90095264E /* Common */,
+				46203F2C23CCC71C0072653A /* Members */,
 				C48F168123BA05DC002D04E3 /* Settings */,
 				C48F168023BA05C7002D04E3 /* Messages */,
 				C48F167F23BA058F002D04E3 /* Schedule */,
@@ -1040,7 +1037,6 @@
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
-				C4CBC3CE23D1C04D00434BFB /* InterestsSearchTextView.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,

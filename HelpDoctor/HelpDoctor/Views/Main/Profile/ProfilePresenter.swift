@@ -11,9 +11,9 @@ import UIKit
 protocol ProfilePresenterProtocol: Presenter,
     MedicalOrganizationSearchProtocol,
     MedicalSpecializationSearchProtocol,
-    CitiesSearchProtocol,
-InterestsSearchProtocol {
+    CitiesSearchProtocol {
     init(view: ProfileViewController)
+    func editInterests()
     func getUser()
     func back()
 }
@@ -30,6 +30,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var idMainJob: Int?
     private var idAddJob: Int?
     private var idMainSpec: Int?
+    private var idAddSpec: Int?
     private var workPlace: MedicalOrganization?
     private var addWorkPlace: MedicalOrganization?
     private var mainSpec: MedicalSpecialization?
@@ -40,12 +41,26 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var addSpecArray: [[String: Any]] = []
     private var interests: [ProfileKeyInterests]?
     private var interest: [ListOfInterests] = []
+    private var arrayOfAllInterests: [ListOfInterests]?
+    private var indexArray: [Int] = []
+    private var codeMainSpec = "general"
+    private var codeAddSpec = "040100"
     
     required init(view: ProfileViewController) {
         self.view = view
     }
     
     // MARK: - Public methods
+    /// Открытие формы со списком интересов
+    func editInterests() {
+        let viewController = InterestsViewController()
+        let presenter = InterestsPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.arrayInterests = arrayOfAllInterests
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    /// Загрузка информации о пользователе с сервера
     func getUser() {
         let getDataProfile = Profile()
         
@@ -75,6 +90,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
+    /// Обновление информации о пользователе на сервере
+    /// - Parameter source: тип изменений
     func save(source: SourceEditTextField) {
         guard let nameString = view.getName() else { return }
         let result = nameString.split(separator: " ")
@@ -121,6 +138,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     // MARK: - Private methods
+    /// Установка информации о пользователе в форму
+    /// - Parameter userData: информация с сервера
     private func setUser(userData: [ProfileKeyUser]) {
         self.user = ProfileKeyUser(id: userData[0].id,
                                    first_name: userData[0].first_name,
@@ -147,6 +166,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         session.user = user
     }
     //swiftlint:disable force_unwrapping
+    /// Установка информации о работе пользователя в форму
+    /// - Parameter jobData: информация с сервера
     private func setJob(jobData: [ProfileKeyJob]) {
         let indexMainJob = jobData.firstIndex(where: { $0.is_main == true })
         if indexMainJob != nil {
@@ -160,14 +181,24 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
+    /// Установка информации о специализации пользователя в форму
+    /// - Parameter specData: информация с сервера
     private func setSpec(specData: [ProfileKeySpec]) {
         let indexMainSpec = specData.firstIndex(where: { $0.is_main == true })
         if indexMainSpec != nil {
             idMainSpec = specData[indexMainSpec!].id
+            codeMainSpec = specData[indexMainSpec!].code ?? "general"
             view.setSpec(spec: specData[indexMainSpec!].name ?? "")
+        }
+        let indexAddSpec = specData.firstIndex(where: { $0.is_main == false })
+        if indexAddSpec != nil {
+            idAddSpec = specData[indexAddSpec!].id
+            codeAddSpec = specData[indexAddSpec!].code ?? "040100"
         }
     }
     
+    /// Установка интересов в поле ввода, загрузка интересов в массив интересов по специализации пользователя
+    /// - Parameter interestData: данные с сервера
     private func setInterests(interestData: [ProfileKeyInterests]) {
         var stringArray: [String] = []
         for i in 0 ..< interestData.count {
@@ -175,8 +206,37 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
         let string = stringArray.joined(separator: " ")
         view.setInterests(interest: string)
+        getInterests(mainSpec: codeMainSpec, addSpec: codeAddSpec)
     }
     //swiftlint:enable force_unwrapping
+    
+    /// Загрузка массива всех интересов по специализациям пользователя с сервера
+    /// - Parameters:
+    ///   - mainSpec: основная специализация пользователя
+    ///   - addSpec: дополнительная специализация пользователя
+    private func getInterests(mainSpec: String, addSpec: String) {
+        let getListOfInterest = Profile()
+        
+        getData(typeOfContent: .getListOfInterestsExtTwo,
+                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getListOfInterest.listOfInterests = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                    let interestAddSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
+                    self?.arrayOfAllInterests = (interestMainSpec ?? []) + (interestAddSpec ?? [])
+                }
+            }
+        }
+    }
+    
+    /// Конвертирование серверного формата даты для отображения на форме
+    /// - Parameter birthday: дата с сервера
     private func convertDate(birthday: String?) -> String {
         guard let birthday = birthday else { return "" }
         let dateFormatter = DateFormatter()
@@ -188,6 +248,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         return dateFormatter.string(from: birthDate)
     }
     
+    /// Конвертирование формата даты с формы в серверный
+    /// - Parameter birthday: дата с формы
     private func convertDateFromView(birthday: String?) -> String {
         guard let birthday = birthday else { return "" }
         let dateFormatter = DateFormatter()
@@ -199,10 +261,14 @@ class ProfilePresenter: ProfilePresenterProtocol {
         return dateFormatter.string(from: birthDate)
     }
     
+    /// Конвертирование серверного формата телефонного номера для отображения на форме
+    /// - Parameter phone: номер телефона
     private func convertPhone(phone: String) -> String {
         return "+\(phone[0]) (\(phone[1 ..< 4])) \(phone[4 ..< 7])-\(phone[7 ..< 9])-\(phone[9 ..< 11])"
     }
     
+    /// Обновление информации о пользователе на сервере
+    /// - Parameter profile: информация для обновления
     private func updateProfile(profile: UpdateProfileKeyUser) {
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
@@ -225,6 +291,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
+    /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
         let jobArray = mainJobArray + addJobArray
         let updateProfileJob = UpdateProfileKeyJob(arrayJob: jobArray)
@@ -251,6 +318,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
+    /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
         let specArray = mainSpecArray + addSpecArray
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
@@ -277,9 +345,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         }
     }
     
+    /// Обновление информации об интересах пользователя на сервере
     private func updateInterests() {
-//        guard let interest = interest else { return }
-        print(interest)
         var intArray: [Int] = []
         for i in 0 ..< interest.count {
             intArray.append(interest[i].id)
@@ -310,16 +377,21 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     // MARK: - CitiesSearchProtocol
+    /// Получение номера региона
     func getRegionId() -> Int? {
         return session.user?.regionId
     }
     
+    /// Установка названия города на форму
+    /// - Parameter city: город
     func setCity(city: Cities) {
         cityId = city.id
         view.setLocation(location: city.cityName ?? "")
     }
     
     // MARK: - MedicalOrganizationSearchProtocol
+    /// Установка основного места работы на форму
+    /// - Parameter medicalOrganization: медицинская организация
     func setMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.workPlace = medicalOrganization
         view.setMainJob(job: medicalOrganization.nameShort ?? "")
@@ -328,6 +400,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         mainJobArray.append(job)
     }
     
+    /// Установка дополнительного места работы на форму
+    /// - Parameter medicalOrganization: медицинская организация
     func setAddMedicalOrganization(medicalOrganization: MedicalOrganization) {
         self.addWorkPlace = medicalOrganization
         view.setAddJob(job: medicalOrganization.nameShort ?? "")
@@ -337,48 +411,30 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     // MARK: - MedicalSpecializationSearchProtocol
+    /// Установка основной специализации на форму
+    /// - Parameter medicalSpecialization: медицинская специализация
     func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.mainSpec = medicalSpecialization
         view.setSpec(spec: medicalSpecialization.name ?? "")
         let spec: [String: Any] = ["id": idMainSpec ?? 0, "spec_id": medicalSpecialization.id as Any, "is_main": true]
         mainSpecArray.removeAll()
         mainSpecArray.append(spec)
+        codeMainSpec = medicalSpecialization.code ?? "general"
     }
     
+    /// Установка дополнительной специлизации на форму
+    /// - Parameter medicalSpecialization: медицинская специализация
     func setAddMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.addSpec = medicalSpecialization
         //        view.addSpecTextField.text = medicalSpecialization.name
         let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
         addSpecArray.removeAll()
         addSpecArray.append(spec)
-    }
-    
-    // MARK: - InterestsSearchProtocol
-    func getSpecs() -> (String?, String?) {
-        return (mainSpec?.code, addSpec?.code)
-    }
-    
-    func setInterests(interests: [ListOfInterests]) {
-        self.interest = interests
-        var stringArray: [String] = []
-        for i in 0 ..< interest.count {
-            stringArray.append(interest[i].name ?? "")
-        }
-        let string = stringArray.joined(separator: " ")
-        view.setInterests(interest: string)
-    }
-    
-    func addInterest(interest: ListOfInterests) {
-        self.interest.append(interest)
-        var stringArray: [String] = []
-        for i in 0 ..< self.interest.count {
-            stringArray.append(self.interest[i].name ?? "")
-        }
-        let string = stringArray.joined(separator: " ")
-        view.setInterests(interest: string)
+        codeAddSpec = medicalSpecialization.code ?? "040100"
     }
     
     // MARK: - Coordinator
+    /// Переход на предыдущую форму
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
