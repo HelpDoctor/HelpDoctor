@@ -23,6 +23,7 @@
 		46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */; };
 		46203EEE23C443E20072653A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEC23C443E20072653A /* Schedule.swift */; };
 		46203EF023C443F50072653A /* ResultFindedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEF23C443F50072653A /* ResultFindedUsers.swift */; };
+		46203EF423C4447B0072653A /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF323C4447B0072653A /* Registration.swift */; };
 		46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF523C469B00072653A /* GetFindedUsers.swift */; };
 		46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF723C469CB0072653A /* GetEventsForCurrentDate.swift */; };
 		46203EFA23C469E30072653A /* GetEventForId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF923C469E30072653A /* GetEventForId.swift */; };
