@@ -98,7 +98,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true

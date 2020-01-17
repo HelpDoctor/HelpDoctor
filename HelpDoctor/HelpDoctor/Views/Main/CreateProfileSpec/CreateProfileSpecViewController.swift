@@ -60,16 +60,35 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
+    
+    /// Заполнение поля ввода специализации
+    /// - Parameter text: Строка, которая отобразится в поле ввода
     func setSpecTextField(text: String) {
         specTextField.text = text
     }
     
-    func getSpecTextField() -> String {
-        return specTextField.text ?? ""
-    }
+//    func getSpecTextField() -> String {
+//        return specTextField.text ?? ""
+//    }
     
+    /// Обновление отображения коллекции
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    /// Выделение ячейки коллекции
+    /// - Parameter index: индекс ячейки
+    func setSelected(index: Int) {
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .centeredHorizontally)
+    }
+    
+    /// Отмена выделения всех ячеек коллекции
+    func deselectAll() {
+        guard let selectedItems = collectionView.indexPathsForSelectedItems else { return }
+        for indexPath in selectedItems {
+            collectionView.deselectItem(at: indexPath, animated: false)
+        }
     }
     
     // MARK: - Setup views
@@ -365,6 +384,7 @@ extension CreateProfileSpecViewController: ImagePickerDelegate {
 
 // MARK: - Collection view
 extension CreateProfileSpecViewController: UICollectionViewDelegate {
+    
     func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
         if let selectedItems = collectionView.indexPathsForSelectedItems {
             if selectedItems.contains(indexPath) {
@@ -389,6 +409,7 @@ extension CreateProfileSpecViewController: UICollectionViewDelegate {
 }
 
 extension CreateProfileSpecViewController: UICollectionViewDataSource {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter?.getInterestsCount() ?? 0
     }

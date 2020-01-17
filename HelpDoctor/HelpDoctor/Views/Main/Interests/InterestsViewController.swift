@@ -16,7 +16,6 @@ class InterestsViewController: UIViewController {
     // MARK: - Constants
     var tableView = UITableView()
     private var okButton = HDButton()
-    private var indexArray: [Int] = []
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
@@ -28,6 +27,7 @@ class InterestsViewController: UIViewController {
         setupHeaderView()
         setupTableView()
         setupOkButton()
+        selectRows()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,10 +37,16 @@ class InterestsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    // MARK: - Public methods
+    func setSelected(index: Int) {
+        let indexPath = IndexPath(row: index, section: 0)
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+    }
+    
     // MARK: - Setup views
     private func setupTableView() {
         view.addSubview(tableView)
-        tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
+        tableView.register(InterestTableViewCell.self, forCellReuseIdentifier: "InterestTableViewCell")
         tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
@@ -66,10 +72,14 @@ class InterestsViewController: UIViewController {
         okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
     }
     
+    // MARK: - Private methods
+    func selectRows() {
+        presenter?.selectRows()
+    }
+    
     // MARK: - Navigation
     @objc private func okButtonPressed() {
-//        presenter?.next(index: tableView.indexPathForSelectedRow?.item)
-        presenter?.next(index: indexArray)
+        presenter?.next()
     }
 }
 
@@ -81,8 +91,8 @@ extension InterestsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
-                                                       for: indexPath) as? RegionCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "InterestTableViewCell",
+                                                       for: indexPath) as? InterestTableViewCell
             else { return UITableViewCell() }
 
         cell.configure(presenter?.getInterestsTitle(index: indexPath.row) ?? "Not found")
@@ -94,16 +104,13 @@ extension InterestsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "SelectedEllipse.pdf")
-        indexArray.append(indexPath.item)
+        tableView.cellForRow(at: indexPath)?.isSelected = true
+        presenter?.appendIndexArray(index: indexPath.item)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "Ellipse.pdf")
-        guard let index = indexArray.firstIndex(of: indexPath.item) else { return }
-        indexArray.remove(at: index)
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+        presenter?.removeIndexArray(index: indexPath.item)
     }
 
 }

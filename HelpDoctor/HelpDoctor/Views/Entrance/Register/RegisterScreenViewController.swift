@@ -162,6 +162,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.textAlignment = .left
         topEmailTextField.backgroundColor = .white
         topEmailTextField.layer.cornerRadius = 5
+        topEmailTextField.autocorrectionType = .no
         topEmailTextField.leftView = UIView(frame: CGRect(x: 0,
                                                           y: 0,
                                                           width: 8,
@@ -206,6 +207,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.textAlignment = .left
         bottomEmailTextField.backgroundColor = .white
         bottomEmailTextField.layer.cornerRadius = 5
+        bottomEmailTextField.autocorrectionType = .no
         bottomEmailTextField.leftView = UIView(frame: CGRect(x: 0,
                                                              y: 0,
                                                              width: 8,

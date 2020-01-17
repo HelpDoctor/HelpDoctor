@@ -11,6 +11,7 @@ import UIKit
 protocol InterestsSearchProtocol {
     func getSpecs() -> (String?, String?)
     func setInterests(interests: [ListOfInterests])
+    func addInterest(interest: ListOfInterests)
 }
 
 class InterestsSearchTextField: UITextField {
@@ -198,6 +199,6 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
         tableView.isHidden = true
         self.endEditing(true)
         guard let interests = resultsList?[indexPath.row] else { return }
-        presenter?.setInterests(interests: [interests])
+        presenter?.addInterest(interest: interests)
     }
 }

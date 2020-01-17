@@ -10,19 +10,20 @@ import UIKit
 
 protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
     init(view: CreateProfileSpecViewController)
-    func setPhoto(photoString: String?)
     func interestsSearch()
+    func setPhoto(photoString: String?)
+    func save()
     func getInterestTitle(index: Int) -> String?
     func getInterestsCount() -> Int?
     func getInterestFromView()
     func setInterest(index: Int)
     func deleteInterest(index: Int)
+    func setIndexArray(indexes: [Int])
     func back()
-    func save()
 }
 
 class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
-
+    
     // MARK: - Dependency
     var view: CreateProfileSpecViewController
     
@@ -36,6 +37,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var arrayOfAllInterests: [ListOfInterests]?
     var mainSpec: String?
     var addSpec: String?
+    var indexArray: [Int] = []
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -43,57 +45,78 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     // MARK: - Public methods
+    /// Открытие формы со списком интересов
     func interestsSearch() {
-        guard let mainSpec = mainSpec else {
+        guard mainSpec != nil else {
             view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
             return
         }
         let viewController = InterestsViewController()
         let presenter = InterestsPresenter(view: viewController)
         viewController.presenter = presenter
-        presenter.getInterests(mainSpec: mainSpec, addSpec: addSpec ?? "040100")
+        presenter.arrayInterests = arrayOfAllInterests
+        presenter.indexArray = indexArray
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Установка фотографии в классе UpdateProfileKeyUser
+    /// - Parameter photoString: фотография пользователя в строковом виде
     func setPhoto(photoString: String?) {
         user?.foto = photoString
     }
     
+    /// Сохранение всей введенной информации и переход к следующему экрану
     func save() {
         updateUser()
     }
     
+    /// Установка названия в ячейку коллекции
+    /// - Parameter index: индекс ячейки
     func getInterestTitle(index: Int) -> String? {
         return arrayOfAllInterests?[index].name
     }
     
+    /// Подсчет количества ячеек коллекции
     func getInterestsCount() -> Int? {
         return arrayOfAllInterests?.count
     }
     
+    /// Заполнение массива интересов
     func getInterestFromView() {
         getInterests(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
     }
     
+    /// Добавление интереса в массив интересов пользователя, при выделении ячейки коллекции
+    /// - Parameter index: индекс ячейки
     func setInterest(index: Int) {
         guard let int = arrayOfAllInterests?[index] else { return }
         interest.append(int)
-        guard let name = int.name else { return }
-        view.setSpecTextField(text: "\(view.getSpecTextField()) \(name)")
+        indexArray.append(index)
     }
     
+    /// Удаление интереса из массива интересов пользователя, при отмене выделения ячейки коллекции
+    /// - Parameter index: индекс ячейки
     func deleteInterest(index: Int) {
         guard let interestId = arrayOfAllInterests?[index].id else { return }
         interest = interest.filter { $0.id != interestId }
-        var stringArray: [String] = []
-        for i in 0 ..< interest.count {
-            stringArray.append(interest[i].name ?? "")
+        indexArray = indexArray.filter { $0 != index }
+    }
+    
+    /// Заполнение массива индексов интересов пользователя, из формы списка интересов
+    /// - Parameter indexes: массив индексов
+    func setIndexArray(indexes: [Int]) {
+        self.indexArray = indexes
+        view.deselectAll()
+        for i in indexArray {
+            view.setSelected(index: i)
         }
-        let string = stringArray.joined(separator: " ")
-        view.setSpecTextField(text: string)
     }
     
     // MARK: - Private methods
+    /// Загрузка массива всех интересов по специализациям пользователя с сервера
+    /// - Parameters:
+    ///   - mainSpec: основная специализация пользователя
+    ///   - addSpec: дополнительная специализация пользователя
     private func getInterests(mainSpec: String, addSpec: String) {
         let getListOfInterest = Profile()
         
@@ -116,6 +139,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
+    /// Обновление информации о пользователе на сервере
     private func updateUser() {
         let updateProfile = UpdateProfileKeyUser(first_name: user?.first_name,
                                                  last_name: user?.last_name,
@@ -147,12 +171,11 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
+    /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
         guard let mainJobArray = mainJobArray else { return }
         let jobArray = mainJobArray + (addJobArray ?? [])
         let updateProfileJob = UpdateProfileKeyJob(arrayJob: jobArray)
-        print(jobArray.count)
-        print(jobArray)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfileJob.jsonData as Any])
@@ -175,12 +198,11 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
+    /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
         guard let mainSpecArray = mainSpecArray else { return }
         let specArray = mainSpecArray + (addSpecArray ?? [])
-        print(specArray)
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
-        print(specArray.count)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfileSpec.jsonData as Any])
@@ -203,6 +225,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
+    /// Обновление информации о интересах пользователя на сервере
     private func updateInterests() {
         var intArray: [Int] = []
         for i in 0 ..< interest.count {
@@ -234,25 +257,33 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     // MARK: - InterestsSearchProtocol
+    /// Отправка специализации пользователя для заполнения таблицы под строкой
     func getSpecs() -> (String?, String?) {
         return (mainSpec, addSpec)
     }
     
+    /// Заполнение массива интересов пользователя из формы списка интересов
+    /// - Parameter interests: массив интересов
     func setInterests(interests: [ListOfInterests]) {
         self.interest = interests
-        var stringArray: [String] = []
-        for i in 0 ..< interest.count {
-            stringArray.append(interest[i].name ?? "")
-        }
-        let string = stringArray.joined(separator: " ")
-        view.setSpecTextField(text: string)
+    }
+    
+    /// Добавление в массив интересов пользователя значения из таблицы под строкой
+    /// - Parameter interest: выбранный интерес
+    func addInterest(interest: ListOfInterests) {
+        guard let index = arrayOfAllInterests?.firstIndex(where: { $0.id == interest.id }) else { return }
+        view.setSelected(index: index)
+        view.setSpecTextField(text: "")
+        indexArray.append(index)
     }
     
     // MARK: - Coordinator
+    /// Переход к предыдущему экрану
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    /// Переход к следующему экрану
     private func next() {
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)

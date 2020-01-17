@@ -23,7 +23,6 @@
 		46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */; };
 		46203EEE23C443E20072653A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEC23C443E20072653A /* Schedule.swift */; };
 		46203EF023C443F50072653A /* ResultFindedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEF23C443F50072653A /* ResultFindedUsers.swift */; };
-		46203EF423C4447B0072653A /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF323C4447B0072653A /* Registration.swift */; };
 		46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF523C469B00072653A /* GetFindedUsers.swift */; };
 		46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF723C469CB0072653A /* GetEventsForCurrentDate.swift */; };
 		46203EFA23C469E30072653A /* GetEventForId.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EF923C469E30072653A /* GetEventForId.swift */; };
@@ -166,6 +165,8 @@
 		C4CBC3AF23D026A900434BFB /* UpdateProfileSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3AA23D026A900434BFB /* UpdateProfileSpec.swift */; };
 		C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */; };
 		C4CBC3B323D026D600434BFB /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3B223D026D600434BFB /* Registration.swift */; };
+		C4CBC3CE23D1C04D00434BFB /* InterestsSearchTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */; };
+		C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -329,6 +330,8 @@
 		C4CBC3AA23D026A900434BFB /* UpdateProfileSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileSpec.swift; sourceTree = "<group>"; };
 		C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileJob.swift; sourceTree = "<group>"; };
 		C4CBC3B223D026D600434BFB /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
+		C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsSearchTextView.swift; sourceTree = "<group>"; };
+		C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -597,6 +600,7 @@
 			children = (
 				46F87F6223BFC0910095264E /* InterestsViewController.swift */,
 				46F87F6423BFC0A50095264E /* InterestsPresenter.swift */,
+				C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */,
 			);
 			path = Interests;
 			sourceTree = "<group>";
@@ -610,6 +614,7 @@
 				46F87F7423C1BEF60095264E /* MedicalOrganizationSearchTextField.swift */,
 				46F87F7623C1C33A0095264E /* MedicalSpecializationSearchTextField.swift */,
 				46F87F7823C1C5A00095264E /* InterestsSearchTextField.swift */,
+				C4CBC3CD23D1C04D00434BFB /* InterestsSearchTextView.swift */,
 			);
 			path = TextFields;
 			sourceTree = "<group>";
@@ -1035,11 +1040,13 @@
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
+				C4CBC3CE23D1C04D00434BFB /* InterestsSearchTextView.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,
 				46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */,
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
+				C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */,
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,

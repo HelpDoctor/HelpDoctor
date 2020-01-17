@@ -37,7 +37,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private var editAddJobButton = EditButton()
     private var addWorkPlaceButton = PlusButton()
     private let interestsLabel = UILabel()
-    private var interestsTextView = InterestsSearchTextField()
+//    private var interestsTextView = InterestsSearchTextField()
+    private var interestsTextView = InterestsSearchTextView()
     private var editInterestsButton = EditButton()
     private lazy var imagePicker = ImagePicker()
     private var keyboardHeight: CGFloat = 0
@@ -498,7 +499,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private func setupInterestsTextView() {
         interestsTextView.presenter = presenter
         interestsTextView.textColor = .black
-        interestsTextView.isEnabled = false
+        interestsTextView.isEditable = false
         interestsTextView.layer.cornerRadius = 5
         interestsTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
         interestsTextView.font = .systemFontOfSize(size: 12)
@@ -508,7 +509,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsTextView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor, constant: 3).isActive = true
         interestsTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
         interestsTextView.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
-        interestsTextView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        interestsTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     private func setupEditInterestsButton() {
@@ -524,7 +525,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                                                 constant: 3).isActive = true
         editInterestsButton.leadingAnchor.constraint(equalTo: interestsTextView.trailingAnchor).isActive = true
         editInterestsButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editInterestsButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        editInterestsButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
@@ -662,12 +663,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func editInterestsButtonPressed() {
-        if interestsTextView.isEnabled {
-            interestsTextView.isEnabled = false
+        if interestsTextView.isEditable {
+            interestsTextView.isEditable = false
             editInterestsButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
             presenter?.save(source: .interest)
         } else {
-            interestsTextView.isEnabled = true
+            interestsTextView.isEditable = true
             if #available(iOS 13.0, *) {
                 editInterestsButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
                                             for: .normal)

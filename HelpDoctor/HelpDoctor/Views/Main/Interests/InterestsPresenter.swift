@@ -13,16 +13,26 @@ protocol InterestsPresenterProtocol {
     func getInterests(mainSpec: String, addSpec: String)
     func getCountInterests() -> Int?
     func getInterestsTitle(index: Int) -> String?
-    func next(index: [Int]?)
+    func appendIndexArray(index: Int)
+    func removeIndexArray(index: Int)
+    func selectRows()
+    func next()
 }
 
 class InterestsPresenter: InterestsPresenterProtocol {
     
     var view: InterestsViewController
     var arrayInterests: [ListOfInterests]?
+    var indexArray: [Int] = []
     
     required init(view: InterestsViewController) {
         self.view = view
+    }
+    
+    func selectRows() {
+        for row in indexArray {
+            view.setSelected(index: row)
+        }
     }
     
     func getInterests(mainSpec: String, addSpec: String) {
@@ -55,14 +65,24 @@ class InterestsPresenter: InterestsPresenterProtocol {
         return arrayInterests?[index].name
     }
     
+    func appendIndexArray(index: Int) {
+        indexArray.append(index)
+    }
+    
+    func removeIndexArray(index: Int) {
+        guard let i = indexArray.firstIndex(of: index) else { return }
+        indexArray.remove(at: i)
+    }
+    
     // MARK: - Coordinator
-    func next(index: [Int]?) {
-        let interests = index?.map( { arrayInterests?[$0] })
+    func next() {
+        let interests = indexArray.map( { arrayInterests?[$0] })
         view.navigationController?.popViewController(animated: true)
         //swiftlint:disable force_cast
         let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
         let presenter = previous.presenter
         presenter?.setInterests(interests: interests as! [ListOfInterests])
+        presenter?.setIndexArray(indexes: indexArray)
     }
     
 }

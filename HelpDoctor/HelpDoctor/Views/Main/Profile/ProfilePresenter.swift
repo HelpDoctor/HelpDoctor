@@ -39,7 +39,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var mainSpecArray: [[String: Any]] = []
     private var addSpecArray: [[String: Any]] = []
     private var interests: [ProfileKeyInterests]?
-    private var interest: [ListOfInterests]?
+    private var interest: [ListOfInterests] = []
     
     required init(view: ProfileViewController) {
         self.view = view
@@ -278,7 +278,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     private func updateInterests() {
-        guard let interest = interest else { return }
+//        guard let interest = interest else { return }
+        print(interest)
         var intArray: [Int] = []
         for i in 0 ..< interest.count {
             intArray.append(interest[i].id)
@@ -359,10 +360,19 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     func setInterests(interests: [ListOfInterests]) {
         self.interest = interests
-        guard let interest = interest else { return }
         var stringArray: [String] = []
         for i in 0 ..< interest.count {
             stringArray.append(interest[i].name ?? "")
+        }
+        let string = stringArray.joined(separator: " ")
+        view.setInterests(interest: string)
+    }
+    
+    func addInterest(interest: ListOfInterests) {
+        self.interest.append(interest)
+        var stringArray: [String] = []
+        for i in 0 ..< self.interest.count {
+            stringArray.append(self.interest[i].name ?? "")
         }
         let string = stringArray.joined(separator: " ")
         view.setInterests(interest: string)
