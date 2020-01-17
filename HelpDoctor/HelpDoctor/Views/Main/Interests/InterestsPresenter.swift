@@ -65,6 +65,8 @@ class InterestsPresenter: InterestsPresenterProtocol {
         } else if prevVC is ProfileViewController {
             let previous = view.navigationController?.viewControllers.last as! ProfileViewController
             let presenter = previous.presenter
+            presenter?.setInterests(interests: interests as! [ListOfInterests])
+            presenter?.setIndexArray(indexes: indexArray)
             presenter?.save(source: .interest)
         }
     }
