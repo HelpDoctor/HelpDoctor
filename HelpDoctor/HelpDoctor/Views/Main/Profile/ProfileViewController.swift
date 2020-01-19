@@ -35,6 +35,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private var editMainJobButton = EditButton()
     private var workPlace2TextField = MedicalOrganizationSearchTextField()
     private var editAddJobButton = EditButton()
+    private var workPlace3TextField = MedicalOrganizationSearchTextField()
+    private var editThirdJobButton = EditButton()
     private var addWorkPlaceButton = PlusButton()
     private let interestsLabel = UILabel()
     private var interestsTextView = UITextView()
@@ -139,6 +141,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     func setAddJob(job: String) {
         workPlace2TextField.text = job
+    }
+    
+    func setThirdJobView() {
+        addWorkPlusButtonPressed()
+    }
+    
+    func setThirdJob(job: String) {
+        workPlace3TextField.text = job
     }
     
     func setInterests(interest: String) {
@@ -403,7 +413,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupWorkPlace1TextField() {
         workPlace1TextField.presenter = presenter
-        workPlace1TextField.mainWork = true
+        workPlace1TextField.mainWork = "main"
         workPlace1TextField.textColor = .black
         workPlace1TextField.isEnabled = false
         workPlace1TextField.layer.cornerRadius = 5
@@ -436,7 +446,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupWorkPlace2TextField() {
         workPlace2TextField.presenter = presenter
-        workPlace2TextField.mainWork = false
+        workPlace2TextField.mainWork = "add"
         workPlace2TextField.textColor = .black
         workPlace2TextField.isEnabled = false
         workPlace2TextField.layer.cornerRadius = 5
@@ -467,6 +477,39 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         editAddJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    private func setupWorkPlace3TextField() {
+        workPlace3TextField.presenter = presenter
+        workPlace3TextField.mainWork = "third"
+        workPlace3TextField.textColor = .black
+        workPlace3TextField.isEnabled = false
+        workPlace3TextField.layer.cornerRadius = 5
+        workPlace3TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
+        workPlace3TextField.font = .systemFontOfSize(size: 12)
+        scrollView.addSubview(workPlace3TextField)
+        
+        workPlace3TextField.translatesAutoresizingMaskIntoConstraints = false
+        workPlace3TextField.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 5).isActive = true
+        workPlace3TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
+        workPlace3TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        workPlace3TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupEditThirdJobButton() {
+        editThirdJobButton = EditButton()
+        editThirdJobButton.addTarget(self, action: #selector(editThirdJobButtonPressed), for: .touchUpInside)
+        editThirdJobButton.backgroundColor = .white
+        editThirdJobButton.layer.cornerRadius = 5
+        editThirdJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        scrollView.addSubview(editThirdJobButton)
+        
+        editThirdJobButton.translatesAutoresizingMaskIntoConstraints = false
+        editThirdJobButton.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor,
+                                                constant: 5).isActive = true
+        editThirdJobButton.leadingAnchor.constraint(equalTo: workPlace3TextField.trailingAnchor).isActive = true
+        editThirdJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+        editThirdJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
     private func setupAddWorkPlaceButton() {
         addWorkPlaceButton = PlusButton()
         addWorkPlaceButton.addTarget(self, action: #selector(addWorkPlusButtonPressed), for: .touchUpInside)
@@ -489,7 +532,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(interestsLabel)
         
         interestsLabel.translatesAutoresizingMaskIntoConstraints = false
-        interestsLabel.topAnchor.constraint(equalTo: addWorkPlaceButton.bottomAnchor, constant: 3).isActive = true
+        interestsLabel.topAnchor.constraint(greaterThanOrEqualTo: workPlace2TextField.bottomAnchor,
+                                            constant: 26).isActive = true
         interestsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
         interestsLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
         interestsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
@@ -594,7 +638,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc func addWorkPlusButtonPressed() {
-        
+        addWorkPlaceButton.isHidden = true
+        setupWorkPlace3TextField()
+        setupEditThirdJobButton()
+        interestsLabel.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 36).isActive = true
     }
     
     @objc func editMainJobButtonPressed() {
@@ -625,6 +672,23 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                                           for: .normal)
             } else {
                 editAddJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
+            }
+        }
+    }
+    
+    @objc func editThirdJobButtonPressed() {
+        if workPlace3TextField.isEnabled {
+            workPlace3TextField.isEnabled = false
+            editThirdJobButton.setImage(UIImage(named: "Edit_Button.pdf"),
+                                        for: .normal)
+            presenter?.save(source: .job)
+        } else {
+            workPlace3TextField.isEnabled = true
+            if #available(iOS 13.0, *) {
+                editThirdJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
+                                            for: .normal)
+            } else {
+                editThirdJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
             }
         }
     }

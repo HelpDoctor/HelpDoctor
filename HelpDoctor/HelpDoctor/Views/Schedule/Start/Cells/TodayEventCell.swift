@@ -71,7 +71,9 @@ class TodayEventCell: UITableViewCell {
     }
     
     func configure(_ countEvent: Int) {
-        trailingLabel.text = "\(countEvent) важных события"
+        let words = ["важное событие", "важных события", "важных событий"]
+        let word = ""
+        trailingLabel.text = "\(countEvent) \(word.getWordByDeclension(number: countEvent, arrayWords: words))"
     }
     
 }

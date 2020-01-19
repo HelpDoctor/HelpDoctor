@@ -38,11 +38,11 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     // MARK: - Public methods
     func registerButtonPressed(email: String) {
         view.startAnimating()
-        let register = Registration(email: email, password: nil, token: nil )
+        let register = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .registrationMail,
                 returning: (Int?, String?).self,
-                requestParams: register.requestParams )
+                requestParams: register.requestParams)
         { [weak self] result in
             let dispathGroup = DispatchGroup()
             register.responce = result

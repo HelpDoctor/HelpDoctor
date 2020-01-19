@@ -21,7 +21,7 @@ class MedicalOrganizationSearchTextField: UITextField {
     var resultsList: [MedicalOrganization]?
     var tableView: UITableView?
     var presenter: MedicalOrganizationSearchProtocol?
-    var mainWork: Bool = true
+    var mainWork: String = "main"
     
     func getCountMedicalOrganizations() -> Int? {
         return dataList?.count
@@ -31,7 +31,7 @@ class MedicalOrganizationSearchTextField: UITextField {
         return dataList?[index].nameShort
     }
     
-    func getMedicalOrganization(regionId: Int, mainWork: Bool) {
+    func getMedicalOrganization(regionId: Int, mainWork: String) {
         let getMedicalOrganization = Profile()
         self.mainWork = mainWork
         
@@ -73,7 +73,7 @@ class MedicalOrganizationSearchTextField: UITextField {
     override open func layoutSubviews() {
         super.layoutSubviews()
         buildSearchTableView()
-        if mainWork {
+        if mainWork == "main" {
             self.placeholder = "Основное место работы*"
         } else {
             self.placeholder = "Доп. место работы"
@@ -208,11 +208,14 @@ extension MedicalOrganizationSearchTextField: UITableViewDelegate, UITableViewDa
         self.text = resultsList?[indexPath.row].nameShort
         tableView.isHidden = true
         self.endEditing(true)
+        print(mainWork)
         guard let medicalOrganization = resultsList?[indexPath.row] else { return }
-        if mainWork {
+        if mainWork == "main" {
             presenter?.setMedicalOrganization(medicalOrganization: medicalOrganization)
-        } else {
+        } else if mainWork == "add" {
             presenter?.setAddMedicalOrganization(medicalOrganization: medicalOrganization)
+        } else if mainWork == "third" {
+            presenter?.setThirdMedicalOrganization(medicalOrganization: medicalOrganization)
         }
     }
     

@@ -28,7 +28,7 @@ class RegionsSearchTextField: UITextField {
         
         getData(typeOfContent: .getRegions,
                 returning: ([Regions], Int?, String?).self,
-                requestParams: [:] )
+                requestParams: [:])
         { [weak self] result in
             let dispathGroup = DispatchGroup()
             
@@ -78,7 +78,6 @@ class RegionsSearchTextField: UITextField {
     
     // MARK: - Text Field related methods
     @objc open func textFieldDidChange() {
-        print("Text changed ...")
         filter()
         updateSearchTableView()
         tableView?.isHidden = false
@@ -90,7 +89,6 @@ class RegionsSearchTextField: UITextField {
     
     @objc open func textFieldDidEndEditing() {
         print("End editing")
-        
     }
     
     @objc open func textFieldDidEndEditingOnExit() {

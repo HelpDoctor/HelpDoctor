@@ -14,7 +14,7 @@ class StartSettingsViewController: UIViewController {
     var presenter: StartSettingsPresenterProtocol?
     
     // MARK: - Constants
-    private let scheduleButton = TileButton(title: "Расписание", icon: "Schedule.pdf")
+    private let scheduleButton = TileButton(title: "Пока логаут", icon: "Schedule.pdf")
     private let contactsButton = TileButton(title: "Контакты", icon: "Contacts.pdf")
     private let emptyButton = TileButton(title: "Удалить", icon: "Trash Icon.pdf")
     private let messageButton = TileButton(title: "Сообщения", icon: "Message.pdf")
@@ -52,6 +52,9 @@ class StartSettingsViewController: UIViewController {
     }
     
     private func setupScheduleButton() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(logouButtonPressed))
+        scheduleButton.addGestureRecognizer(tap)
+        scheduleButton.backgroundColor = .yellow
         view.addSubview(scheduleButton)
         
         scheduleButton.translatesAutoresizingMaskIntoConstraints = false
@@ -149,8 +152,7 @@ class StartSettingsViewController: UIViewController {
     
     @objc private func logouButtonPressed() {
         let logout = Registration(email: nil, password: nil, token: myToken)
-        print("tapped")
-
+        
         getData(typeOfContent: .logout,
                 returning: (Int?, String?).self,
                 requestParams: logout.requestParams)

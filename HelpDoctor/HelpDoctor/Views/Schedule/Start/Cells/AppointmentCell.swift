@@ -71,7 +71,9 @@ class AppointmentCell: UITableViewCell {
     }
     
     func configure(_ patient: Int) {
-        trailingLabel.text = "\(patient) пациент(ов)"
+        let words = ["пациент", "пациента", "пациентов"]
+        let word = ""
+        trailingLabel.text = "\(patient) \(word.getWordByDeclension(number: patient, arrayWords: words))"
     }
     
 }

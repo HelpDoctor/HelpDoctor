@@ -47,6 +47,9 @@
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
+		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
+		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
+		4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -210,6 +213,9 @@
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
+		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
+		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
+		4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -437,6 +443,16 @@
 				46203F3023CCC7520072653A /* AddMembersPresenter.swift */,
 			);
 			path = AddMembers;
+			sourceTree = "<group>";
+		};
+		4670346F23D480C300AFAA91 /* RepeatNotifications */ = {
+			isa = PBXGroup;
+			children = (
+				4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */,
+				4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */,
+				4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */,
+			);
+			path = RepeatNotifications;
 			sourceTree = "<group>";
 		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
@@ -857,6 +873,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				4670346F23D480C300AFAA91 /* RepeatNotifications */,
 				46203F2123CB04B40072653A /* OtherTimeNotify */,
 				46203F1A23C9CC550072653A /* ViewEvent */,
 				46203F0723C761880072653A /* EventAddEvent */,
@@ -1060,6 +1077,7 @@
 				46203F0223C4DB740072653A /* Session.swift in Sources */,
 				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */,
+				4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
 				C4CBC3AF23D026A900434BFB /* UpdateProfileSpec.swift in Sources */,
@@ -1091,6 +1109,7 @@
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */,
 				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
+				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
@@ -1129,6 +1148,7 @@
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
+				4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */,
 				46203F0023C46A670072653A /* CreateFindUsers.swift in Sources */,
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
 				46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */,

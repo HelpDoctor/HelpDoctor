@@ -102,10 +102,12 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
                     if responceCode(code: code) {
                         self?.backToRoot()
                         guard let notifyDate = self?.notifyDate else { return }
-                        self?.notification.scheduleNotification(title: "Приём пациентов",
+                        self?.notification.scheduleNotification(identifier: UUID().uuidString,
+                                                                title: "Приём пациентов",
                                                                 body: desc,
                                                                 description: title,
-                                                                notifyDate: notifyDate)
+                                                                notifyDate: notifyDate,
+                                                                repeatDay: nil)
                     } else {
                         self?.view.showAlert(message: createEvent.responce?.1)
                     }

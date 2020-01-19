@@ -132,6 +132,10 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    func setReplyButtonChecked(isSelected: Bool) {
+        replyCheckBox.isSelected = isSelected
+    }
+    
     // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
@@ -640,6 +644,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func replyCheckBoxPressed() {
         replyCheckBox.isSelected = !replyCheckBox.isSelected
+        presenter?.repeatNotifications()
     }
 
     @objc private func alldayCheckBoxPressed() {

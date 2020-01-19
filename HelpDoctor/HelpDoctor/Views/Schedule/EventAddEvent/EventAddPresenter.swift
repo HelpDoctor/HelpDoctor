@@ -21,6 +21,8 @@ protocol EventAddPresenterProtocol: Presenter {
     func backToRoot()
     func getEventTitle() -> String
     func addMembersButtonPressed()
+    func repeatNotifications()
+    func setRepeat(repeatArray: [Int])
 }
 
 class EventAddPresenter: EventAddPresenterProtocol {
@@ -32,6 +34,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
     var idEvent: Int?
     var eventType: EventType
     var notifyDate: Date?
+    var repeatArray: [Int] = []
     private let notification = NotificationDelegate()
     
     // MARK: - Init
@@ -103,10 +106,15 @@ class EventAddPresenter: EventAddPresenterProtocol {
                         self?.backToRoot()
                         guard let title = title,
                             let notifyDate = self?.notifyDate else { return }
-                        self?.notification.scheduleNotification(title: self?.getEventTitle() ?? "",
-                                                                body: desc,
-                                                                description: title,
-                                                                notifyDate: notifyDate)
+                        for day in self!.repeatArray {
+                            self?.notification.scheduleNotification(identifier: UUID().uuidString,
+                                                                    title: self?.getEventTitle() ?? "",
+                                                                    body: desc,
+                                                                    description: title,
+                                                                    notifyDate: notifyDate,
+                                                                    repeatDay: day)
+                        }
+                        
                     } else {
                         self?.view.showAlert(message: createEvent.responce?.1)
                     }
@@ -173,7 +181,23 @@ class EventAddPresenter: EventAddPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    // MARK: Private methods
+    func repeatNotifications() {
+        let viewController = RepeatNotificationsViewController()
+        let presenter = RepeatNotificationsPresenter(view: viewController)
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func setRepeat(repeatArray: [Int]) {
+        self.repeatArray = repeatArray
+        if repeatArray.count == 0 {
+            view.setReplyButtonChecked(isSelected: false)
+        } else {
+            view.setReplyButtonChecked(isSelected: true)
+        }
+    }
+    
+    // MARK: - Private methods
     private func convertDateToString(date: Date?) -> String {
         guard let date = date else { return "" }
         let dateFormatter = DateFormatter()

@@ -268,7 +268,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     /// Установка поля ввода основного места работы
     private func setupWorkTextField() {
         workTextField.presenter = presenter
-        workTextField.mainWork = true
+        workTextField.mainWork = "main"
         workTextField.attributedPlaceholder = redStar(text: "Основное место работы*")
         workTextField.textColor = .textFieldTextColor
         workTextField.layer.cornerRadius = 5
@@ -299,7 +299,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     /// Установка поля ввода дополнительного места работы
     private func setupAddWorkTextField() {
         addWorkTextField.presenter = presenter
-        addWorkTextField.mainWork = false
+        addWorkTextField.mainWork = "add"
         addWorkTextField.textColor = .textFieldTextColor
         addWorkTextField.layer.cornerRadius = 5
         addWorkTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -329,7 +329,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     /// Установка поля ввода третьего места работы
     private func setupThirdWorkTextField() {
         thirdWorkTextField.presenter = presenter
-        thirdWorkTextField.mainWork = false
+        thirdWorkTextField.mainWork = "third"
         thirdWorkTextField.textColor = .textFieldTextColor
         thirdWorkTextField.layer.cornerRadius = 5
         thirdWorkTextField.font = UIFont.systemFontOfSize(size: 14)

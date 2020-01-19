@@ -33,7 +33,7 @@ class LoginPresenter: LoginPresenterProtocol {
         
         getData(typeOfContent: .getToken,
                 returning: (Int?, String?).self,
-                requestParams: getToken.requestParams )
+                requestParams: getToken.requestParams)
         { [weak self] result in
             let dispathGroup = DispatchGroup()
             getToken.responce = result

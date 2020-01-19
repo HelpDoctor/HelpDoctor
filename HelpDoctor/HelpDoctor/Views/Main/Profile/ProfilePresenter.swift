@@ -31,14 +31,17 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var cityId: Int?
     private var idMainJob: Int?
     private var idAddJob: Int?
+    private var idThirdJob: Int?
     private var idMainSpec: Int?
     private var idAddSpec: Int?
     private var workPlace: MedicalOrganization?
     private var addWorkPlace: MedicalOrganization?
+    private var thirdWorkPlace: MedicalOrganization?
     private var mainSpec: MedicalSpecialization?
     private var addSpec: MedicalSpecialization?
     private var mainJobArray: [[String: Any]] = []
     private var addJobArray: [[String: Any]] = []
+    private var thirdJobArray: [[String: Any]] = []
     private var mainSpecArray: [[String: Any]] = []
     private var addSpecArray: [[String: Any]] = []
     private var interests: [ProfileKeyInterests]?
@@ -182,6 +185,14 @@ class ProfilePresenter: ProfilePresenterProtocol {
         if indexAddJob != nil {
             idAddJob = jobData[indexAddJob!].id
             view.setAddJob(job: jobData[indexAddJob!].nameShort ?? "")
+        }
+        if jobData.count == 3 {
+            let indexThirdJob = jobData.lastIndex(where: { $0.is_main == false })
+            if indexThirdJob != nil {
+                idThirdJob = jobData[indexThirdJob!].id
+                view.setThirdJobView()
+                view.setThirdJob(job: jobData[indexThirdJob!].nameShort ?? "")
+            }
         }
     }
     
@@ -329,7 +340,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
-        let jobArray = mainJobArray + addJobArray
+        let jobArray = mainJobArray + addJobArray + thirdJobArray
         let updateProfileJob = UpdateProfileKeyJob(arrayJob: jobArray)
         print(jobArray)
         getData(typeOfContent: .updateProfile,
@@ -446,6 +457,16 @@ class ProfilePresenter: ProfilePresenterProtocol {
         addJobArray.append(job)
     }
     
+    /// Установка третьего места работы на форму
+    /// - Parameter medicalOrganization: медицинская организация
+    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization) {
+        self.thirdWorkPlace = medicalOrganization
+        view.setThirdJob(job: medicalOrganization.nameShort ?? "")
+        let job: [String: Any] = ["id": idThirdJob ?? 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
+        thirdJobArray.removeAll()
+        thirdJobArray.append(job)
+    }
+    
     // MARK: - MedicalSpecializationSearchProtocol
     /// Установка основной специализации на форму
     /// - Parameter medicalSpecialization: медицинская специализация
@@ -469,10 +490,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
         codeAddSpec = medicalSpecialization.code ?? "040100"
     }
     
-    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization) {
-        
-    }
-    
+    /// Установка третьей специлизации на форму
+    /// - Parameter medicalSpecialization: медицинская специализация
     func setThirdMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         
     }

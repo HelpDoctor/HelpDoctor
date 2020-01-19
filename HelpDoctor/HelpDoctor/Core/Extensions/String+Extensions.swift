@@ -51,3 +51,26 @@ extension String {
   }
 
 }
+
+extension String {
+    
+    func getWordByDeclension(number: Int, arrayWords: [String]) -> String {
+        let funcNumber = number % 100
+        var resultString = ""
+        if funcNumber >= 11 && funcNumber <= 19 {
+            resultString = arrayWords[2]
+        } else {
+            let i = funcNumber % 10
+            switch i {
+            case 1:
+                resultString = arrayWords[0]
+            case 2, 3, 4:
+                resultString = arrayWords[1]
+            default:
+                resultString = arrayWords[2]
+            }
+        }
+        return resultString
+    }
+    
+}

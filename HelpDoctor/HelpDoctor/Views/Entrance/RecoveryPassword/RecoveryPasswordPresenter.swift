@@ -32,7 +32,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
         
         getData(typeOfContent: .recoveryMail,
                 returning: (Int?, String?).self,
-                requestParams: recovery.requestParams )
+                requestParams: recovery.requestParams)
         { [weak self] result in
             let dispathGroup = DispatchGroup()
             recovery.responce = result

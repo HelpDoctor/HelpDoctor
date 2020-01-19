@@ -23,8 +23,12 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
-    func scheduleNotification(title: String, body: String?, description: String?, notifyDate: Date) {
-        
+    func scheduleNotification(identifier: String,
+                              title: String,
+                              body: String?,
+                              description: String?,
+                              notifyDate: Date,
+                              repeatDay: Int?) {
         let content = UNMutableNotificationContent()
         let userActions = "User Actions"
         
@@ -36,10 +40,21 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         content.categoryIdentifier = userActions
         
         let calendar = Calendar.current
-        let components = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: notifyDate)
+        var components = DateComponents()
+        var repeats = false
         
-        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: false)
-        let identifier = "Local Notification"
+        if repeatDay != nil {
+            let day = convertRepeatDayToCalendar(repeatDay!)
+            components = calendar.dateComponents([.minute, .hour], from: notifyDate)
+            components.weekday = day
+            repeats = true
+        } else {
+            components = calendar.dateComponents([.minute, .hour, .day, .month, .year], from: notifyDate)
+            repeats = false
+        }
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: repeats)
+//        let identifier = "Local Notification"
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
         notificationCenter.add(request) { (error) in
@@ -83,5 +98,26 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
             print("Unknown action")
         }
         completionHandler()
+    }
+    
+    private func convertRepeatDayToCalendar( _ day: Int) -> Int {
+        switch day {
+        case 0:
+            return 2
+        case 1:
+            return 3
+        case 2:
+            return 4
+        case 3:
+            return 5
+        case 4:
+            return 6
+        case 5:
+            return 7
+        case 6:
+            return 1
+        default:
+            return 0
+        }
     }
 }

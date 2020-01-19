@@ -34,6 +34,9 @@ class StartScheduleViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        refreshBegin(refreshEnd: {() -> Void in
+            self.tableView.refreshControl?.endRefreshing()
+        })
     }
     
     // MARK: - Public methods
