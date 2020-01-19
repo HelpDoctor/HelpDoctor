@@ -12,6 +12,7 @@ protocol MedicalOrganizationSearchProtocol {
     func getRegionId() -> Int?
     func setMedicalOrganization(medicalOrganization: MedicalOrganization)
     func setAddMedicalOrganization(medicalOrganization: MedicalOrganization)
+    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization)
 }
 
 class MedicalOrganizationSearchTextField: UITextField {

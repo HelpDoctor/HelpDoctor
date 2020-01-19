@@ -12,6 +12,7 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let notification = NotificationDelegate()
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -28,6 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window?.rootViewController = RootViewController()
         window?.makeKeyAndVisible()
+        
+        notification.notificationCenter.delegate = notification
+        notification.userRequest()
+        
         return true
     }
     

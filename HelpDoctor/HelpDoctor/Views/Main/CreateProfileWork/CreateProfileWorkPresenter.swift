@@ -12,8 +12,8 @@ protocol CreateProfileWorkPresenterProtocol: MedicalOrganizationSearchProtocol,
     MedicalSpecializationSearchProtocol,
 CitiesSearchProtocol {
     init(view: CreateProfileWorkViewController)
-    func medicalSpecializationSearch(mainSpec: Bool)
-    func medicalOrganizationSearch(mainWork: Bool)
+    func medicalSpecializationSearch(mainSpec: Bool, tag: String)
+    func medicalOrganizationSearch(mainWork: Bool, tag: String)
     func citySearch()
     func regionSearch()
     func setRegion(region: Regions)
@@ -30,37 +30,57 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     var user: UpdateProfileKeyUser?
     private var mainJobArray: [[String: Any]] = []
     private var addJobArray: [[String: Any]] = []
+    private var thirdJobArray: [[String: Any]] = []
     private var mainSpecArray: [[String: Any]] = []
     private var addSpecArray: [[String: Any]] = []
+    private var thirdSpecArray: [[String: Any]] = []
     private var job: UpdateProfileKeyJob?
     private var region: Regions?
     private var city: Cities?
     private var workPlace: MedicalOrganization?
     private var addWorkPlace: MedicalOrganization?
+    private var thirdWorkPlace: MedicalOrganization?
     private var mainSpec: MedicalSpecialization?
     private var addSpec: MedicalSpecialization?
+    private var thirdSpec: MedicalSpecialization?
     
     required init(view: CreateProfileWorkViewController) {
         self.view = view
     }
     
     // MARK: - Public methods
-    func medicalSpecializationSearch(mainSpec: Bool) {
+    func medicalSpecializationSearch(mainSpec: Bool, tag: String) {
         let viewController = MedicalSpecializationViewController()
         let presenter = MedicalSpecializationPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.getMedicalSpecialization(mainSpec: mainSpec)
+        switch tag {
+        case "main":
+            presenter.sender = "main"
+        case "add":
+            presenter.sender = "add"
+        case "third":
+            presenter.sender = "third"
+        default:
+            view.showAlert(message: "Error")
+        }
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func medicalOrganizationSearch(mainWork: Bool) {
-        guard let regionId = region?.regionId else {
-            view.showAlert(message: "Сначала необходимо выбрать регион")
-            return }
-        let viewController = MedicalOrganizationViewController()
-        let presenter = MedicalOrganizationPresenter(view: viewController)
+    func medicalOrganizationSearch(mainWork: Bool, tag: String) {
+        let viewController = RegionsViewController()
+        let presenter = RegionsPresenter(view: viewController)
         viewController.presenter = presenter
-        presenter.getMedicalOrganization(regionId: regionId, mainWork: mainWork)
+        switch tag {
+        case "main":
+            presenter.sender = "MainWork"
+        case "add":
+            presenter.sender = "AddWork"
+        case "third":
+            presenter.sender = "ThirdWork"
+        default:
+            view.showAlert(message: "Ошибка")
+        }
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -115,6 +135,14 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         addJobArray.append(job)
     }
     
+    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization) {
+        self.thirdWorkPlace = medicalOrganization
+        view.setThirdJob(job: medicalOrganization.nameShort ?? "")
+        let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
+        thirdJobArray.removeAll()
+        thirdJobArray.append(job)
+    }
+    
     // MARK: - MedicalSpecializationSearchProtocol
     func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
         self.mainSpec = medicalSpecialization
@@ -130,6 +158,14 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
         addSpecArray.removeAll()
         addSpecArray.append(spec)
+    }
+    
+    func setThirdMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
+        self.thirdSpec = medicalSpecialization
+        view.setThirdSpec(spec: medicalSpecialization.name ?? "")
+        let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
+        thirdSpecArray.removeAll()
+        thirdSpecArray.append(spec)
     }
     
     // MARK: - Coordinator
@@ -156,9 +192,9 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         viewController.presenter = presenter
         presenter.user = user
         presenter.mainJobArray = mainJobArray
-        presenter.addJobArray = addJobArray
+        presenter.addJobArray = addJobArray + thirdJobArray
         presenter.mainSpecArray = mainSpecArray
-        presenter.addSpecArray = addSpecArray
+        presenter.addSpecArray = addSpecArray + thirdSpecArray
         presenter.mainSpec = mainSpec?.code
         presenter.addSpec = addSpec?.code
         view.navigationController?.pushViewController(viewController, animated: true)

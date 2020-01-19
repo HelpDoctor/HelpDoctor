@@ -14,7 +14,7 @@ protocol AppointmentAddPresenterProtocol: Presenter {
     func getStatusEvent() -> String
     func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?)
     func setIdEvent(idEvent: Int)
-    func setNotifyDate(date: Date)
+    func setNotifyDate(date: Date?)
     func deleteEvent()
     func convertStringToDate(date: String) -> Date?
     func otherNotifyTime(startDate: Date)
@@ -28,7 +28,8 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     
     // MARK: - Constants and variables
     var idEvent: Int?
-    var notifyDate: Date?
+    private var notifyDate: Date?
+    private let notification = NotificationDelegate()
     
     // MARK: - Init
     required init(view: AppointmentAddViewController) {
@@ -66,7 +67,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         self.idEvent = idEvent
     }
     
-    func setNotifyDate(date: Date) {
+    func setNotifyDate(date: Date?) {
         notifyDate = date
     }
     
@@ -100,6 +101,11 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
                     guard let code = createEvent.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.backToRoot()
+                        guard let notifyDate = self?.notifyDate else { return }
+                        self?.notification.scheduleNotification(title: "Приём пациентов",
+                                                                body: desc,
+                                                                description: title,
+                                                                notifyDate: notifyDate)
                     } else {
                         self?.view.showAlert(message: createEvent.responce?.1)
                     }

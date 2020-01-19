@@ -83,7 +83,11 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Заполнение массива интересов
     func getInterestFromView() {
-        getInterests(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
+        if addSpec == nil {
+            getInterestsOneSpec(mainSpec: mainSpec ?? "general")
+        } else {
+            getInterestsTwoSpec(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
+        }
     }
     
     /// Добавление интереса в массив интересов пользователя, при выделении ячейки коллекции
@@ -113,11 +117,35 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     // MARK: - Private methods
-    /// Загрузка массива всех интересов по специализациям пользователя с сервера
+    /// Загрузка массива всех интересов по одной специализации пользователя с сервера
+    /// - Parameters:
+    ///   - mainSpec: основная специализация пользователя
+    private func getInterestsOneSpec(mainSpec: String) {
+        let getListOfInterest = Profile()
+        
+        getData(typeOfContent: .getListOfInterestsExtOne,
+                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                requestParams: ["spec_code": "\(mainSpec)"] )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getListOfInterest.listOfInterests = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                    self?.arrayOfAllInterests = (interestMainSpec ?? [])
+                    self?.view.reloadCollectionView()
+                }
+            }
+        }
+    }
+    
+    /// Загрузка массива всех интересов по двум специализациям пользователя с сервера
     /// - Parameters:
     ///   - mainSpec: основная специализация пользователя
     ///   - addSpec: дополнительная специализация пользователя
-    private func getInterests(mainSpec: String, addSpec: String) {
+    private func getInterestsTwoSpec(mainSpec: String, addSpec: String) {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtTwo,

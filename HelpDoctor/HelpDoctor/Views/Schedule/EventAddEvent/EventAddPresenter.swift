@@ -14,7 +14,7 @@ protocol EventAddPresenterProtocol: Presenter {
     func getStatusEvent() -> String
     func setIdEvent(idEvent: Int)
     func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?)
-    func setNotifyDate(date: Date)
+    func setNotifyDate(date: Date?)
     func convertStringToDate(date: String) -> Date?
     func deleteEvent()
     func otherNotifyTime(startDate: Date)
@@ -31,11 +31,8 @@ class EventAddPresenter: EventAddPresenterProtocol {
     // MARK: - Constants and variables
     var idEvent: Int?
     var eventType: EventType
-//    var startDate: Date?
-//    var finishDate: Date?
     var notifyDate: Date?
-//    var title: String?
-//    var desc: String?
+    private let notification = NotificationDelegate()
     
     // MARK: - Init
     required init(view: EventAddViewController, eventType: EventType) {
@@ -104,6 +101,12 @@ class EventAddPresenter: EventAddPresenterProtocol {
                     guard let code = createEvent.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.backToRoot()
+                        guard let title = title,
+                            let notifyDate = self?.notifyDate else { return }
+                        self?.notification.scheduleNotification(title: self?.getEventTitle() ?? "",
+                                                                body: desc,
+                                                                description: title,
+                                                                notifyDate: notifyDate)
                     } else {
                         self?.view.showAlert(message: createEvent.responce?.1)
                     }
@@ -112,7 +115,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
         }
     }
     
-    func setNotifyDate(date: Date) {
+    func setNotifyDate(date: Date?) {
         notifyDate = date
     }
     

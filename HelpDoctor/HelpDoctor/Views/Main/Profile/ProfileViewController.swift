@@ -496,6 +496,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupInterestsTextView() {
+        interestsTextView.backgroundColor = .white
         interestsTextView.textColor = .black
         interestsTextView.isEditable = false
         interestsTextView.layer.cornerRadius = 5

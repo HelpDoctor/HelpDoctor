@@ -35,7 +35,7 @@ class RegisterEndViewController: UIViewController {
         setupTopLabel()
         setupBottomLabel()
         setupLoginButton()
-        setupBackButton()
+//        setupBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -26,7 +26,9 @@ class ViewEventViewController: UIViewController {
     private let descBlueView = UIView()
     private let descriptionBottomLabel = UILabel()
     private let appointmentLabel = UILabel()
+    private let bellIcon = UIImageView()
     private let timerLabel = UILabel()
+    private let locationIcon = UIImageView()
     private let locationLabel = UILabel()
     private let saveButton = UIButton()
     private let deleteButton = UIButton()
@@ -55,7 +57,9 @@ class ViewEventViewController: UIViewController {
         setupDescBlueView()
         setupDescriptionBottomLabel()
         setupAppointmentLabel()
+        setupBellIcon()
         setupTimerLabel()
+        setupLocationIcon()
         setupLocationLabel()
         setupSaveButton()
         setupDeleteButton()
@@ -98,7 +102,7 @@ class ViewEventViewController: UIViewController {
         guard let dateDiff = Calendar.current.dateComponents([.minute],
                                                              from: notify,
                                                              to: startDate).minute else { return }
-        timerLabel.text = "🔔 Уведомить за \(dateDiff) минут"
+        timerLabel.text = "Уведомить за \(dateDiff) минут"
     }
     
     // MARK: - Setup views
@@ -270,6 +274,19 @@ class ViewEventViewController: UIViewController {
         appointmentLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
+    /// Установка иконки колокольчика
+    private func setupBellIcon() {
+        bellIcon.image = UIImage(named: "BellIcon.pdf")
+        view.addSubview(bellIcon)
+        
+        bellIcon.translatesAutoresizingMaskIntoConstraints = false
+        bellIcon.topAnchor.constraint(equalTo: appointmentLabel.bottomAnchor, constant: 12).isActive = true
+        bellIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                  constant: 20).isActive = true
+        bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+    }
+    
     private func setupTimerLabel() {
         timerLabel.font = .boldSystemFontOfSize(size: 12)
         timerLabel.textColor = .white
@@ -280,9 +297,22 @@ class ViewEventViewController: UIViewController {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: appointmentLabel.bottomAnchor,
                                                     constant: 12).isActive = true
-        timerLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
+    }
+    
+    /// Установка иконки местоположения
+    private func setupLocationIcon() {
+        locationIcon.image = UIImage(named: "LocationIcon.pdf")
+        view.addSubview(locationIcon)
+        
+        locationIcon.translatesAutoresizingMaskIntoConstraints = false
+        locationIcon.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 12).isActive = true
+        locationIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                  constant: 20).isActive = true
+        locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
     private func setupLocationLabel() {
@@ -295,8 +325,8 @@ class ViewEventViewController: UIViewController {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
                                                     constant: 12).isActive = true
-        locationLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
+        locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     

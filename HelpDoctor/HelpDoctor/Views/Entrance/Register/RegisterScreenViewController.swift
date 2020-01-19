@@ -152,13 +152,13 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.addTarget(self,
                                     action: #selector(self.topEmailChanged(_:)),
                                     for: UIControl.Event.editingChanged)
-        topEmailTextField.rightView = imageViewTopEmailSuccess
-        topEmailTextField.rightViewMode = .always
-        imageViewTopEmailSuccess.contentMode = .scaleAspectFit
+//        topEmailTextField.rightView = imageViewTopEmailSuccess
+//        topEmailTextField.rightViewMode = .always
+//        imageViewTopEmailSuccess.contentMode = .scaleAspectFit
         topEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         topEmailTextField.keyboardType = .emailAddress
         topEmailTextField.textColor = .textFieldTextColor
-        topEmailTextField.placeholder = "E-mail*"
+        topEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         topEmailTextField.textAlignment = .left
         topEmailTextField.backgroundColor = .white
         topEmailTextField.layer.cornerRadius = 5
@@ -197,13 +197,13 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.addTarget(self,
                                        action: #selector(self.bottomEmailChanged(_:)),
                                        for: UIControl.Event.editingChanged)
-        bottomEmailTextField.rightView = imageViewBottomEmailSuccess
-        bottomEmailTextField.rightViewMode = .always
-        imageViewBottomEmailSuccess.contentMode = .scaleAspectFit
+//        bottomEmailTextField.rightView = imageViewBottomEmailSuccess
+//        bottomEmailTextField.rightViewMode = .always
+//        imageViewBottomEmailSuccess.contentMode = .scaleAspectFit
         bottomEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         bottomEmailTextField.keyboardType = .emailAddress
         bottomEmailTextField.textColor = .textFieldTextColor
-        bottomEmailTextField.placeholder = "E-mail*"
+        bottomEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         bottomEmailTextField.textAlignment = .left
         bottomEmailTextField.backgroundColor = .white
         bottomEmailTextField.layer.cornerRadius = 5
@@ -250,7 +250,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }

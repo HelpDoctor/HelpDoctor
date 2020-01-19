@@ -125,7 +125,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
+        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -144,7 +144,6 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSendButton() {
-//        sendButton = HDButton(title: "Отправить")
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)
@@ -171,7 +170,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }

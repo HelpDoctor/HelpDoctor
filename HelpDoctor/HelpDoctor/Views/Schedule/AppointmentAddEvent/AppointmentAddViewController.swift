@@ -28,11 +28,13 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private let descriptionTextField = UITextField()
     private let firstAppointmentButton = RadioButton()
     private let reAppointmentButton = RadioButton()
+    private let bellIcon = UIImageView()
     private let timerLabel = UILabel()
     private var tenMinutesButton = HDButton()
     private var thirtyMinutesButton = HDButton()
     private var oneHourButton = HDButton()
     private var otherTimeButton = HDButton()
+    private let locationIcon = UIImageView()
     private let locationLabel = UILabel()
     private let saveButton = UIButton()
     private let deleteButton = UIButton()
@@ -65,11 +67,13 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         setupDescriptionTextField()
         setupFirstAppointmentButton()
         setupReAppointmentButton()
+        setupBellIcon()
         setupTimerLabel()
         setupTenMinutesButton()
         setupThirtyMinutesButton()
         setupOneHourButton()
         setupOtherTimeButton()
+        setupLocationIcon()
         setupLocationLabel()
         setupSaveButton()
         setupDeleteButton()
@@ -339,10 +343,23 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         reAppointmentButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
     
+    /// Установка иконки колокольчика
+    private func setupBellIcon() {
+        bellIcon.image = UIImage(named: "BellIcon.pdf")
+        scrollView.addSubview(bellIcon)
+        
+        bellIcon.translatesAutoresizingMaskIntoConstraints = false
+        bellIcon.topAnchor.constraint(equalTo: reAppointmentButton.bottomAnchor, constant: 12).isActive = true
+        bellIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: 20).isActive = true
+        bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+    }
+    
     private func setupTimerLabel() {
         timerLabel.font = .boldSystemFontOfSize(size: 12)
         timerLabel.textColor = .white
-        timerLabel.attributedText = redStar(text: "🔔 Уведомить за")
+        timerLabel.attributedText = redStar(text: "Уведомить за")
         timerLabel.textAlignment = .left
         timerLabel.numberOfLines = 1
         scrollView.addSubview(timerLabel)
@@ -350,8 +367,8 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: reAppointmentButton.bottomAnchor,
                                                     constant: 12).isActive = true
-        timerLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -359,7 +376,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         tenMinutesButton = HDButton(title: "10 минут", fontSize: 12)
         tenMinutesButton.layer.cornerRadius = 10
         tenMinutesButton.addTarget(self, action: #selector(tenMinutesButtonPressed), for: .touchUpInside)
-        view.addSubview(tenMinutesButton)
+        scrollView.addSubview(tenMinutesButton)
         
         tenMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         tenMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
@@ -374,7 +391,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         thirtyMinutesButton = HDButton(title: "30 минут", fontSize: 12)
         thirtyMinutesButton.layer.cornerRadius = 10
         thirtyMinutesButton.addTarget(self, action: #selector(thirtyMinutesButtonPressed), for: .touchUpInside)
-        view.addSubview(thirtyMinutesButton)
+        scrollView.addSubview(thirtyMinutesButton)
         
         thirtyMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         thirtyMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
@@ -389,7 +406,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         oneHourButton = HDButton(title: "1 час", fontSize: 12)
         oneHourButton.layer.cornerRadius = 10
         oneHourButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
-        view.addSubview(oneHourButton)
+        scrollView.addSubview(oneHourButton)
         
         oneHourButton.translatesAutoresizingMaskIntoConstraints = false
         oneHourButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
@@ -404,7 +421,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         otherTimeButton = HDButton(title: "Другое", fontSize: 12)
         otherTimeButton.layer.cornerRadius = 10
         otherTimeButton.addTarget(self, action: #selector(otherTimeButtonPressed), for: .touchUpInside)
-        view.addSubview(otherTimeButton)
+        scrollView.addSubview(otherTimeButton)
         
         otherTimeButton.translatesAutoresizingMaskIntoConstraints = false
         otherTimeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
@@ -413,6 +430,19 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
                                                  constant: 5).isActive = true
         otherTimeButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
         otherTimeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+    }
+    
+    /// Установка иконки местоположения
+    private func setupLocationIcon() {
+        locationIcon.image = UIImage(named: "LocationIcon.pdf")
+        scrollView.addSubview(locationIcon)
+        
+        locationIcon.translatesAutoresizingMaskIntoConstraints = false
+        locationIcon.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor, constant: 5).isActive = true
+        locationIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: 20).isActive = true
+        locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
     private func setupLocationLabel() {
@@ -426,8 +456,8 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
                                                     constant: 5).isActive = true
-        locationLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
+        locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -514,6 +544,17 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func datePickerValueChanged(_ datePicker: UIDatePicker) {
         finishDatePicker.minimumDate = datePicker.date
+        if tenMinutesButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 600)
+        } else if thirtyMinutesButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 1800)
+        } else if oneHourButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 3600)
+        } else if otherTimeButton.isSelected {
+            showAlert(message: "Скорректируйте время уведомления")
+            otherTimeButton.update(isSelected: false)
+            presenter?.setNotifyDate(date: nil)
+        }
     }
     
     // MARK: - Buttons methods

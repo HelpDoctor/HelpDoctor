@@ -21,12 +21,15 @@ class CitiesPresenter: CitiesPresenterProtocol {
     
     var view: CitiesViewController
     var arrayCities: [Cities]?
+    var sender: String?
+    var regionId: Int?
     
     required init(view: CitiesViewController) {
         self.view = view
     }
     
     func getCities(regionId: Int) {
+        view.startAnimating()
         let getCities = Profile()
         
         getData(typeOfContent: .getListCities,
@@ -39,6 +42,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self] in
+                    self?.view.stopAnimating()
                     self?.arrayCities = getCities.cities
                     self?.view.tableView.reloadData()
                 }
@@ -56,15 +60,27 @@ class CitiesPresenter: CitiesPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index,
-            let city = arrayCities?[index] else {
-                view.showAlert(message: "Выберите один город")
+        if sender == nil {
+            guard let index = index,
+                let city = arrayCities?[index] else {
+                    view.showAlert(message: "Выберите один город")
+                    return }
+            view.navigationController?.popViewController(animated: true)
+            //swiftlint:disable force_cast
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+            let presenter = previous.presenter
+            presenter?.setCity(city: city)
+        } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
+            guard let regionId = regionId else {
+                view.showAlert(message: "Сначала необходимо выбрать регион")
                 return }
-        view.navigationController?.popViewController(animated: true)
-        //swiftlint:disable force_cast
-        let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
-        let presenter = previous.presenter
-        presenter?.setCity(city: city)
+            let viewController = MedicalOrganizationViewController()
+            let presenter = MedicalOrganizationPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
+            presenter.sender = sender
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
     func back() {

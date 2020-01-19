@@ -20,12 +20,14 @@ class RegionsPresenter: RegionsPresenterProtocol {
     
     var view: RegionsViewController
     var arrayRegions: [Regions]?
+    var sender: String?
     
     required init(view: RegionsViewController) {
         self.view = view
     }
     
     func getRegions() {
+        view.startAnimating()
         let getRegions = Profile()
         
         getData(typeOfContent: .getRegions,
@@ -40,6 +42,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
                 DispatchQueue.main.async { [weak self]  in
                     self?.arrayRegions = getRegions.regions
                     self?.view.tableView.reloadData()
+                    self?.view.stopAnimating()
                 }
             }
         }
@@ -55,16 +58,30 @@ class RegionsPresenter: RegionsPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index,
-        let region = arrayRegions?[index] else {
-            view.showAlert(message: "Выберите один регион")
-            return }
-        view.navigationController?.popViewController(animated: true)
-        //swiftlint:disable force_cast
-        let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
-        let presenter = previous.presenter
-        presenter?.setRegion(region: region)
-        previous.view.layoutIfNeeded()
+        if sender == nil {
+            guard let index = index,
+                let region = arrayRegions?[index] else {
+                    view.showAlert(message: "Выберите один регион")
+                    return }
+            view.navigationController?.popViewController(animated: true)
+            //swiftlint:disable force_cast
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+            let presenter = previous.presenter
+            presenter?.setRegion(region: region)
+            previous.view.layoutIfNeeded()
+        } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
+            guard let index = index,
+                let regionId = arrayRegions?[index].regionId else {
+                    view.showAlert(message: "Выберите один регион")
+                    return }
+            let viewController = CitiesViewController()
+            let presenter = CitiesPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.getCities(regionId: regionId)
+            presenter.sender = sender
+            presenter.regionId = regionId
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
 }

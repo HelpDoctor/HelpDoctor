@@ -26,7 +26,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     private let validateManager = ValidateManager()
     private var topEmail: String?
     private var bottomEmail: String?
-    private let validImage = UIImage(named: "checkMarkTF")
+//    private let validImage = UIImage(named: "checkMarkTF")
     private var isValidatedTopEmail = false
     private var isValidatedBottomEmail = false
     
@@ -70,7 +70,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.topEmail = nil
         }
-        updateTopEmailViews(isValidated: isValidated)
+//        updateTopEmailViews(isValidated: isValidated)
         isValidatedTopEmail = isValidated
         checkInput()
     }
@@ -85,7 +85,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.bottomEmail = nil
         }
-        updateBottomEmailViews(isValidated: isValidated)
+//        updateBottomEmailViews(isValidated: isValidated)
         isValidatedBottomEmail = isValidated
         checkInput()
     }
@@ -103,21 +103,21 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         return validateManager.validate(email: email)
     }
     
-    private func updateTopEmailViews(isValidated: Bool) {
-        let shownImage = getValidImage(isValidated: isValidated)
-        view.updateTopEmailSuccess(image: shownImage)
-    }
+//    private func updateTopEmailViews(isValidated: Bool) {
+//        let shownImage = getValidImage(isValidated: isValidated)
+//        view.updateTopEmailSuccess(image: shownImage)
+//    }
     
-    private func updateBottomEmailViews(isValidated: Bool) {
-        let shownImage = getValidImage(isValidated: isValidated)
-        view.updateBottomEmailSuccess(image: shownImage)
-    }
+//    private func updateBottomEmailViews(isValidated: Bool) {
+//        let shownImage = getValidImage(isValidated: isValidated)
+//        view.updateBottomEmailSuccess(image: shownImage)
+//    }
     
-    private func getValidImage(isValidated: Bool) -> UIImage? {
-        return isValidated
-            ? validImage
-            : nil
-    }
+//    private func getValidImage(isValidated: Bool) -> UIImage? {
+//        return isValidated
+//            ? validImage
+//            : nil
+//    }
     
     // MARK: - Coordinator
     func register(email: String) {

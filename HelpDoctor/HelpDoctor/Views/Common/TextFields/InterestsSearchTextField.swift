@@ -16,21 +16,40 @@ protocol InterestsSearchProtocol {
 
 class InterestsSearchTextField: UITextField {
     
-    var dataList: [ListOfInterests]?
-    var resultsList: [ListOfInterests]?
-    var tableView: UITableView?
+    private var dataList: [ListOfInterests]?
+    private var resultsList: [ListOfInterests]?
+    private var tableView: UITableView?
     var presenter: InterestsSearchProtocol?
-    var mainSpec: Bool = true
     
-    func getCountInterests() -> Int? {
+    private func getCountInterests() -> Int? {
         return dataList?.count
     }
     
-    func getInterestTitle(index: Int) -> String? {
+    private func getInterestTitle(index: Int) -> String? {
         return dataList?[index].name
     }
     
-    func getInterests(mainSpec: String, addSpec: String) {
+    private func getInterestsOneSpec(mainSpec: String) {
+        let getListOfInterest = Profile()
+        
+        getData(typeOfContent: .getListOfInterestsExtOne,
+                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                requestParams: ["spec_code": "\(mainSpec)"] )
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getListOfInterest.listOfInterests = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                    self?.dataList = (interestMainSpec ?? [])
+                }
+            }
+        }
+    }
+    
+    private func getInterestsTwoSpec(mainSpec: String, addSpec: String) {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
@@ -91,7 +110,14 @@ class InterestsSearchTextField: UITextField {
     }
     
     @objc open func textFieldDidBeginEditing() {
-        getInterests(mainSpec: presenter?.getSpecs().0 ?? "general", addSpec: presenter?.getSpecs().1 ?? "040100")
+        let mainSpec = presenter?.getSpecs().0 ?? "general"
+        let addSpec = presenter?.getSpecs().1
+        if addSpec == nil {
+            getInterestsOneSpec(mainSpec: mainSpec)
+        } else {
+            getInterestsTwoSpec(mainSpec: mainSpec, addSpec: addSpec ?? "040100")
+        }
+        
         print("Begin Editing")
     }
     

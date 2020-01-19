@@ -21,12 +21,14 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     var view: MedicalSpecializationViewController
     var arrayMedicalSpecialization: [MedicalSpecialization]?
     var mainSpec: Bool?
+    var sender: String?
     
     required init(view: MedicalSpecializationViewController) {
         self.view = view
     }
     
     func getMedicalSpecialization(mainSpec: Bool) {
+        view.startAnimating()
         let getMedicalSpecialization = Profile()
         self.mainSpec = mainSpec
         
@@ -40,6 +42,7 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
             getMedicalSpecialization.responce = (result?.1, result?.2)
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    self?.view.stopAnimating()
                     self?.arrayMedicalSpecialization = getMedicalSpecialization.medicalSpecialization
                     self?.view.tableView.reloadData()
                 }
@@ -58,17 +61,21 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     // MARK: - Coordinator
     func next(index: Int?) {
         guard let index = index,
-            let medicalSpecialization = arrayMedicalSpecialization?[index],
-            let mainSpec = self.mainSpec else {
+            let medicalSpecialization = arrayMedicalSpecialization?[index] else {
                 view.showAlert(message: "Выберите одну специализацию")
                 return }
         view.navigationController?.popViewController(animated: true)
         let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
         let presenter = previous.presenter
-        if mainSpec {
+        switch sender {
+        case "main":
             presenter?.setMedicalSpecialization(medicalSpecialization: medicalSpecialization)
-        } else {
+        case "add":
             presenter?.setAddMedicalSpecialization(medicalSpecialization: medicalSpecialization)
+        case "third":
+            presenter?.setThirdMedicalSpecialization(medicalSpecialization: medicalSpecialization)
+        default:
+            view.showAlert(message: "Error")
         }
     }
     

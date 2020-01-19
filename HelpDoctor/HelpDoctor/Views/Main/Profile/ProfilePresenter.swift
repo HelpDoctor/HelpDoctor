@@ -469,6 +469,14 @@ class ProfilePresenter: ProfilePresenterProtocol {
         codeAddSpec = medicalSpecialization.code ?? "040100"
     }
     
+    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization) {
+        
+    }
+    
+    func setThirdMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
+        
+    }
+    
     // MARK: - Coordinator
     /// Переход на предыдущую форму
     func back() {

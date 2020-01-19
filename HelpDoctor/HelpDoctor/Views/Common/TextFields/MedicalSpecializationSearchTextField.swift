@@ -11,6 +11,7 @@ import UIKit
 protocol MedicalSpecializationSearchProtocol {
     func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization)
     func setAddMedicalSpecialization(medicalSpecialization: MedicalSpecialization)
+    func setThirdMedicalSpecialization(medicalSpecialization: MedicalSpecialization)
 }
 
 class MedicalSpecializationSearchTextField: UITextField {

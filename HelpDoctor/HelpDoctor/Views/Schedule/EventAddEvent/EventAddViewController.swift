@@ -30,11 +30,13 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     private let descriptionTopLabel = UILabel()
     private let descriptionBottomLabel = UILabel()
     private let descriptionTextField = UITextField()
+    private let bellIcon = UIImageView()
     private let timerLabel = UILabel()
     private var tenMinutesButton = HDButton()
     private var thirtyMinutesButton = HDButton()
     private var oneHourButton = HDButton()
     private var otherTimeButton = HDButton()
+    private let locationIcon = UIImageView()
     private let locationLabel = UILabel()
     private let saveButton = UIButton()
     private let deleteButton = UIButton()
@@ -69,11 +71,13 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         setupDescriptionTopLabel()
         setupDescriptionBottomLabel()
         setupDescriptionTextField()
+        setupBellIcon()
         setupTimerLabel()
         setupTenMinutesButton()
         setupThirtyMinutesButton()
         setupOneHourButton()
         setupOtherTimeButton()
+        setupLocationIcon()
         setupLocationLabel()
         setupSaveButton()
         setupDeleteButton()
@@ -371,10 +375,23 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         descriptionTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка иконки колокольчика
+    private func setupBellIcon() {
+        bellIcon.image = UIImage(named: "BellIcon.pdf")
+        scrollView.addSubview(bellIcon)
+        
+        bellIcon.translatesAutoresizingMaskIntoConstraints = false
+        bellIcon.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 8).isActive = true
+        bellIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: 20).isActive = true
+        bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+    }
+    
     private func setupTimerLabel() {
         timerLabel.font = .boldSystemFontOfSize(size: 12)
         timerLabel.textColor = .white
-        timerLabel.attributedText = redStar(text: "🔔 Уведомить за")
+        timerLabel.attributedText = redStar(text: "Уведомить за")
         timerLabel.textAlignment = .left
         timerLabel.numberOfLines = 1
         scrollView.addSubview(timerLabel)
@@ -382,8 +399,8 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
                                                     constant: 8).isActive = true
-        timerLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -447,6 +464,19 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         otherTimeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
+    /// Установка иконки местоположения
+    private func setupLocationIcon() {
+        locationIcon.image = UIImage(named: "LocationIcon.pdf")
+        scrollView.addSubview(locationIcon)
+        
+        locationIcon.translatesAutoresizingMaskIntoConstraints = false
+        locationIcon.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor, constant: 5).isActive = true
+        locationIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: 20).isActive = true
+        locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
+        locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+    }
+    
     private func setupLocationLabel() {
         locationLabel.font = .boldSystemFontOfSize(size: 12)
         locationLabel.textColor = .white
@@ -458,8 +488,8 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
                                                     constant: 5).isActive = true
-        locationLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
+        locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -546,6 +576,17 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func datePickerValueChanged(_ datePicker: UIDatePicker) {
         finishDatePicker.minimumDate = datePicker.date
+        if tenMinutesButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 600)
+        } else if thirtyMinutesButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 1800)
+        } else if oneHourButton.isSelected {
+            presenter?.setNotifyDate(date: startDatePicker.date - 3600)
+        } else if otherTimeButton.isSelected {
+            showAlert(message: "Скорректируйте время уведомления")
+            otherTimeButton.update(isSelected: false)
+            presenter?.setNotifyDate(date: nil)
+        }
     }
     
     // MARK: - Buttons methods
