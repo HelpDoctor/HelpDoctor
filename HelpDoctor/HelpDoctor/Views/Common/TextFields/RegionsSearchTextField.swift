@@ -89,6 +89,7 @@ class RegionsSearchTextField: UITextField {
     
     @objc open func textFieldDidEndEditing() {
         print("End editing")
+        tableView?.isHidden = true
     }
     
     @objc open func textFieldDidEndEditingOnExit() {

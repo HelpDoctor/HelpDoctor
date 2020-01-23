@@ -103,6 +103,7 @@ class MedicalOrganizationSearchTextField: UITextField {
     
     @objc open func textFieldDidEndEditing() {
         print("End editing")
+        tableView?.isHidden = true
     }
     
     @objc open func textFieldDidEndEditingOnExit() {

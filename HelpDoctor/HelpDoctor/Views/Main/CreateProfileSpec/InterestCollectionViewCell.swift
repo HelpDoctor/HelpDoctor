@@ -28,12 +28,6 @@ class InterestCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override var isSelected: Bool {
-        didSet {
-            layer.borderColor = isSelected ? UIColor.red.cgColor : UIColor.white.cgColor
-        }
-    }
-    
     private func setupCellLabel() {
         cellLabel.numberOfLines = 2
         cellLabel.textAlignment = .center

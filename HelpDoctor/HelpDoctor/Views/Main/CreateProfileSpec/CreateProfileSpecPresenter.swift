@@ -16,7 +16,6 @@ protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
     func getInterestTitle(index: Int) -> String?
     func getInterestsCount() -> Int?
     func getInterestFromView()
-    func setInterest(index: Int)
     func deleteInterest(index: Int)
     func setIndexArray(indexes: [Int])
     func back()
@@ -73,12 +72,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Установка названия в ячейку коллекции
     /// - Parameter index: индекс ячейки
     func getInterestTitle(index: Int) -> String? {
-        return arrayOfAllInterests?[index].name
+        return interest[index].name
     }
     
     /// Подсчет количества ячеек коллекции
     func getInterestsCount() -> Int? {
-        return arrayOfAllInterests?.count
+        return interest.count
     }
     
     /// Заполнение массива интересов
@@ -90,30 +89,25 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
-    /// Добавление интереса в массив интересов пользователя, при выделении ячейки коллекции
-    /// - Parameter index: индекс ячейки
-    func setInterest(index: Int) {
-        guard let int = arrayOfAllInterests?[index] else { return }
-        interest.append(int)
-        indexArray.append(index)
-    }
-    
     /// Удаление интереса из массива интересов пользователя, при отмене выделения ячейки коллекции
     /// - Parameter index: индекс ячейки
     func deleteInterest(index: Int) {
         guard let interestId = arrayOfAllInterests?[index].id else { return }
-        interest = interest.filter { $0.id != interestId }
-        indexArray = indexArray.filter { $0 != index }
+        print(index)
+        print(interestId)
+        print(indexArray.count)
+        print(indexArray)
+        interest.remove(at: index)
+        indexArray.remove(at: index)
+        print(indexArray.count)
+        print(indexArray)
+        view.reloadCollectionView()
     }
     
     /// Заполнение массива индексов интересов пользователя, из формы списка интересов
     /// - Parameter indexes: массив индексов
     func setIndexArray(indexes: [Int]) {
         self.indexArray = indexes
-        view.deselectAll()
-        for i in indexArray {
-            view.setSelected(index: i)
-        }
     }
     
     // MARK: - Private methods
@@ -294,15 +288,18 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// - Parameter interests: массив интересов
     func setInterests(interests: [ListOfInterests]) {
         self.interest = interests
+        view.reloadCollectionView()
     }
     
     /// Добавление в массив интересов пользователя значения из таблицы под строкой
     /// - Parameter interest: выбранный интерес
     func addInterest(interest: ListOfInterests) {
         guard let index = arrayOfAllInterests?.firstIndex(where: { $0.id == interest.id }) else { return }
-        view.setSelected(index: index)
+        guard let int = arrayOfAllInterests?[index] else { return }
         view.setSpecTextField(text: "")
         indexArray.append(index)
+        self.interest.append(int)
+        view.reloadCollectionView()
     }
     
     // MARK: - Coordinator

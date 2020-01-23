@@ -30,8 +30,7 @@ class EnterProfileButton: UIButton {
         self.init()
         
         setImage(icon, for: .normal)
-        layer.cornerRadius = 40
-        clipsToBounds = true
+        layer.cornerRadius = 20
         updateLayerProperties()
     }
     
@@ -40,7 +39,7 @@ class EnterProfileButton: UIButton {
         self.layer.shadowOffset = CGSize(width: 0, height: 4)
         self.layer.shadowOpacity = 1.0
         self.layer.shadowRadius = 4.0
-        self.layer.masksToBounds = false
+        self.layer.masksToBounds = true
     }
     
 }

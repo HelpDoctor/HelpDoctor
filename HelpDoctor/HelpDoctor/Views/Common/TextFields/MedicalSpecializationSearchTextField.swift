@@ -72,8 +72,6 @@ class MedicalSpecializationSearchTextField: UITextField {
     override open func layoutSubviews() {
         super.layoutSubviews()
         buildSearchTableView()
-//        self.font = UIFont.systemFontOfSize(size: 14)
-//        self.textColor = .textFieldTextColor
         if mainSpec {
             self.placeholder = "Осн. специализация*"
         } else {
@@ -81,7 +79,6 @@ class MedicalSpecializationSearchTextField: UITextField {
         }
         self.textAlignment = .left
         self.backgroundColor = .white
-//        self.layer.cornerRadius = 5
         self.leftView = UIView(frame: CGRect(x: 0,
                                              y: 0,
                                              width: 8,
@@ -104,7 +101,7 @@ class MedicalSpecializationSearchTextField: UITextField {
     
     @objc open func textFieldDidEndEditing() {
         print("End editing")
-        
+        tableView?.isHidden = true
     }
     
     @objc open func textFieldDidEndEditingOnExit() {

@@ -119,9 +119,11 @@ class InterestsSearchTextField: UITextField {
         }
         
         print("Begin Editing")
+        tableView?.isHidden = false
     }
     
     @objc open func textFieldDidEndEditing() {
+        tableView?.isHidden = true
         print("End editing")
     }
     
@@ -158,6 +160,7 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
         } else {
             print("tableView created")
             tableView = UITableView(frame: CGRect.zero)
+            tableView?.isHidden = true
         }
         
         updateSearchTableView()
@@ -170,7 +173,6 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
             superview?.bringSubviewToFront(tableView)
             var tableHeight: CGFloat = 0
             tableHeight = tableView.contentSize.height
-            
             // Set a bottom margin of 10p
             if tableHeight < tableView.contentSize.height {
                 tableHeight -= 10
@@ -226,5 +228,25 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
         self.endEditing(true)
         guard let interests = resultsList?[indexPath.row] else { return }
         presenter?.addInterest(interest: interests)
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 44))
+        let button = UIButton(frame: CGRect(x: 20, y: 0, width: tableView.frame.size.width, height: 44))
+        footerView.backgroundColor = .white
+        button.setTitle("+ Добавить свой тег", for: .normal)
+        button.setTitleColor(.hdButtonColor, for: .normal)
+        button.contentHorizontalAlignment = .left
+        button.addTarget(self, action: #selector(addTag), for: .touchUpInside)
+        footerView.addSubview(button)
+        return footerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 44
+    }
+    
+    @objc private func addTag() {
+        print("pressed")
     }
 }

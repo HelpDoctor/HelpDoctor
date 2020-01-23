@@ -65,6 +65,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Setup views
+    /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
@@ -77,6 +78,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
     
+    /// Установка заголовка
     private func setupTitleLabel() {
         titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -91,6 +93,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
+    /// Установка поясняющей надписи под заголовком
     private func setupTopLabel() {
         let text = "Для создания профиля нужно внести данные о себе. Поля, отмеченные *, обязательны для заполнения"
         topLabel.font = UIFont.systemFontOfSize(size: 14)
@@ -108,6 +111,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         topLabel.heightAnchor.constraint(equalToConstant: 51).isActive = true
     }
     
+    /// Установка заголовка Шаг 1
     private func setupStep1TitleLabel() {
         step1TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         step1TitleLabel.textColor = .white
@@ -122,6 +126,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step1TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поясняющей надписи перед заполнением данных шага 1
     private func setupStep1Label() {
         step1Label.font = UIFont.systemFontOfSize(size: 14)
         step1Label.textColor = .white
@@ -136,6 +141,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step1Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поля ввода фамилии
     private func setupSurnameTextField() {
         surnameTextField.font = UIFont.systemFontOfSize(size: 14)
         surnameTextField.textColor = .textFieldTextColor
@@ -157,6 +163,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         surnameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля ввода имени
     private func setupNameTextField() {
         nameTextField.font = UIFont.systemFontOfSize(size: 14)
         nameTextField.textColor = .textFieldTextColor
@@ -178,6 +185,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля ввода отчества
     private func setupPatronymicTextField() {
         patronymicTextField.font = UIFont.systemFontOfSize(size: 14)
         patronymicTextField.textColor = .textFieldTextColor
@@ -199,6 +207,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         patronymicTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка заголовка Шаг 2
     private func setupStep2TitleLabel() {
         step2TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         step2TitleLabel.textColor = .white
@@ -213,6 +222,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step2TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поясняющей надписи перед вводом даты рождения
     private func setupStep2Label() {
         step2Label.font = UIFont.systemFontOfSize(size: 14)
         step2Label.textColor = .white
@@ -227,6 +237,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step2Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поля ввода даты рождения
     private func setupBirthDateTextField() {
         birthDateTextField.delegate = self
         birthDateTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -250,6 +261,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка заголовка Шаг 3
     private func setupStep3TitleLabel() {
         step3TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         step3TitleLabel.textColor = .white
@@ -264,6 +276,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step3TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поясняющей надписи перед вводом телефона
     private func setupStep3Label() {
         step3Label.font = UIFont.systemFontOfSize(size: 14)
         step3Label.textColor = .white
@@ -278,6 +291,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         step3Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка поля ввода телефона
     private func setupPhoneTextField() {
         phoneTextField.delegate = self
         phoneTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -301,6 +315,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let titleButton = "Далее >"
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
@@ -320,6 +335,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
+    /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
@@ -337,6 +353,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
+    /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
         view.viewWithTag(998)?.removeFromSuperview()
