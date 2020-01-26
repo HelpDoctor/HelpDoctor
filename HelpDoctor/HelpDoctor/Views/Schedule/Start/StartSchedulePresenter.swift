@@ -12,20 +12,21 @@ protocol StartSchedulePresenterProtocol: Presenter {
     init(view: StartScheduleViewController)
     func didSelectRow(index: Int)
     func addButtonPressed()
-    func getEvents()
+    func getEvents(newDate: Date)
     func getCountEvents() -> Int?
-    func getCurrentDate() -> String
+    func getCurrentDate(date: Date) -> String
     func getCountPatients() -> Int?
     func getCountMajorEvents() -> Int?
     func getTimeEvent(index: Int) -> String?
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
+    func selectDate()
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
-    var view: StartScheduleViewController
-    var arrayEvents: [ScheduleEvents]?
+    let view: StartScheduleViewController
+    private var arrayEvents: [ScheduleEvents]?
     
     // MARK: - Init
     required init(view: StartScheduleViewController) {
@@ -37,29 +38,34 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         let viewController = ViewEventViewController()
         let presenter = ViewEventPresenter(view: viewController)
         viewController.presenter = presenter
+        presenter.delegate = self
         presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func addButtonPressed() {
         let viewController = StartAddEventViewController()
-        viewController.presenter = StartAddEventPresenter(view: viewController)
+        let presenter = StartAddEventPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.delegate = self
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func getEvents() {
+    func getEvents(newDate: Date) {
         let getEvents = Schedule()
-        
+        let anyDate = convertDate(date: newDate)
         getData(typeOfContent: .schedule_getEventsForCurrentDate,
                 returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: [:])
+                requestParams: ["AnyDate": anyDate])
         { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getEvents.events = result?.0
             dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
+                DispatchQueue.main.async { [weak self] in
                     print("getEvents =\(String(describing: getEvents.events))")
+                    self?.view.setDate(date: newDate)
+                    self?.arrayEvents = []
                     self?.arrayEvents = getEvents.events
                     self?.view.reloadTableView()
                 }
@@ -71,8 +77,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         return arrayEvents?.count
     }
     
-    func getCurrentDate() -> String {
-        let date = Date()
+    func getCurrentDate(date: Date) -> String {
         let dateFormatter: DateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let calendar = Calendar.current
@@ -128,9 +133,33 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         return arrayEvents?[index].title
     }
     
+    func selectDate() {
+        let viewController = SelectDateViewController()
+        let presenter = SelectDatePresenter(view: viewController, startDate: view.getDate())
+        let delegate = self
+        viewController.presenter = presenter
+        viewController.delegate = delegate
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     // MARK: - PresenterProtocol
     func save(source: SourceEditTextField) { }
     
     func back() { }
+    
+}
+
+extension StartSchedulePresenter: SelectDateControllerDelegate {
+    
+    func callback(newDate: Date) {
+        getEvents(newDate: newDate)
+    }
+    
+    func convertDate(date: Date) -> String {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        return dateString
+    }
     
 }

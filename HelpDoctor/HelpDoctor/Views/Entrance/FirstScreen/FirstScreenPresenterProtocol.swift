@@ -16,7 +16,7 @@ protocol FirstScreenPresenterProtocol {
 
 class FirstScreenPresenter: FirstScreenPresenterProtocol {
     
-    var view: FirstScreenViewController
+    let view: FirstScreenViewController
     
     required init(view: FirstScreenViewController) {
         self.view = view

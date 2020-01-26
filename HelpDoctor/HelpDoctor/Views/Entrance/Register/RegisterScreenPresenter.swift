@@ -20,7 +20,7 @@ protocol RegisterScreenPresenter {
 class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     
     // MARK: - Dependency
-    var view: RegisterScreenViewController
+    let view: RegisterScreenViewController
     
     // MARK: - Constants and variables
     private let validateManager = ValidateManager()
@@ -37,7 +37,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     
     // MARK: - Public methods
     func registerButtonPressed(email: String) {
-        view.startAnimating()
+        view.stopActivityIndicator()
         let register = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .registrationMail,
@@ -50,7 +50,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("result=\(String(describing: register.responce))")
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                     guard let code = register.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.register(email: email)

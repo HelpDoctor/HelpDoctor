@@ -28,7 +28,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     }
     
     func getMedicalOrganization(regionId: Int, mainWork: Bool) {
-        view.startAnimating()
+        view.startActivityIndicator()
         let getMedicalOrganization = Profile()
         self.mainWork = mainWork
         
@@ -42,7 +42,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
             getMedicalOrganization.responce = (result?.1, result?.2)
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                     self?.arrayMedicalOrganizations = getMedicalOrganization.medicalOrganization
                     self?.view.tableView.reloadData()
                 }

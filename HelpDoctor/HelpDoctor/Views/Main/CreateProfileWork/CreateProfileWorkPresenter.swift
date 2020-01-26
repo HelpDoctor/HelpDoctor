@@ -24,7 +24,7 @@ CitiesSearchProtocol {
 class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Dependency
-    var view: CreateProfileWorkViewController
+    let view: CreateProfileWorkViewController
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?

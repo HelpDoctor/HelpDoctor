@@ -27,7 +27,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
     }
     
     func getRegions() {
-        view.startAnimating()
+        view.startActivityIndicator()
         let getRegions = Profile()
         
         getData(typeOfContent: .getRegions,
@@ -42,7 +42,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
                 DispatchQueue.main.async { [weak self]  in
                     self?.arrayRegions = getRegions.regions
                     self?.view.tableView.reloadData()
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                 }
             }
         }

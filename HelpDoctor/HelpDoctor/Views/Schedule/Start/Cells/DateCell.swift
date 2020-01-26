@@ -19,7 +19,6 @@ class DateCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupDateView()
         setupDateLabel()
-        isUserInteractionEnabled = false
     }
     
     required init?(coder: NSCoder) {

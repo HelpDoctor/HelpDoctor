@@ -14,7 +14,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     var presenter: RegisterScreenPresenter?
     
     // MARK: - Constants and variables
-    private var activityIndicator = ActivityIndicatorView()
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
@@ -35,7 +34,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupActivityIndicator()
         setupScrollView()
         setupHeaderView()
         setupTitleLabel()
@@ -67,29 +65,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         self.registerButton.update(isEnabled: isEnabled)
     }
     
-    func startAnimating() {
-        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
-                                                                y: (height - 70) / 2,
-                                                                width: 70,
-                                                                height: 70))
-        addBlurEffect()
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-    }
-    
-    func stopAnimating() {
-        activityIndicator.stopAnimating()
-        removeBlurEffect()
-    }
-    
     // MARK: - Setup views
-    private func setupActivityIndicator() {
-        view.addSubview(activityIndicator)
-        activityIndicator.layer.zPosition = 1
-        activityIndicator.frame = view.bounds
-        activityIndicator.backgroundColor = UIColor(white: 0, alpha: 0.4)
-    }
-    
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
@@ -158,6 +134,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         topEmailTextField.keyboardType = .emailAddress
         topEmailTextField.textColor = .textFieldTextColor
+        topEmailTextField.autocapitalizationType = .none
         topEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         topEmailTextField.textAlignment = .left
         topEmailTextField.backgroundColor = .white
@@ -203,6 +180,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         bottomEmailTextField.keyboardType = .emailAddress
         bottomEmailTextField.textColor = .textFieldTextColor
+        bottomEmailTextField.autocapitalizationType = .none
         bottomEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         bottomEmailTextField.textAlignment = .left
         bottomEmailTextField.backgroundColor = .white

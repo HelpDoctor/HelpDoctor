@@ -29,7 +29,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
     }
     
     func getCities(regionId: Int) {
-        view.startAnimating()
+        view.startActivityIndicator()
         let getCities = Profile()
         
         getData(typeOfContent: .getListCities,
@@ -42,7 +42,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self] in
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                     self?.arrayCities = getCities.cities
                     self?.view.tableView.reloadData()
                 }

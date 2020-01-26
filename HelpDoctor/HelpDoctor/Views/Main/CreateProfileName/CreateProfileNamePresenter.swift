@@ -16,7 +16,7 @@ protocol CreateProfileNamePresenterProtocol {
 class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Dependency
-    var view: CreateProfileNameViewController
+    let view: CreateProfileNameViewController
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?

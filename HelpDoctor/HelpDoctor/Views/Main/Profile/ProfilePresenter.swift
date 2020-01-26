@@ -23,7 +23,7 @@ protocol ProfilePresenterProtocol: Presenter,
 class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Dependency
-    var view: ProfileViewController
+    let view: ProfileViewController
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -186,14 +186,11 @@ class ProfilePresenter: ProfilePresenterProtocol {
             idAddJob = jobData[indexAddJob!].id
             view.setAddJob(job: jobData[indexAddJob!].nameShort ?? "")
         }
-        if jobData.count == 3 {
-            let indexThirdJob = jobData.lastIndex(where: { $0.is_main == false })
-            if indexThirdJob != nil {
-                idThirdJob = jobData[indexThirdJob!].id
-                view.setThirdJobView()
-                view.setThirdJob(job: jobData[indexThirdJob!].nameShort ?? "")
-            }
-        }
+        guard jobData.count == 3,
+            let indexThirdJob = jobData.lastIndex(where: { $0.is_main == false }) else { return }
+        idThirdJob = jobData[indexThirdJob].id
+        view.setThirdJobView()
+        view.setThirdJob(job: jobData[indexThirdJob].nameShort ?? "")
     }
     
     /// Установка информации о специализации пользователя в форму
@@ -269,9 +266,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     func setInterests(interests: [ListOfInterests]) {
         self.interest = interests
         var stringArray: [String] = []
-        for i in 0 ..< interest.count {
-            stringArray.append(interest[i].name ?? "")
-        }
+        interest.forEach { stringArray.append($0.name ?? "") }
         let string = stringArray.joined(separator: " ")
         view.setInterests(interest: string)
     }

@@ -35,7 +35,6 @@ class RegisterEndViewController: UIViewController {
         setupTopLabel()
         setupBottomLabel()
         setupLoginButton()
-//        setupBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -100,21 +99,6 @@ class RegisterEndViewController: UIViewController {
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-    }
-    
-    private func setupBackButton() {
-        let titleButton = "< Назад"
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
-        backButton.titleLabel?.textColor = .white
-        backButton.setTitle(titleButton, for: .normal)
-        view.addSubview(backButton)
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -38).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
     // MARK: - Navigation

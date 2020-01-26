@@ -18,7 +18,8 @@ protocol StartAddEventPresenterProtocol: Presenter {
 
 class StartAddEventPresenter: StartAddEventPresenterProtocol {
     
-    var view: StartAddEventViewController
+    let view: StartAddEventViewController
+    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Init
     required init(view: StartAddEventViewController) {
@@ -30,25 +31,33 @@ class StartAddEventPresenter: StartAddEventPresenterProtocol {
     // MARK: - Coordinator
     func appointmentButtonPressed() {
         let viewController = AppointmentAddViewController()
-        viewController.presenter = AppointmentAddPresenter(view: viewController)
+        let presenter = AppointmentAddPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.delegate = delegate
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func administrativeButtonPressed() {
         let viewController = EventAddViewController()
-        viewController.presenter = EventAddPresenter(view: viewController, eventType: .administrative)
+        let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
+        viewController.presenter = presenter
+        presenter.delegate = delegate
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func scienceButtonPressed() {
         let viewController = EventAddViewController()
-        viewController.presenter = EventAddPresenter(view: viewController, eventType: .science)
+        let presenter = EventAddPresenter(view: viewController, eventType: .science)
+        viewController.presenter = presenter
+        presenter.delegate = delegate
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func otherButtonPressed() {
         let viewController = EventAddViewController()
-        viewController.presenter = EventAddPresenter(view: viewController, eventType: .other)
+        let presenter = EventAddPresenter(view: viewController, eventType: .other)
+        viewController.presenter = presenter
+        presenter.delegate = delegate
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

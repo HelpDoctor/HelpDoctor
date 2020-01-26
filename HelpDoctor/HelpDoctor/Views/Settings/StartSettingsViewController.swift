@@ -166,6 +166,7 @@ class StartSettingsViewController: UIViewController {
                     guard let code = logout.responce?.0 else { return }
                     if responceCode(code: code) {
                         print("Logout")
+                        AppDelegate.shared.rootViewController.switchToLogout()
                     } else {
                         self?.showAlert(message: logout.responce?.1)
                     }

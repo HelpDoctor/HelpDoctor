@@ -16,7 +16,7 @@ protocol RegisterEndPresenterProtocol {
 
 class RegisterEndPresenter: RegisterEndPresenterProtocol {
     
-    var view: RegisterEndViewController
+    let view: RegisterEndViewController
     var email: String?
     
     required init(view: RegisterEndViewController) {

@@ -102,18 +102,8 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
     
     private func convertRepeatDayToCalendar( _ day: Int) -> Int {
         switch day {
-        case 0:
-            return 2
-        case 1:
-            return 3
-        case 2:
-            return 4
-        case 3:
-            return 5
-        case 4:
-            return 6
-        case 5:
-            return 7
+        case 0 ... 5:
+            return day + 2
         case 6:
             return 1
         default:

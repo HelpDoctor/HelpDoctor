@@ -14,7 +14,6 @@ class CitiesViewController: UIViewController {
     var presenter: CitiesPresenterProtocol?
     
     // MARK: - Constants
-    private var activityIndicator = ActivityIndicatorView()
     var tableView = UITableView()
     private var okButton = HDButton()
     
@@ -35,22 +34,6 @@ class CitiesViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
         self.tabBarController?.tabBar.isHidden = true
-    }
-    
-    // MARK: - Public methods
-    func startAnimating() {
-        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
-                                                                y: (height - 70) / 2,
-                                                                width: 70,
-                                                                height: 70))
-        addBlurEffect()
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-    }
-    
-    func stopAnimating() {
-        activityIndicator.stopAnimating()
-        removeBlurEffect()
     }
     
     // MARK: - Setup views

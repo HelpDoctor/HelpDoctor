@@ -18,7 +18,7 @@ protocol StartMainPresenterProtocol {
 class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Dependency
-    var view: StartMainViewController
+    let view: StartMainViewController
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -31,7 +31,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
     // MARK: - Public methods
     /// Производит проверку заполнения всех необходимых полей пользователя
     func profileCheck() {
-        view.startAnimating()
+        view.startActivityIndicator()
         getUser()
         let checkProfile = Registration(email: nil, password: nil, token: myToken)
         
@@ -44,7 +44,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self] in
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                     print("result=\(String(describing: checkProfile.responce))")
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
@@ -74,9 +74,9 @@ class StartMainPresenter: StartMainPresenterProtocol {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                    //swiftlint:disable force_cast
-                    let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as! [ProfileKeyUser]
-                    //swiftlint:enable force_cast
+                    //swiftlint:disable line_length
+                    guard let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] else { return }
+                    //swiftlint:enable line_length
                     self?.setUser(userData: userData)
                 }
             }

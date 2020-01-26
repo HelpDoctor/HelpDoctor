@@ -42,8 +42,9 @@ class InterestsSearchTextField: UITextField {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
                     let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                    self?.dataList = (interestMainSpec ?? [])
+                    self?.dataList = (interestMainSpec ?? []) + (generalSpec ?? [])
                 }
             }
         }
@@ -62,9 +63,10 @@ class InterestsSearchTextField: UITextField {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
                     let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
                     let interestAddSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
-                    self?.dataList = (interestMainSpec ?? []) + (interestAddSpec ?? [])
+                    self?.dataList = (interestMainSpec ?? []) + (interestAddSpec ?? []) + (generalSpec ?? [])
                 }
             }
         }
@@ -103,7 +105,7 @@ class InterestsSearchTextField: UITextField {
     
     // MARK: - Text Field related methods
     @objc open func textFieldDidChange() {
-        print("Text changed ...")
+//        print("Text changed ...")
         filter()
         updateSearchTableView()
         tableView?.isHidden = false
@@ -118,17 +120,17 @@ class InterestsSearchTextField: UITextField {
             getInterestsTwoSpec(mainSpec: mainSpec, addSpec: addSpec ?? "040100")
         }
         
-        print("Begin Editing")
+//        print("Begin Editing")
         tableView?.isHidden = false
     }
     
     @objc open func textFieldDidEndEditing() {
         tableView?.isHidden = true
-        print("End editing")
+//        print("End editing")
     }
     
     @objc open func textFieldDidEndEditingOnExit() {
-        print("End on Exit")
+//        print("End on Exit")
     }
     
     // MARK: - Filtering methods
@@ -158,7 +160,7 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
             tableView.dataSource = self
             self.window?.addSubview(tableView)
         } else {
-            print("tableView created")
+//            print("tableView created")
             tableView = UITableView(frame: CGRect.zero)
             tableView?.isHidden = true
         }
@@ -222,7 +224,7 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("selected row")
+//        print("selected row")
         self.text = resultsList?[indexPath.row].name
         tableView.isHidden = true
         self.endEditing(true)

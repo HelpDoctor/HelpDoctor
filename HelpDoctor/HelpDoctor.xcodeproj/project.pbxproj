@@ -50,6 +50,8 @@
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
 		4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */; };
+		4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347C23DD705200AFAA91 /* SelectDateViewController.swift */; };
+		4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -216,6 +218,8 @@
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
 		4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsTableViewCell.swift; sourceTree = "<group>"; };
+		4670347C23DD705200AFAA91 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
+		4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -453,6 +457,15 @@
 				4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */,
 			);
 			path = RepeatNotifications;
+			sourceTree = "<group>";
+		};
+		4670347B23DD703300AFAA91 /* SelectDate */ = {
+			isa = PBXGroup;
+			children = (
+				4670347C23DD705200AFAA91 /* SelectDateViewController.swift */,
+				4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */,
+			);
+			path = SelectDate;
 			sourceTree = "<group>";
 		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
@@ -873,6 +886,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				4670347B23DD703300AFAA91 /* SelectDate */,
 				4670346F23D480C300AFAA91 /* RepeatNotifications */,
 				46203F2123CB04B40072653A /* OtherTimeNotify */,
 				46203F1A23C9CC550072653A /* ViewEvent */,
@@ -1098,6 +1112,7 @@
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
+				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
@@ -1167,6 +1182,7 @@
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
+				4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */,
 				46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */,
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,

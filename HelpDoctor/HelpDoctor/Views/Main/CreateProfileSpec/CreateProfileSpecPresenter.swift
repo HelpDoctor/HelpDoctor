@@ -24,7 +24,7 @@ protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
 class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Dependency
-    var view: CreateProfileSpecViewController
+    let view: CreateProfileSpecViewController
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
@@ -92,15 +92,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Удаление интереса из массива интересов пользователя, при отмене выделения ячейки коллекции
     /// - Parameter index: индекс ячейки
     func deleteInterest(index: Int) {
-        guard let interestId = arrayOfAllInterests?[index].id else { return }
-        print(index)
-        print(interestId)
-        print(indexArray.count)
-        print(indexArray)
+        guard (arrayOfAllInterests?[index].id) != nil else { return }
         interest.remove(at: index)
         indexArray.remove(at: index)
-        print(indexArray.count)
-        print(indexArray)
         view.reloadCollectionView()
     }
     
@@ -127,8 +121,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
                     let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                    self?.arrayOfAllInterests = (interestMainSpec ?? [])
+                    self?.arrayOfAllInterests = (interestMainSpec ?? []) + (generalSpec ?? [])
                     self?.view.reloadCollectionView()
                 }
             }
@@ -152,9 +147,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
             
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
+                    let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
                     let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
                     let interestAddSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
-                    self?.arrayOfAllInterests = (interestMainSpec ?? []) + (interestAddSpec ?? [])
+                    self?.arrayOfAllInterests = (interestMainSpec ?? []) + (interestAddSpec ?? []) + (generalSpec ?? [])
                     self?.view.reloadCollectionView()
                 }
             }
@@ -295,10 +291,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// - Parameter interest: выбранный интерес
     func addInterest(interest: ListOfInterests) {
         guard let index = arrayOfAllInterests?.firstIndex(where: { $0.id == interest.id }) else { return }
-        guard let int = arrayOfAllInterests?[index] else { return }
         view.setSpecTextField(text: "")
         indexArray.append(index)
-        self.interest.append(int)
+        self.interest.append(interest)
         view.reloadCollectionView()
     }
     

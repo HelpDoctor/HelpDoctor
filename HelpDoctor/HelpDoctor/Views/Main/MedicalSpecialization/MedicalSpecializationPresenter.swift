@@ -28,7 +28,7 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     }
     
     func getMedicalSpecialization(mainSpec: Bool) {
-        view.startAnimating()
+        view.startActivityIndicator()
         let getMedicalSpecialization = Profile()
         self.mainSpec = mainSpec
         
@@ -42,7 +42,7 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
             getMedicalSpecialization.responce = (result?.1, result?.2)
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopAnimating()
+                    self?.view.stopActivityIndicator()
                     self?.arrayMedicalSpecialization = getMedicalSpecialization.medicalSpecialization
                     self?.view.tableView.reloadData()
                 }

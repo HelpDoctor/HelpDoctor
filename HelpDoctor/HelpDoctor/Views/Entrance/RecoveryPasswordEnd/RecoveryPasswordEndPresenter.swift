@@ -16,7 +16,7 @@ protocol RecoveryPasswordEndPresenterProtocol {
 class RecoveryPasswordEndPresenter: RecoveryPasswordEndPresenterProtocol {
     
     // MARK: - Dependency
-    var view: RecoveryPasswordEndViewController
+    let view: RecoveryPasswordEndViewController
     
     // MARK: - Constants and variables
     var email: String?

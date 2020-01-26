@@ -53,12 +53,7 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
             let y = isForFirstRow ? 0.0 : cellHeight + 2
             attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
             allAttributes[indexPath] = attributes
-            
-            if isForFirstRow {
-                firstRowWidth += cellWidth + 2
-            } else {
-                secondRowWidth += cellWidth + 2
-            }
+            isForFirstRow ? (firstRowWidth += cellWidth + 2) : (secondRowWidth += cellWidth + 2)
         }
         self.cache = allAttributes
     }

@@ -1,18 +1,18 @@
 //
-//  OtherTimeNotifyViewController.swift
+//  SelectDateViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 12.01.2020.
+//  Created by Mikhail Semerikov on 25.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class OtherTimeNotifyViewController: UIViewController {
+class SelectDateViewController: UIViewController {
 
     // MARK: - Dependency
-    var presenter: OtherTimeNotifyPresenterProtocol?
-    weak var delegate: OtherTimeControllerDelegate?
+    var presenter: SelectDatePresenterProtocol?
+    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Constants and variables
     private let titleLabel = UILabel()
@@ -26,7 +26,7 @@ class OtherTimeNotifyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupHeaderViewWithAvatar(title: "Время напоминания",
+        setupHeaderViewWithAvatar(title: "Выбор даты",
                                   text: nil,
                                   userImage: nil,
                                   presenter: presenter)
@@ -42,15 +42,15 @@ class OtherTimeNotifyViewController: UIViewController {
     }
     
     // MARK: - Public methods
-    func setStartTime(startTime: Date) {
-        notifyPicker.maximumDate = startTime
+    func setStartDate(startDate: Date) {
+        notifyPicker.setDate(startDate, animated: true)
     }
     
     // MARK: - Setup views
     private func setupTitleLabel() {
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "На какое время установить напоминание"
+        titleLabel.attributedText = redStar(text: "Выберите дату*")
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1
         view.addSubview(titleLabel)
@@ -65,6 +65,7 @@ class OtherTimeNotifyViewController: UIViewController {
     private func setupNotifyPicker() {
         notifyPicker.backgroundColor = .white
         notifyPicker.setDate(Date(), animated: true)
+        notifyPicker.datePickerMode = .date
         view.addSubview(notifyPicker)
         
         notifyPicker.translatesAutoresizingMaskIntoConstraints = false
@@ -96,7 +97,7 @@ class OtherTimeNotifyViewController: UIViewController {
     // MARK: - IBActions
     // MARK: - Buttons methods
     @objc private func saveButtonPressed() {
-        delegate?.callback(notifyDate: notifyPicker.date)
+        delegate?.callback(newDate: notifyPicker.date)
         presenter?.back()
     }
 

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol OtherTimeControllerDelegate {
+protocol OtherTimeControllerDelegate: AnyObject {
     func callback(notifyDate: Date)
 }
 
@@ -19,8 +19,7 @@ protocol OtherTimeNotifyPresenterProtocol: Presenter {
 class OtherTimeNotifyPresenter: OtherTimeNotifyPresenterProtocol {
     
     // MARK: - Dependency
-    var view: OtherTimeNotifyViewController
-//    var delegate: OtherTimeControllerDelegate?
+    let view: OtherTimeNotifyViewController
     
     // MARK: - Constants and variables
     var startTime: Date
@@ -31,9 +30,6 @@ class OtherTimeNotifyPresenter: OtherTimeNotifyPresenterProtocol {
         self.startTime = startTime
         view.setStartTime(startTime: startTime)
     }
-    
-    // MARK: - Public methods
-
     
     // MARK: - Coordinator
     func back() {

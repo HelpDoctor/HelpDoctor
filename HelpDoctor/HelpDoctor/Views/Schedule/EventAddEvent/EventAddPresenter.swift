@@ -28,7 +28,7 @@ protocol EventAddPresenterProtocol: Presenter {
 class EventAddPresenter: EventAddPresenterProtocol {
     
     // MARK: - Dependency
-    var view: EventAddViewController
+    let view: EventAddViewController
     
     // MARK: - Constants and variables
     var idEvent: Int?
@@ -36,6 +36,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
     var notifyDate: Date?
     var repeatArray: [Int] = []
     private let notification = NotificationDelegate()
+    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Init
     required init(view: EventAddViewController, eventType: EventType) {
@@ -99,16 +100,18 @@ class EventAddPresenter: EventAddPresenterProtocol {
             createEvent.responce = result
             
             dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
+                DispatchQueue.main.async {
                     print("createEvent = \(String(describing: createEvent.responce))")
-                    guard let code = createEvent.responce?.0 else { return }
+                    guard let self = self,
+                        let code = createEvent.responce?.0 else { return }
                     if responceCode(code: code) {
-                        self?.backToRoot()
+                        self.backToRoot()
+                        self.delegate?.callback(newDate: startDate)
                         guard let title = title,
-                            let notifyDate = self?.notifyDate else { return }
-                        for day in self!.repeatArray {
-                            self?.notification.scheduleNotification(identifier: UUID().uuidString,
-                                                                    title: self?.getEventTitle() ?? "",
+                            let notifyDate = self.notifyDate else { return }
+                        for day in self.repeatArray {
+                            self.notification.scheduleNotification(identifier: UUID().uuidString,
+                                                                   title: self.getEventTitle(),
                                                                     body: desc,
                                                                     description: title,
                                                                     notifyDate: notifyDate,
@@ -116,7 +119,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
                         }
                         
                     } else {
-                        self?.view.showAlert(message: createEvent.responce?.1)
+                        self.view.showAlert(message: createEvent.responce?.1)
                     }
                 }
             }
@@ -190,11 +193,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
     
     func setRepeat(repeatArray: [Int]) {
         self.repeatArray = repeatArray
-        if repeatArray.count == 0 {
-            view.setReplyButtonChecked(isSelected: false)
-        } else {
-            view.setReplyButtonChecked(isSelected: true)
-        }
+        view.setReplyButtonChecked(isSelected: !repeatArray.isEmpty)
     }
     
     // MARK: - Private methods

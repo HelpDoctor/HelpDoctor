@@ -19,7 +19,7 @@ protocol RepeatNotificationsPresenterProtocol: Presenter {
 class RepeatNotificationsPresenter: RepeatNotificationsPresenterProtocol {
     
     // MARK: - Dependency
-    var view: RepeatNotificationsViewController
+    let view: RepeatNotificationsViewController
     
     // MARK: - Constants and variables
     var indexArray: [Int] = []

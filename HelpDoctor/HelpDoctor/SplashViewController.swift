@@ -22,30 +22,28 @@ class SplashViewController: UIViewController {
     
     private func makeServiceCall() {
         startAnimating()
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + .seconds(1)) {
-            self.stopAnimating()
+        
+        let checkProfile = Registration(email: nil, password: nil, token: myToken)
+        
+        getData(typeOfContent: .checkProfile,
+                returning: (Int?, String?).self,
+                requestParams: checkProfile.requestParams)
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            checkProfile.responce = result
             
-            let checkProfile = Registration(email: nil, password: nil, token: myToken)
-            
-            getData(typeOfContent: .checkProfile,
-                    returning: (Int?, String?).self,
-                    requestParams: checkProfile.requestParams)
-            { [weak self] result in
-                let dispathGroup = DispatchGroup()
-                checkProfile.responce = result
-                
-                dispathGroup.notify(queue: DispatchQueue.main) {
-                    DispatchQueue.main.async { [weak self] in
-                        print("result=\(String(describing: checkProfile.responce))")
-                        guard let status = checkProfile.responce?.1 else { return }
-                        switch status {
-                        case "Token id not found":
-                            AppDelegate.shared.rootViewController.switchToLogout()
-                        case "X-Auth-Token required":
-                            AppDelegate.shared.rootViewController.switchToLogout()
-                        default:
-                            AppDelegate.shared.rootViewController.switchToMainScreen()
-                        }
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("result=\(String(describing: checkProfile.responce))")
+                    self?.stopAnimating()
+                    guard let status = checkProfile.responce?.1 else { return }
+                    switch status {
+                    case "Token id not found":
+                        AppDelegate.shared.rootViewController.switchToLogout()
+                    case "X-Auth-Token required":
+                        AppDelegate.shared.rootViewController.switchToLogout()
+                    default:
+                        AppDelegate.shared.rootViewController.switchToMainScreen()
                     }
                 }
             }
@@ -61,7 +59,7 @@ class SplashViewController: UIViewController {
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
     }
-    
+
     func stopAnimating() {
         activityIndicator.stopAnimating()
     }

@@ -14,7 +14,6 @@ class StartMainViewController: UIViewController {
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
-    private var activityIndicator = ActivityIndicatorView()
     private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
@@ -53,21 +52,6 @@ class StartMainViewController: UIViewController {
     }
     
     // MARK: - Public methods
-    func startAnimating() {
-        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - 70) / 2,
-                                                                y: (height - 70) / 2,
-                                                                width: 70,
-                                                                height: 70))
-        addBlurEffect()
-        view.addSubview(activityIndicator)
-        activityIndicator.startAnimating()
-    }
-    
-    func stopAnimating() {
-        activityIndicator.stopAnimating()
-        removeBlurEffect()
-    }
-    
     func hideFillProfileButton() {
         bottomLabel.isHidden = true
         fillProfileButton.isHidden = true

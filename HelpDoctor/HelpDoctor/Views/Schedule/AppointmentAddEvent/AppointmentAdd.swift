@@ -24,12 +24,13 @@ protocol AppointmentAddPresenterProtocol: Presenter {
 class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     
     // MARK: - Dependency
-    var view: AppointmentAddViewController
+    let view: AppointmentAddViewController
     
     // MARK: - Constants and variables
     var idEvent: Int?
     private var notifyDate: Date?
     private let notification = NotificationDelegate()
+    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Init
     required init(view: AppointmentAddViewController) {
@@ -101,6 +102,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
                     guard let code = createEvent.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.backToRoot()
+                        self?.delegate?.callback(newDate: startDate)
                         guard let notifyDate = self?.notifyDate else { return }
                         self?.notification.scheduleNotification(identifier: UUID().uuidString,
                                                                 title: "Приём пациентов",

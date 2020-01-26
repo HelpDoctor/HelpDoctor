@@ -19,7 +19,7 @@ protocol LoginPresenterProtocol {
 class LoginPresenter: LoginPresenterProtocol {
     
     // MARK: - Dependency
-    var view: LoginViewController
+    let view: LoginViewController
     
     // MARK: - Init
     required init(view: LoginViewController) {
@@ -28,7 +28,7 @@ class LoginPresenter: LoginPresenterProtocol {
     
     // MARK: - Public methods
     func loginButtonPressed(email: String, password: String) {
-        view.startAnimating()
+        view.startActivityIndicator()
         let getToken = Registration(email: email, password: password, token: nil)
         
         getData(typeOfContent: .getToken,

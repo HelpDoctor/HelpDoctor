@@ -22,9 +22,10 @@ protocol ViewEventPresenterProtocol: Presenter {
 class ViewEventPresenter: ViewEventPresenterProtocol {
     
     // MARK: - Constants and variables
-    var view: ViewEventViewController
+    let view: ViewEventViewController
     var idEvent: Int?
     var eventType: String?
+    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Init
     required init(view: ViewEventViewController) {
@@ -62,24 +63,28 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
             let viewController = AppointmentAddViewController()
             let presenter = AppointmentAddPresenter(view: viewController)
             viewController.presenter = presenter
+            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "administrative":
             let viewController = EventAddViewController()
             let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
             viewController.presenter = presenter
+            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "scientific":
             let viewController = EventAddViewController()
             let presenter = EventAddPresenter(view: viewController, eventType: .science)
             viewController.presenter = presenter
+            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "another":
             let viewController = EventAddViewController()
             let presenter = EventAddPresenter(view: viewController, eventType: .other)
             viewController.presenter = presenter
+            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         default:
@@ -103,6 +108,7 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
                     guard let code = resultDeleteEvents.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.backToRoot()
+                        self?.delegate?.callback(newDate: Date())
                     } else {
                         self?.view.showAlert(message: resultDeleteEvents.responce?.1)
                     }

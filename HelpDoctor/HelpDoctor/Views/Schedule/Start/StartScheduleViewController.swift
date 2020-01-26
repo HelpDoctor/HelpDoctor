@@ -16,6 +16,7 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Constants
     private let tableView = UITableView()
     private var addButton = PlusButton()
+    private var currentDate = Date()
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
@@ -27,21 +28,26 @@ class StartScheduleViewController: UIViewController {
         setupHeaderViewWithAvatar(title: "Расписание", text: nil, userImage: nil, presenter: presenter)
         setupTableView()
         setupAddButton()
-        presenter?.getEvents()
+        presenter?.getEvents(newDate: currentDate)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
-        refreshBegin(refreshEnd: {() -> Void in
-            self.tableView.refreshControl?.endRefreshing()
-        })
     }
     
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
+    }
+    
+    func setDate(date: Date = Date()) {
+        currentDate = date
+    }
+    
+    func getDate() -> Date {
+        return currentDate
     }
     
     // MARK: - Setup views
@@ -87,7 +93,7 @@ class StartScheduleViewController: UIViewController {
     
     private func refreshBegin(refreshEnd: @escaping () -> Void) {
         DispatchQueue.global().async {
-            self.presenter?.getEvents()
+            self.presenter?.getEvents(newDate: self.currentDate)
             DispatchQueue.main.async {
                 refreshEnd()
             }
@@ -124,7 +130,7 @@ extension StartScheduleViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell",
                                                            for: indexPath) as? DateCell
                 else { return UITableViewCell() }
-            cell.configure(presenter?.getCurrentDate() ?? "")
+            cell.configure(presenter?.getCurrentDate(date: currentDate) ?? "")
             cell.backgroundColor = .clear
             return cell
         case 1:
@@ -186,7 +192,12 @@ extension StartScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.didSelectRow(index: indexPath.row - 4)
+        switch indexPath.row {
+        case 0:
+            presenter?.selectDate()
+        default:
+            presenter?.didSelectRow(index: indexPath.row - 4)
+        }
     }
 
 }

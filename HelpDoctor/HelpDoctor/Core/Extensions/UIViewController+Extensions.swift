@@ -109,4 +109,19 @@ extension UIViewController {
         view.viewWithTag(997)?.removeFromSuperview()
     }
     
+    func startActivityIndicator() {
+        let activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.instance.width - 70) / 2,
+                                                                    y: (Session.instance.height - 70) / 2,
+                                                                    width: 70,
+                                                                    height: 70))
+        addBlurEffect()
+        view.addSubview(activityIndicator)
+        activityIndicator.startAnimating()
+    }
+    
+    func stopActivityIndicator() {
+        view.subviews.compactMap { $0 as? ActivityIndicatorView }.forEach { $0.removeFromSuperview() }
+        removeBlurEffect()
+    }
+    
 }

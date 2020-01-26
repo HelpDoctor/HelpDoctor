@@ -6,7 +6,7 @@
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
 
-import Foundation
+import UIKit
 //swiftlint:disable type_name
 //swiftlint:disable force_cast
 //swiftlint:disable function_body_length
@@ -21,7 +21,7 @@ class Auth_Info {
     var token: String?
 }
 
-var myToken: String? { 
+var myToken: String? {
     let getToken = Auth_Info.instance
     return getToken.token
 }
@@ -39,12 +39,12 @@ enum TypeOfDate: String {
 }
 
 enum TypeOfRequest: String {
-    /* Регистрация */
+    /*Регистрация*/
     case registrationMail = "/registration"
     case recoveryMail = "/recovery"
     case deleteMail = "/registration/del"
     
-    /* Получение токена */
+    /* Получение токена*/
     case getToken = "/auth/login"
     
     /* Разлогиниться */
@@ -76,7 +76,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     var urlConstructor = URLComponents()
     
     urlConstructor.scheme = "http"
-    urlConstructor.host = "demo22.tmweb.ru"
+    urlConstructor.host = "demo22.tmweb.ru"//"helpdoctor.tmweb.ru"
     urlConstructor.path = "/public/api" + typeOfContent.rawValue
     
     if typeOfContent == .getListCities || typeOfContent == .getMedicalOrganization {
@@ -88,7 +88,11 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     }
     
     if typeOfContent == .schedule_getEventsForCurrentDate {
-        urlConstructor.path = "/public/api" + typeOfContent.rawValue + getCurrentDate(dateFormat: .short)
+        if requestParams["AnyDate"] != nil {
+            urlConstructor.path = "/public/api" + typeOfContent.rawValue + (requestParams["AnyDate"] as! String)
+        } else {
+            urlConstructor.path = "/public/api" + typeOfContent.rawValue + getCurrentDate(dateFormat: .short)
+        }
     }
     
     if typeOfContent == .schedule_getEventsForCurrentId {
@@ -102,7 +106,6 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     if (typeOfContent == .getDataFromProfile) && (requestParams.count > 0) {
         urlConstructor.path = "/public/api" + typeOfContent.rawValue + "/" + (requestParams["user_id"] as! String)
     }
-    
     var request = URLRequest(url: urlConstructor.url!)
     
     switch typeOfContent {
@@ -139,17 +142,17 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     case .schedule_getEventsForCurrentDate, .schedule_getEventsForCurrentId, .schedule_deleteForCurrentEvent:
         
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
-    
+        
     default:
         break
     }
+    
     return (session, request)
 }
 
 private func serializationJSON(obj: [String: String]) -> Data? {
     return try? JSONSerialization.data(withJSONObject: obj)
 }
-
 
 func getData<T>(typeOfContent: TypeOfRequest,
                 returning: T.Type,
@@ -165,6 +168,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
         guard let data = data, error == nil else { return }
         
         DispatchQueue.global().async {
+            
             guard let json = try? JSONSerialization.jsonObject(with: data,
                                                                options: JSONSerialization.ReadingOptions.allowFragments)
                 else { return }
@@ -183,11 +187,13 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .schedule_deleteForCurrentEvent:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
+                
             case .getToken:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getToken(for: startPoint, response: response) as? T)
-           
+                
             case .getRegions :
+                
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }
                     replyReturn = (parseJSON_getRegions(for: startPoint, response: response) as? T)
@@ -195,13 +201,16 @@ func getData<T>(typeOfContent: TypeOfRequest,
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
             case .getListCities :
+                
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }
                     replyReturn = (parseJSON_getCities(for: startPoint, response: response) as? T)
                 } else {
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
+                
             case .getMedicalOrganization:
+                
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }
                     replyReturn = (parseJSON_getMedicalOrganization(for: startPoint, response: response) as? T)
@@ -209,6 +218,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
             case .getMedicalSpecialization:
+                
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }
                     replyReturn = (parseJSON_getMedicalSpecialization(for: startPoint, response: response) as? T)
@@ -223,31 +233,37 @@ func getData<T>(typeOfContent: TypeOfRequest,
                 } else {
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
+                
             case .getDataFromProfile:
+                
                 if responceTrueResult {
                     guard let startPoint = json as? [String: AnyObject] else { return }
                     replyReturn = (parseJSON_getDataFromProfile(for: startPoint, response: response) as? T)
                 } else {
+                    
                     switch httpResponse.statusCode {
                     case 404:
                         replyReturn = (([:], httpResponse.statusCode, "user not found") as? T)
                     default:
                         replyReturn = (([:], httpResponse.statusCode, "Данные недоступны") as? T)
                     }
-
+                    
                 }
                 
             case .schedule_getEventsForCurrentDate:
                 guard let startPoint = json as? [AnyObject] else { return }
                 replyReturn = (parseJSON_getEventsForCurrentDate(for: startPoint, response: response) as? T)
+                
+                
             case .schedule_getEventsForCurrentId:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getEventForId(for: startPoint, response: response) as? T)
+                
             case .addProfileInterest:
                 let startPoint = json as? [String: AnyObject]
                 let startPoint2 = json as? [AnyObject]
                 if startPoint == nil && startPoint2 == nil { return }
-
+                
                 replyReturn = (parseJSON_addProfileInterests(startPoint: startPoint,
                                                              startPoint2: startPoint2,
                                                              response: response) as? T)
@@ -264,46 +280,22 @@ func getData<T>(typeOfContent: TypeOfRequest,
 }
 
 func responceCode(code: Int) -> Bool {
-    if code == 200 {
-        return true
-    } else {
-        return false
-    }
+    return code == 200 ? true : false
+//    if code == 200 {
+//        return true
+//    } else {
+//        return false
+//    }
 }
 
 func prepareRequestParams(email: String?,
                           password: String?,
                           token: String?) -> [String: String] {
     var requestParams: [String: String] = [:]
-    
-    if email != nil {
-        requestParams["email"] = email
-    }
-    
-    if password != nil {
-        requestParams["password"] = password?.toBase64()
-    }
-    
-    if token != nil {
-        requestParams["X-Auth-Token"] = token
-    }
-    
+    requestParams["email"] = email
+    requestParams["password"] = password?.toBase64()
+    requestParams["X-Auth-Token"] = token
     return requestParams
-}
-
-extension String {
-    
-    func fromBase64() -> String? {
-        guard let data = Data(base64Encoded: self) else {
-            return nil
-        }
-        
-        return String(data: data, encoding: .utf8)
-    }
-    
-    func toBase64() -> String {
-        return Data(self.utf8).base64EncodedString()
-    }
 }
 
 func todoJSON(obj: [String: Any]) -> Data? {
@@ -340,21 +332,21 @@ func todoJSON_Array(obj: [String: [Any]]) -> Data? {
 /* -------------- */
 
 /*
-let unRegistration = Registration(email: nil, password: nil, token: nil)
-getData(typeOfContent:.deleteMail,
-        returning:(Int?,String?).self,
-        requestParams: [:] )
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    unRegistration.responce = result
-    
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("result= \(unRegistration.responce)")
-        }
-    }
-}
-*/
+ let unRegistration = Registration(email: nil, password: nil, token: nil)
+ getData(typeOfContent:.deleteMail,
+ returning:(Int?,String?).self,
+ requestParams: [:] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ unRegistration.responce = result
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("result= \(unRegistration.responce)")
+ }
+ }
+ }
+ */
 
 /* -------------- */
 
@@ -424,43 +416,41 @@ getData(typeOfContent:.deleteMail,
 /* -------------- */
 
 /*
-let getCities = Profile()
-
-getData(typeOfContent:.getListCities,
-        returning:([Cities],Int?,String?).self,
-        requestParams: ["region":"77"] )
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    
-    getCities.cities = result?.0
-    
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("Cities= \(getCities.cities!)")
-        }
-    }
-}
-*/
+ let getCities = Profile()
+ getData(typeOfContent:.getListCities,
+ returning:([Cities],Int?,String?).self,
+ requestParams: ["region":"77"] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ getCities.cities = result?.0
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("Cities= \(getCities.cities!)")
+ }
+ }
+ }
+ */
 
 /* -------------- */
 
 /*
-let checkProfile = Registration.init(email: nil, password: nil, token: myToken )
-
-getData(typeOfContent:.checkProfile,
-        returning:(Int?,String?).self,
-        requestParams: checkProfile.requestParams )
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    checkProfile.responce = result
-    
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("result=\(checkProfile.responce)")
-        }
-    }
-}
-*/
+ let checkProfile = Registration.init(email: nil, password: nil, token: myToken )
+ getData(typeOfContent:.checkProfile,
+ returning:(Int?,String?).self,
+ requestParams: checkProfile.requestParams )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ checkProfile.responce = result
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("result=\(checkProfile.responce)")
+ }
+ }
+ }
+ */
 
 /* --------API 12---------- */
 
@@ -563,147 +553,170 @@ getData(typeOfContent:.checkProfile,
 /* --------API 13-------------*/
 
 /*
-    let getDataProfile = Profile()
-    
-    getData(typeOfContent:.getDataFromProfile,
-            returning:([String:[AnyObject]],Int?,String?).self,
-            requestParams: [:] )
-    { [weak self] result in
-        let dispathGroup = DispatchGroup()
-
-        getDataProfile.dataFromProfile = result?.0
-        
-        dispathGroup.notify(queue: DispatchQueue.main) {
-            DispatchQueue.main.async { [weak self]  in
-                print("getDataProfile = \(getDataProfile.dataFromProfile!)")
-            }
-        }
-    }
+ let getDataProfile = Profile()
+ 
+ getData(typeOfContent:.getDataFromProfile,
+ returning:([String:[AnyObject]],Int?,String?).self,
+ requestParams: [:] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ getDataProfile.dataFromProfile = result?.0
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("getDataProfile = \(getDataProfile.dataFromProfile!)")
+ }
+ }
+ }
  
  */
 
 /* --------API 14-------------*/
 
 /*
-let addInterest = Profile()
-
-getData(typeOfContent:.addProfileInterest,
-        returning:([ListOfInterests],Int?,String?).self,
-        requestParams: ["interest":"хирургия"])
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    
-    addInterest.addInterests = result?.0
-    addInterest.responce = (result?.1,result?.2)
-    
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("addInterest = \(addInterest.responce) - \(addInterest.addInterests)")
-        }
-    }
-}
-*/
+ let addInterest = Profile()
+ getData(typeOfContent:.addProfileInterest,
+ returning:([ListOfInterests],Int?,String?).self,
+ requestParams: ["interest":"хирургия"])
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ addInterest.addInterests = result?.0
+ addInterest.responce = (result?.1,result?.2)
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("addInterest = \(addInterest.responce) - \(addInterest.addInterests)")
+ }
+ }
+ }
+ */
 
 /* --------Расписание событий API 1-------------*/
 
 /*
-let currentDate = getCurrentDate(dateFormat: .long)
-
-let currentEvent = ScheduleEvents(id: nil, start_date: currentDate, end_date: currentDate, notify_date: currentDate, title: "My First Event 16", description: "тостовый прием", is_major: true, event_place: "РнД, больница №666", event_type: "reception")
-
-let createEvent = CreateOrUpdateEvent(events: currentEvent)
-     getData(typeOfContent:.schedule_CreateOrUpdateEvent,
-             returning:(Int?,String?).self,
-             requestParams: ["json":createEvent.jsonData as Any] )
-     { [weak self] result in
-         let dispathGroup = DispatchGroup()
-         
-        createEvent.responce = result
-         
-         dispathGroup.notify(queue: DispatchQueue.main) {
-             DispatchQueue.main.async { [weak self]  in
-                 print("createEvent = \(createEvent.responce)")
-             }
-         }
-     }
-*/
+ let currentDate = getCurrentDate(dateFormat: .long)
+ let currentEvent = ScheduleEvents(id: nil, start_date: currentDate, end_date: currentDate, notify_date: currentDate, title: "My First Event 16", description: "тостовый прием", is_major: true, event_place: "РнД, больница №666", event_type: "reception")
+ let createEvent = CreateOrUpdateEvent(events: currentEvent)
+ getData(typeOfContent:.schedule_CreateOrUpdateEvent,
+ returning:(Int?,String?).self,
+ requestParams: ["json":createEvent.jsonData as Any] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ createEvent.responce = result
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("createEvent = \(createEvent.responce)")
+ }
+ }
+ }
+ */
 
 /* --------Расписание событий API 2-------------*/
 /*
-let getEvents = Schedule()
+ //Метод для текущей даты
+ let getEvents = Schedule()
+ getData(typeOfContent:.schedule_getEventsForCurrentDate,
+ returning:([ScheduleEvents],Int?,String?).self,
+ requestParams: [:] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ getEvents.events = result?.0
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("getEvents =\(getEvents.events)")
+ }
+ }
+ }
+ */
 
-getData(typeOfContent:.schedule_getEventsForCurrentDate,
-        returning:([ScheduleEvents],Int?,String?).self,
-        requestParams: [:] )
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    
-    getEvents.events = result?.0
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("getEvents =\(getEvents.events)")
-        }
-    }
-}
-*/
+/*
+ 
+ //Метод для любой даты
+ let getEvents = Schedule()
+ let anyDate = "2019-02-12"
+ getData(typeOfContent:.schedule_getEventsForCurrentDate,
+ returning:([ScheduleEvents],Int?,String?).self,
+ requestParams: ["AnyDate": anyDate] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ getEvents.events = result?.0
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("getEvents =\(getEvents.events)")
+ }
+ }
+ }
+ */
 
 /* --------Расписание событий API 3-------------*/
 /*
-    let getEvents = Schedule()
-    
-    getData(typeOfContent:.schedule_getEventsForCurrentId,
-            returning:([ScheduleEvents],Int?,String?).self,
-            requestParams: ["event_id":"51"] )
-    { [weak self] result in
-        let dispathGroup = DispatchGroup()
-        
-        getEvents.events = result?.0
-        dispathGroup.notify(queue: DispatchQueue.main) {
-            DispatchQueue.main.async { [weak self]  in
-                print("getEvents =\(getEvents.events)")
-            }
-        }
-    }
-*/
+ let getEvents = Schedule()
+ 
+ getData(typeOfContent:.schedule_getEventsForCurrentId,
+ returning:([ScheduleEvents],Int?,String?).self,
+ requestParams: ["event_id":"51"] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ getEvents.events = result?.0
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("getEvents =\(getEvents.events)")
+ }
+ }
+ }
+ */
 
 /* --------Расписание событий API 4-------------*/
 /*
-let resultDeleteEvents = Schedule()
-
-getData(typeOfContent:.schedule_deleteForCurrentEvent,
-        returning:(Int?,String?).self,
-        requestParams: ["event_id":"51"] )
-{ [weak self] result in
-    let dispathGroup = DispatchGroup()
-    
-    resultDeleteEvents.responce = result
-    dispathGroup.notify(queue: DispatchQueue.main) {
-        DispatchQueue.main.async { [weak self]  in
-            print("getEvents =\(resultDeleteEvents.responce)")
-        }
-    }
-}
-*/
+ let resultDeleteEvents = Schedule()
+ getData(typeOfContent:.schedule_deleteForCurrentEvent,
+ returning:(Int?,String?).self,
+ requestParams: ["event_id":"51"] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ 
+ resultDeleteEvents.responce = result
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("getEvents =\(resultDeleteEvents.responce)")
+ }
+ }
+ }
+ */
 
 /* --------Поиск API 1-------------*/
 /*
-   let findParams = FindUsers(first_name: "серг", middle_name: nil, last_name: nil, email: nil, phone_number: nil, age_from: nil, age_to: nil, city_id: nil, job_places: [], specializations: [], scientific_interests: [], page: 1, limit: 20)
-   
-   let createFind = CreateFindUsers(findData: findParams) //{Иницализатор для параметрического поиска}
-//   let createFind = CreateFindUsers(page: 1, limit: 20) //{Иницализатор для глобального поиска}
-   
-   getData(typeOfContent:.findUsers,
-           returning:([ResultFindedUsers],Int?,String?).self,
-           requestParams: ["json":createFind.jsonData as Any] )
-   { [weak self] result in
-       let dispathGroup = DispatchGroup()
-       createFind.findedData = result?.0
-       createFind.responce = (result?.1,result?.2)
-       
-       dispathGroup.notify(queue: DispatchQueue.main) {
-           DispatchQueue.main.async { [weak self]  in
-               print("createFind = \(createFind.findedData)\n responce = \(createFind.responce)")
-            }
-       }
-   }
-*/
+ let findParams = FindUsers(first_name: "серг", middle_name: nil, last_name: nil, email: nil, phone_number: nil, age_from: nil, age_to: nil, city_id: nil, job_places: [], specializations: [], scientific_interests: [], page: 1, limit: 20)
+ 
+ let createFind = CreateFindUsers(findData: findParams) //{Иницализатор для параметрического поиска}
+ //   let createFind = CreateFindUsers(page: 1, limit: 20) //{Иницализатор для глобального поиска}
+ 
+ getData(typeOfContent:.findUsers,
+ returning:([ResultFindedUsers],Int?,String?).self,
+ requestParams: ["json":createFind.jsonData as Any] )
+ { [weak self] result in
+ let dispathGroup = DispatchGroup()
+ createFind.findedData = result?.0
+ createFind.responce = (result?.1,result?.2)
+ 
+ dispathGroup.notify(queue: DispatchQueue.main) {
+ DispatchQueue.main.async { [weak self]  in
+ print("createFind = \(createFind.findedData)\n responce = \(createFind.responce)")
+ }
+ }
+ }
+ */
+
+/*
+ // Конвертация картинки в Base64String
+ let image : UIImage = UIImage(named:"1.jpg")!
+ let strBase64 = image.toBase64String()
+ //Конвертация Base64String в картинку
+ let _: UIImage = (strBase64?.base64ToImage())!
+ */
