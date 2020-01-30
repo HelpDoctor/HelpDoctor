@@ -75,6 +75,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         setupInterestsTextView()
         setupEditInterestsButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,6 +86,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
+    /// Установка аватара в хидер и на форму
+    /// - Parameter image: аватар
     func setImage(image: UIImage?) {
         let defaultImageName = "Avatar.pdf"
         guard let defaultImage = UIImage(named: defaultImageName) else {
@@ -156,6 +159,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Setup views
+    /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: session.width, height: session.height)
@@ -168,6 +172,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
     
+    /// Установка хидера формы
     private func setupProfileHeaderView() {
         headerView = ProfileHeaderView(title: "Мой профиль",
                                        text: nil,
@@ -182,6 +187,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
+    /// Установка поля ввода ФИО
     private func setupNameTextField() {
         nameTextField = EditTextField(placeholder: "Фамилия Имя Отчество",
                                       source: .user,
@@ -195,6 +201,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля для аватара пользователя
     private func setupUserPhotoView() {
         let defaultImage = "Avatar.pdf"
         guard let image = UIImage(named: defaultImage) else {
@@ -231,6 +238,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         button.layer.masksToBounds = true
     }
     
+    /// Установка надписи даты рождения
     private func setupBirthDateLabel() {
         birthDateLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         birthDateLabel.textColor = .black
@@ -245,6 +253,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода даты рождения
     private func setupBirthDateTextField() {
         birthDateTextField = EditTextField(placeholder: "ДД.ММ.ГГГГ",
                                            source: .user,
@@ -260,6 +269,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка надписи "Контакты"
     private func setupContactsLabel() {
         contactsLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         contactsLabel.textColor = .black
@@ -274,6 +284,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         contactsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода электронной почты
     private func setupEmailTextField() {
         emailTextField = EditTextField(placeholder: "e-mail",
                                        source: .user,
@@ -289,6 +300,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля ввода телефона
     private func setupPhoneTextField() {
         phoneTextField = EditTextField(placeholder: "+7 (999) 111-22-33",
                                        source: .user,
@@ -304,6 +316,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка надписи "Специализация"
     private func setupSpecLabel() {
         specLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         specLabel.textColor = .black
@@ -318,6 +331,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         specLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода специализации
     private func setupSpecTextField() {
         specTextField.presenter = presenter
         specTextField.mainSpec = true
@@ -335,6 +349,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки редактирования специалиазации
     private func setupEditMainSpecButton() {
         editMainSpecButton = EditButton()
         editMainSpecButton.addTarget(self, action: #selector(editMainSpecButtonPressed), for: .touchUpInside)
@@ -351,6 +366,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         editMainSpecButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка надписи "Место жительства"
     private func setupLocationLabel() {
         locationLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         locationLabel.textColor = .black
@@ -365,6 +381,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         locationLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода места жительства
     private func setupLocationTextField() {
         locationTextField.presenter = presenter
         locationTextField.textColor = .black
@@ -381,6 +398,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         locationTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки редактирования места жительства
     private func setupEditLocationButton() {
         editLocationButton = EditButton()
         editLocationButton.addTarget(self, action: #selector(editLocationButtonPressed), for: .touchUpInside)
@@ -397,6 +415,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         editLocationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка надписи "Место работы"
     private func setupWorkPlaceLabel() {
         workPlaceLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         workPlaceLabel.textColor = .black
@@ -411,6 +430,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlaceLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода основного места работы
     private func setupWorkPlace1TextField() {
         workPlace1TextField.presenter = presenter
         workPlace1TextField.mainWork = "main"
@@ -428,6 +448,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace1TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки редактирования основного места работы
     private func setupEditMainJobButton() {
         editMainJobButton = EditButton()
         editMainJobButton.addTarget(self, action: #selector(editMainJobButtonPressed), for: .touchUpInside)
@@ -438,12 +459,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         editMainJobButton.translatesAutoresizingMaskIntoConstraints = false
         editMainJobButton.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor,
-                                                constant: 3).isActive = true
+                                               constant: 3).isActive = true
         editMainJobButton.leadingAnchor.constraint(equalTo: workPlace1TextField.trailingAnchor).isActive = true
         editMainJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         editMainJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля ввода дополнительного места работы
     private func setupWorkPlace2TextField() {
         workPlace2TextField.presenter = presenter
         workPlace2TextField.mainWork = "add"
@@ -461,6 +483,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace2TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки редактирования дополнительного места работы
     private func setupEditAddJobButton() {
         editAddJobButton = EditButton()
         editAddJobButton.addTarget(self, action: #selector(editAddJobButtonPressed), for: .touchUpInside)
@@ -471,12 +494,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         editAddJobButton.translatesAutoresizingMaskIntoConstraints = false
         editAddJobButton.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor,
-                                                constant: 5).isActive = true
+                                              constant: 5).isActive = true
         editAddJobButton.leadingAnchor.constraint(equalTo: workPlace2TextField.trailingAnchor).isActive = true
         editAddJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         editAddJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка поля ввода третьего места работы
     private func setupWorkPlace3TextField() {
         workPlace3TextField.presenter = presenter
         workPlace3TextField.mainWork = "third"
@@ -494,6 +518,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace3TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки редактирования третьего места работы
     private func setupEditThirdJobButton() {
         editThirdJobButton = EditButton()
         editThirdJobButton.addTarget(self, action: #selector(editThirdJobButtonPressed), for: .touchUpInside)
@@ -510,6 +535,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         editThirdJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    /// Установка кнопки добавления места работы
     private func setupAddWorkPlaceButton() {
         addWorkPlaceButton = PlusButton()
         addWorkPlaceButton.addTarget(self, action: #selector(addWorkPlusButtonPressed), for: .touchUpInside)
@@ -524,6 +550,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         addWorkPlaceButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
+    /// Установка надписи "Область научных интересов"
     private func setupInterestsLabel() {
         interestsLabel.font = UIFont.boldSystemFontOfSize(size: 12)
         interestsLabel.textColor = .black
@@ -539,6 +566,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
+    /// Установка поля ввода интересов
     private func setupInterestsTextView() {
         interestsTextView.backgroundColor = .white
         interestsTextView.textColor = .black
@@ -555,6 +583,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
+    /// Установка кнопки редактирования интересов
     private func setupEditInterestsButton() {
         editInterestsButton = EditButton()
         editInterestsButton.addTarget(self, action: #selector(editInterestsButtonPressed), for: .touchUpInside)
@@ -565,7 +594,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         
         editInterestsButton.translatesAutoresizingMaskIntoConstraints = false
         editInterestsButton.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor,
-                                                constant: 3).isActive = true
+                                                 constant: 3).isActive = true
         editInterestsButton.leadingAnchor.constraint(equalTo: interestsTextView.trailingAnchor).isActive = true
         editInterestsButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
         editInterestsButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -575,6 +604,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         imagePicker.present(parent: self, sourceType: sourceType)
     }
     
+    /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
@@ -591,7 +621,16 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
                                                object: nil)
     }
     
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        scrollView.addGestureRecognizer(swipeLeft)
+    }
+    
     // MARK: - IBActions
+    /// Скрытие уведомления с экрана
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
         view.viewWithTag(998)?.removeFromSuperview()
@@ -618,6 +657,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    /// Выбор фотографии при нажатии на аватар
+    /// - Parameter sender:
     @objc func photoButtonTapped(_ sender: UIButton) {
         let alertVC = UIAlertController(title: "Установить аватар",
                                         message: nil,
@@ -637,6 +678,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         self.present(alertVC, animated: true, completion: nil)
     }
     
+    /// Показ поля ввода третьего места работы после нажатия на кнопку добавления места работы
     @objc func addWorkPlusButtonPressed() {
         addWorkPlaceButton.isHidden = true
         setupWorkPlace3TextField()
@@ -644,6 +686,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsLabel.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 36).isActive = true
     }
     
+    /// Редактирование и сохранение основного места работы
     @objc func editMainJobButtonPressed() {
         if workPlace1TextField.isEnabled {
             workPlace1TextField.isEnabled = false
@@ -659,6 +702,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Редактирование и сохранение дополнительного места работы
     @objc func editAddJobButtonPressed() {
         if workPlace2TextField.isEnabled {
             workPlace2TextField.isEnabled = false
@@ -676,6 +720,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Редактирование и сохранение третьего места работы
     @objc func editThirdJobButtonPressed() {
         if workPlace3TextField.isEnabled {
             workPlace3TextField.isEnabled = false
@@ -693,6 +738,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Редактирование и сохранение основной специализации
     @objc func editMainSpecButtonPressed() {
         if specTextField.isEnabled {
             specTextField.isEnabled = false
@@ -709,6 +755,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Редактирование и сохранение места жительства
     @objc func editLocationButtonPressed() {
         if locationTextField.isEnabled {
             locationTextField.isEnabled = false
@@ -725,16 +772,19 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Открытие формы выбора интересов
     @objc func editInterestsButtonPressed() {
         presenter?.editInterests()
     }
     
     // MARK: - Navigation
+    /// Переход на предыдущий экран
     @objc private func backButtonPressed() {
         presenter?.back()
     }
 }
 
+// MARK: - ImagePickerDelegate
 extension ProfileViewController: ImagePickerDelegate {
     
     func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
@@ -757,6 +807,8 @@ extension ProfileViewController: ImagePickerDelegate {
         if accessIsAllowed { presentImagePicker(sourceType: .camera) }
     }
 }
+
+// MARK: - UITextFieldDelegate
 //swiftlint:disable force_unwrapping
 extension ProfileViewController: UITextFieldDelegate {
     // MARK: - text field masking

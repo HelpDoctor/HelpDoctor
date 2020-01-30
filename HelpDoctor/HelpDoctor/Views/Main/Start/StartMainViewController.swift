@@ -55,11 +55,13 @@ class StartMainViewController: UIViewController {
     func hideFillProfileButton() {
         bottomLabel.isHidden = true
         fillProfileButton.isHidden = true
+        enterProfileButton.isEnabled = true
     }
     
     func showFillProfileButton() {
         bottomLabel.isHidden = false
         fillProfileButton.isHidden = false
+        enterProfileButton.isEnabled = false
     }
     
     func setImage(image: UIImage?) {

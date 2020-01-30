@@ -39,6 +39,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         setupSendButton()
         setupBackButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,7 +129,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
-                                            constant: 40).isActive = true
+                                        constant: 40).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -157,16 +158,24 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -208,5 +217,5 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     @objc private func backButtonPressed() {
         presenter?.back()
     }
-
+    
 }

@@ -49,6 +49,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         setupBackButton()
         setupSaveButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
         presenter?.getInterestFromView()
     }
     
@@ -154,9 +155,9 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         
         specSearchButton.translatesAutoresizingMaskIntoConstraints = false
         specSearchButton.topAnchor.constraint(equalTo: specTextField.topAnchor,
-                                                constant: 5).isActive = true
+                                              constant: 5).isActive = true
         specSearchButton.trailingAnchor.constraint(equalTo: specTextField.trailingAnchor,
-                                                     constant: -5).isActive = true
+                                                   constant: -5).isActive = true
         specSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         specSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -203,7 +204,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         
         userPhoto.translatesAutoresizingMaskIntoConstraints = false
         userPhoto.topAnchor.constraint(equalTo: step7Label.bottomAnchor,
-                                        constant: 21).isActive = true
+                                       constant: 21).isActive = true
         userPhoto.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         userPhoto.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
         userPhoto.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
@@ -217,7 +218,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.topAnchor.constraint(equalTo: step7Label.bottomAnchor,
-                                        constant: 21).isActive = true
+                                    constant: 21).isActive = true
         button.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         button.widthAnchor.constraint(equalToConstant: 150).isActive = true
         button.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -253,10 +254,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         
         let window = UIApplication.shared.keyWindow
         let bottomPadding = window?.safeAreaInsets.bottom
-
+        
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-        constant: height - (bottomPadding ?? 0) - 92).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 92).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 20).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -270,16 +271,24 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -343,19 +352,19 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
 }
 
 extension CreateProfileSpecViewController: ImagePickerDelegate {
-
+    
     func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
         userPhoto.image = image
         presenter?.setPhoto(photoString: image.toString())
         imagePicker.dismiss()
     }
-
+    
     func imagePickerDelegate(didCancel delegatedForm: ImagePicker) { imagePicker.dismiss() }
-
+    
     func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
         if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
     }
-
+    
     func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
         // works only on real device (crash on simulator)
         if accessIsAllowed { presentImagePicker(sourceType: .camera) }

@@ -17,7 +17,6 @@ protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
     func getInterestsCount() -> Int?
     func getInterestFromView()
     func deleteInterest(index: Int)
-    func setIndexArray(indexes: [Int])
     func back()
 }
 
@@ -32,11 +31,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var addJobArray: [[String: Any]]?
     var mainSpecArray: [[String: Any]]?
     var addSpecArray: [[String: Any]]?
-    var interest: [ListOfInterests] = []
+    var userInterests: [ListOfInterests] = []
     var arrayOfAllInterests: [ListOfInterests]?
     var mainSpec: String?
     var addSpec: String?
-    var indexArray: [Int] = []
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -54,7 +52,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let presenter = InterestsPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.arrayInterests = arrayOfAllInterests
-        presenter.indexArray = indexArray
+        presenter.userInterests = userInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -72,12 +70,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Установка названия в ячейку коллекции
     /// - Parameter index: индекс ячейки
     func getInterestTitle(index: Int) -> String? {
-        return interest[index].name
+        return userInterests[index].name
     }
     
     /// Подсчет количества ячеек коллекции
     func getInterestsCount() -> Int? {
-        return interest.count
+        return userInterests.count
     }
     
     /// Заполнение массива интересов
@@ -93,15 +91,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// - Parameter index: индекс ячейки
     func deleteInterest(index: Int) {
         guard (arrayOfAllInterests?[index].id) != nil else { return }
-        interest.remove(at: index)
-        indexArray.remove(at: index)
+        userInterests.remove(at: index)
+//        indexArray.remove(at: index)
         view.reloadCollectionView()
-    }
-    
-    /// Заполнение массива индексов интересов пользователя, из формы списка интересов
-    /// - Parameter indexes: массив индексов
-    func setIndexArray(indexes: [Int]) {
-        self.indexArray = indexes
     }
     
     // MARK: - Private methods
@@ -246,8 +238,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Обновление информации о интересах пользователя на сервере
     private func updateInterests() {
         var intArray: [Int] = []
-        for i in 0 ..< interest.count {
-            intArray.append(interest[i].id)
+        for i in 0 ..< userInterests.count {
+            intArray.append(userInterests[i].id)
         }
         
         let updateProfile = UpdateProfileKeyInterest(arrayInterest: intArray)
@@ -283,18 +275,24 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Заполнение массива интересов пользователя из формы списка интересов
     /// - Parameter interests: массив интересов
     func setInterests(interests: [ListOfInterests]) {
-        self.interest = interests
+        self.userInterests = interests
         view.reloadCollectionView()
     }
     
     /// Добавление в массив интересов пользователя значения из таблицы под строкой
     /// - Parameter interest: выбранный интерес
     func addInterest(interest: ListOfInterests) {
-        guard let index = arrayOfAllInterests?.firstIndex(where: { $0.id == interest.id }) else { return }
         view.setSpecTextField(text: "")
-        indexArray.append(index)
-        self.interest.append(interest)
+        userInterests.append(interest)
         view.reloadCollectionView()
+    }
+    
+    func createInterest() {
+        let viewController = CreateInterestViewController()
+        let presenter = CreateInterestPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.delegate = self
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Coordinator
@@ -308,6 +306,18 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+}
+
+extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
+    
+    func callback(interests: [ListOfInterests]) {
+        interests.forEach {
+            userInterests.append($0.self)
+            arrayOfAllInterests?.append($0.self)
+        }
+        view.reloadCollectionView()
     }
     
 }

@@ -13,7 +13,7 @@ protocol EventAddPresenterProtocol: Presenter {
     func getEvent()
     func getStatusEvent() -> String
     func setIdEvent(idEvent: Int)
-    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?)
+    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?, location: String?)
     func setNotifyDate(date: Date?)
     func convertStringToDate(date: String) -> Date?
     func deleteEvent()
@@ -23,6 +23,7 @@ protocol EventAddPresenterProtocol: Presenter {
     func addMembersButtonPressed()
     func repeatNotifications()
     func setRepeat(repeatArray: [Int])
+    func toMap()
 }
 
 class EventAddPresenter: EventAddPresenterProtocol {
@@ -75,7 +76,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
         self.idEvent = idEvent
     }
     
-    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?) {
+    func saveEvent(startDate: Date, endDate: Date, isMajor: Bool, title: String?, desc: String?, location: String?) {
         if title == "" {
             view.showAlert(message: "Заполните название события")
             return
@@ -87,7 +88,7 @@ class EventAddPresenter: EventAddPresenterProtocol {
                                           title: title,
                                           description: desc,
                                           is_major: isMajor,
-                                          event_place: "",
+                                          event_place: location,
                                           event_type: eventType.rawValue)
         
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
@@ -219,6 +220,14 @@ class EventAddPresenter: EventAddPresenterProtocol {
     func addMembersButtonPressed() {
         let viewController = AddMembersViewController()
         viewController.presenter = AddMembersPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func toMap() {
+        let viewController = LocationSearchViewController()
+        let presenter = LocationSearchPresenter(view: viewController)
+        viewController.delegate = self.view
+        viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

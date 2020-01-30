@@ -9,7 +9,7 @@
 import UIKit
 
 class ViewEventViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: ViewEventPresenterProtocol?
     
@@ -63,12 +63,14 @@ class ViewEventViewController: UIViewController {
         setupLocationLabel()
         setupSaveButton()
         setupDeleteButton()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -95,7 +97,7 @@ class ViewEventViewController: UIViewController {
         patientLabel.text = event.title
         descriptionBottomLabel.text = event.description
         appointmentLabel.text = "Первичный прием" //Нет в информации приходящей с сервера
-        locationLabel.text = "event.event_place"
+        locationLabel.text = event.event_place
         guard let notifyDate = event.notify_date else { return }
         guard let startDate = presenter?.convertStringToDate(date: event.start_date),
             let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
@@ -268,7 +270,7 @@ class ViewEventViewController: UIViewController {
         
         appointmentLabel.translatesAutoresizingMaskIntoConstraints = false
         appointmentLabel.topAnchor.constraint(equalTo: descriptionBottomLabel.bottomAnchor,
-                                                  constant: 13).isActive = true
+                                              constant: 13).isActive = true
         appointmentLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         appointmentLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
         appointmentLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -282,7 +284,7 @@ class ViewEventViewController: UIViewController {
         bellIcon.translatesAutoresizingMaskIntoConstraints = false
         bellIcon.topAnchor.constraint(equalTo: appointmentLabel.bottomAnchor, constant: 12).isActive = true
         bellIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                          constant: 20).isActive = true
         bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
@@ -296,7 +298,7 @@ class ViewEventViewController: UIViewController {
         
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: appointmentLabel.bottomAnchor,
-                                                    constant: 12).isActive = true
+                                        constant: 12).isActive = true
         timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
         timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -310,7 +312,7 @@ class ViewEventViewController: UIViewController {
         locationIcon.translatesAutoresizingMaskIntoConstraints = false
         locationIcon.topAnchor.constraint(equalTo: timerLabel.bottomAnchor, constant: 12).isActive = true
         locationIcon.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                              constant: 20).isActive = true
         locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
@@ -324,7 +326,7 @@ class ViewEventViewController: UIViewController {
         
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                                    constant: 12).isActive = true
+                                           constant: 12).isActive = true
         locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
         locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -369,7 +371,20 @@ class ViewEventViewController: UIViewController {
         deleteButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
     
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
+    }
+    
     // MARK: - IBActions
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
     // MARK: - Buttons methods
     @objc private func saveButtonPressed() {
         presenter?.saveEvent()
@@ -378,5 +393,5 @@ class ViewEventViewController: UIViewController {
     @objc private func deleteButtonPressed() {
         presenter?.deleteEvent()
     }
-
+    
 }

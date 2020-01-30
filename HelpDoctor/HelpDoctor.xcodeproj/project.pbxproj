@@ -172,6 +172,16 @@
 		C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */; };
 		C4CBC3B323D026D600434BFB /* Registration.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3B223D026D600434BFB /* Registration.swift */; };
 		C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */; };
+		C4CBC3F023E2AAC600434BFB /* MKMapView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */; };
+		C4CBC3F223E2AAE200434BFB /* CLPlacemark+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */; };
+		C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3F323E2AB1300434BFB /* LocationManager.swift */; };
+		C4CBC3F723E2AB9500434BFB /* LocationSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3F623E2AB9500434BFB /* LocationSearchViewController.swift */; };
+		C4CBC3F923E2ABA700434BFB /* LocationSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3F823E2ABA700434BFB /* LocationSearchPresenter.swift */; };
+		C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */; };
+		C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */; };
+		C4CBC40023E2ACAD00434BFB /* MapItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */; };
+		C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */; };
+		C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -342,6 +352,16 @@
 		C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfileJob.swift; sourceTree = "<group>"; };
 		C4CBC3B223D026D600434BFB /* Registration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Registration.swift; sourceTree = "<group>"; };
 		C4CBC3CF23D1C08100434BFB /* InterestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestTableViewCell.swift; sourceTree = "<group>"; };
+		C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+Extensions.swift"; sourceTree = "<group>"; };
+		C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLPlacemark+Extensions.swift"; sourceTree = "<group>"; };
+		C4CBC3F323E2AB1300434BFB /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		C4CBC3F623E2AB9500434BFB /* LocationSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchViewController.swift; sourceTree = "<group>"; };
+		C4CBC3F823E2ABA700434BFB /* LocationSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchPresenter.swift; sourceTree = "<group>"; };
+		C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
+		C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCompletionTableViewCell.swift; sourceTree = "<group>"; };
+		C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapItemTableViewCell.swift; sourceTree = "<group>"; };
+		C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestViewController.swift; sourceTree = "<group>"; };
+		C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -770,6 +790,7 @@
 				46F87F3F23BDEDA60095264E /* Presenter.swift */,
 				46203F0123C4DB740072653A /* Session.swift */,
 				4670346623D4178A00AFAA91 /* NotificationDelegate.swift */,
+				C4CBC3F323E2AB1300434BFB /* LocationManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -783,6 +804,8 @@
 				46F87F5023BEFCD80095264E /* UIViewController+Extensions.swift */,
 				46F87F6823C09E120095264E /* UIImage+Extensions.swift */,
 				46F87F6A23C09F240095264E /* String+Extensions.swift */,
+				C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */,
+				C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -869,6 +892,7 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				C4CBC40123E2AD4000434BFB /* CreateInterest */,
 				46F87F6123BFC0710095264E /* Interests */,
 				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
 				46F87F5723BF7E460095264E /* MedicalOrganization */,
@@ -886,6 +910,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				C4CBC3F523E2AB7B00434BFB /* LocationSearch */,
 				4670347B23DD703300AFAA91 /* SelectDate */,
 				4670346F23D480C300AFAA91 /* RepeatNotifications */,
 				46203F2123CB04B40072653A /* OtherTimeNotify */,
@@ -950,6 +975,35 @@
 				C4CBC3B223D026D600434BFB /* Registration.swift */,
 			);
 			path = Registration;
+			sourceTree = "<group>";
+		};
+		C4CBC3F523E2AB7B00434BFB /* LocationSearch */ = {
+			isa = PBXGroup;
+			children = (
+				C4CBC3FC23E2ABF400434BFB /* Cells */,
+				C4CBC3F623E2AB9500434BFB /* LocationSearchViewController.swift */,
+				C4CBC3F823E2ABA700434BFB /* LocationSearchPresenter.swift */,
+				C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */,
+			);
+			path = LocationSearch;
+			sourceTree = "<group>";
+		};
+		C4CBC3FC23E2ABF400434BFB /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */,
+				C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		C4CBC40123E2AD4000434BFB /* CreateInterest */ = {
+			isa = PBXGroup;
+			children = (
+				C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */,
+				C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */,
+			);
+			path = CreateInterest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1085,15 +1139,18 @@
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
 				46203EFE23C46A5A0072653A /* FindUsers.swift in Sources */,
+				C4CBC40023E2ACAD00434BFB /* MapItemTableViewCell.swift in Sources */,
 				46F87F3C23BDE9450095264E /* ProfilePresenter.swift in Sources */,
 				46F87F5423BF61A40095264E /* CitiesViewController.swift in Sources */,
 				46F87F7723C1C33A0095264E /* MedicalSpecializationSearchTextField.swift in Sources */,
 				46203F0223C4DB740072653A /* Session.swift in Sources */,
+				C4CBC3F223E2AAE200434BFB /* CLPlacemark+Extensions.swift in Sources */,
 				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */,
 				4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
+				C4CBC3F923E2ABA700434BFB /* LocationSearchPresenter.swift in Sources */,
 				C4CBC3AF23D026A900434BFB /* UpdateProfileSpec.swift in Sources */,
 				46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */,
 				C48F167523B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift in Sources */,
@@ -1113,7 +1170,9 @@
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
 				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
+				C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
+				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
@@ -1125,10 +1184,12 @@
 				46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */,
 				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
 				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
+				C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
+				C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */,
 				C48F162923B5FE87002D04E3 /* ListOfInterests.swift in Sources */,
 				46F87F1723BB72CA0095264E /* EnterProfileButton.swift in Sources */,
 				46072E1523C229BE0070F2F6 /* SeparatorCell.swift in Sources */,
@@ -1138,6 +1199,7 @@
 				C48F162A23B5FE87002D04E3 /* KeychainWrapper.swift in Sources */,
 				46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */,
 				46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */,
+				C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
 				C48F161E23B5FE87002D04E3 /* KeychainItemAccessibility.swift in Sources */,
 				46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */,
@@ -1193,9 +1255,11 @@
 				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
+				C4CBC3F023E2AAC600434BFB /* MKMapView+Extensions.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
 				C48F162C23B5FE87002D04E3 /* ProfileKeyUser.swift in Sources */,
 				46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */,
+				C4CBC3F723E2AB9500434BFB /* LocationSearchViewController.swift in Sources */,
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
 				46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */,
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,

@@ -15,7 +15,6 @@ protocol ProfilePresenterProtocol: Presenter,
     init(view: ProfileViewController)
     func editInterests()
     func setInterests(interests: [ListOfInterests])
-    func setIndexArray(indexes: [Int])
     func getUser()
     func back()
 }
@@ -45,9 +44,9 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var mainSpecArray: [[String: Any]] = []
     private var addSpecArray: [[String: Any]] = []
     private var interests: [ProfileKeyInterests]?
-    private var interest: [ListOfInterests] = []
+    private var userInterests: [ListOfInterests] = []
     private var arrayOfAllInterests: [ListOfInterests] = []
-    private var indexArray: [Int] = []
+//    private var indexArray: [Int] = []
     private var idInterestsArray: [Int] = []
     private var codeMainSpec = "general"
     private var codeAddSpec = "040100"
@@ -63,7 +62,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let presenter = InterestsPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.arrayInterests = arrayOfAllInterests
-        presenter.indexArray = indexArray
+        presenter.userInterests = userInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -253,28 +252,22 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private func createArrayInterests() {
         for element in idInterestsArray {
             guard let newInterest = arrayOfAllInterests.first(where: { $0.id == element }) else { return }
-            interest.append(newInterest)
+            userInterests.append(newInterest)
         }
-        for element in interest {
-            guard let index = arrayOfAllInterests.firstIndex(where: { $0.id == element.id }) else { return }
-            indexArray.append(index)
-        }
+//        for element in userInterests {
+//            guard let index = arrayOfAllInterests.firstIndex(where: { $0.id == element.id }) else { return }
+//            indexArray.append(index)
+//        }
     }
     
     /// Заполнение массива интересов пользователя из формы списка интересов
     /// - Parameter interests: массив интересов
     func setInterests(interests: [ListOfInterests]) {
-        self.interest = interests
+        self.userInterests = interests
         var stringArray: [String] = []
-        interest.forEach { stringArray.append($0.name ?? "") }
+        userInterests.forEach { stringArray.append($0.name ?? "") }
         let string = stringArray.joined(separator: " ")
         view.setInterests(interest: string)
-    }
-    
-    /// Заполнение массива индексов интересов пользователя, из формы списка интересов
-    /// - Parameter indexes: массив индексов
-    func setIndexArray(indexes: [Int]) {
-        self.indexArray = indexes
     }
     
     /// Конвертирование серверного формата даты для отображения на форме
@@ -364,7 +357,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private func updateSpec() {
         let specArray = mainSpecArray + addSpecArray
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
-        print(specArray.count)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfileSpec.jsonData as Any])
@@ -390,8 +382,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Обновление информации об интересах пользователя на сервере
     private func updateInterests() {
         var intArray: [Int] = []
-        for i in 0 ..< interest.count {
-            intArray.append(interest[i].id)
+        for i in 0 ..< userInterests.count {
+            intArray.append(userInterests[i].id)
         }
         
         let updateProfile = UpdateProfileKeyInterest(arrayInterest: intArray)

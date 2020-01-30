@@ -41,12 +41,18 @@ class LoginPresenter: LoginPresenterProtocol {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("result= \(String(describing: getToken.responce))")
-                    guard let code = getToken.responce?.0 else { return }
-                    if responceCode(code: code) {
+                    let code = getToken.responce?.0
+                    switch code {
+                    case 200:
                         self?.login()
-                    } else {
+                    case 400, 403, 500:
                         self?.view.showAlert(message: getToken.responce?.1)
+                    case nil:
+                        self?.view.showAlert(message: "Не верный пароль")
+                    default:
+                        self?.view.showAlert(message: "Ошибка, повторите попытку позже")
                     }
+                    self?.view.stopActivityIndicator()
                 }
             }
         }

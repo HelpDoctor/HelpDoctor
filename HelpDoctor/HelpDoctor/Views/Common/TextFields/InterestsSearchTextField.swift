@@ -12,6 +12,7 @@ protocol InterestsSearchProtocol {
     func getSpecs() -> (String?, String?)
     func setInterests(interests: [ListOfInterests])
     func addInterest(interest: ListOfInterests)
+    func createInterest()
 }
 
 class InterestsSearchTextField: UITextField {
@@ -249,6 +250,6 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc private func addTag() {
-        print("pressed")
+        presenter?.createInterest()
     }
 }

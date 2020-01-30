@@ -12,13 +12,14 @@ protocol AppointmentAddPresenterProtocol: Presenter {
     init(view: AppointmentAddViewController)
     func getEvent()
     func getStatusEvent() -> String
-    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?)
+    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?, location: String?)
     func setIdEvent(idEvent: Int)
     func setNotifyDate(date: Date?)
     func deleteEvent()
     func convertStringToDate(date: String) -> Date?
     func otherNotifyTime(startDate: Date)
     func backToRoot()
+    func toMap()
 }
 
 class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
@@ -72,7 +73,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         notifyDate = date
     }
     
-    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?) {
+    func saveEvent(startDate: Date, endDate: Date, title: String?, desc: String?, location: String?) {
         guard let title = title else {
             view.showAlert(message: "Заполните имя пациента")
             return
@@ -84,7 +85,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
                                           title: title,
                                           description: desc,
                                           is_major: false,
-                                          event_place: "",
+                                          event_place: location,
                                           event_type: "reception")
         print(currentEvent)
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
@@ -177,6 +178,14 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
     
     func backToRoot() {
         view.navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func toMap() {
+        let viewController = LocationSearchViewController()
+        let presenter = LocationSearchPresenter(view: viewController)
+        viewController.delegate = self.view
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func save(source: SourceEditTextField) { }

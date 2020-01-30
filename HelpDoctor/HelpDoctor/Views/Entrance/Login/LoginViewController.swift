@@ -42,6 +42,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         setupLoginButton()
         setupBackButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +106,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
         emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        emailTextField.autocapitalizationType = .none
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -193,16 +195,24 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -238,6 +248,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func loginButtonPressed() {
         guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        hideKeyboard()
         presenter?.loginButtonPressed(email: email, password: password)
     }
     

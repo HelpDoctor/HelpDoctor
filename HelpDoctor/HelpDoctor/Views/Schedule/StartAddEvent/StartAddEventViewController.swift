@@ -9,7 +9,7 @@
 import UIKit
 
 class StartAddEventViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: StartAddEventPresenterProtocol?
     
@@ -36,12 +36,14 @@ class StartAddEventViewController: UIViewController {
         setupAdministrativeButton()
         setupScienceButton()
         setupOtherButton()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Setup views
@@ -64,7 +66,7 @@ class StartAddEventViewController: UIViewController {
         appointmentButton.addTarget(self, action: #selector(appointmentButtonPressed), for: .touchUpInside)
         appointmentButton.isEnabled = true
         view.addSubview(appointmentButton)
-
+        
         appointmentButton.translatesAutoresizingMaskIntoConstraints = false
         appointmentButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 36).isActive = true
         appointmentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -77,7 +79,7 @@ class StartAddEventViewController: UIViewController {
         administrativeButton.addTarget(self, action: #selector(administrativeButtonPressed), for: .touchUpInside)
         administrativeButton.isEnabled = true
         view.addSubview(administrativeButton)
-
+        
         administrativeButton.translatesAutoresizingMaskIntoConstraints = false
         administrativeButton.topAnchor.constraint(equalTo: appointmentButton.bottomAnchor, constant: 10).isActive = true
         administrativeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -90,7 +92,7 @@ class StartAddEventViewController: UIViewController {
         scienceButton.addTarget(self, action: #selector(scienceButtonPressed), for: .touchUpInside)
         scienceButton.isEnabled = true
         view.addSubview(scienceButton)
-
+        
         scienceButton.translatesAutoresizingMaskIntoConstraints = false
         scienceButton.topAnchor.constraint(equalTo: administrativeButton.bottomAnchor, constant: 10).isActive = true
         scienceButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -103,12 +105,20 @@ class StartAddEventViewController: UIViewController {
         otherButton.addTarget(self, action: #selector(otherButtonPressed), for: .touchUpInside)
         otherButton.isEnabled = true
         view.addSubview(otherButton)
-
+        
         otherButton.translatesAutoresizingMaskIntoConstraints = false
         otherButton.topAnchor.constraint(equalTo: scienceButton.bottomAnchor, constant: 10).isActive = true
         otherButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         otherButton.widthAnchor.constraint(equalToConstant: 235).isActive = true
         otherButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - Buttons methods
@@ -127,5 +137,10 @@ class StartAddEventViewController: UIViewController {
     @objc private func otherButtonPressed() {
         presenter?.otherButtonPressed()
     }
-
+    
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
 }

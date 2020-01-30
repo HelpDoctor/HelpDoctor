@@ -9,7 +9,7 @@
 import UIKit
 
 class StartScheduleViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: StartSchedulePresenterProtocol?
     
@@ -35,6 +35,7 @@ class StartScheduleViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -76,7 +77,7 @@ class StartScheduleViewController: UIViewController {
     private func setupAddButton() {
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         view.addSubview(addButton)
-
+        
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5).isActive = true
         addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -104,9 +105,10 @@ class StartScheduleViewController: UIViewController {
     @objc private func addButtonPressed() {
         presenter?.addButtonPressed()
     }
-
+    
 }
 
+// MARK: - Table View Delegate
 extension StartScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 25))
@@ -115,6 +117,7 @@ extension StartScheduleViewController: UITableViewDelegate {
     }
 }
 
+// MARK: - Table Data Source
 extension StartScheduleViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -199,5 +202,5 @@ extension StartScheduleViewController: UITableViewDataSource {
             presenter?.didSelectRow(index: indexPath.row - 4)
         }
     }
-
+    
 }

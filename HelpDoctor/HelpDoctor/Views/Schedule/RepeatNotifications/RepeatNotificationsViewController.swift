@@ -29,12 +29,14 @@ class RepeatNotificationsViewController: UIViewController {
                                   presenter: presenter)
         setupTableView()
         selectRows()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -63,10 +65,22 @@ class RepeatNotificationsViewController: UIViewController {
     }
     
     // MARK: - Private methods
-    func selectRows() {
+    private func selectRows() {
         presenter?.selectRows()
     }
-
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
+    }
+    
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
 }
 
 extension RepeatNotificationsViewController: UITableViewDelegate {

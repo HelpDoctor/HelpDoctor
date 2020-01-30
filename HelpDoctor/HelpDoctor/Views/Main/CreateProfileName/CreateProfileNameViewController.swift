@@ -253,7 +253,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
                                                            height: birthDateTextField.frame.height))
         birthDateTextField.leftViewMode = .always
         scrollView.addSubview(birthDateTextField)
-
+        
         birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
         birthDateTextField.topAnchor.constraint(equalTo: step2Label.bottomAnchor, constant: 5).isActive = true
         birthDateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
@@ -340,12 +340,12 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,

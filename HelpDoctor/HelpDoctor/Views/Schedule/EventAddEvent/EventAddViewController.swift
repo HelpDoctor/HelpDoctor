@@ -6,10 +6,11 @@
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
+import MapKit
 import UIKit
 
 class EventAddViewController: UIViewController, UIScrollViewDelegate {
-
+    
     // MARK: - Dependency
     var presenter: EventAddPresenterProtocol?
     
@@ -37,7 +38,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     private var oneHourButton = HDButton()
     private var otherTimeButton = HDButton()
     private let locationIcon = UIImageView()
-    private let locationLabel = UILabel()
+    private let locationButton = UIButton()
     private let saveButton = UIButton()
     private let deleteButton = UIButton()
     private var keyboardHeight: CGFloat = 0
@@ -78,16 +79,18 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         setupOneHourButton()
         setupOtherTimeButton()
         setupLocationIcon()
-        setupLocationLabel()
+        setupLocationButton()
         setupSaveButton()
         setupDeleteButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -148,7 +151,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
-
+    
     private func setupTitleLabel() {
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -257,9 +260,9 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         eventNameTextField.backgroundColor = .white
         eventNameTextField.layer.cornerRadius = 5
         eventNameTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                             y: 0,
-                                                             width: 8,
-                                                             height: eventNameTextField.frame.height))
+                                                           y: 0,
+                                                           width: 8,
+                                                           height: eventNameTextField.frame.height))
         eventNameTextField.leftViewMode = .always
         scrollView.addSubview(eventNameTextField)
         
@@ -307,7 +310,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         alldayCheckBox.translatesAutoresizingMaskIntoConstraints = false
         alldayCheckBox.topAnchor.constraint(equalTo: eventNameTextField.bottomAnchor,
-                                           constant: 8).isActive = true
+                                            constant: 8).isActive = true
         alldayCheckBox.leadingAnchor.constraint(equalTo: majorCheckBox.trailingAnchor, constant: 25).isActive = true
         alldayCheckBox.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
@@ -321,7 +324,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         addMembersButton.translatesAutoresizingMaskIntoConstraints = false
         addMembersButton.topAnchor.constraint(equalTo: alldayCheckBox.bottomAnchor,
-                                           constant: 8).isActive = true
+                                              constant: 8).isActive = true
         addMembersButton.leadingAnchor.constraint(equalTo: replyCheckBox.trailingAnchor, constant: 25).isActive = true
         addMembersButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
@@ -387,7 +390,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         bellIcon.translatesAutoresizingMaskIntoConstraints = false
         bellIcon.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor, constant: 8).isActive = true
         bellIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                          constant: 20).isActive = true
         bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
@@ -402,7 +405,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
-                                                    constant: 8).isActive = true
+                                        constant: 8).isActive = true
         timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
         timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -416,7 +419,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         tenMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         tenMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                              constant: 5).isActive = true
         tenMinutesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                   constant: 20).isActive = true
         tenMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -431,7 +434,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         thirtyMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         thirtyMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                                 constant: 5).isActive = true
         thirtyMinutesButton.leadingAnchor.constraint(equalTo: tenMinutesButton.trailingAnchor,
                                                      constant: 5).isActive = true
         thirtyMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -446,7 +449,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         oneHourButton.translatesAutoresizingMaskIntoConstraints = false
         oneHourButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                           constant: 5).isActive = true
         oneHourButton.leadingAnchor.constraint(equalTo: thirtyMinutesButton.trailingAnchor,
                                                constant: 5).isActive = true
         oneHourButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -461,7 +464,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         otherTimeButton.translatesAutoresizingMaskIntoConstraints = false
         otherTimeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                             constant: 5).isActive = true
         otherTimeButton.leadingAnchor.constraint(equalTo: oneHourButton.trailingAnchor,
                                                  constant: 5).isActive = true
         otherTimeButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -476,25 +479,26 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         locationIcon.translatesAutoresizingMaskIntoConstraints = false
         locationIcon.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor, constant: 5).isActive = true
         locationIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                              constant: 20).isActive = true
         locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
-    private func setupLocationLabel() {
-        locationLabel.font = .boldSystemFontOfSize(size: 12)
-        locationLabel.textColor = .white
-        locationLabel.attributedText = redStar(text: "Укажите место")
-        locationLabel.textAlignment = .left
-        locationLabel.numberOfLines = 1
-        scrollView.addSubview(locationLabel)
+    /// Установка кнопки указания местоположения
+    private func setupLocationButton() {
+        locationButton.addTarget(self, action: #selector(locationButtonPressed), for: .touchUpInside)
+        locationButton.contentHorizontalAlignment = .left
+        locationButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        locationButton.titleLabel?.textColor = .white
+        locationButton.setTitle("Укажите место", for: .normal)
+        scrollView.addSubview(locationButton)
         
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        locationLabel.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
-                                                    constant: 5).isActive = true
-        locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
-        locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        locationButton.translatesAutoresizingMaskIntoConstraints = false
+        locationButton.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
+                                           constant: 5).isActive = true
+        locationButton.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
+        locationButton.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
+        locationButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
     private func setupSaveButton() {
@@ -540,16 +544,24 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        scrollView.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -593,6 +605,11 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
     // MARK: - Buttons methods
     @objc private func tenMinutesButtonPressed() {
         presenter?.setNotifyDate(date: startDatePicker.date - 600)
@@ -631,7 +648,8 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
                              endDate: finishDatePicker.date,
                              isMajor: majorCheckBox.isSelected,
                              title: eventNameTextField.text,
-                             desc: descriptionTextField.text)
+                             desc: descriptionTextField.text,
+                             location: locationButton.titleLabel?.text)
     }
     
     @objc private func deleteButtonPressed() {
@@ -646,7 +664,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         replyCheckBox.isSelected = !replyCheckBox.isSelected
         presenter?.repeatNotifications()
     }
-
+    
     @objc private func alldayCheckBoxPressed() {
         alldayCheckBox.isSelected = !alldayCheckBox.isSelected
         startDatePicker.isEnabled = !alldayCheckBox.isSelected
@@ -658,6 +676,10 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         presenter?.addMembersButtonPressed()
     }
     
+    @objc private func locationButtonPressed() {
+        presenter?.toMap()
+    }
+    
     func setAlldayPicker() {
         var components = Calendar.current.dateComponents([.year, .month, .day, .minute, .hour],
                                                          from: startDatePicker.date)
@@ -667,5 +689,13 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         startDatePicker.setDate(finalTime, animated: true)
         finishDatePicker.setDate(finalTime + 43200, animated: true)
     }
+    
+}
 
+extension EventAddViewController: MapKitSearchDelegate {
+    
+    func mapKitSearch(_ locationSearchViewController: LocationSearchViewController, mapItem: MKMapItem) {
+        locationButton.setTitle(mapItem.name, for: .normal)
+    }
+    
 }

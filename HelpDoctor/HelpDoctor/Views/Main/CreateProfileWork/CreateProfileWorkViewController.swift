@@ -74,6 +74,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupBackButton()
         setupNextButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -349,9 +350,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         thirdWorkSearchButton.translatesAutoresizingMaskIntoConstraints = false
         thirdWorkSearchButton.topAnchor.constraint(equalTo: thirdWorkTextField.topAnchor,
-                                                 constant: 5).isActive = true
+                                                   constant: 5).isActive = true
         thirdWorkSearchButton.trailingAnchor.constraint(equalTo: thirdWorkTextField.trailingAnchor,
-                                                      constant: -5).isActive = true
+                                                        constant: -5).isActive = true
         thirdWorkSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         thirdWorkSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -470,9 +471,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         thirdSpecSearchButton.translatesAutoresizingMaskIntoConstraints = false
         thirdSpecSearchButton.topAnchor.constraint(equalTo: thirdSpecTextField.topAnchor,
-                                                 constant: 5).isActive = true
+                                                   constant: 5).isActive = true
         thirdSpecSearchButton.trailingAnchor.constraint(equalTo: thirdSpecTextField.trailingAnchor,
-                                                      constant: -5).isActive = true
+                                                        constant: -5).isActive = true
         thirdSpecSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
         thirdSpecSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
@@ -546,6 +547,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions

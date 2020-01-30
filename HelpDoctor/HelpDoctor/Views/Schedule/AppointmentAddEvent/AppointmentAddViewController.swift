@@ -6,10 +6,11 @@
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
+import MapKit
 import UIKit
 
 class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
-
+    
     // MARK: - Dependency
     var presenter: AppointmentAddPresenterProtocol?
     
@@ -35,7 +36,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     private var oneHourButton = HDButton()
     private var otherTimeButton = HDButton()
     private let locationIcon = UIImageView()
-    private let locationLabel = UILabel()
+    private let locationButton = UIButton()
     private let saveButton = UIButton()
     private let deleteButton = UIButton()
     private var keyboardHeight: CGFloat = 0
@@ -74,10 +75,11 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         setupOneHourButton()
         setupOtherTimeButton()
         setupLocationIcon()
-        setupLocationLabel()
+        setupLocationButton()
         setupSaveButton()
         setupDeleteButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
         firstAppointmentButton.isSelected = true
         reAppointmentButton.isSelected = false
         firstAppointmentButton.alternateButton = [reAppointmentButton]
@@ -88,6 +90,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -142,7 +145,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
-
+    
     private func setupTitleLabel() {
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -325,7 +328,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         firstAppointmentButton.translatesAutoresizingMaskIntoConstraints = false
         firstAppointmentButton.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
-                                                  constant: 8).isActive = true
+                                                    constant: 8).isActive = true
         firstAppointmentButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
         firstAppointmentButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
@@ -338,7 +341,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         reAppointmentButton.translatesAutoresizingMaskIntoConstraints = false
         reAppointmentButton.topAnchor.constraint(equalTo: firstAppointmentButton.bottomAnchor,
-                                                  constant: 4).isActive = true
+                                                 constant: 4).isActive = true
         reAppointmentButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
         reAppointmentButton.heightAnchor.constraint(equalToConstant: 11).isActive = true
     }
@@ -351,7 +354,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         bellIcon.translatesAutoresizingMaskIntoConstraints = false
         bellIcon.topAnchor.constraint(equalTo: reAppointmentButton.bottomAnchor, constant: 12).isActive = true
         bellIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                          constant: 20).isActive = true
         bellIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         bellIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
@@ -366,7 +369,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         timerLabel.translatesAutoresizingMaskIntoConstraints = false
         timerLabel.topAnchor.constraint(equalTo: reAppointmentButton.bottomAnchor,
-                                                    constant: 12).isActive = true
+                                        constant: 12).isActive = true
         timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
         timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
@@ -380,7 +383,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         tenMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         tenMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                              constant: 5).isActive = true
         tenMinutesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                   constant: 20).isActive = true
         tenMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -395,7 +398,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         thirtyMinutesButton.translatesAutoresizingMaskIntoConstraints = false
         thirtyMinutesButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                                 constant: 5).isActive = true
         thirtyMinutesButton.leadingAnchor.constraint(equalTo: tenMinutesButton.trailingAnchor,
                                                      constant: 5).isActive = true
         thirtyMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -410,7 +413,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         oneHourButton.translatesAutoresizingMaskIntoConstraints = false
         oneHourButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                           constant: 5).isActive = true
         oneHourButton.leadingAnchor.constraint(equalTo: thirtyMinutesButton.trailingAnchor,
                                                constant: 5).isActive = true
         oneHourButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -425,7 +428,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         
         otherTimeButton.translatesAutoresizingMaskIntoConstraints = false
         otherTimeButton.topAnchor.constraint(equalTo: timerLabel.bottomAnchor,
-                                            constant: 5).isActive = true
+                                             constant: 5).isActive = true
         otherTimeButton.leadingAnchor.constraint(equalTo: oneHourButton.trailingAnchor,
                                                  constant: 5).isActive = true
         otherTimeButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
@@ -440,25 +443,26 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         locationIcon.translatesAutoresizingMaskIntoConstraints = false
         locationIcon.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor, constant: 5).isActive = true
         locationIcon.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: 20).isActive = true
+                                              constant: 20).isActive = true
         locationIcon.widthAnchor.constraint(equalToConstant: 14).isActive = true
         locationIcon.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
-    private func setupLocationLabel() {
-        locationLabel.font = .boldSystemFontOfSize(size: 12)
-        locationLabel.textColor = .white
-        locationLabel.attributedText = redStar(text: "Укажите место")
-        locationLabel.textAlignment = .left
-        locationLabel.numberOfLines = 1
-        scrollView.addSubview(locationLabel)
+    /// Установка кнопки указания местоположения
+    private func setupLocationButton() {
+        locationButton.addTarget(self, action: #selector(locationButtonPressed), for: .touchUpInside)
+        locationButton.contentHorizontalAlignment = .left
+        locationButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        locationButton.titleLabel?.textColor = .white
+        locationButton.setTitle("Укажите место", for: .normal)
+        scrollView.addSubview(locationButton)
         
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        locationLabel.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
-                                                    constant: 5).isActive = true
-        locationLabel.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
-        locationLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        locationButton.translatesAutoresizingMaskIntoConstraints = false
+        locationButton.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
+                                           constant: 5).isActive = true
+        locationButton.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
+        locationButton.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
+        locationButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
     private func setupSaveButton() {
@@ -504,16 +508,24 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        scrollView.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -557,6 +569,15 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
+    @objc private func locationButtonPressed() {
+        presenter?.toMap()
+    }
+    
     // MARK: - Buttons methods
     @objc private func tenMinutesButtonPressed() {
         presenter?.setNotifyDate(date: startDatePicker.date - 600)
@@ -594,11 +615,20 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
         presenter?.saveEvent(startDate: startDatePicker.date,
                              endDate: finishDatePicker.date,
                              title: patientNameTextField.text,
-                             desc: descriptionTextField.text)
+                             desc: descriptionTextField.text,
+                             location: locationButton.titleLabel?.text)
     }
     
     @objc private func deleteButtonPressed() {
         presenter?.deleteEvent()
     }
+    
+}
 
+extension AppointmentAddViewController: MapKitSearchDelegate {
+    
+    func mapKitSearch(_ locationSearchViewController: LocationSearchViewController, mapItem: MKMapItem) {
+        locationButton.setTitle(mapItem.name, for: .normal)
+    }
+    
 }

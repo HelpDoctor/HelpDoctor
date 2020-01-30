@@ -9,7 +9,7 @@
 import UIKit
 
 class SelectDateViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: SelectDatePresenterProtocol?
     weak var delegate: SelectDateControllerDelegate?
@@ -33,12 +33,14 @@ class SelectDateViewController: UIViewController {
         setupTitleLabel()
         setupNotifyPicker()
         setupSaveButton()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -94,11 +96,24 @@ class SelectDateViewController: UIViewController {
         saveButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
     
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
+    }
+    
     // MARK: - IBActions
+    /// Переход на предыдущий экран
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
     // MARK: - Buttons methods
     @objc private func saveButtonPressed() {
         delegate?.callback(newDate: notifyPicker.date)
         presenter?.back()
     }
-
+    
 }

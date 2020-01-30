@@ -45,6 +45,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         setupRegisterButton()
         setupBackButton()
         addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -128,9 +129,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.addTarget(self,
                                     action: #selector(self.topEmailChanged(_:)),
                                     for: UIControl.Event.editingChanged)
-//        topEmailTextField.rightView = imageViewTopEmailSuccess
-//        topEmailTextField.rightViewMode = .always
-//        imageViewTopEmailSuccess.contentMode = .scaleAspectFit
         topEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         topEmailTextField.keyboardType = .emailAddress
         topEmailTextField.textColor = .textFieldTextColor
@@ -164,7 +162,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         textFieldLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldLabel.topAnchor.constraint(equalTo: topEmailTextField.bottomAnchor,
-                                         constant: 20).isActive = true
+                                            constant: 20).isActive = true
         textFieldLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         textFieldLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
         textFieldLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
@@ -174,9 +172,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.addTarget(self,
                                        action: #selector(self.bottomEmailChanged(_:)),
                                        for: UIControl.Event.editingChanged)
-//        bottomEmailTextField.rightView = imageViewBottomEmailSuccess
-//        bottomEmailTextField.rightViewMode = .always
-//        imageViewBottomEmailSuccess.contentMode = .scaleAspectFit
         bottomEmailTextField.font = UIFont.systemFontOfSize(size: 14)
         bottomEmailTextField.keyboardType = .emailAddress
         bottomEmailTextField.textColor = .textFieldTextColor
@@ -237,16 +232,24 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
         scrollView.addGestureRecognizer(hideKeyboardGesture)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWasShown​),
                                                name: UIResponder.keyboardWillShowNotification,
                                                object: nil)
-
+        
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions

@@ -22,15 +22,16 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     var view: InterestsViewController
     var arrayInterests: [ListOfInterests]?
-    var indexArray: [Int] = []
+    var userInterests: [ListOfInterests] = []
     
     required init(view: InterestsViewController) {
         self.view = view
     }
     
     func selectRows() {
-        for row in indexArray {
-            view.setSelected(index: row)
+        for element in userInterests {
+            guard let index = arrayInterests?.firstIndex(where: { $0.id == element.id }) else { return }
+            view.setSelected(index: index)
         }
     }
     
@@ -43,30 +44,29 @@ class InterestsPresenter: InterestsPresenterProtocol {
     }
     
     func appendIndexArray(index: Int) {
-        indexArray.append(index)
+        guard let arrayInterests = arrayInterests else { return }
+        userInterests.append(arrayInterests[index])
     }
     
     func removeIndexArray(index: Int) {
-        guard let i = indexArray.firstIndex(of: index) else { return }
-        indexArray.remove(at: i)
+        let removingInterest = arrayInterests?[index]
+        guard let removeIndex = userInterests.firstIndex(where: {$0.id == removingInterest?.id }) else { return }
+        userInterests.remove(at: removeIndex)
     }
     
     // MARK: - Coordinator
     func next() {
-        let interests = indexArray.map( { arrayInterests?[$0] })
         view.navigationController?.popViewController(animated: true)
         //swiftlint:disable force_cast
         let prevVC = view.navigationController?.viewControllers.last
         if prevVC is CreateProfileSpecViewController {
             let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
             let presenter = previous.presenter
-            presenter?.setInterests(interests: interests as! [ListOfInterests])
-            presenter?.setIndexArray(indexes: indexArray)
+            presenter?.setInterests(interests: userInterests)
         } else if prevVC is ProfileViewController {
             let previous = view.navigationController?.viewControllers.last as! ProfileViewController
             let presenter = previous.presenter
-            presenter?.setInterests(interests: interests as! [ListOfInterests])
-            presenter?.setIndexArray(indexes: indexArray)
+            presenter?.setInterests(interests: userInterests)
             presenter?.save(source: .interest)
         }
     }

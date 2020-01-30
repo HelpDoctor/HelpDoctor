@@ -44,7 +44,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         var repeats = false
         
         if repeatDay != nil {
-            let day = convertRepeatDayToCalendar(repeatDay!)
+            let day = convertRepeatDayToCalendar(repeatDay ?? 0)
             components = calendar.dateComponents([.minute, .hour], from: notifyDate)
             components.weekday = day
             repeats = true
