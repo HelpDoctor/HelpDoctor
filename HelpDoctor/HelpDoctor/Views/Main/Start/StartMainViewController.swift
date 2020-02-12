@@ -10,12 +10,11 @@ import UIKit
 
 class StartMainViewController: UIViewController {
 
-    var coordinator: StartMainCoordinatorProtocol?
+    // MARK: - Dependency
     var presenter: StartMainPresenterProtocol?
     
-    private let backgroundImage = UIImageView()
-    private var headerView = HeaderView()
-    private var enterProfileButton = EnterProfileButton()
+    // MARK: - Constants
+    private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
     private let userView = UIView() //Temporary
@@ -23,11 +22,12 @@ class StartMainViewController: UIViewController {
     private let bottomLine = UIView()
     private let eventView = UIView() //Temporary
     private let bottomLabel = UILabel()
-    private var fillProfileButton = HDButton()
+    private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -41,39 +41,42 @@ class StartMainViewController: UIViewController {
         setupEventView() //Temporary
         setupBottomLabel()
         setupFillProfileButton()
+        presenter?.profileCheck()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        UIApplication.statusBarBackgroundColor = .clear
+        setImage(image: Session.instance.user?.foto?.toImage())
     }
     
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
+    // MARK: - Public methods
+    func hideFillProfileButton() {
+        bottomLabel.isHidden = true
+        fillProfileButton.isHidden = true
+        enterProfileButton.isEnabled = true
+    }
+    
+    func showFillProfileButton() {
+        bottomLabel.isHidden = false
+        fillProfileButton.isHidden = false
+        enterProfileButton.isEnabled = false
+    }
+    
+    func setImage(image: UIImage?) {
+        let defaultImageName = "Enter_Profile_Button.pdf"
+        guard let defaultImage = UIImage(named: defaultImageName) else {
+            assertionFailure("Missing ​​\(defaultImageName) asset")
             return
         }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
+        enterProfileButton.setImage(image ?? defaultImage, for: .normal)
     }
     
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
-    }
-    
+    // MARK: - Setup views
+    /// Установка кнопки заполнить профиль в заголовке формы
     private func setupEnterProfileButton() {
-        enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
-        enterProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
+        enterProfileButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
         view.addSubview(enterProfileButton)
         
         enterProfileButton.translatesAutoresizingMaskIntoConstraints = false
@@ -84,6 +87,7 @@ class StartMainViewController: UIViewController {
         enterProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
+    /// Установка заголовка "Новые пользователи"
     private func setupNewUserLabel() {
         newUserLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         newUserLabel.textColor = .white
@@ -92,12 +96,13 @@ class StartMainViewController: UIViewController {
         view.addSubview(newUserLabel)
         
         newUserLabel.translatesAutoresizingMaskIntoConstraints = false
-        newUserLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 3).isActive = true
+        newUserLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 63).isActive = true
         newUserLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         newUserLabel.widthAnchor.constraint(equalToConstant: 140).isActive = true
         newUserLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка линии под заголовком
     private func setupTopLine() {
         topLine.backgroundColor = .hdLinkColor
         view.addSubview(topLine)
@@ -109,6 +114,7 @@ class StartMainViewController: UIViewController {
         topLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
+    /// Временная View
     private func setupUserView() {
         userView.backgroundColor = .white
         view.addSubview(userView)
@@ -120,6 +126,7 @@ class StartMainViewController: UIViewController {
         userView.heightAnchor.constraint(equalToConstant: 170).isActive = true
     }
     
+    /// Установка заголовка новые события
     private func setupNewEventLabel() {
         newEventLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         newEventLabel.textColor = .white
@@ -134,6 +141,7 @@ class StartMainViewController: UIViewController {
         newEventLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
+    /// Установка линии под заголовком
     private func setupBottomLine() {
         bottomLine.backgroundColor = .hdLinkColor
         view.addSubview(bottomLine)
@@ -145,6 +153,7 @@ class StartMainViewController: UIViewController {
         bottomLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
+    /// Временная View
     private func setupEventView() {
         eventView.backgroundColor = .white
         view.addSubview(eventView)
@@ -156,6 +165,7 @@ class StartMainViewController: UIViewController {
         eventView.heightAnchor.constraint(equalToConstant: 68).isActive = true
     }
     
+    /// Установка подписи под формой с новыми событиями
     private func setupBottomLabel() {
         bottomLabel.font = UIFont.systemFontOfSize(size: 12)
         bottomLabel.textColor = .white
@@ -164,6 +174,7 @@ class StartMainViewController: UIViewController {
         //swiftlint:enable line_length
         bottomLabel.textAlignment = .left
         bottomLabel.numberOfLines = 0
+        bottomLabel.isHidden = true
         view.addSubview(bottomLabel)
         
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -173,10 +184,11 @@ class StartMainViewController: UIViewController {
         bottomLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     
+    /// Установка кнопки Заполнить профиль
     private func setupFillProfileButton() {
-        fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
         fillProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
         fillProfileButton.isEnabled = true
+        fillProfileButton.isHidden = true
         view.addSubview(fillProfileButton)
 
         fillProfileButton.translatesAutoresizingMaskIntoConstraints = false
@@ -186,8 +198,15 @@ class StartMainViewController: UIViewController {
         fillProfileButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
+    // MARK: - Buttons methods
+    /// Отработка нажатия кнопки Заполнить профиль
     @objc private func fillProfileButtonPressed() {
-        coordinator?.fillProfile()
+        presenter?.fillProfile()
+    }
+    
+    /// Отработка нажатия кнопки Профиль
+    @objc private func profileButtonPressed() {
+        presenter?.toProfile()
     }
 
 }

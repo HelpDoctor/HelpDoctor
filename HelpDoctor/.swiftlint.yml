@@ -16,14 +16,20 @@ opt_in_rules:
   - force_unwrapping
 
 excluded:
-  - vendor
   - Pods
-  - NeyvaTests
 # Добавить пути на другие сгенерированные классы – цвета/модели/шрифты
 
 identifier_name:
-  min_length: 1
+  min_length: 3
   max_length: 60
+  excluded: # excluded via string array
+  - i
+  - x
+  - y
+  - id
+  - URL
+  - GlobalAPIKey
+  allowed_symbols: ["_"]
 
 type_body_length:
   warning: 600
@@ -57,6 +63,9 @@ type_name:
   max_length:
     warning: 60
     error: 100
+    excluded:
+    #- Auth_Info
+    allowed_symbols: ["_"]
 
 colon: 
   error

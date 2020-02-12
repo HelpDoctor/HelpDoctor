@@ -19,10 +19,8 @@ class ValidateManager: ValidateProtocol {
         for index in 0..<email.count {
             let emailArray = Array(email)
             if emailArray[index] == "@" {
-                for indexTwo in index..<email.count {
-                    if emailArray[indexTwo] == "." {
-                        return email
-                    }
+                for indexTwo in index..<email.count where emailArray[indexTwo] == "." {
+                    return email
                 }
             }
         }

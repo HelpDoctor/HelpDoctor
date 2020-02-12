@@ -10,26 +10,56 @@ import UIKit
 
 protocol RegisterScreenPresenter {
     init(view: RegisterScreenViewController)
+    func registerButtonPressed(email: String)
     func topEmailChanged(topEmail: String?)
     func bottomEmailChanged(bottomEmail: String?)
+    func register(email: String)
+    func back()
 }
 
 class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     
-    var view: RegisterScreenViewController
+    // MARK: - Dependency
+    let view: RegisterScreenViewController
+    
+    // MARK: - Constants and variables
     private let validateManager = ValidateManager()
     private var topEmail: String?
     private var bottomEmail: String?
-    private let validImage = UIImage(named: "checkMarkTF")
+//    private let validImage = UIImage(named: "checkMarkTF")
     private var isValidatedTopEmail = false
     private var isValidatedBottomEmail = false
     
+    // MARK: - Init
     required init(view: RegisterScreenViewController) {
         self.view = view
     }
     
-    func registerPressed() {
+    // MARK: - Public methods
+    func registerButtonPressed(email: String) {
+        view.stopActivityIndicator()
+        let register = Registration(email: email, password: nil, token: nil)
         
+        getData(typeOfContent: .registrationMail,
+                returning: (Int?, String?).self,
+                requestParams: register.requestParams)
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            register.responce = result
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("result=\(String(describing: register.responce))")
+                    self?.view.stopActivityIndicator()
+                    guard let code = register.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.register(email: email)
+                    } else {
+                        self?.view.showAlert(message: register.responce?.1)
+                    }
+                }
+            }
+        }
     }
     
     func topEmailChanged(topEmail: String?) {
@@ -40,7 +70,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.topEmail = nil
         }
-        updateTopEmailViews(isValidated: isValidated)
+//        updateTopEmailViews(isValidated: isValidated)
         isValidatedTopEmail = isValidated
         checkInput()
     }
@@ -55,11 +85,12 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.bottomEmail = nil
         }
-        updateBottomEmailViews(isValidated: isValidated)
+//        updateBottomEmailViews(isValidated: isValidated)
         isValidatedBottomEmail = isValidated
         checkInput()
     }
     
+    // MARK: - Private methods
     private func checkInput() {
         if isValidatedBottomEmail, isValidatedTopEmail, topEmail == bottomEmail {
             view.updateButtonRegister(isEnabled: true)
@@ -72,20 +103,33 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         return validateManager.validate(email: email)
     }
     
-    private func updateTopEmailViews(isValidated: Bool) {
-        let shownImage = getValidImage(isValidated: isValidated)
-        view.updateTopEmailSuccess(image: shownImage)
+//    private func updateTopEmailViews(isValidated: Bool) {
+//        let shownImage = getValidImage(isValidated: isValidated)
+//        view.updateTopEmailSuccess(image: shownImage)
+//    }
+    
+//    private func updateBottomEmailViews(isValidated: Bool) {
+//        let shownImage = getValidImage(isValidated: isValidated)
+//        view.updateBottomEmailSuccess(image: shownImage)
+//    }
+    
+//    private func getValidImage(isValidated: Bool) -> UIImage? {
+//        return isValidated
+//            ? validImage
+//            : nil
+//    }
+    
+    // MARK: - Coordinator
+    func register(email: String) {
+        let viewController = RegisterEndViewController()
+        let presenter = RegisterEndPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.email = email
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    private func updateBottomEmailViews(isValidated: Bool) {
-        let shownImage = getValidImage(isValidated: isValidated)
-        view.updateBottomEmailSuccess(image: shownImage)
-    }
-    
-    private func getValidImage(isValidated: Bool) -> UIImage? {
-        return isValidated
-            ? validImage
-            : nil
+    func back() {
+        view.navigationController?.popViewController(animated: true)
     }
     
 }

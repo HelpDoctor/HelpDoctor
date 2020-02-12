@@ -11,19 +11,16 @@ import UIKit
 class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var coordinator: LoginCoordinatorProtocol?
     var presenter: LoginPresenterProtocol?
     
-    // MARK: - Constants
+    // MARK: - Constants and variables
     private let scrollView = UIScrollView()
-    private let backgroundImage = UIImageView()
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
     private let passwordTextField = UITextField()
     private let forgotButton = UIButton()
-    private var loginButton = HDButton()
+    private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
     private var keyboardHeight: CGFloat = 0
     private var isKeyboardShown = false
@@ -44,20 +41,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         setupForgotButton()
         setupLoginButton()
         setupBackButton()
-        
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,40 +50,26 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    // MARK: - Puplic methods
-    // MARK: - Private methods
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
+    // MARK: - Public methods
+    func setEmail(email: String) {
+        emailTextField.text = email
     }
     
+    func getEmailText() -> String {
+        return emailTextField.text ?? ""
+    }
+    
+    // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupTitleLabel() {
@@ -109,7 +80,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
@@ -134,14 +105,15 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
+        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        emailTextField.autocapitalizationType = .none
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
         emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: emailTextField.frame.height))
+                                                       y: 0,
+                                                       width: 8,
+                                                       height: emailTextField.frame.height))
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -156,7 +128,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.font = UIFont.systemFontOfSize(size: 14)
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textColor = .textFieldTextColor
-        passwordTextField.placeholder = "Пароль*"
+        passwordTextField.attributedPlaceholder = redStar(text: "Пароль*")
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5
@@ -189,13 +161,12 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupLoginButton() {
-        loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor,
-                                            constant: 78).isActive = true
+                                         constant: 78).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -215,47 +186,40 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
+    }
+    
     // MARK: - IBActions
-    @objc private func forgotButtonPressed() {
-        coordinator?.recoveryPassword()
-    }
-    
-    @objc private func loginButtonPressed() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
-        
-        let getToken = Registration.init(email: email, password: password, token: nil)
-        
-        getData(typeOfContent: .getToken,
-                returning: (Int?, String?).self,
-                requestParams: getToken.requestParams )
-        { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            getToken.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result= \(String(describing: getToken.responce))")
-                    guard let code = getToken.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.coordinator?.login()
-                    }
-                }
-            }
-        }
-
-    }
-    
-    @objc private func backButtonPressed() {
-        coordinator?.back()
-    }
-    
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
     @objc func keyboardWasShown​(notification: Notification) {
@@ -276,6 +240,20 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
     }
+    
     // MARK: - Buttons methods
+    @objc private func forgotButtonPressed() {
+        presenter?.recoveryPassword()
+    }
+    
+    @objc private func loginButtonPressed() {
+        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        hideKeyboard()
+        presenter?.loginButtonPressed(email: email, password: password)
+    }
+    
     // MARK: - Navigation
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
 }

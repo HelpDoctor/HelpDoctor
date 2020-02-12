@@ -10,11 +10,10 @@ import UIKit
 
 class FirstScreenViewController: UIViewController {
     
-    var coordinator: MainCoordinatorProtocol?
-    var presenter: FirstScreenPresenter?
+    // MARK: - Dependency
+    var presenter: FirstScreenPresenterProtocol?
     
-    private let backgroundImage = UIImageView()
-    private var headerView = HeaderView()
+    // MARK: - Constants and variables
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
@@ -24,6 +23,7 @@ class FirstScreenViewController: UIViewController {
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -40,29 +40,7 @@ class FirstScreenViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
-    }
-    
+    // MARK: - Setup views
     private func setupTitleLabel() {
         titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -71,7 +49,7 @@ class FirstScreenViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 114).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
@@ -137,12 +115,13 @@ class FirstScreenViewController: UIViewController {
         registerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
+    // MARK: - Buttons methods
     @objc private func registerButtonPressed() {
-        coordinator?.register()
+        presenter?.register()
     }
     
     @objc private func loginButtonPressed() {
-        coordinator?.login()
+        presenter?.login()
     }
     
 }

@@ -10,23 +10,23 @@ import UIKit
 
 class RegisterEndViewController: UIViewController {
     
-    var coordinator: RegisterEndCoordinatorProtocol?
+    // MARK: - Dependency
     var presenter: RegisterEndPresenterProtocol?
     
-    private let backgroundImage = UIImageView()
-    private var headerView = HeaderView()
+    // MARK: - Constants
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
     private let topEmailTextField = UITextField()
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
-    private var loginButton = HDButton()
+    private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
     
+    // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
@@ -35,7 +35,6 @@ class RegisterEndViewController: UIViewController {
         setupTopLabel()
         setupBottomLabel()
         setupLoginButton()
-        setupBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,29 +42,7 @@ class RegisterEndViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
-    }
-    
+    // MARK: - Setup views
     private func setupTitleLabel() {
         titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -74,7 +51,7 @@ class RegisterEndViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 114).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
@@ -113,40 +90,23 @@ class RegisterEndViewController: UIViewController {
     }
     
     private func setupLoginButton() {
-        loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
-                                            constant: 39).isActive = true
+                                         constant: 39).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
     }
     
-    private func setupBackButton() {
-        let titleButton = "< Назад"
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
-        backButton.titleLabel?.textColor = .white
-        backButton.setTitle(titleButton, for: .normal)
-        view.addSubview(backButton)
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 36).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -38).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-    }
-    
+    // MARK: - Navigation
     @objc private func loginButtonPressed() {
-        print("pressed")
-        coordinator?.login()
+        presenter?.login()
     }
     
     @objc private func backButtonPressed() {
-        coordinator?.back()
+        presenter?.back()
     }
-
 }

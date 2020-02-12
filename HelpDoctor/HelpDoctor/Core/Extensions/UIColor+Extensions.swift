@@ -15,4 +15,7 @@ extension UIColor {
     static let textFieldTextColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     static let alertColor = UIColor(red: 206 / 255, green: 12 / 255, blue: 12 / 255, alpha: 0.7)
     static let tabBarColor = UIColor(red: 89 / 255, green: 147 / 255, blue: 174 / 255, alpha: 0.9)
+    static let savedColor = UIColor(red: 38 / 255, green: 103 / 255, blue: 255 / 255, alpha: 0.8)
+    static let backgroundLabelColor = UIColor(red: 229 / 255, green: 229 / 255, blue: 229 / 255, alpha: 0.3)
+    static let backgroundColor = UIColor(red: 36 / 255, green: 131 / 255, blue: 177 / 255, alpha: 1)
 }

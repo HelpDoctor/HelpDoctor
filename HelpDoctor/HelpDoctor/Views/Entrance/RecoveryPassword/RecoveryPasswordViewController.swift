@@ -11,21 +11,17 @@ import UIKit
 class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var coordinator: RecoveryPasswordCoordinatorProtocol?
     var presenter: RecoveryPasswordPresenterProtocol?
     
-    // MARK: - Constants
-    private let backgroundImage = UIImageView()
+    // MARK: - Constants and variables
     private let scrollView = UIScrollView()
-    private var headerView = HeaderView()
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
-    private var sendButton = HDButton()
+    private let sendButton = HDButton(title: "Отправить")
     private let backButton = UIButton()
     private var imageViewEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
-    private var isShowAlert = false
     private var alertViewTag = 999
     
     private let width = UIScreen.main.bounds.width
@@ -42,20 +38,8 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         setupEmailTextField()
         setupSendButton()
         setupBackButton()
-        
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        addTapGestureToHideKeyboard()
+        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,56 +47,26 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
-    // MARK: - Puplic methods
-    func showAlert(message: String?) {
-        if isShowAlert {
-            self.view.viewWithTag(alertViewTag)?.removeFromSuperview()
-            isShowAlert = false
-        }
-        let alert = AlertView(message: message ?? "Ошибка")
-        alert.tag = alertViewTag
-        view.addSubview(alert)
-        alert.translatesAutoresizingMaskIntoConstraints = false
-        alert.topAnchor.constraint(equalTo: view.topAnchor, constant: 10).isActive = true
-        alert.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        alert.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        alert.heightAnchor.constraint(equalToConstant: 57).isActive = true
-        isShowAlert = true
+    // MARK: - Public methods
+    func getEmailText() -> String {
+        return emailTextField.text ?? ""
     }
     
-    // MARK: - Private methods
-    private func setupBackground() {
-        let backgroundImageName = "Background.png"
-        guard let image = UIImage(named: backgroundImageName) else {
-            assertionFailure("Missing ​​\(backgroundImageName) asset")
-            return
-        }
-        backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
-        view.addSubview(backgroundImage)
+    func setEmail(email: String) {
+        emailTextField.text = email
     }
     
+    // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: width, height: height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
-    }
-    
-    private func setupHeaderView() {
-        headerView = HeaderView(title: "HelpDoctor")
-        scrollView.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     private func setupTitleLabel() {
@@ -123,7 +77,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
@@ -150,7 +104,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
+        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -169,14 +123,13 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSendButton() {
-        sendButton = HDButton(title: "Отправить")
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
-                                            constant: 40).isActive = true
+                                        constant: 40).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
@@ -196,23 +149,40 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 38).isActive = true
+                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
     
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    /// Добавляет свайп влево для перехода назад
+    private func addSwipeGestureToBack() {
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
+        swipeLeft.direction = .right
+        view.addGestureRecognizer(swipeLeft)
+    }
+    
     // MARK: - IBActions
-    @objc private func registerButtonPressed() {
-        guard let email = emailTextField.text, let presenter = presenter else { return }
-        presenter.sendButtonTapped(email: email)
-    }
-    
-    @objc private func backButtonPressed() {
-        coordinator?.back()
-    }
-    
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
     @objc func keyboardWasShown​(notification: Notification) {
@@ -235,9 +205,17 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    @objc private func registerButtonPressed() {
+        guard let email = emailTextField.text, let presenter = presenter else { return }
+        presenter.sendButtonTapped(email: email)
+    }
+    
     // MARK: - Navigation
     func toRecoveryPasswordEnd() {
-        coordinator?.send()
+        presenter?.send()
     }
-
+    @objc private func backButtonPressed() {
+        presenter?.back()
+    }
+    
 }
