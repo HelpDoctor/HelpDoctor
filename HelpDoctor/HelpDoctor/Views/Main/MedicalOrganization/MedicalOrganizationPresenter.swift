@@ -61,35 +61,14 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     // MARK: - Coordinator
     func next(index: Int?) {
         guard let index = index,
-            let medicalOrganization = arrayMedicalOrganizations?[index],
-            let mainWork = self.mainWork else {
+            let medicalOrganization = arrayMedicalOrganizations?[index] else {
                 view.showAlert(message: "Выберите одну организацию")
-                return }
-        if sender == nil {
-            view.navigationController?.popViewController(animated: true)
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            if mainWork {
-                presenter?.setMedicalOrganization(medicalOrganization: medicalOrganization)
-            } else {
-                presenter?.setAddMedicalOrganization(medicalOrganization: medicalOrganization)
-            }
-        } else if sender == "MainWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
-        } else if sender == "AddWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setAddMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
-        } else if sender == "ThirdWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setThirdMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
+                return
         }
+        let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
+        let presenter = previous.presenter
+        presenter?.setJob(job: medicalOrganization)
+        view.navigationController?.popToViewController(previous, animated: true)
     }
     
 }

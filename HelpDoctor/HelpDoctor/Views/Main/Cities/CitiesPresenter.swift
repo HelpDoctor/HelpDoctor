@@ -80,6 +80,16 @@ class CitiesPresenter: CitiesPresenterProtocol {
             presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
             presenter.sender = sender
             view.navigationController?.pushViewController(viewController, animated: true)
+        } else if sender == "Work" {
+            guard let regionId = regionId else {
+                view.showAlert(message: "Сначала необходимо выбрать регион")
+                return }
+            let viewController = MedicalOrganizationViewController()
+            let presenter = MedicalOrganizationPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
+            presenter.sender = sender
+            view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

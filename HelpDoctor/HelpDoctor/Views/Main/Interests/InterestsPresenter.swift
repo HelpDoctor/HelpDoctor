@@ -50,7 +50,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     func removeIndexArray(index: Int) {
         let removingInterest = arrayInterests?[index]
-        guard let removeIndex = userInterests.firstIndex(where: {$0.id == removingInterest?.id }) else { return }
+        guard let removeIndex = userInterests.firstIndex(where: { $0.id == removingInterest?.id }) else { return }
         userInterests.remove(at: removeIndex)
     }
     

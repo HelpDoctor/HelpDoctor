@@ -110,8 +110,8 @@ extension UIViewController {
     }
     
     func startActivityIndicator() {
-        let activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.instance.width - 70) / 2,
-                                                                    y: (Session.instance.height - 70) / 2,
+        let activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.width - 70) / 2,
+                                                                    y: (Session.height - 70) / 2,
                                                                     width: 70,
                                                                     height: 70))
         addBlurEffect()

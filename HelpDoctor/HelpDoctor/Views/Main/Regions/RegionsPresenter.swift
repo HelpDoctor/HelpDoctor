@@ -81,6 +81,18 @@ class RegionsPresenter: RegionsPresenterProtocol {
             presenter.sender = sender
             presenter.regionId = regionId
             view.navigationController?.pushViewController(viewController, animated: true)
+        } else if sender == "Work" {
+            guard let index = index,
+                let regionId = arrayRegions?[index].regionId else {
+                    view.showAlert(message: "Выберите один регион")
+                    return }
+            let viewController = CitiesViewController()
+            let presenter = CitiesPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.getCities(regionId: regionId)
+            presenter.sender = sender
+            presenter.regionId = regionId
+            view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     

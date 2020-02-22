@@ -14,7 +14,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ProfilePresenterProtocol?
     
     // MARK: - Constants and variables
-    private let session = Session.instance
+//    private let session = Session.instance
     private let scrollView = UIScrollView()
     private var headerView = ProfileHeaderView()
     private var nameTextField = EditTextField()
@@ -162,7 +162,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: session.width, height: session.height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -183,7 +183,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: session.width).isActive = true
+        headerView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
@@ -197,7 +197,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
         nameTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        nameTextField.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
+        nameTextField.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
         nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -249,7 +249,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateLabel.translatesAutoresizingMaskIntoConstraints = false
         birthDateLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5).isActive = true
         birthDateLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateLabel.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
+        birthDateLabel.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
         birthDateLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -265,7 +265,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
         birthDateTextField.topAnchor.constraint(equalTo: birthDateLabel.bottomAnchor, constant: 3).isActive = true
         birthDateTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
+        birthDateTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
         birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -280,7 +280,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         contactsLabel.translatesAutoresizingMaskIntoConstraints = false
         contactsLabel.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 5).isActive = true
         contactsLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        contactsLabel.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
+        contactsLabel.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
         contactsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -296,7 +296,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.topAnchor.constraint(equalTo: contactsLabel.bottomAnchor, constant: 3).isActive = true
         emailTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
+        emailTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
         emailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -312,7 +312,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         phoneTextField.translatesAutoresizingMaskIntoConstraints = false
         phoneTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 3).isActive = true
         phoneTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        phoneTextField.widthAnchor.constraint(equalToConstant: session.width - 190).isActive = true
+        phoneTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
         phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -327,7 +327,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         specLabel.translatesAutoresizingMaskIntoConstraints = false
         specLabel.topAnchor.constraint(equalTo: userPhoto.bottomAnchor, constant: 9).isActive = true
         specLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
+        specLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
         specLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -345,7 +345,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         specTextField.translatesAutoresizingMaskIntoConstraints = false
         specTextField.topAnchor.constraint(equalTo: specLabel.bottomAnchor, constant: 3).isActive = true
         specTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specTextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        specTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -377,7 +377,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.topAnchor.constraint(equalTo: specTextField.bottomAnchor, constant: 3).isActive = true
         locationLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
+        locationLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
         locationLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -394,7 +394,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
         locationTextField.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 3).isActive = true
         locationTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationTextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        locationTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         locationTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -426,7 +426,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlaceLabel.translatesAutoresizingMaskIntoConstraints = false
         workPlaceLabel.topAnchor.constraint(equalTo: locationTextField.bottomAnchor, constant: 3).isActive = true
         workPlaceLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlaceLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
+        workPlaceLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
         workPlaceLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -444,7 +444,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace1TextField.translatesAutoresizingMaskIntoConstraints = false
         workPlace1TextField.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor, constant: 3).isActive = true
         workPlace1TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace1TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        workPlace1TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         workPlace1TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -479,7 +479,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace2TextField.translatesAutoresizingMaskIntoConstraints = false
         workPlace2TextField.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor, constant: 5).isActive = true
         workPlace2TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace2TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        workPlace2TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         workPlace2TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -514,7 +514,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         workPlace3TextField.translatesAutoresizingMaskIntoConstraints = false
         workPlace3TextField.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 5).isActive = true
         workPlace3TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace3TextField.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        workPlace3TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         workPlace3TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -562,7 +562,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsLabel.topAnchor.constraint(greaterThanOrEqualTo: workPlace2TextField.bottomAnchor,
                                             constant: 26).isActive = true
         interestsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsLabel.widthAnchor.constraint(equalToConstant: session.width - 50).isActive = true
+        interestsLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
         interestsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
     }
     
@@ -579,7 +579,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsTextView.translatesAutoresizingMaskIntoConstraints = false
         interestsTextView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor, constant: 3).isActive = true
         interestsTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsTextView.widthAnchor.constraint(equalToConstant: session.width - 80).isActive = true
+        interestsTextView.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         interestsTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     

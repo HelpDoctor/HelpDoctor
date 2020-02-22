@@ -46,6 +46,7 @@
 		46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */; };
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
+		4640B6B9240139420023C3A3 /* JobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6B8240139420023C3A3 /* JobCell.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -224,6 +225,7 @@
 		46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
+		4640B6B8240139420023C3A3 /* JobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCell.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -568,6 +570,7 @@
 			children = (
 				46F87F2823BC89760095264E /* CreateProfileWorkViewController.swift */,
 				46F87F2A23BC898D0095264E /* CreateProfileWorkPresenter.swift */,
+				4640B6B8240139420023C3A3 /* JobCell.swift */,
 			);
 			path = CreateProfileWork;
 			sourceTree = "<group>";
@@ -1243,6 +1246,7 @@
 				46F87F4223BE11450095264E /* TabBarController.swift in Sources */,
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
+				4640B6B9240139420023C3A3 /* JobCell.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
 				4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */,
 				46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */,

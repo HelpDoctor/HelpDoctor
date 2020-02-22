@@ -16,9 +16,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let session = Session.instance
-        session.width = UIScreen.main.bounds.width
-        session.height = UIScreen.main.bounds.height
+//        let session = Session.instance
+//        session.width = UIScreen.main.bounds.width
+//        session.height = UIScreen.main.bounds.height
         window = UIWindow(frame: UIScreen.main.bounds)
 //        Auth_Info.instance.token = nil
 

@@ -10,7 +10,7 @@ import UIKit
 
 protocol MedicalSpecializationPresenterProtocol {
     init(view: MedicalSpecializationViewController)
-    func getMedicalSpecialization(mainSpec: Bool)
+    func getMedicalSpecialization()
     func getCountMedicalSpecialization() -> Int?
     func getMedicalSpecializationTitle(index: Int) -> String?
     func next(index: Int?)
@@ -20,17 +20,14 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     var view: MedicalSpecializationViewController
     var arrayMedicalSpecialization: [MedicalSpecialization]?
-    var mainSpec: Bool?
-    var sender: String?
     
     required init(view: MedicalSpecializationViewController) {
         self.view = view
     }
     
-    func getMedicalSpecialization(mainSpec: Bool) {
+    func getMedicalSpecialization() {
         view.startActivityIndicator()
         let getMedicalSpecialization = Profile()
-        self.mainSpec = mainSpec
         
         getData(typeOfContent: .getMedicalSpecialization,
                 returning: ([MedicalSpecialization], Int?, String?).self,
@@ -63,20 +60,12 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
         guard let index = index,
             let medicalSpecialization = arrayMedicalSpecialization?[index] else {
                 view.showAlert(message: "Выберите одну специализацию")
-                return }
+                return
+        }
         view.navigationController?.popViewController(animated: true)
         let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
         let presenter = previous.presenter
-        switch sender {
-        case "main":
-            presenter?.setMedicalSpecialization(medicalSpecialization: medicalSpecialization)
-        case "add":
-            presenter?.setAddMedicalSpecialization(medicalSpecialization: medicalSpecialization)
-        case "third":
-            presenter?.setThirdMedicalSpecialization(medicalSpecialization: medicalSpecialization)
-        default:
-            view.showAlert(message: "Error")
-        }
+        presenter?.setSpec(spec: medicalSpecialization)
     }
     
 }

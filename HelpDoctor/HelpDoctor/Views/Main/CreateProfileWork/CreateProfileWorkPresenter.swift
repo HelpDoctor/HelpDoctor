@@ -8,15 +8,19 @@
 
 import UIKit
 
-protocol CreateProfileWorkPresenterProtocol: MedicalOrganizationSearchProtocol,
-    MedicalSpecializationSearchProtocol,
-CitiesSearchProtocol {
+protocol CreateProfileWorkPresenterProtocol: CitiesSearchProtocol {
     init(view: CreateProfileWorkViewController)
-    func medicalSpecializationSearch(mainSpec: Bool, tag: String)
-    func medicalOrganizationSearch(mainWork: Bool, tag: String)
+    func jobSearch(_ index: Int)
+    func specSearch(_ index: Int)
     func citySearch()
     func regionSearch()
+    func getCountJob() -> Int
+    func getCountSpec() -> Int
+    func getJob(_ index: Int) -> String
+    func getSpec(_ index: Int) -> String
     func setRegion(region: Regions)
+    func setJob(job: MedicalOrganization)
+    func setSpec(spec: MedicalSpecialization)
     func next()
     func back()
 }
@@ -28,59 +32,33 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
-    private var mainJobArray: [[String: Any]] = []
-    private var addJobArray: [[String: Any]] = []
-    private var thirdJobArray: [[String: Any]] = []
-    private var mainSpecArray: [[String: Any]] = []
-    private var addSpecArray: [[String: Any]] = []
-    private var thirdSpecArray: [[String: Any]] = []
-    private var job: UpdateProfileKeyJob?
+    private var jobArray: [MedicalOrganization?] = [nil, nil, nil, nil, nil]
+    private var specArray: [MedicalSpecialization?] = [nil, nil, nil, nil, nil]
+    private var jobIndex = 0
+    private var specIndex = 0
     private var region: Regions?
     private var city: Cities?
-    private var workPlace: MedicalOrganization?
-    private var addWorkPlace: MedicalOrganization?
-    private var thirdWorkPlace: MedicalOrganization?
-    private var mainSpec: MedicalSpecialization?
-    private var addSpec: MedicalSpecialization?
-    private var thirdSpec: MedicalSpecialization?
     
     required init(view: CreateProfileWorkViewController) {
         self.view = view
     }
     
     // MARK: - Public methods
-    func medicalSpecializationSearch(mainSpec: Bool, tag: String) {
-        let viewController = MedicalSpecializationViewController()
-        let presenter = MedicalSpecializationPresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.getMedicalSpecialization(mainSpec: mainSpec)
-        switch tag {
-        case "main":
-            presenter.sender = "main"
-        case "add":
-            presenter.sender = "add"
-        case "third":
-            presenter.sender = "third"
-        default:
-            view.showAlert(message: "Error")
-        }
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func medicalOrganizationSearch(mainWork: Bool, tag: String) {
+    func jobSearch(_ index: Int) {
+        jobIndex = index
         let viewController = RegionsViewController()
         let presenter = RegionsPresenter(view: viewController)
         viewController.presenter = presenter
-        switch tag {
-        case "main":
-            presenter.sender = "MainWork"
-        case "add":
-            presenter.sender = "AddWork"
-        case "third":
-            presenter.sender = "ThirdWork"
-        default:
-            view.showAlert(message: "Ошибка")
-        }
+        presenter.sender = "Work"
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func specSearch(_ index: Int) {
+        specIndex = index
+        let viewController = MedicalSpecializationViewController()
+        let presenter = MedicalSpecializationPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.getMedicalSpecialization()
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -102,9 +80,43 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func getCountJob() -> Int {
+        return jobArray.count
+    }
+    
+    func getCountSpec() -> Int {
+        return specArray.count
+    }
+    
+    func getJob(_ index: Int) -> String {
+        if index + 1 > jobArray.count {
+            return ""
+        } else {
+            return jobArray[index]?.nameShort ?? ""
+        }
+    }
+    
+    func getSpec(_ index: Int) -> String {
+        if index + 1 > specArray.count {
+            return ""
+        } else {
+            return specArray[index]?.name ?? ""
+        }
+    }
+    
     func setRegion(region: Regions) {
         self.region = region
         view.setRegion(region: region.regionName ?? "")
+    }
+    
+    func setJob(job: MedicalOrganization) {
+        jobArray.insert(job, at: jobIndex)
+        view.reloadJobTableView()
+    }
+    
+    func setSpec(spec: MedicalSpecialization) {
+        specArray.insert(spec, at: specIndex)
+        view.reloadSpecTableView()
     }
     
     // MARK: - CitiesSearchProtocol
@@ -118,56 +130,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         user?.city_id = city.id
     }
     
-    // MARK: - MedicalOrganizationSearchProtocol
-    func setMedicalOrganization(medicalOrganization: MedicalOrganization) {
-        self.workPlace = medicalOrganization
-        view.setMainJob(job: medicalOrganization.nameShort ?? "")
-        let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": true]
-        mainJobArray.removeAll()
-        mainJobArray.append(job)
-    }
-    
-    func setAddMedicalOrganization(medicalOrganization: MedicalOrganization) {
-        self.addWorkPlace = medicalOrganization
-        view.setAddJob(job: medicalOrganization.nameShort ?? "")
-        let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
-        addJobArray.removeAll()
-        addJobArray.append(job)
-    }
-    
-    func setThirdMedicalOrganization(medicalOrganization: MedicalOrganization) {
-        self.thirdWorkPlace = medicalOrganization
-        view.setThirdJob(job: medicalOrganization.nameShort ?? "")
-        let job: [String: Any] = ["id": 0, "job_oid": medicalOrganization.oid as Any, "is_main": false]
-        thirdJobArray.removeAll()
-        thirdJobArray.append(job)
-    }
-    
-    // MARK: - MedicalSpecializationSearchProtocol
-    func setMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
-        self.mainSpec = medicalSpecialization
-        view.setMainSpec(spec: medicalSpecialization.name ?? "")
-        let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": true]
-        mainSpecArray.removeAll()
-        mainSpecArray.append(spec)
-    }
-    
-    func setAddMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
-        self.addSpec = medicalSpecialization
-        view.setAddSpec(spec: medicalSpecialization.name ?? "")
-        let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
-        addSpecArray.removeAll()
-        addSpecArray.append(spec)
-    }
-    
-    func setThirdMedicalSpecialization(medicalSpecialization: MedicalSpecialization) {
-        self.thirdSpec = medicalSpecialization
-        view.setThirdSpec(spec: medicalSpecialization.name ?? "")
-        let spec: [String: Any] = ["id": 0, "spec_id": medicalSpecialization.id as Any, "is_main": false]
-        thirdSpecArray.removeAll()
-        thirdSpecArray.append(spec)
-    }
-    
     // MARK: - Coordinator
     func next() {
         guard region != nil else {
@@ -178,29 +140,22 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             view.showAlert(message: "Не указан город места жительства")
             return
         }
-        guard workPlace != nil else {
-            view.showAlert(message: "Не указано основное место работы")
-            return
-        }
-        guard mainSpec != nil else {
-            view.showAlert(message: "Не указана основная специализация")
-            return
-        }
         
         let viewController = CreateProfileSpecViewController()
         let presenter = CreateProfileSpecPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.user = user
-        presenter.mainJobArray = mainJobArray
-        presenter.addJobArray = addJobArray + thirdJobArray
-        presenter.mainSpecArray = mainSpecArray
-        presenter.addSpecArray = addSpecArray + thirdSpecArray
-        presenter.mainSpec = mainSpec?.code
-        presenter.addSpec = addSpec?.code
+        presenter.jobArray = jobArray.filter {
+            $0?.oid != nil
+        }
+        presenter.specArray = specArray.filter {
+            $0?.id != nil
+        }
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
+    
 }
