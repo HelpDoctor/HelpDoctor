@@ -16,15 +16,14 @@ class MedicalOrganizationViewController: UIViewController {
     // MARK: - Constants
     var tableView = UITableView()
     private var okButton = HDButton()
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
         setupHeaderView()
+        setupSearchBar()
         setupTableView()
         setupOkButton()
     }
@@ -36,7 +35,16 @@ class MedicalOrganizationViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
     // MARK: - Setup views
+    private func setupSearchBar() {
+        searchBar.delegate = self
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
@@ -70,8 +78,29 @@ class MedicalOrganizationViewController: UIViewController {
     }
 }
 
-extension MedicalOrganizationViewController: UITableViewDelegate {}
+// MARK: - UISearchBarDelegate
+extension MedicalOrganizationViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            presenter?.searchTextIsEmpty()
+            return
+        }
+        presenter?.filter(searchText: searchText)
+    }
+    
+}
 
+// MARK: - UITableViewDelegate
+extension MedicalOrganizationViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return searchBar
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
 extension MedicalOrganizationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.getCountMedicalOrganizations() ?? 0

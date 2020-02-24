@@ -47,6 +47,19 @@
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
 		4640B6B9240139420023C3A3 /* JobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6B8240139420023C3A3 /* JobCell.swift */; };
+		4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BA240159560023C3A3 /* SettingsRows.swift */; };
+		4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BC240194F30023C3A3 /* SettingsCell.swift */; };
+		4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */; };
+		4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */; };
+		4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */; };
+		4640B6C8240271550023C3A3 /* ChangePasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */; };
+		4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */; };
+		4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */; };
+		4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CF24028F030023C3A3 /* FAQViewController.swift */; };
+		4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */; };
+		4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D42402B0660023C3A3 /* EmailViewController.swift */; };
+		4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D62402B0710023C3A3 /* EmailPresenter.swift */; };
+		4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -226,6 +239,19 @@
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
 		4640B6B8240139420023C3A3 /* JobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCell.swift; sourceTree = "<group>"; };
+		4640B6BA240159560023C3A3 /* SettingsRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRows.swift; sourceTree = "<group>"; };
+		4640B6BC240194F30023C3A3 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPresenter.swift; sourceTree = "<group>"; };
+		4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordPresenter.swift; sourceTree = "<group>"; };
+		4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitePresenter.swift; sourceTree = "<group>"; };
+		4640B6CF24028F030023C3A3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
+		4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQPresenter.swift; sourceTree = "<group>"; };
+		4640B6D42402B0660023C3A3 /* EmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		4640B6D62402B0710023C3A3 /* EmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPresenter.swift; sourceTree = "<group>"; };
+		4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicButton.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -471,6 +497,62 @@
 			path = AddMembers;
 			sourceTree = "<group>";
 		};
+		4640B6BE24023E160023C3A3 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */,
+				46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */,
+				4640B6BA240159560023C3A3 /* SettingsRows.swift */,
+				4640B6BC240194F30023C3A3 /* SettingsCell.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
+		4640B6BF24023E2A0023C3A3 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */,
+				4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		4640B6C42402712C0023C3A3 /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */,
+				4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */,
+			);
+			path = ChangePassword;
+			sourceTree = "<group>";
+		};
+		4640B6C924027C2E0023C3A3 /* Invite */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */,
+				4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */,
+			);
+			path = Invite;
+			sourceTree = "<group>";
+		};
+		4640B6CE24028EF30023C3A3 /* FAQ */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6CF24028F030023C3A3 /* FAQViewController.swift */,
+				4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */,
+			);
+			path = FAQ;
+			sourceTree = "<group>";
+		};
+		4640B6D32402B02A0023C3A3 /* Email */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6D42402B0660023C3A3 /* EmailViewController.swift */,
+				4640B6D62402B0710023C3A3 /* EmailPresenter.swift */,
+			);
+			path = Email;
+			sourceTree = "<group>";
+		};
 		4670346F23D480C300AFAA91 /* RepeatNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -586,6 +668,7 @@
 				46072E2423C3446D0070F2F6 /* RadioButton.swift */,
 				46203F0523C5F6C30072653A /* TileButton.swift */,
 				46203F0C23C761A70072653A /* CheckBox.swift */,
+				4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -937,8 +1020,12 @@
 		C48F168123BA05DC002D04E3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */,
-				46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */,
+				4640B6D32402B02A0023C3A3 /* Email */,
+				4640B6CE24028EF30023C3A3 /* FAQ */,
+				4640B6C924027C2E0023C3A3 /* Invite */,
+				4640B6C42402712C0023C3A3 /* ChangePassword */,
+				4640B6BF24023E2A0023C3A3 /* Feedback */,
+				4640B6BE24023E160023C3A3 /* Start */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1128,6 +1215,7 @@
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
+				4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
@@ -1139,6 +1227,7 @@
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
 				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
+				4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
 				46203EFE23C46A5A0072653A /* FindUsers.swift in Sources */,
@@ -1150,6 +1239,7 @@
 				C4CBC3F223E2AAE200434BFB /* CLPlacemark+Extensions.swift in Sources */,
 				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */,
+				4640B6C8240271550023C3A3 /* ChangePasswordPresenter.swift in Sources */,
 				4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
@@ -1166,6 +1256,7 @@
 				46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */,
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
+				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
 				46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
@@ -1179,16 +1270,21 @@
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
+				4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */,
 				46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */,
+				4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */,
 				46F87EFD23B8C6120095264E /* ValidateProtocol.swift in Sources */,
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,
+				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */,
 				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
+				4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */,
 				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
 				C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
+				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
@@ -1223,8 +1319,10 @@
 				46203EEE23C443E20072653A /* Schedule.swift in Sources */,
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
+				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
+				4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
@@ -1238,6 +1336,7 @@
 				46F87F0923B90CEE0095264E /* RecoveryPasswordViewController.swift in Sources */,
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
+				4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */,
 				46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */,
 				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
 				46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */,
@@ -1245,6 +1344,7 @@
 				46072E0A23C1F4D80070F2F6 /* StartSchedulePresenter.swift in Sources */,
 				46F87F4223BE11450095264E /* TabBarController.swift in Sources */,
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
+				4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
 				4640B6B9240139420023C3A3 /* JobCell.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
