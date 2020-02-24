@@ -8,6 +8,11 @@
 
 import UIKit
 
+enum TypeCheckbox {
+    case square
+    case circle
+}
+
 class CheckBox: UIButton {
     // Images
     let checkedImage = UIImage(named: "WhiteSelectedEllipse.pdf")
@@ -24,6 +29,18 @@ class CheckBox: UIButton {
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    convenience init(type: TypeCheckbox = .square) {
+        self.init()
+        switch type {
+        case .circle:
+            setImage(checkedImage, for: .selected)
+            setImage(uncheckedImage, for: .normal)
+        case .square:
+            setImage(UIImage(named: "Checkbox_Y.pdf"), for: .selected)
+            setImage(UIImage(named: "Checkbox_N.pdf"), for: .normal)
+        }
     }
     
 }

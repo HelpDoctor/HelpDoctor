@@ -16,11 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-//        let session = Session.instance
-//        session.width = UIScreen.main.bounds.width
-//        session.height = UIScreen.main.bounds.height
         window = UIWindow(frame: UIScreen.main.bounds)
-//        Auth_Info.instance.token = nil
 
 //        for family in UIFont.familyNames.sorted() {
 //            let names = UIFont.fontNames(forFamilyName: family)
@@ -37,9 +33,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
+        guard let window = window else { return }
         let blurEffect = UIBlurEffect(style: .light)
         let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.frame = window!.frame
+        blurEffectView.frame = window.frame
         blurEffectView.tag = 1
         self.window?.addSubview(blurEffectView)
     }

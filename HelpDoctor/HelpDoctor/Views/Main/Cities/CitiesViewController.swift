@@ -16,6 +16,7 @@ class CitiesViewController: UIViewController {
     // MARK: - Constants
     var tableView = UITableView()
     private var okButton = HDButton()
+    private let searchBar = UISearchBar()
     
     private let width = UIScreen.main.bounds.width
     private let height = UIScreen.main.bounds.height
@@ -25,6 +26,7 @@ class CitiesViewController: UIViewController {
         super.viewDidLoad()
         setupBackground()
         setupHeaderView()
+        setupSearchBar()
         setupTableView()
         setupOkButton()
     }
@@ -36,7 +38,16 @@ class CitiesViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
     // MARK: - Setup views
+    private func setupSearchBar() {
+        searchBar.delegate = self
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
@@ -70,8 +81,29 @@ class CitiesViewController: UIViewController {
     }
 }
 
-extension CitiesViewController: UITableViewDelegate {}
+// MARK: - UISearchBarDelegate
+extension CitiesViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            presenter?.searchTextIsEmpty()
+            return
+        }
+        presenter?.filter(searchText: searchText)
+    }
+    
+}
 
+// MARK: - UITableViewDelegate
+extension CitiesViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return searchBar
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
 extension CitiesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.getCountCities() ?? 0

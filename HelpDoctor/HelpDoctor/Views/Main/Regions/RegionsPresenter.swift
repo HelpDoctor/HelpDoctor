@@ -13,6 +13,8 @@ protocol RegionsPresenterProtocol {
     func getRegions()
     func getCountRegions() -> Int?
     func getRegionTitle(index: Int) -> String?
+    func searchTextIsEmpty()
+    func filter(searchText: String)
     func next(index: Int?)
 }
 
@@ -20,6 +22,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
     
     var view: RegionsViewController
     var arrayRegions: [Regions]?
+    var filteredArray: [Regions] = []
     var sender: String?
     
     required init(view: RegionsViewController) {
@@ -41,6 +44,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     self?.arrayRegions = getRegions.regions
+                    self?.filteredArray = getRegions.regions ?? []
                     self?.view.tableView.reloadData()
                     self?.view.stopActivityIndicator()
                 }
@@ -49,20 +53,34 @@ class RegionsPresenter: RegionsPresenterProtocol {
     }
     
     func getCountRegions() -> Int? {
-        return arrayRegions?.count
+        return filteredArray.count
     }
     
     func getRegionTitle(index: Int) -> String? {
-        return arrayRegions?[index].regionName
+        return filteredArray[index].regionName
+    }
+    
+    func searchTextIsEmpty() {
+        filteredArray = arrayRegions ?? []
+        view.reloadTableView()
+    }
+    
+    func filter(searchText: String) {
+        guard let arrayRegions = arrayRegions else { return }
+        filteredArray = arrayRegions.filter({ region -> Bool in
+            return (region.regionName?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
     }
     
     // MARK: - Coordinator
     func next(index: Int?) {
         if sender == nil {
-            guard let index = index,
-                let region = arrayRegions?[index] else {
+            guard let index = index/*,
+                let region = arrayRegions?[index]*/ else {
                     view.showAlert(message: "Выберите один регион")
                     return }
+            let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
             let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
@@ -70,10 +88,11 @@ class RegionsPresenter: RegionsPresenterProtocol {
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
-            guard let index = index,
-                let regionId = arrayRegions?[index].regionId else {
+            guard let index = index/*,
+                let regionId = arrayRegions?[index].regionId*/ else {
                     view.showAlert(message: "Выберите один регион")
                     return }
+            let regionId = filteredArray[index].regionId
             let viewController = CitiesViewController()
             let presenter = CitiesPresenter(view: viewController)
             viewController.presenter = presenter
@@ -82,10 +101,11 @@ class RegionsPresenter: RegionsPresenterProtocol {
             presenter.regionId = regionId
             view.navigationController?.pushViewController(viewController, animated: true)
         } else if sender == "Work" {
-            guard let index = index,
-                let regionId = arrayRegions?[index].regionId else {
+            guard let index = index/*,
+                let regionId = arrayRegions?[index].regionId*/ else {
                     view.showAlert(message: "Выберите один регион")
                     return }
+            let regionId = filteredArray[index].regionId
             let viewController = CitiesViewController()
             let presenter = CitiesPresenter(view: viewController)
             viewController.presenter = presenter

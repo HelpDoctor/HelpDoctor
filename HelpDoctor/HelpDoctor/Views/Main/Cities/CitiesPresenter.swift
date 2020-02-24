@@ -13,6 +13,8 @@ protocol CitiesPresenterProtocol {
     func getCities(regionId: Int)
     func getCountCities() -> Int?
     func getCityTitle(index: Int) -> String?
+    func searchTextIsEmpty()
+    func filter(searchText: String)
     func next(index: Int?)
     func back()
 }
@@ -21,6 +23,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
     
     var view: CitiesViewController
     var arrayCities: [Cities]?
+    var filteredArray: [Cities] = []
     var sender: String?
     var regionId: Int?
     
@@ -44,6 +47,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
                 DispatchQueue.main.async { [weak self] in
                     self?.view.stopActivityIndicator()
                     self?.arrayCities = getCities.cities
+                    self?.filteredArray = getCities.cities ?? []
                     self?.view.tableView.reloadData()
                 }
             }
@@ -51,20 +55,34 @@ class CitiesPresenter: CitiesPresenterProtocol {
     }
     
     func getCountCities() -> Int? {
-        return arrayCities?.count
+        return filteredArray.count
     }
     
     func getCityTitle(index: Int) -> String? {
-        return arrayCities?[index].cityName
+        return filteredArray[index].cityName
+    }
+    
+    func searchTextIsEmpty() {
+        filteredArray = arrayCities ?? []
+        view.reloadTableView()
+    }
+    
+    func filter(searchText: String) {
+        guard let arrayCities = arrayCities else { return }
+        filteredArray = arrayCities.filter({ city -> Bool in
+            return (city.cityName?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
     }
     
     // MARK: - Coordinator
     func next(index: Int?) {
         if sender == nil {
-            guard let index = index,
-                let city = arrayCities?[index] else {
+            guard let index = index/*,
+                let city = arrayCities?[index]*/ else {
                     view.showAlert(message: "Выберите один город")
                     return }
+            let city = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
             let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController

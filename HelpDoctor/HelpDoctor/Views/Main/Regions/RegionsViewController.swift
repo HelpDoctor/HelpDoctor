@@ -16,9 +16,7 @@ class RegionsViewController: UIViewController {
     // MARK: - Constants
     var tableView = UITableView()
     private var okButton = HDButton()
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -26,6 +24,7 @@ class RegionsViewController: UIViewController {
         presenter?.getRegions()
         setupBackground()
         setupHeaderView()
+        setupSearchBar()
         setupTableView()
         setupOkButton()
     }
@@ -37,7 +36,16 @@ class RegionsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
     // MARK: - Setup views
+    private func setupSearchBar() {
+        searchBar.delegate = self
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
@@ -47,9 +55,12 @@ class RegionsViewController: UIViewController {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -58).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                          constant: -58).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                           constant: 20).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                            constant: -20).isActive = true
     }
     
     private func setupOkButton() {
@@ -59,8 +70,10 @@ class RegionsViewController: UIViewController {
         view.addSubview(okButton)
         
         okButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
+        okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                           constant: -20).isActive = true
+        okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                         constant: -18).isActive = true
         okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
     }
@@ -69,11 +82,34 @@ class RegionsViewController: UIViewController {
     @objc private func okButtonPressed() {
         presenter?.next(index: tableView.indexPathForSelectedRow?.item)
     }
+    
 }
 
-extension RegionsViewController: UITableViewDelegate {}
+// MARK: - UISearchBarDelegate
+extension RegionsViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            presenter?.searchTextIsEmpty()
+            return
+        }
+        presenter?.filter(searchText: searchText)
+    }
+    
+}
 
+// MARK: - UITableViewDelegate
+extension RegionsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return searchBar
+    }
+    
+}
+
+// MARK: - UITableViewDataSource
 extension RegionsViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.getCountRegions() ?? 0
     }

@@ -13,6 +13,8 @@ protocol MedicalOrganizationPresenterProtocol {
     func getMedicalOrganization(regionId: Int, mainWork: Bool)
     func getCountMedicalOrganizations() -> Int?
     func getMedicalOrganizationTitle(index: Int) -> String?
+    func searchTextIsEmpty()
+    func filter(searchText: String)
     func next(index: Int?)
 }
 
@@ -20,6 +22,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     var view: MedicalOrganizationViewController
     var arrayMedicalOrganizations: [MedicalOrganization]?
+    var filteredArray: [MedicalOrganization] = []
     var mainWork: Bool?
     var sender: String?
     
@@ -44,6 +47,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
                 DispatchQueue.main.async { [weak self]  in
                     self?.view.stopActivityIndicator()
                     self?.arrayMedicalOrganizations = getMedicalOrganization.medicalOrganization
+                    self?.filteredArray = getMedicalOrganization.medicalOrganization ?? []
                     self?.view.tableView.reloadData()
                 }
             }
@@ -51,20 +55,34 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     }
     
     func getCountMedicalOrganizations() -> Int? {
-        return arrayMedicalOrganizations?.count
+        return filteredArray.count
     }
     
     func getMedicalOrganizationTitle(index: Int) -> String? {
-        return arrayMedicalOrganizations?[index].nameShort
+        return filteredArray[index].nameShort
+    }
+    
+    func searchTextIsEmpty() {
+        filteredArray = arrayMedicalOrganizations ?? []
+        view.reloadTableView()
+    }
+    
+    func filter(searchText: String) {
+        guard let arrayMedicalOrganizations = arrayMedicalOrganizations else { return }
+        filteredArray = arrayMedicalOrganizations.filter({ organization -> Bool in
+            return (organization.nameShort?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
     }
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index,
-            let medicalOrganization = arrayMedicalOrganizations?[index] else {
+        guard let index = index/*,
+            let medicalOrganization = arrayMedicalOrganizations?[index]*/ else {
                 view.showAlert(message: "Выберите одну организацию")
                 return
         }
+        let medicalOrganization = filteredArray[index]
         let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
         let presenter = previous.presenter
         presenter?.setJob(job: medicalOrganization)
