@@ -14,7 +14,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ProfilePresenterProtocol?
     
     // MARK: - Constants and variables
-//    private let session = Session.instance
     private let scrollView = UIScrollView()
     private var headerView = ProfileHeaderView()
     private var nameTextField = EditTextField()

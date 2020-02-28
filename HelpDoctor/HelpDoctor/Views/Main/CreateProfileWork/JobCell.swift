@@ -21,7 +21,7 @@ class JobCell: UITableViewCell {
         setupSeparatorView()
         setupStackView()
         setupJobTextLabel()
-        setupJobSearchIcon()
+//        setupJobSearchIcon()
     }
     
     required init?(coder: NSCoder) {

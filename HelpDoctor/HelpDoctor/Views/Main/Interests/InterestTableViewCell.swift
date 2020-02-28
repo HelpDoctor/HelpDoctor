@@ -13,12 +13,12 @@ class InterestTableViewCell: UITableViewCell {
     private let interestTitle = UILabel()
     private let icon = UIImageView()
     
-    private let selectedIcon = UIImage(named: "SelectedEllipse.pdf")
-    private let unselectedIcon = UIImage(named: "Ellipse.pdf")
+    private let selectedIcon = UIImage(named: "Checkbox_Y.pdf")
+    private let unselectedIcon = UIImage(named: "Checkbox_N.pdf")
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .backgroundColor
         setupInterestTitle()
         setupIcon()
     }
@@ -42,21 +42,27 @@ class InterestTableViewCell: UITableViewCell {
     }
     
     private func setupInterestTitle() {
+        let leading: CGFloat = 10
+        let trailing: CGFloat = 50
         interestTitle.numberOfLines = 1
         interestTitle.textAlignment = .left
         interestTitle.font = .systemFontOfSize(size: 14)
-        interestTitle.textColor = .black
+        interestTitle.textColor = .white
         contentView.addSubview(interestTitle)
         
         interestTitle.translatesAutoresizingMaskIntoConstraints = false
-        interestTitle.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        interestTitle.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
-        interestTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40).isActive = true
-        interestTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        interestTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive
+         = true
+        interestTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                               constant: leading).isActive = true
+        interestTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                constant: -trailing).isActive = true
     }
     
     private func setupIcon() {
-        let iconName = "Ellipse.pdf"
+        let trailing: CGFloat = 20
+        let width: CGFloat = 20
+        let iconName = "Checkbox_N.pdf"
         guard let image = UIImage(named: iconName) else {
             assertionFailure("Missing ​​\(iconName) asset")
             return
@@ -66,9 +72,10 @@ class InterestTableViewCell: UITableViewCell {
         
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        icon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 13).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 14).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        icon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                       constant: -trailing).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: width).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     func configure(_ title: String) {

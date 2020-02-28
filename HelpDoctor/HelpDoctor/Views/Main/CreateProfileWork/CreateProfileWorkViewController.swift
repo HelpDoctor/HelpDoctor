@@ -37,6 +37,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private var jobRowCount = 2
     private var specRowCount = 2
     private var heightScroll = Session.height
+    private let widthTextField: CGFloat = Session.width - 60
+    private let heightTextField: CGFloat = 30
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -48,9 +50,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupStep4TitleLabel()
         setupStep4Label()
         setupRegionTextField()
-        setupRegionSearchButton()
+//        setupRegionSearchButton()
         setupCityTextField()
-        setupCitySearchButton()
+//        setupCitySearchButton()
         setupStep5TitleLabel()
         setupStep5TopLabel()
         setupJobTableView()
@@ -148,13 +150,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода региона места жительства
     private func setupRegionTextField() {
-        let width: CGFloat = Session.width - 60
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(regionSearchButtonPressed))
         let top: CGFloat = 5
-        let height: CGFloat = 30
-        heightScroll += top + height
+        heightScroll += top + heightTextField
 
         regionTextField.font = UIFont.systemFontOfSize(size: 14)
-        regionTextField.isUserInteractionEnabled = false
         regionTextField.textColor = .textFieldTextColor
         regionTextField.textAlignment = .left
         regionTextField.backgroundColor = .white
@@ -165,14 +166,15 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                              height: regionTextField.frame.height))
         regionTextField.leftViewMode = .always
         regionTextField.attributedPlaceholder = redStar(text: "Субъект*")
+        regionTextField.addGestureRecognizer(tap)
         scrollView.addSubview(regionTextField)
         
         regionTextField.translatesAutoresizingMaskIntoConstraints = false
         regionTextField.topAnchor.constraint(equalTo: step4Label.bottomAnchor,
                                              constant: top).isActive = true
         regionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        regionTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        regionTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        regionTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        regionTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка кнопки выбора из списка региона места жительства
@@ -191,12 +193,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода города места жительства
     private func setupCityTextField() {
-        let width: CGFloat = Session.width - 60
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(citySearchButtonPressed))
         let top: CGFloat = 5
-        let height: CGFloat = 30
-        heightScroll += top + height
+        heightScroll += top + heightTextField
         cityTextField.font = UIFont.systemFontOfSize(size: 14)
-        cityTextField.isUserInteractionEnabled = false
         cityTextField.textColor = .textFieldTextColor
         cityTextField.textAlignment = .left
         cityTextField.backgroundColor = .white
@@ -207,14 +208,15 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                              height: regionTextField.frame.height))
         cityTextField.leftViewMode = .always
         cityTextField.attributedPlaceholder = redStar(text: "Город / район*")
+        cityTextField.addGestureRecognizer(tap)
         scrollView.addSubview(cityTextField)
         
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
         cityTextField.topAnchor.constraint(equalTo: regionTextField.bottomAnchor,
                                            constant: top).isActive = true
         cityTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        cityTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        cityTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        cityTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        cityTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка кнопки выбора из списка города места жительства
@@ -253,7 +255,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи указания места работы
     private func setupStep5TopLabel() {
-        let width: CGFloat = Session.width - 60
         let top: CGFloat = 1
         let height: CGFloat = 34
         heightScroll += top + height
@@ -268,12 +269,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         step5TopLabel.topAnchor.constraint(equalTo: step5TitleLabel.bottomAnchor,
                                            constant: top).isActive = true
         step5TopLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step5TopLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        step5TopLabel.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         step5TopLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupJobTableView() {
-        let width: CGFloat = Session.width - 60
         let top: CGFloat = 5
         let height: CGFloat = 70
         heightScroll += top + height
@@ -290,7 +290,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         jobTableView.topAnchor.constraint(equalTo: step5TopLabel.bottomAnchor,
                                           constant: top).isActive = true
         jobTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        jobTableView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        jobTableView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: height)
         jobTableViewHeight?.isActive = true
     }
@@ -315,7 +315,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи указания медицинской специализации
     private func setupStep5BottomLabel() {
-        let width: CGFloat = Session.width - 60
         let top: CGFloat = 40
         let height: CGFloat = 15
         heightScroll += top + height
@@ -329,12 +328,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         step5BottomLabel.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
                                               constant: top).isActive = true
         step5BottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step5BottomLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        step5BottomLabel.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         step5BottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupSpecTableView() {
-        let width: CGFloat = Session.width - 60
         let top: CGFloat = 5
         let height: CGFloat = 70
         heightScroll += top + height
@@ -351,7 +349,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         specTableView.topAnchor.constraint(equalTo: step5BottomLabel.bottomAnchor,
                                           constant: top).isActive = true
         specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        specTableView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        specTableView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: height)
         specTableViewHeight?.isActive = true
     }
@@ -592,7 +590,7 @@ extension CreateProfileWorkViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 35
+        return heightTextField + 5
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

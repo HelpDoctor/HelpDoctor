@@ -21,7 +21,7 @@ class MedicalSpecializationViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .backgroundColor
         setupHeaderView()
         setupSearchBar()
         setupTableView()
@@ -42,21 +42,35 @@ class MedicalSpecializationViewController: UIViewController {
     
     // MARK: - Setup views
     private func setupSearchBar() {
+        let top: CGFloat = 60
+        let height: CGFloat = 56
         searchBar.delegate = self
+        searchBar.barTintColor = .searchBarTintColor
+        searchBar.searchTextField.backgroundColor = .white
+        searchBar.placeholder = "Поиск"
+        view.addSubview(searchBar)
+        
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: top).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
-        tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .backgroundColor
+        tableView.keyboardDismissMode = .onDrag
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -58).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     private func setupOkButton() {
@@ -92,13 +106,7 @@ extension MedicalSpecializationViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension MedicalSpecializationViewController: UITableViewDelegate {
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return searchBar
-    }
-    
-}
+extension MedicalSpecializationViewController: UITableViewDelegate { }
 
 // MARK: - UITableViewDataSource
 extension MedicalSpecializationViewController: UITableViewDataSource {
@@ -120,13 +128,13 @@ extension MedicalSpecializationViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "SelectedEllipse.pdf")
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = true
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "Ellipse.pdf")
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
     }
 
 }

@@ -41,7 +41,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         setupStep6TitleLabel()
         setupStep6Label()
         setupSpecTextField()
-        setupSpecSearchButton()
+//        setupSpecSearchButton()
         setupCollectionView()
         setupStep7TitleLabel()
         setupStep7Label()
@@ -136,10 +136,13 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(specSearchButtonPressed))
         specTextField.presenter = presenter
         specTextField.font = UIFont.systemFontOfSize(size: 14)
         specTextField.textColor = .textFieldTextColor
         specTextField.layer.cornerRadius = 5
+        specTextField.addGestureRecognizer(tap)
         scrollView.addSubview(specTextField)
         
         specTextField.translatesAutoresizingMaskIntoConstraints = false

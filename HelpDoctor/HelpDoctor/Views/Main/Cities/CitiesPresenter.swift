@@ -15,20 +15,27 @@ protocol CitiesPresenterProtocol {
     func getCityTitle(index: Int) -> String?
     func searchTextIsEmpty()
     func filter(searchText: String)
+    func getRegionName() -> String
     func next(index: Int?)
     func back()
 }
 
 class CitiesPresenter: CitiesPresenterProtocol {
-    
+        
     var view: CitiesViewController
     var arrayCities: [Cities]?
     var filteredArray: [Cities] = []
     var sender: String?
     var regionId: Int?
+    var region: Regions?
     
     required init(view: CitiesViewController) {
         self.view = view
+    }
+    
+    required init(view: CitiesViewController, region: Regions) {
+        self.view = view
+        self.region = region
     }
     
     func getCities(regionId: Int) {
@@ -73,6 +80,10 @@ class CitiesPresenter: CitiesPresenterProtocol {
             return (city.cityName?.lowercased().contains(searchText.lowercased()) ?? false)
         })
         view.reloadTableView()
+    }
+    
+    func getRegionName() -> String {
+        return region?.regionName ?? ""
     }
     
     // MARK: - Coordinator

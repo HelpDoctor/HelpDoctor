@@ -27,9 +27,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private var imageViewBottomEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +66,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -89,7 +86,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
     }
     
@@ -105,7 +102,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                       constant: 45).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: Session.width - 60).isActive = true
         topLabel.heightAnchor.constraint(equalToConstant: 51).isActive = true
     }
     
@@ -121,7 +118,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
                                          constant: 17).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: Session.width - 60).isActive = true
         bottomLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
     }
     
@@ -148,7 +145,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.translatesAutoresizingMaskIntoConstraints = false
         topEmailTextField.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 12).isActive = true
         topEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topEmailTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
+        topEmailTextField.widthAnchor.constraint(equalToConstant: Session.width - 114).isActive = true
         topEmailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -164,7 +161,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         textFieldLabel.topAnchor.constraint(equalTo: topEmailTextField.bottomAnchor,
                                             constant: 20).isActive = true
         textFieldLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        textFieldLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        textFieldLabel.widthAnchor.constraint(equalToConstant: Session.width - 60).isActive = true
         textFieldLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
     }
     
@@ -191,7 +188,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         bottomEmailTextField.translatesAutoresizingMaskIntoConstraints = false
         bottomEmailTextField.topAnchor.constraint(equalTo: textFieldLabel.bottomAnchor, constant: 12).isActive = true
         bottomEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        bottomEmailTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
+        bottomEmailTextField.widthAnchor.constraint(equalToConstant: Session.width - 114).isActive = true
         bottomEmailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -223,7 +220,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
+                                           constant: Session.height - (bottomPadding ?? 0) - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }

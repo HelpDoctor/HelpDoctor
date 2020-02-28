@@ -29,12 +29,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var user: UpdateProfileKeyUser?
     var jobArray: [MedicalOrganization?] = []
     var specArray: [MedicalSpecialization?] = []
-//    var mainSpecArray: [[String: Any]]?
-//    var addSpecArray: [[String: Any]]?
     var userInterests: [ListOfInterests] = []
     var arrayOfAllInterests: [ListOfInterests]?
-//    var mainSpec: String?
-//    var addSpec: String?
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -48,14 +44,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
             view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
             return
         }
-//        guard mainSpec != nil else {
-//            view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
-//            return
-//        }
+        
         let viewController = InterestsViewController()
         let presenter = InterestsPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.arrayInterests = arrayOfAllInterests
+        presenter.filteredArray = arrayOfAllInterests ?? []
         presenter.userInterests = userInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -92,11 +86,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         default:
             getInterestsTwoSpec(mainSpec: specArray[0]?.code ?? "general", addSpec: specArray[1]?.code ?? "040100")
         }
-//        if addSpec == nil {
-//            getInterestsOneSpec(mainSpec: mainSpec ?? "general")
-//        } else {
-//            getInterestsTwoSpec(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
-//        }
     }
     
     /// Удаление интереса из массива интересов пользователя, при отмене выделения ячейки коллекции
@@ -104,7 +93,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     func deleteInterest(index: Int) {
         guard (arrayOfAllInterests?[index].id) != nil else { return }
         userInterests.remove(at: index)
-//        indexArray.remove(at: index)
         view.reloadCollectionView()
     }
     
@@ -227,11 +215,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     /// Обновление информации о специализации пользователя на сервере
-    private func updateSpec() {
-//        guard let mainSpecArray = mainSpecArray else { return }
-//        let specArray = mainSpecArray + (addSpecArray ?? [])
-//        let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
-        
+    private func updateSpec() {        
         guard let specId = specArray[0]?.id else { return }
         var updateSpec: [[String: Any]] = []
         let spec: [String: Any] = ["id": 0, "spec_id": specId as Any, "is_main": true]

@@ -63,11 +63,12 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     func citySearch() {
-        guard let regionId = region?.regionId else {
-            view.showAlert(message: "Сначала необходимо выбрать регион")
-            return }
+        guard let regionId = region?.regionId,
+            let region = region else {
+                view.showAlert(message: "Сначала необходимо выбрать регион")
+                return }
         let viewController = CitiesViewController()
-        let presenter = CitiesPresenter(view: viewController)
+        let presenter = CitiesPresenter(view: viewController, region: region)
         viewController.presenter = presenter
         presenter.getCities(regionId: regionId)
         view.navigationController?.pushViewController(viewController, animated: true)
