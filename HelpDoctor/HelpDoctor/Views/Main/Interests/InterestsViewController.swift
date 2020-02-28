@@ -14,19 +14,18 @@ class InterestsViewController: UIViewController {
     var presenter: InterestsPresenterProtocol?
     
     // MARK: - Constants
-    var tableView = UITableView()
-    private var okButton = HDButton()
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private var tableView = UITableView()
+    private let searchBar = UISearchBar()
+    private let descriptionLabel = UILabel()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
-        setupHeaderView()
+        view.backgroundColor = .backgroundColor
+        setupHeaderViewWithBack(title: "Выбор научных интересов", presenter: presenter)
+        setupSearchBar()
+        setupDescriptionLabel()
         setupTableView()
-        setupOkButton()
         selectRows()
     }
     
@@ -43,49 +42,89 @@ class InterestsViewController: UIViewController {
         tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
     }
     
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
     // MARK: - Setup views
+    private func setupSearchBar() {
+        let top: CGFloat = 50
+        let height: CGFloat = 56
+        searchBar.delegate = self
+        searchBar.barTintColor = .searchBarTintColor
+        searchBar.searchTextField.backgroundColor = .white
+        searchBar.placeholder = "Поиск"
+        view.addSubview(searchBar)
+        
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: top).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupDescriptionLabel() {
+        let text = "Здесь вы можете выбрать область научных интересов. Для этого выберите интересующую вас область:"
+        let leading: CGFloat = 10
+        let height: CGFloat = (text.height(withConstrainedWidth: Session.width - (2 * leading),
+                                           font: .systemFontOfSize(size: 12)))
+        descriptionLabel.font = .systemFontOfSize(size: 12)
+        descriptionLabel.textColor = .white
+        descriptionLabel.text = text
+        descriptionLabel.textAlignment = .left
+        descriptionLabel.numberOfLines = 0
+        view.addSubview(descriptionLabel)
+        
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                                  constant: leading).isActive = true
+        descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                                   constant: -leading).isActive = true
+        descriptionLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(InterestTableViewCell.self, forCellReuseIdentifier: "InterestTableViewCell")
-        tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .backgroundColor
+        tableView.keyboardDismissMode = .onDrag
         tableView.allowsMultipleSelection = true
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -58).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-    }
-    
-    private func setupOkButton() {
-        okButton = HDButton(title: "Готово")
-        okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
-        okButton.isEnabled = true
-        view.addSubview(okButton)
-        
-        okButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
-        okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        tableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     // MARK: - Private methods
     func selectRows() {
         presenter?.selectRows()
     }
+
+}
+
+// MARK: - UISearchBarDelegate
+extension InterestsViewController: UISearchBarDelegate {
     
-    // MARK: - Navigation
-    @objc private func okButtonPressed() {
-        presenter?.next()
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            presenter?.searchTextIsEmpty()
+            return
+        }
+        presenter?.filter(searchText: searchText)
     }
+    
 }
 
 extension InterestsViewController: UITableViewDelegate {}
 
 extension InterestsViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.getCountInterests() ?? 0
     }

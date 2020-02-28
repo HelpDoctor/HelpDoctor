@@ -9,6 +9,7 @@
 import UIKit
 
 extension UIViewController {
+    
     func setupBackground() {
         let backgroundImage = UIImageView()
         let backgroundImageName = "Background.png"
@@ -16,35 +17,33 @@ extension UIViewController {
             assertionFailure("Missing ​​\(backgroundImageName) asset")
             return
         }
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
         backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
         view.addSubview(backgroundImage)
     }
     
     func setupHeaderView() {
+        let height: CGFloat = 60
         let headerView = HeaderView(title: "HelpDoctor")
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     func setupClearHeaderView() {
+        let height: CGFloat = 60
         let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     func setupHeaderViewWithAvatar(title: String,
@@ -57,6 +56,19 @@ extension UIViewController {
                                                presenter: presenter)
         view.addSubview(headerView)
         let width = UIScreen.main.bounds.width
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    func setupHeaderViewWithBack(title: String,
+                                 presenter: Presenter?) {
+        let headerView = HeaderViewWithoutLogo(title: title,
+                                               presenter: presenter)
+        view.addSubview(headerView)
+        let width = Session.width
         headerView.translatesAutoresizingMaskIntoConstraints = false
         headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true

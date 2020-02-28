@@ -8,14 +8,15 @@
 
 import UIKit
 
-protocol InterestsPresenterProtocol {
+protocol InterestsPresenterProtocol: Presenter {
     init(view: InterestsViewController)
     func getCountInterests() -> Int?
     func getInterestsTitle(index: Int) -> String?
     func appendIndexArray(index: Int)
     func removeIndexArray(index: Int)
     func selectRows()
-    func next()
+    func searchTextIsEmpty()
+    func filter(searchText: String)
 }
 
 class InterestsPresenter: InterestsPresenterProtocol {
@@ -23,6 +24,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     var view: InterestsViewController
     var arrayInterests: [ListOfInterests]?
     var userInterests: [ListOfInterests] = []
+    var filteredArray: [ListOfInterests] = []
     
     required init(view: InterestsViewController) {
         self.view = view
@@ -33,31 +35,49 @@ class InterestsPresenter: InterestsPresenterProtocol {
             guard let index = arrayInterests?.firstIndex(where: { $0.id == element.id }) else { return }
             view.setSelected(index: index)
         }
+        
+        for value in userInterests {
+            guard let index = filteredArray.firstIndex(where: { $0.id == value.id }) else { continue }
+            view.setSelected(index: index)
+        }
     }
     
     func getCountInterests() -> Int? {
-        return arrayInterests?.count
+        return filteredArray.count
     }
     
     func getInterestsTitle(index: Int) -> String? {
-        return arrayInterests?[index].name
+        return filteredArray[index].name
     }
     
     func appendIndexArray(index: Int) {
-        guard let arrayInterests = arrayInterests else { return }
-        userInterests.append(arrayInterests[index])
+        userInterests.append(filteredArray[index])
     }
     
     func removeIndexArray(index: Int) {
-        let removingInterest = arrayInterests?[index]
-        guard let removeIndex = userInterests.firstIndex(where: { $0.id == removingInterest?.id }) else { return }
+        let removingInterest = filteredArray[index]
+        guard let removeIndex = userInterests.firstIndex(where: { $0.id == removingInterest.id }) else { return }
         userInterests.remove(at: removeIndex)
     }
     
-    // MARK: - Coordinator
-    func next() {
+    func searchTextIsEmpty() {
+        filteredArray = arrayInterests ?? []
+        view.reloadTableView()
+        selectRows()
+    }
+    
+    func filter(searchText: String) {
+        guard let arrayInterests = arrayInterests else { return }
+        filteredArray = arrayInterests.filter({ interest -> Bool in
+            return (interest.name?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
+        selectRows()
+    }
+    
+    // MARK: - Presenter
+    func back() {
         view.navigationController?.popViewController(animated: true)
-        //swiftlint:disable force_cast
         let prevVC = view.navigationController?.viewControllers.last
         if prevVC is CreateProfileSpecViewController {
             let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
@@ -69,6 +89,10 @@ class InterestsPresenter: InterestsPresenterProtocol {
             presenter?.setInterests(interests: userInterests)
             presenter?.save(source: .interest)
         }
+    }
+    
+    func save(source: SourceEditTextField) {
+        print("Not available")
     }
     
 }

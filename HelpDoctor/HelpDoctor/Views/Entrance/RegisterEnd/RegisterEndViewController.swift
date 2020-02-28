@@ -23,9 +23,6 @@ class RegisterEndViewController: UIViewController {
     private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +50,7 @@ class RegisterEndViewController: UIViewController {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 114).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
     }
     
@@ -69,7 +66,7 @@ class RegisterEndViewController: UIViewController {
         topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                       constant: 45).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: Session.width - 60).isActive = true
         topLabel.heightAnchor.constraint(equalToConstant: 51).isActive = true
     }
     
@@ -85,7 +82,7 @@ class RegisterEndViewController: UIViewController {
         bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
                                          constant: 17).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: Session.width - 60).isActive = true
         bottomLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
     }
     

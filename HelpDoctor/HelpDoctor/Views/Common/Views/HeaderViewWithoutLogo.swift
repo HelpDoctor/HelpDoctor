@@ -9,7 +9,6 @@
 import UIKit
 
 class HeaderViewWithoutLogo: UIView {
-    private let session = Session.instance
     private let backButton = UIButton()
     private var titleLabel = UILabel()
     private var textLabel = UILabel()
@@ -24,6 +23,19 @@ class HeaderViewWithoutLogo: UIView {
         self.presenter = presenter
         backgroundColor = .tabBarColor
         UIApplication.statusBarBackgroundColor = .tabBarColor
+        setupBackButton()
+        setupTitle()
+        setupUserImage()
+        setupText()
+    }
+    
+    convenience init(title: String, presenter: Presenter?) {
+        self.init()
+        self.titleLabel.text = title
+        self.userImage.image = UIImage(named: "Logo.pdf")
+        self.presenter = presenter
+        backgroundColor = .backgroundColor
+        UIApplication.statusBarBackgroundColor = .backgroundColor
         setupBackButton()
         setupTitle()
         setupUserImage()
@@ -74,7 +86,7 @@ class HeaderViewWithoutLogo: UIView {
     }
     
     private func setupUserImage() {
-        userImage.image = session.user?.foto?.toImage()
+//        userImage.image = Session.instance.user?.foto?.toImage()
         self.addSubview(userImage)
         
         userImage.layer.cornerRadius = 20
