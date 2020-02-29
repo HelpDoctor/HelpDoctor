@@ -23,6 +23,7 @@ identifier_name:
   min_length: 3
   max_length: 60
   excluded: # excluded via string array
+  - f
   - i
   - x
   - y

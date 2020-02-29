@@ -195,8 +195,6 @@
 		C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */; };
 		C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */; };
 		C4CBC40023E2ACAD00434BFB /* MapItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */; };
-		C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */; };
-		C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -390,8 +388,6 @@
 		C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
 		C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCompletionTableViewCell.swift; sourceTree = "<group>"; };
 		C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapItemTableViewCell.swift; sourceTree = "<group>"; };
-		C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestViewController.swift; sourceTree = "<group>"; };
-		C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -981,7 +977,6 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				C4CBC40123E2AD4000434BFB /* CreateInterest */,
 				46F87F6123BFC0710095264E /* Interests */,
 				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
 				46F87F5723BF7E460095264E /* MedicalOrganization */,
@@ -1088,15 +1083,6 @@
 				C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		C4CBC40123E2AD4000434BFB /* CreateInterest */ = {
-			isa = PBXGroup;
-			children = (
-				C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */,
-				C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */,
-			);
-			path = CreateInterest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1267,7 +1253,6 @@
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
 				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
-				C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
@@ -1285,7 +1270,6 @@
 				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
 				4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */,
 				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
-				C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
