@@ -28,8 +28,7 @@ class RegionsSearchTextField: UITextField {
         
         getData(typeOfContent: .getRegions,
                 returning: ([Regions], Int?, String?).self,
-                requestParams: [:])
-        { [weak self] result in
+                requestParams: [:]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getRegions.regions = result?.0

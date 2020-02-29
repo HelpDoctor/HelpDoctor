@@ -44,8 +44,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         let getEvents = Schedule()
         getData(typeOfContent: .schedule_getEventsForCurrentId,
                 returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)])
-        { [weak self] result in
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             getEvents.events = result?.0
             dispathGroup.notify(queue: DispatchQueue.main) {
@@ -91,8 +90,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
         getData(typeOfContent: .schedule_CreateOrUpdateEvent,
                 returning: (Int?, String?).self,
-                requestParams: ["json": createEvent.jsonData as Any] )
-        { [weak self] result in
+                requestParams: ["json": createEvent.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             createEvent.responce = result
@@ -132,8 +130,7 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         let resultDeleteEvents = Schedule()
         getData(typeOfContent: .schedule_deleteForCurrentEvent,
                 returning: (Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)])
-        { [weak self] result in
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             resultDeleteEvents.responce = result

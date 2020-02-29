@@ -22,14 +22,14 @@ class RadioButton: UIButton {
     }
 
     func unselectAlternateButtons() {
-        if alternateButton != nil {
-            self.isSelected = true
-
-            for aButton: RadioButton in alternateButton! {
-                aButton.isSelected = false
-            }
-        } else {
+        guard let alternateButton = alternateButton else {
             toggleButton()
+            return
+        }
+        self.isSelected = true
+        
+        for aButton: RadioButton in alternateButton {
+            aButton.isSelected = false
         }
     }
 

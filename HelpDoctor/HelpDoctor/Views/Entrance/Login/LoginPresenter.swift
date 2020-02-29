@@ -27,14 +27,17 @@ class LoginPresenter: LoginPresenterProtocol {
     }
     
     // MARK: - Public methods
+    /// Отправка на сервер запроса авторизации
+    /// - Parameters:
+    ///   - email: адрес электронной почты
+    ///   - password: пароль
     func loginButtonPressed(email: String, password: String) {
         view.startActivityIndicator()
         let getToken = Registration(email: email, password: password, token: nil)
         
         getData(typeOfContent: .getToken,
                 returning: (Int?, String?).self,
-                requestParams: getToken.requestParams)
-        { [weak self] result in
+                requestParams: getToken.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             getToken.responce = result
             
@@ -59,10 +62,12 @@ class LoginPresenter: LoginPresenterProtocol {
     }
     
     // MARK: - Coordinator
+    /// Переход на главный экран
     func login() {
         AppDelegate.shared.rootViewController.switchToMainScreen()
     }
     
+    /// Переход на экран восстановления пароля
     func recoveryPassword() {
         let viewController = RecoveryPasswordViewController()
         let presenter = RecoveryPasswordPresenter(view: viewController)
@@ -71,7 +76,9 @@ class LoginPresenter: LoginPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход на предыдущий экран
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
+    
 }

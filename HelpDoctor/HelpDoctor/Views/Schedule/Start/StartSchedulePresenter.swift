@@ -56,8 +56,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         let anyDate = convertDate(date: newDate)
         getData(typeOfContent: .schedule_getEventsForCurrentDate,
                 returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: ["AnyDate": anyDate])
-        { [weak self] result in
+                requestParams: ["AnyDate": anyDate]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getEvents.events = result?.0

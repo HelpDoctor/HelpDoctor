@@ -20,9 +20,9 @@ class FirstScreenViewController: UIViewController {
     private var loginButton = HDButton()
     private var registerButton = HDButton()
     
-    private let widthLabel: CGFloat = Session.width - 60
-    private let widthButton: CGFloat = 150
-    private let heightButton: CGFloat = 35
+    private let widthLabel = Session.width - 60.f
+    private let widthButton = 150.f
+    private let heightButton = 35.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -44,9 +44,9 @@ class FirstScreenViewController: UIViewController {
     // MARK: - Setup views
     /// Установка заголовка
     private func setupTitleLabel() {
-        let top: CGFloat = 114
-        let height: CGFloat = 22
-        titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
+        let top = 114.f
+        let height = 22.f
+        titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
         titleLabel.text = "Добро пожаловать!"
         titleLabel.textAlignment = .center
@@ -62,9 +62,9 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка верхней надписи
     private func setupTopLabel() {
-        let top: CGFloat = 57
-        let height: CGFloat = 51
-        topLabel.font = UIFont.systemFontOfSize(size: 14)
+        let top = 57.f
+        let height = 51.f
+        topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
         topLabel.text = "HelpDoctor - это приложение, специально разработанное для врачей и медицинских сотрудников."
         topLabel.textAlignment = .left
@@ -81,11 +81,11 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка нижней надписи
     private func setupBottomLabel() {
-        let top: CGFloat = 17
-        let height: CGFloat = 51
+        let top = 17.f
+        let height = 51.f
         var label = String()
         label = "Чтобы воспользоваться функциями приложения, войдите в существующий аккаунт или пройдите регистрацию."
-        bottomLabel.font = UIFont.systemFontOfSize(size: 14)
+        bottomLabel.font = .systemFontOfSize(size: 14)
         bottomLabel.textColor = .white
         bottomLabel.text = label
         bottomLabel.textAlignment = .left
@@ -102,7 +102,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
-        let top: CGFloat = 71
+        let top = 71.f
         loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
@@ -117,7 +117,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка кнопки "Регистрация"
     private func setupRegisterButton() {
-        let top: CGFloat = 35
+        let top = 35.f
         registerButton = HDButton(title: "Регистрация")
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         view.addSubview(registerButton)

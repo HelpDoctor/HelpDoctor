@@ -12,7 +12,7 @@ protocol InterestsSearchProtocol {
     func getSpecs() -> (String?, String?)
     func setInterests(interests: [ListOfInterests])
     func addInterest(interest: ListOfInterests)
-    func createInterest()
+//    func createInterest()
 }
 
 class InterestsSearchTextField: UITextField {
@@ -35,8 +35,7 @@ class InterestsSearchTextField: UITextField {
         
         getData(typeOfContent: .getListOfInterestsExtOne,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)"]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -56,8 +55,7 @@ class InterestsSearchTextField: UITextField {
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -240,7 +238,7 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
         button.setTitle("+ Добавить свой тег", for: .normal)
         button.setTitleColor(.hdButtonColor, for: .normal)
         button.contentHorizontalAlignment = .left
-        button.addTarget(self, action: #selector(addTag), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(addTag), for: .touchUpInside)
         footerView.addSubview(button)
         return footerView
     }
@@ -249,7 +247,7 @@ extension InterestsSearchTextField: UITableViewDelegate, UITableViewDataSource {
         return 44
     }
     
-    @objc private func addTag() {
-        presenter?.createInterest()
-    }
+//    @objc private func addTag() {
+//        presenter?.createInterest()
+//    }
 }

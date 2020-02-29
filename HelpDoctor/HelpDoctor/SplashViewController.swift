@@ -27,8 +27,7 @@ class SplashViewController: UIViewController {
         
         getData(typeOfContent: .checkProfile,
                 returning: (Int?, String?).self,
-                requestParams: checkProfile.requestParams)
-        { [weak self] result in
+                requestParams: checkProfile.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             checkProfile.responce = result
             

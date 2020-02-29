@@ -43,9 +43,6 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     private let deleteButton = UIButton()
     private var keyboardHeight: CGFloat = 0
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -142,7 +139,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,7 +160,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 10).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
@@ -178,7 +175,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         topLabel.heightAnchor.constraint(equalToConstant: 17).isActive = true
     }
     
@@ -193,7 +190,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         startLabel.translatesAutoresizingMaskIntoConstraints = false
         startLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 8).isActive = true
         startLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        startLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        startLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         startLabel.heightAnchor.constraint(equalToConstant: 17).isActive = true
     }
     private func setupStartDatePicker() {
@@ -205,7 +202,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         startDatePicker.translatesAutoresizingMaskIntoConstraints = false
         startDatePicker.topAnchor.constraint(equalTo: startLabel.bottomAnchor, constant: 1).isActive = true
         startDatePicker.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        startDatePicker.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        startDatePicker.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         startDatePicker.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     
@@ -220,7 +217,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         finishLabel.translatesAutoresizingMaskIntoConstraints = false
         finishLabel.topAnchor.constraint(equalTo: startDatePicker.bottomAnchor, constant: 3).isActive = true
         finishLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        finishLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        finishLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         finishLabel.heightAnchor.constraint(equalToConstant: 17).isActive = true
     }
     
@@ -233,7 +230,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         finishDatePicker.translatesAutoresizingMaskIntoConstraints = false
         finishDatePicker.topAnchor.constraint(equalTo: finishLabel.bottomAnchor, constant: 1).isActive = true
         finishDatePicker.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        finishDatePicker.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        finishDatePicker.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         finishDatePicker.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     
@@ -248,7 +245,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         eventNameLabel.translatesAutoresizingMaskIntoConstraints = false
         eventNameLabel.topAnchor.constraint(equalTo: finishDatePicker.bottomAnchor, constant: 8).isActive = true
         eventNameLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        eventNameLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventNameLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         eventNameLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -269,7 +266,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         eventNameTextField.translatesAutoresizingMaskIntoConstraints = false
         eventNameTextField.topAnchor.constraint(equalTo: eventNameLabel.bottomAnchor, constant: 1).isActive = true
         eventNameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        eventNameTextField.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventNameTextField.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         eventNameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -341,7 +338,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         descriptionTopLabel.topAnchor.constraint(equalTo: replyCheckBox.bottomAnchor,
                                                  constant: 5).isActive = true
         descriptionTopLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        descriptionTopLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        descriptionTopLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         descriptionTopLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -357,7 +354,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         descriptionBottomLabel.topAnchor.constraint(equalTo: descriptionTopLabel.bottomAnchor,
                                                     constant: 1).isActive = true
         descriptionBottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        descriptionBottomLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        descriptionBottomLabel.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         descriptionBottomLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     private func setupDescriptionTextField() {
@@ -378,7 +375,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         descriptionTextField.topAnchor.constraint(equalTo: descriptionBottomLabel.bottomAnchor,
                                                   constant: 1).isActive = true
         descriptionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        descriptionTextField.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        descriptionTextField.widthAnchor.constraint(equalToConstant: Session.width - 40).isActive = true
         descriptionTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
@@ -407,7 +404,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         timerLabel.topAnchor.constraint(equalTo: descriptionTextField.bottomAnchor,
                                         constant: 8).isActive = true
         timerLabel.leadingAnchor.constraint(equalTo: bellIcon.trailingAnchor, constant: 2).isActive = true
-        timerLabel.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
+        timerLabel.widthAnchor.constraint(equalToConstant: Session.width - 56).isActive = true
         timerLabel.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -422,7 +419,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
                                               constant: 5).isActive = true
         tenMinutesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                   constant: 20).isActive = true
-        tenMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
+        tenMinutesButton.widthAnchor.constraint(equalToConstant: (Session.width - 55) / 4).isActive = true
         tenMinutesButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
@@ -437,7 +434,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
                                                  constant: 5).isActive = true
         thirtyMinutesButton.leadingAnchor.constraint(equalTo: tenMinutesButton.trailingAnchor,
                                                      constant: 5).isActive = true
-        thirtyMinutesButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
+        thirtyMinutesButton.widthAnchor.constraint(equalToConstant: (Session.width - 55) / 4).isActive = true
         thirtyMinutesButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
@@ -452,7 +449,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
                                            constant: 5).isActive = true
         oneHourButton.leadingAnchor.constraint(equalTo: thirtyMinutesButton.trailingAnchor,
                                                constant: 5).isActive = true
-        oneHourButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
+        oneHourButton.widthAnchor.constraint(equalToConstant: (Session.width - 55) / 4).isActive = true
         oneHourButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
@@ -467,7 +464,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
                                              constant: 5).isActive = true
         otherTimeButton.leadingAnchor.constraint(equalTo: oneHourButton.trailingAnchor,
                                                  constant: 5).isActive = true
-        otherTimeButton.widthAnchor.constraint(equalToConstant: (width - 55) / 4).isActive = true
+        otherTimeButton.widthAnchor.constraint(equalToConstant: (Session.width - 55) / 4).isActive = true
         otherTimeButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
@@ -497,7 +494,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         locationButton.topAnchor.constraint(equalTo: tenMinutesButton.bottomAnchor,
                                            constant: 5).isActive = true
         locationButton.leadingAnchor.constraint(equalTo: locationIcon.trailingAnchor, constant: 2).isActive = true
-        locationButton.widthAnchor.constraint(equalToConstant: width - 56).isActive = true
+        locationButton.widthAnchor.constraint(equalToConstant: Session.width - 56).isActive = true
         locationButton.heightAnchor.constraint(equalToConstant: 14).isActive = true
     }
     
@@ -510,13 +507,13 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         let window = UIApplication.shared.keyWindow
         let bottomPadding = window?.safeAreaInsets.bottom
-        let yAnchor = height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
+        let yAnchor = Session.height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
                                            constant: yAnchor).isActive = true
         saveButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                            constant: (width - 98) / 2).isActive = true
+                                            constant: (Session.width - 98) / 2).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
@@ -530,7 +527,7 @@ class EventAddViewController: UIViewController, UIScrollViewDelegate {
         
         let window = UIApplication.shared.keyWindow
         let bottomPadding = window?.safeAreaInsets.bottom
-        let yAnchor = height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
+        let yAnchor = Session.height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
         
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,

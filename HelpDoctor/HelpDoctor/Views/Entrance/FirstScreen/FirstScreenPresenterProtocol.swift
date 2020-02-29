@@ -16,19 +16,23 @@ protocol FirstScreenPresenterProtocol {
 
 class FirstScreenPresenter: FirstScreenPresenterProtocol {
     
+    // MARK: - Dependency
     let view: FirstScreenViewController
     
+    // MARK: - Init
     required init(view: FirstScreenViewController) {
         self.view = view
     }
     
     // MARK: - Coordinator
+    /// Переход на экран входа
     func login() {
         let viewController = LoginViewController()
         viewController.presenter = LoginPresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход на экран регистрации
     func register() {
         let viewController = RegisterScreenViewController()
         viewController.presenter = RegisterScreenPresenterImplementation(view: viewController)

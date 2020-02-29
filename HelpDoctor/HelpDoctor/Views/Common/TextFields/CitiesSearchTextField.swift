@@ -33,8 +33,7 @@ class CitiesSearchTextField: UITextField {
         
         getData(typeOfContent: .getListCities,
                 returning: ([Cities], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"] )
-        { [weak self] result in
+                requestParams: ["region": "\(regionId)"]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getCities.cities = result?.0
