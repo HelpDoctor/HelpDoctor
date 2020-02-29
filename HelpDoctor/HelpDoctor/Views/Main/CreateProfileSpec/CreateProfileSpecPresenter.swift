@@ -105,8 +105,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .getListOfInterestsExtOne,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -131,8 +130,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -161,8 +159,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any] )
-        { [weak self] result in
+                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfile.responce = result
@@ -194,8 +191,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileJob.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileJob.responce = result
@@ -227,8 +223,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileSpec.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileSpec.responce = result
@@ -258,8 +253,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfile.responce = result
@@ -305,7 +299,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         userInterests.append(interest)
         view.reloadCollectionView()
     }
-    
+    /*
     func createInterest() {
         let viewController = CreateInterestViewController()
         let presenter = CreateInterestPresenter(view: viewController)
@@ -313,7 +307,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         presenter.delegate = self
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+    */
     // MARK: - Coordinator
     /// Переход к предыдущему экрану
     func back() {
@@ -328,7 +322,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
 }
-
+/*
 extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
     
     func callback(interests: [ListOfInterests]) {
@@ -340,3 +334,4 @@ extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
     }
     
 }
+*/

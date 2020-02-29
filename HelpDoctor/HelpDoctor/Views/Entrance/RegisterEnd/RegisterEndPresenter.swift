@@ -24,6 +24,7 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
     }
     
     // MARK: - Coordinator
+    /// Переход к экрану входа
     func login() {
         let viewController = LoginViewController()
         let presenter = LoginPresenter(view: viewController)
@@ -32,6 +33,7 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход на предыдущий экран
     func back() {
         guard let firstViewController = view.navigationController?.viewControllers[0] else { return }
         view.navigationController?.popToViewController(firstViewController, animated: true)

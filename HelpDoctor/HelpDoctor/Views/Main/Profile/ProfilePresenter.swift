@@ -72,8 +72,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         
         getData(typeOfContent: .getDataFromProfile,
                 returning: ([String: [AnyObject]], Int?, String?).self,
-                requestParams: [:] )
-        { [weak self] result in
+                requestParams: [:] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getDataProfile.dataFromProfile = result?.0
@@ -231,8 +230,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -307,8 +305,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private func updateProfile(profile: UpdateProfileKeyUser) {
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": profile.jsonData as Any] )
-        { [weak self] result in
+                requestParams: ["json": profile.jsonData as Any] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             profile.responce = result
             
@@ -333,8 +330,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         print(jobArray)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileJob.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileJob.responce = result
@@ -359,8 +355,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileSpec.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileSpec.responce = result
@@ -390,8 +385,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfile.responce = result

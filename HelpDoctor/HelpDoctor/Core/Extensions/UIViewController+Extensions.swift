@@ -77,14 +77,24 @@ extension UIViewController {
     }
     
     func showAlert(message: String?) {
-        view.viewWithTag(999)?.removeFromSuperview()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideAlert))
+        let alertView = UIView()
         let alert = AlertView(message: message ?? "Ошибка")
-        alert.tag = 999
-        view.addSubview(alert)
+        view.viewWithTag(999)?.removeFromSuperview()
+        alertView.tag = 999
+        alertView.addGestureRecognizer(tap)
+        view.addSubview(alertView)
+        alertView.translatesAutoresizingMaskIntoConstraints = false
+        alertView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        alertView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        alertView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        alertView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        alertView.addSubview(alert)
         alert.translatesAutoresizingMaskIntoConstraints = false
-        alert.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        alert.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        alert.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        alert.topAnchor.constraint(equalTo: alertView.topAnchor, constant: 10).isActive = true
+        alert.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: 10).isActive = true
+        alert.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -10).isActive = true
         alert.heightAnchor.constraint(equalToConstant: 57).isActive = true
     }
     
@@ -134,6 +144,10 @@ extension UIViewController {
     func stopActivityIndicator() {
         view.subviews.compactMap { $0 as? ActivityIndicatorView }.forEach { $0.removeFromSuperview() }
         removeBlurEffect()
+    }
+    
+    @objc func hideAlert() {
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
 }

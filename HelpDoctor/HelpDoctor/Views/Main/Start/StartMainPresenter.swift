@@ -37,8 +37,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
         
         getData(typeOfContent: .checkProfile,
                 returning: (Int?, String?).self,
-                requestParams: checkProfile.requestParams)
-        { [weak self] result in
+                requestParams: checkProfile.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             checkProfile.responce = result
             
@@ -65,8 +64,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
         
         getData(typeOfContent: .getDataFromProfile,
                 returning: ([String: [AnyObject]], Int?, String?).self,
-                requestParams: [:] )
-        { [weak self] result in
+                requestParams: [:]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getDataProfile.dataFromProfile = result?.0

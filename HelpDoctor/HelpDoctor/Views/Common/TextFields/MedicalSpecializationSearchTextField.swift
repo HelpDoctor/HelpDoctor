@@ -36,8 +36,7 @@ class MedicalSpecializationSearchTextField: UITextField {
         
         getData(typeOfContent: .getMedicalSpecialization,
                 returning: ([MedicalSpecialization], Int?, String?).self,
-                requestParams: [:])
-        { [weak self] result in
+                requestParams: [:]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getMedicalSpecialization.medicalSpecialization = result?.0

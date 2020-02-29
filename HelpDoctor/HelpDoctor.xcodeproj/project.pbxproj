@@ -60,6 +60,7 @@
 		4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D42402B0660023C3A3 /* EmailViewController.swift */; };
 		4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D62402B0710023C3A3 /* EmailPresenter.swift */; };
 		4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */; };
+		4640B6DE240A90D80023C3A3 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -252,6 +253,7 @@
 		4640B6D42402B0660023C3A3 /* EmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
 		4640B6D62402B0710023C3A3 /* EmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPresenter.swift; sourceTree = "<group>"; };
 		4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicButton.swift; sourceTree = "<group>"; };
+		4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -892,6 +894,7 @@
 				46F87F6A23C09F240095264E /* String+Extensions.swift */,
 				C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */,
 				C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */,
+				4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1349,6 +1352,7 @@
 				4640B6B9240139420023C3A3 /* JobCell.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
 				4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */,
+				4640B6DE240A90D80023C3A3 /* Int+Extensions.swift in Sources */,
 				46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */,
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,

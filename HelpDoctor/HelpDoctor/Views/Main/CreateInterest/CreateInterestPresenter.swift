@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 29.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 protocol CreateInterestPresenterDelegate: AnyObject {
@@ -36,8 +36,7 @@ class CreateInterestPresenter: CreateInterestPresenterProtocol {
         let addInterest = Profile()
         getData(typeOfContent: .addProfileInterest,
                 returning: ([ListOfInterests], Int?, String?).self,
-                requestParams: ["interest": interest])
-        { [weak self] result in
+                requestParams: ["interest": interest]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             addInterest.addInterests = result?.0
@@ -65,3 +64,4 @@ class CreateInterestPresenter: CreateInterestPresenterProtocol {
     }
     
 }
+*/

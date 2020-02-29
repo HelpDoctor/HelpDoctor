@@ -64,7 +64,6 @@ final class LocationManager: NSObject {
         case .denied:
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
                                       options: [:]) { [weak self] _ in
-                                        // TODO: Check if conflicts with locationManager(manager: didChangeAuthorization:)
                                         switch CLLocationManager.authorizationStatus() {
                                         case .authorizedAlways, .authorizedWhenInUse:
                                             self?.locationManager.requestLocation()

@@ -22,11 +22,10 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     private let forgotButton = UIButton()
     private let loginButton = HDButton(title: "Войти")
     private let backButton = UIButton()
-    private var keyboardHeight: CGFloat = 0
+    private var keyboardHeight = 0.f
     private var isKeyboardShown = false
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let widthTextField = Session.width - 114.f
+    private let heightTextField = 30.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -51,43 +50,57 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
+    /// Устанавливает значение в поле ввода электронной почты
+    /// - Parameter email: адрес электронной почты
     func setEmail(email: String) {
         emailTextField.text = email
     }
     
+    /// Передает значение поля ввода электронной почты
     func getEmailText() -> String {
         return emailTextField.text ?? ""
     }
     
     // MARK: - Setup views
+    /// Установка ScrollView
     private func setupScrollView() {
+        let top = 60.f
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: top).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
+        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
+    /// Установка заголовка
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
+        let top = 54.f
+        let height = 22.f
+        titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
         titleLabel.text = "Авторизация"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                        constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка описания
     private func setupLabel() {
-        label.font = UIFont.systemFontOfSize(size: 14)
+        let top = 45.f
+        let width = Session.width - 60.f
+        let height = 51.f
+        label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text = "Для авторизации введите свой e-mail и ранее полученный пароль"
         label.textAlignment = .left
@@ -95,18 +108,22 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 45).isActive = true
+        label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                   constant: top).isActive = true
         label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        label.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        label.widthAnchor.constraint(equalToConstant: width).isActive = true
+        label.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка поля ввода адреса электронной почты
     private func setupEmailTextField() {
-        emailTextField.font = UIFont.systemFontOfSize(size: 14)
+        let top = 42.f
+        emailTextField.font = .systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
         emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
         emailTextField.autocapitalizationType = .none
+        emailTextField.autocorrectionType = .no
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -118,14 +135,17 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(emailTextField)
         
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 42).isActive = true
+        emailTextField.topAnchor.constraint(equalTo: label.bottomAnchor,
+                                            constant: top).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        emailTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
+    /// Установка поля ввода пароля
     private func setupPasswordTextField() {
-        passwordTextField.font = UIFont.systemFontOfSize(size: 14)
+        let top = 21.f
+        passwordTextField.font = .systemFontOfSize(size: 14)
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textColor = .textFieldTextColor
         passwordTextField.attributedPlaceholder = redStar(text: "Пароль*")
@@ -140,57 +160,75 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(passwordTextField)
         
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 21).isActive = true
+        passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
+                                               constant: top).isActive = true
         passwordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        passwordTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        passwordTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
+    /// Установки кнопки восстановления пароля
     private func setupForgotButton() {
+        let top = 5.f
+        let leading = 64.f
+        let width = 120.f
+        let height = 16.f
         forgotButton.addTarget(self, action: #selector(forgotButtonPressed), for: .touchUpInside)
         forgotButton.setTitle("Забыли пароль?", for: .normal)
         forgotButton.setTitleColor(.hdLinkColor, for: .normal)
-        forgotButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 14)
+        forgotButton.titleLabel?.font = .boldSystemFontOfSize(size: 14)
         scrollView.addSubview(forgotButton)
         
         forgotButton.translatesAutoresizingMaskIntoConstraints = false
-        forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 5).isActive = true
-        forgotButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 64).isActive = true
-        forgotButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
-        forgotButton.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor,
+                                          constant: top).isActive = true
+        forgotButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                              constant: leading).isActive = true
+        forgotButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        forgotButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установки кнопки "Войти"
     private func setupLoginButton() {
+        let top = 78.f
+        let width = 150.f
+        let height = 35.f
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: forgotButton.bottomAnchor,
-                                         constant: 78).isActive = true
+                                         constant: top).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        loginButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        loginButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установки кнопки "Назад"
     private func setupBackButton() {
+        let window = UIApplication.shared.keyWindow
+        let bottomPadding = window?.safeAreaInsets.bottom
+        let bottom = Session.height - (bottomPadding ?? 0) - 98.f
+        let leading = 36.f
+        let width = 80.f
+        let height = 35.f
         let titleButton = "< Назад"
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
+        backButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
         backButton.titleLabel?.textColor = .white
         backButton.setTitle(titleButton, for: .normal)
         scrollView.addSubview(backButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+                                           constant: bottom).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
+    /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
@@ -216,12 +254,15 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
+    /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
         view.viewWithTag(998)?.removeFromSuperview()
         view.viewWithTag(999)?.removeFromSuperview()
     }
     
+    /// Изменение размера ScrollView при появлении клавиатуры
+    /// - Parameter notification: событие появления клавиатуры
     @objc func keyboardWasShown​(notification: Notification) {
         guard let info = notification.userInfo else {
             assertionFailure()
@@ -235,6 +276,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.scrollIndicatorInsets = contentInsets
     }
     
+    /// Изменение размера ScrollView при скрытии клавиатуры
+    /// - Parameter notification: событие скрытия клавиатуры
     @objc func keyboardWillBeHidden(notification: Notification) {
         let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
@@ -242,17 +285,21 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Забыли пароль?"
     @objc private func forgotButtonPressed() {
         presenter?.recoveryPassword()
     }
     
+    /// Обработка нажатия кнопки "Войти"
     @objc private func loginButtonPressed() {
-        guard let email = emailTextField.text, let password = passwordTextField.text else { return }
+        guard let email = emailTextField.text,
+            let password = passwordTextField.text else { return }
         hideKeyboard()
         presenter?.loginButtonPressed(email: email, password: password)
     }
     
     // MARK: - Navigation
+    /// Обработка нажатия кнопки "Назад"
     @objc private func backButtonPressed() {
         presenter?.back()
     }

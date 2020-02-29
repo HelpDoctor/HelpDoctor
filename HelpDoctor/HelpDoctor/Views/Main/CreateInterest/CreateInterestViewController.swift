@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 29.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 class CreateInterestViewController: UIViewController {
@@ -142,3 +142,4 @@ class CreateInterestViewController: UIViewController {
         presenter?.createInterest(interest: interestTextField.text)
     }
 }
+*/
