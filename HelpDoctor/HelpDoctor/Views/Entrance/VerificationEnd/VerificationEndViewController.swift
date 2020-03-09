@@ -1,24 +1,26 @@
 //
-//  RegisterEndViewController.swift
+//  VerificationEndViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 29.12.2019.
-//  Copyright © 2019 Mikhail Semerikov. All rights reserved.
+//  Created by Mikhail Semerikov on 09.03.2020.
+//  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class RegisterEndViewController: UIViewController {
+class VerificationEndViewController: UIViewController {
     
     // MARK: - Dependency
-    var presenter: RegisterEndPresenterProtocol?
+    var presenter: VerificationEndPresenterProtocol?
     
-    // MARK: - Constants
+    // MARK: - Constants and variables
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let textLabel = UILabel()
-    private let loginButton = HDButton(title: "Войти")
+    private let backButton = BackButton()
+    
+    private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -28,7 +30,7 @@ class RegisterEndViewController: UIViewController {
         setupDoctorsImage()
         setupTitleLabel()
         setupTopLabel()
-        setupLoginButton()
+        setupBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,8 +63,8 @@ class RegisterEndViewController: UIViewController {
     
     /// Установка картинки
     private func setupDoctorsImage() {
-        let width = 0.5 * Session.width
-        let imageName = "RegImage.pdf"
+        let width = Session.width - 30
+        let imageName = "VerificationImage.pdf"
         guard let image = UIImage(named: imageName) else {
             assertionFailure("Missing ​​\(imageName) asset")
             return
@@ -84,7 +86,7 @@ class RegisterEndViewController: UIViewController {
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Регистрация"
+        titleLabel.text = "Верификация"
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
         
@@ -96,18 +98,17 @@ class RegisterEndViewController: UIViewController {
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка верхней надписи
+    /// Установка надписи
     private func setupTopLabel() {
-        let top = 17.f
-        let width = Session.width - 22.f
-        let height = 118.f
+        let top = 16.f
+        let height = 120.f
         textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
         """
-        Регистрация пройдена! \n
-        Пароль для входа в приложение был выслан на указанный Вами E-mail \n
-        Теперь Вы можете войти, используя вашу почту и пароль
+        Спасибо за предоставленную информацию!\n
+        Пожалуйста, дождитесь результатов верификации. \
+        Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
         textLabel.textAlignment = .left
         textLabel.numberOfLines = 0
@@ -115,32 +116,35 @@ class RegisterEndViewController: UIViewController {
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                      constant: top).isActive = true
+                                       constant: top).isActive = true
         textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        textLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка кнопки "Войти"
-    private func setupLoginButton() {
-        let top = 35.f
-        let width = 150.f
-        let height = 35.f
-        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
-        view.addSubview(loginButton)
+    /// Установка кнопки назад
+    private func setupBackButton() {
+        let leading = 8.f
+        let top = 10.f
+        let width = 57.f
+        let height = 21.f
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backButtonPressed))
+        backButton.addGestureRecognizer(tap)
+        view.addSubview(backButton)
         
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
-                                         constant: top).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.widthAnchor.constraint(equalToConstant: width).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                            constant: leading).isActive = true
+        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: top).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    // MARK: - Navigation
-    /// Обработка нажатия кнопки "Войти"
-    @objc private func loginButtonPressed() {
-        presenter?.login()
+    // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Назад"
+    @objc private func backButtonPressed() {
+        presenter?.back()
     }
-
+    
 }

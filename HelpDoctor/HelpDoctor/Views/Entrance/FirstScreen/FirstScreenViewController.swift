@@ -14,13 +14,16 @@ class FirstScreenViewController: UIViewController {
     var presenter: FirstScreenPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let logoImage = UIImageView()
+    private let doctorsImage = UIImageView()
+    private let logoLabel = UILabel()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
     private var loginButton = HDButton()
     private var registerButton = HDButton()
     
-    private let widthLabel = Session.width - 60.f
+    private let widthLabel = Session.width - 22.f
     private let widthButton = 150.f
     private let heightButton = 35.f
     
@@ -28,7 +31,9 @@ class FirstScreenViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupHeaderView()
+        setupLogoImage()
+        setupDoctorsImage()
+        setupLogoLabel()
         setupTitleLabel()
         setupTopLabel()
         setupBottomLabel()
@@ -42,9 +47,67 @@ class FirstScreenViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    /// Установка логотипа приложения
+    private func setupLogoImage() {
+        let top = 10.f
+        let width = 50.f
+        let imageName = "Logo.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        logoImage.image = image
+        view.addSubview(logoImage)
+        
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: top).isActive = true
+        logoImage.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                            constant: -top).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Установка картинки
+    private func setupDoctorsImage() {
+        let width = 0.9 * Session.width
+        let imageName = "Doctors.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        doctorsImage.image = resizedImage
+        view.addSubview(doctorsImage)
+        
+        doctorsImage.translatesAutoresizingMaskIntoConstraints = false
+        doctorsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
+    /// Установка названия приложения
+    private func setupLogoLabel() {
+        let top = 10.f
+        let height = 30.f
+        logoLabel.font = .boldSystemFontOfSize(size: 24)
+        logoLabel.textColor = .white
+        logoLabel.text = "HelpDoctor"
+        logoLabel.textAlignment = .center
+        view.addSubview(logoLabel)
+        
+        logoLabel.translatesAutoresizingMaskIntoConstraints = false
+        logoLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
+                                       constant: top).isActive = true
+        logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        logoLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
+        logoLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка заголовка
     private func setupTitleLabel() {
-        let top = 114.f
+        let top = 2.f
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -53,7 +116,7 @@ class FirstScreenViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+        titleLabel.topAnchor.constraint(equalTo: logoLabel.bottomAnchor,
                                         constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
@@ -62,7 +125,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка верхней надписи
     private func setupTopLabel() {
-        let top = 57.f
+        let top = 18.f
         let height = 51.f
         topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
@@ -81,7 +144,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка нижней надписи
     private func setupBottomLabel() {
-        let top = 17.f
+        let top = 11.f
         let height = 51.f
         var label = String()
         label = "Чтобы воспользоваться функциями приложения, войдите в существующий аккаунт или пройдите регистрацию."
@@ -102,7 +165,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
-        let top = 71.f
+        let top = 24.f
         loginButton = HDButton(title: "Войти")
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
@@ -117,7 +180,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка кнопки "Регистрация"
     private func setupRegisterButton() {
-        let top = 35.f
+        let top = 16.f
         registerButton = HDButton(title: "Регистрация")
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         view.addSubview(registerButton)

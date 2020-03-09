@@ -58,30 +58,30 @@ class StartSettingsViewController: UIViewController {
     }
     
 
-//    @objc private func logouButtonPressed() {
-//        let logout = Registration(email: nil, password: nil, token: myToken)
-//
-//        getData(typeOfContent: .logout,
-//                returning: (Int?, String?).self,
-//                requestParams: logout.requestParams)
-//        { [weak self] result in
-//            let dispathGroup = DispatchGroup()
-//            logout.responce = result
-//
-//            dispathGroup.notify(queue: DispatchQueue.main) {
-//                DispatchQueue.main.async { [weak self]  in
-//                    print("result=\(String(describing: logout.responce))")
-//                    guard let code = logout.responce?.0 else { return }
-//                    if responceCode(code: code) {
-//                        print("Logout")
-//                        AppDelegate.shared.rootViewController.switchToLogout()
-//                    } else {
-//                        self?.showAlert(message: logout.responce?.1)
-//                    }
-//                }
-//            }
-//        }
-//    }
+    @objc private func logouButtonPressed() {
+        let logout = Registration(email: nil, password: nil, token: myToken)
+
+        getData(typeOfContent: .logout,
+                returning: (Int?, String?).self,
+                requestParams: logout.requestParams)
+        { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            logout.responce = result
+
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("result=\(String(describing: logout.responce))")
+                    guard let code = logout.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        print("Logout")
+                        AppDelegate.shared.rootViewController.switchToLogout()
+                    } else {
+                        self?.showAlert(message: logout.responce?.1)
+                    }
+                }
+            }
+        }
+    }
 //
 //    @objc private func deleteButtonPressed() {
 //        let unRegistration = Registration(email: nil, password: nil, token: nil)
@@ -181,7 +181,8 @@ extension StartSettingsViewController: UITableViewDataSource {
         case 1:
             switch indexPath.row {
             case 0:
-                print("\(indexPath.section)")
+                logouButtonPressed()
+//                print("\(indexPath.section)")
             case 1:
                 presenter?.emailRow()
             default:

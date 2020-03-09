@@ -1,17 +1,17 @@
 //
-//  ForgotPasswordViewController.swift
+//  VerificationViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 29.12.2019.
-//  Copyright © 2019 Mikhail Semerikov. All rights reserved.
+//  Created by Mikhail Semerikov on 09.03.2020.
+//  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
+class VerificationViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var presenter: RecoveryPasswordPresenterProtocol?
+    var presenter: VerificationPresenterProtocol?
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
@@ -19,10 +19,10 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let label = UILabel()
-    private let emailTextField = UITextField()
+    private let addFileTextField = UITextField()
+    private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить")
     private let backButton = BackButton()
-    private var imageViewEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
@@ -34,7 +34,8 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         setupDoctorsImage()
         setupTitleLabel()
         setupLabel()
-        setupEmailTextField()
+        setupAddFileTextField()
+        setupSubscriptLabel()
         setupSendButton()
         setupBackButton()
         addTapGestureToHideKeyboard()
@@ -44,18 +45,6 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-    }
-    
-    // MARK: - Public methods
-    /// Передает значение поля ввода электронной почты
-    func getEmailText() -> String {
-        return emailTextField.text ?? ""
-    }
-    
-    /// Устанавливает значение в поле ввода электронной почты
-    /// - Parameter email: адрес электронной почты
-    func setEmail(email: String) {
-        emailTextField.text = email
     }
     
     // MARK: - Setup views
@@ -96,8 +85,8 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка картинки
     private func setupDoctorsImage() {
-        let width = 0.5 * Session.width
-        let imageName = "RegImage.pdf"
+        let width = Session.width - 30
+        let imageName = "VerificationImage.pdf"
         guard let image = UIImage(named: imageName) else {
             assertionFailure("Missing ​​\(imageName) asset")
             return
@@ -119,7 +108,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Восстановление пароля"
+        titleLabel.text = "Верификация"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
@@ -135,11 +124,14 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     private func setupLabel() {
         let top = 16.f
         let width = Session.width - 22.f
-        let height = 51.f
+        let height = 85.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text =
-        "Чтобы восстановить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа"
+        """
+        Чтобы завершить регистрацию, Вам необходимо предоставить копию документа,
+        подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании
+        """
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
@@ -153,32 +145,53 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     /// Установка поля ввода электронной почты
-    private func setupEmailTextField() {
-        let top = 45.f
+    private func setupAddFileTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(addFileTextFieldPressed))
+        let top = 60.f
         let width = Session.width - 114.f
         let height = 30.f
-        emailTextField.font = .systemFontOfSize(size: 14)
-        emailTextField.keyboardType = .emailAddress
-        emailTextField.autocapitalizationType = .none
-        emailTextField.autocorrectionType = .no
-        emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
-        emailTextField.textAlignment = .left
-        emailTextField.backgroundColor = .white
-        emailTextField.layer.cornerRadius = 5
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
-        emailTextField.leftViewMode = .always
-        scrollView.addSubview(emailTextField)
+        addFileTextField.font = .systemFontOfSize(size: 14)
+        addFileTextField.keyboardType = .emailAddress
+        addFileTextField.autocapitalizationType = .none
+        addFileTextField.autocorrectionType = .no
+        addFileTextField.textColor = .textFieldTextColor
+        addFileTextField.placeholder = "Прикрепить файл"
+        addFileTextField.textAlignment = .left
+        addFileTextField.backgroundColor = .white
+        addFileTextField.layer.cornerRadius = 5
+        addFileTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                         y: 0,
+                                                         width: 8,
+                                                         height: addFileTextField.frame.height))
+        addFileTextField.leftViewMode = .always
+        addFileTextField.addGestureRecognizer(tap)
+        scrollView.addSubview(addFileTextField)
         
-        emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.topAnchor.constraint(equalTo: label.bottomAnchor,
-                                            constant: top).isActive = true
-        emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        addFileTextField.translatesAutoresizingMaskIntoConstraints = false
+        addFileTextField.topAnchor.constraint(equalTo: label.bottomAnchor,
+                                              constant: top).isActive = true
+        addFileTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        addFileTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
+        addFileTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка текста под полем ввода
+    private func setupSubscriptLabel() {
+        let width = Session.width - 114.f
+        let height = 11.f
+        subscriptLabel.font = .systemFontOfSize(size: 9)
+        subscriptLabel.textColor = .white
+        subscriptLabel.text = "Поддерживаемые форматы: pdf или jpg, png"
+        subscriptLabel.textAlignment = .left
+        subscriptLabel.numberOfLines = 0
+        scrollView.addSubview(subscriptLabel)
+        
+        subscriptLabel.translatesAutoresizingMaskIntoConstraints = false
+        subscriptLabel.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor).isActive = true
+        subscriptLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subscriptLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        subscriptLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки "Отправить"
@@ -191,7 +204,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
+        sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
                                         constant: top).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -273,17 +286,31 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         scrollView.scrollIndicatorInsets = contentInsets
     }
     
+    @objc private func addFileTextFieldPressed() {
+        let documentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
+        documentPickerViewController.delegate = self
+        present(documentPickerViewController, animated: true) { }
+    }
+    
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
-        guard let email = emailTextField.text, let presenter = presenter else { return }
-        presenter.sendButtonTapped(email: email)
+        presenter?.send()
     }
     
-    // MARK: - Navigation
     /// Обработка нажатия кнопки "Назад"
     @objc private func backButtonPressed() {
         presenter?.back()
     }
     
+}
+
+// MARK: - UIDocumentPickerDelegate
+extension VerificationViewController: UIDocumentPickerDelegate {
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                        didPickDocumentAt url: URL) {
+        addFileTextField.text = url.lastPathComponent
+    }
+
 }

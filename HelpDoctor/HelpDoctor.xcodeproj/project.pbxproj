@@ -61,6 +61,11 @@
 		4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D62402B0710023C3A3 /* EmailPresenter.swift */; };
 		4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */; };
 		4640B6DE240A90D80023C3A3 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */; };
+		4640B6E02413F0580023C3A3 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6DF2413F0580023C3A3 /* BackButton.swift */; };
+		4640B6E324166D350023C3A3 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E224166D350023C3A3 /* VerificationViewController.swift */; };
+		4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E424166D480023C3A3 /* VerificationPresenter.swift */; };
+		4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */; };
+		4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -252,6 +257,11 @@
 		4640B6D62402B0710023C3A3 /* EmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPresenter.swift; sourceTree = "<group>"; };
 		4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicButton.swift; sourceTree = "<group>"; };
 		4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		4640B6DF2413F0580023C3A3 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		4640B6E224166D350023C3A3 /* VerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
+		4640B6E424166D480023C3A3 /* VerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationPresenter.swift; sourceTree = "<group>"; };
+		4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndViewController.swift; sourceTree = "<group>"; };
+		4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndPresenter.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -551,6 +561,24 @@
 			path = Email;
 			sourceTree = "<group>";
 		};
+		4640B6E124166D190023C3A3 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6E224166D350023C3A3 /* VerificationViewController.swift */,
+				4640B6E424166D480023C3A3 /* VerificationPresenter.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		4640B6E62416711E0023C3A3 /* VerificationEnd */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */,
+				4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */,
+			);
+			path = VerificationEnd;
+			sourceTree = "<group>";
+		};
 		4670346F23D480C300AFAA91 /* RepeatNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -667,6 +695,7 @@
 				46203F0523C5F6C30072653A /* TileButton.swift */,
 				46203F0C23C761A70072653A /* CheckBox.swift */,
 				4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */,
+				4640B6DF2413F0580023C3A3 /* BackButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -964,6 +993,8 @@
 		C48F167D23BA0576002D04E3 /* Entrance */ = {
 			isa = PBXGroup;
 			children = (
+				4640B6E62416711E0023C3A3 /* VerificationEnd */,
+				4640B6E124166D190023C3A3 /* Verification */,
 				C48F167123B9D4FB002D04E3 /* RecoveryPasswordEnd */,
 				46F87F0723B90CD40095264E /* RecoveryPassword */,
 				46F87F0023B8F8CE0095264E /* Login */,
@@ -1201,6 +1232,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4640B6E324166D350023C3A3 /* VerificationViewController.swift in Sources */,
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
@@ -1251,6 +1283,7 @@
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
+				4640B6E02413F0580023C3A3 /* BackButton.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
 				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
@@ -1320,6 +1353,7 @@
 				C4CBC3AE23D026A900434BFB /* UpdateProfileInterest.swift in Sources */,
 				46203F1723C8EA460072653A /* InterestCollectionViewCell.swift in Sources */,
 				46072E1323C228E80070F2F6 /* TodayEventCell.swift in Sources */,
+				4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */,
 				46F87F0923B90CEE0095264E /* RecoveryPasswordViewController.swift in Sources */,
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
@@ -1343,6 +1377,7 @@
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
+				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
 				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
 				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
@@ -1357,6 +1392,7 @@
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,
 				46F87F4023BDEDA60095264E /* Presenter.swift in Sources */,
 				C48F162823B5FE87002D04E3 /* PublicMethod.swift in Sources */,
+				4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */,
 				C48F161D23B5FE87002D04E3 /* GetListOfInterests.swift in Sources */,
 				46F87F6D23C0EB890095264E /* SavedView.swift in Sources */,
 				C48F163923B61751002D04E3 /* UIFont+Extensions.swift in Sources */,
