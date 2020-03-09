@@ -10,11 +10,11 @@ import UIKit
 
 class RegionCell: UITableViewCell {
     private let regionName = UILabel()
-    let icon = UIImageView()
+    private let icon = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = .backgroundColor
         setupRegionName()
         setupIcon()
     }
@@ -24,21 +24,25 @@ class RegionCell: UITableViewCell {
     }
     
     private func setupRegionName() {
+        let leading: CGFloat = 20
         regionName.numberOfLines = 1
         regionName.textAlignment = .left
         regionName.font = .systemFontOfSize(size: 14)
-        regionName.textColor = .black
+        regionName.textColor = .white
         contentView.addSubview(regionName)
         
         regionName.translatesAutoresizingMaskIntoConstraints = false
-        regionName.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10).isActive = true
-        regionName.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
-        regionName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 40).isActive = true
-        regionName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        regionName.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
+        regionName.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
+                                            constant: leading).isActive = true
+        regionName.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                             constant: -leading).isActive = true
     }
     
     private func setupIcon() {
-        let iconName = "Ellipse.pdf"
+        let trailing: CGFloat = 10
+        let width: CGFloat = 20
+        let iconName = "Checked.pdf"
         guard let image = UIImage(named: iconName) else {
             assertionFailure("Missing ​​\(iconName) asset")
             return
@@ -48,13 +52,20 @@ class RegionCell: UITableViewCell {
         
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        icon.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 13).isActive = true
-        icon.widthAnchor.constraint(equalToConstant: 14).isActive = true
-        icon.heightAnchor.constraint(equalToConstant: 14).isActive = true
+        icon.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                       constant: -trailing).isActive = true
+        icon.widthAnchor.constraint(equalToConstant: width).isActive = true
+        icon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     func configure(_ title: String) {
         regionName.text = title
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            icon.isHidden = isSelected ? false : true
+        }
     }
 
 }

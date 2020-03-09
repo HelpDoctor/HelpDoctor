@@ -13,6 +13,8 @@ protocol MedicalOrganizationPresenterProtocol {
     func getMedicalOrganization(regionId: Int, mainWork: Bool)
     func getCountMedicalOrganizations() -> Int?
     func getMedicalOrganizationTitle(index: Int) -> String?
+    func searchTextIsEmpty()
+    func filter(searchText: String)
     func next(index: Int?)
 }
 
@@ -20,6 +22,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     var view: MedicalOrganizationViewController
     var arrayMedicalOrganizations: [MedicalOrganization]?
+    var filteredArray: [MedicalOrganization] = []
     var mainWork: Bool?
     var sender: String?
     
@@ -34,8 +37,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
         
         getData(typeOfContent: .getMedicalOrganization,
                 returning: ([MedicalOrganization], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"])
-        { [weak self] result in
+                requestParams: ["region": "\(regionId)"]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getMedicalOrganization.medicalOrganization = result?.0
@@ -44,6 +46,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
                 DispatchQueue.main.async { [weak self]  in
                     self?.view.stopActivityIndicator()
                     self?.arrayMedicalOrganizations = getMedicalOrganization.medicalOrganization
+                    self?.filteredArray = getMedicalOrganization.medicalOrganization ?? []
                     self?.view.tableView.reloadData()
                 }
             }
@@ -51,45 +54,38 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     }
     
     func getCountMedicalOrganizations() -> Int? {
-        return arrayMedicalOrganizations?.count
+        return filteredArray.count
     }
     
     func getMedicalOrganizationTitle(index: Int) -> String? {
-        return arrayMedicalOrganizations?[index].nameShort
+        return filteredArray[index].nameShort
+    }
+    
+    func searchTextIsEmpty() {
+        filteredArray = arrayMedicalOrganizations ?? []
+        view.reloadTableView()
+    }
+    
+    func filter(searchText: String) {
+        guard let arrayMedicalOrganizations = arrayMedicalOrganizations else { return }
+        filteredArray = arrayMedicalOrganizations.filter({ organization -> Bool in
+            return (organization.nameShort?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
     }
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index,
-            let medicalOrganization = arrayMedicalOrganizations?[index],
-            let mainWork = self.mainWork else {
+        guard let index = index/*,
+            let medicalOrganization = arrayMedicalOrganizations?[index]*/ else {
                 view.showAlert(message: "Выберите одну организацию")
-                return }
-        if sender == nil {
-            view.navigationController?.popViewController(animated: true)
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            if mainWork {
-                presenter?.setMedicalOrganization(medicalOrganization: medicalOrganization)
-            } else {
-                presenter?.setAddMedicalOrganization(medicalOrganization: medicalOrganization)
-            }
-        } else if sender == "MainWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
-        } else if sender == "AddWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setAddMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
-        } else if sender == "ThirdWork" {
-            let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
-            let presenter = previous.presenter
-            presenter?.setThirdMedicalOrganization(medicalOrganization: medicalOrganization)
-            view.navigationController?.popToViewController(previous, animated: true)
+                return
         }
+        let medicalOrganization = filteredArray[index]
+        let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
+        let presenter = previous.presenter
+        presenter?.setJob(job: medicalOrganization)
+        view.navigationController?.popToViewController(previous, animated: true)
     }
     
 }

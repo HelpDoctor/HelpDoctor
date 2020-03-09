@@ -27,14 +27,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
-    var mainJobArray: [[String: Any]]?
-    var addJobArray: [[String: Any]]?
-    var mainSpecArray: [[String: Any]]?
-    var addSpecArray: [[String: Any]]?
+    var jobArray: [MedicalOrganization?] = []
+    var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
     var arrayOfAllInterests: [ListOfInterests]?
-    var mainSpec: String?
-    var addSpec: String?
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -44,14 +40,16 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     // MARK: - Public methods
     /// Открытие формы со списком интересов
     func interestsSearch() {
-        guard mainSpec != nil else {
+        guard specArray.count != 0 else {
             view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
             return
         }
+        
         let viewController = InterestsViewController()
         let presenter = InterestsPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.arrayInterests = arrayOfAllInterests
+        presenter.filteredArray = arrayOfAllInterests ?? []
         presenter.userInterests = userInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -80,10 +78,13 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Заполнение массива интересов
     func getInterestFromView() {
-        if addSpec == nil {
-            getInterestsOneSpec(mainSpec: mainSpec ?? "general")
-        } else {
-            getInterestsTwoSpec(mainSpec: mainSpec ?? "general", addSpec: addSpec ?? "040100")
+        switch specArray.count {
+        case 0:
+            view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
+        case 1:
+            getInterestsOneSpec(mainSpec: specArray[0]?.code ?? "general")
+        default:
+            getInterestsTwoSpec(mainSpec: specArray[0]?.code ?? "general", addSpec: specArray[1]?.code ?? "040100")
         }
     }
     
@@ -92,7 +93,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     func deleteInterest(index: Int) {
         guard (arrayOfAllInterests?[index].id) != nil else { return }
         userInterests.remove(at: index)
-//        indexArray.remove(at: index)
         view.reloadCollectionView()
     }
     
@@ -105,8 +105,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .getListOfInterestsExtOne,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -131,8 +130,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
                 returning: ([String: [ListOfInterests]], Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] )
-        { [weak self] result in
+                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getListOfInterest.listOfInterests = result?.0
@@ -161,8 +159,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any] )
-        { [weak self] result in
+                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfile.responce = result
@@ -183,13 +180,18 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
-        guard let mainJobArray = mainJobArray else { return }
-        let jobArray = mainJobArray + (addJobArray ?? [])
-        let updateProfileJob = UpdateProfileKeyJob(arrayJob: jobArray)
+        guard let oid = jobArray[0]?.oid else { return }
+        var updateJob: [[String: Any]] = []
+        let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
+        updateJob.append(job)
+        for i in 1 ..< jobArray.count {
+            updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+        }
+        
+        let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileJob.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileJob.responce = result
@@ -209,14 +211,19 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     /// Обновление информации о специализации пользователя на сервере
-    private func updateSpec() {
-        guard let mainSpecArray = mainSpecArray else { return }
-        let specArray = mainSpecArray + (addSpecArray ?? [])
-        let updateProfileSpec = UpdateProfileKeySpec(arraySpec: specArray)
+    private func updateSpec() {        
+        guard let specId = specArray[0]?.id else { return }
+        var updateSpec: [[String: Any]] = []
+        let spec: [String: Any] = ["id": 0, "spec_id": specId as Any, "is_main": true]
+        updateSpec.append(spec)
+        for i in 1 ..< specArray.count {
+            updateSpec.append(["id": 0, "spec_id": specArray[i]?.id as Any, "is_main": false])
+        }
+        let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
+        
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileSpec.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfileSpec.responce = result
@@ -246,8 +253,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any])
-        { [weak self] result in
+                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             updateProfile.responce = result
@@ -269,7 +275,14 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     // MARK: - InterestsSearchProtocol
     /// Отправка специализации пользователя для заполнения таблицы под строкой
     func getSpecs() -> (String?, String?) {
-        return (mainSpec, addSpec)
+        switch specArray.count {
+        case 0:
+            return (nil, nil)
+        case 1:
+            return (specArray[0]?.code, nil)
+        default:
+            return (specArray[0]?.code, specArray[1]?.code)
+        }
     }
     
     /// Заполнение массива интересов пользователя из формы списка интересов
@@ -286,7 +299,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         userInterests.append(interest)
         view.reloadCollectionView()
     }
-    
+    /*
     func createInterest() {
         let viewController = CreateInterestViewController()
         let presenter = CreateInterestPresenter(view: viewController)
@@ -294,7 +307,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         presenter.delegate = self
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+    */
     // MARK: - Coordinator
     /// Переход к предыдущему экрану
     func back() {
@@ -309,7 +322,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
 }
-
+/*
 extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
     
     func callback(interests: [ListOfInterests]) {
@@ -321,3 +334,4 @@ extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
     }
     
 }
+*/

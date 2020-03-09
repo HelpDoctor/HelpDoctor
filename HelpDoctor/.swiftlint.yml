@@ -23,6 +23,7 @@ identifier_name:
   min_length: 3
   max_length: 60
   excluded: # excluded via string array
+  - f
   - i
   - x
   - y
@@ -43,6 +44,7 @@ line_length:
   error: 120
   ignores_urls: true
   ignores_comments: true
+  ignores_interpolated_strings: true
 
 function_body_length:
   warning: 40

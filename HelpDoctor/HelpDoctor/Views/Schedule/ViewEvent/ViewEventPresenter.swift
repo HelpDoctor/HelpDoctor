@@ -38,8 +38,7 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
         let getEvents = Schedule()
         getData(typeOfContent: .schedule_getEventsForCurrentId,
                 returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)])
-        { [weak self] result in
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             getEvents.events = result?.0
             dispathGroup.notify(queue: DispatchQueue.main) {
@@ -97,8 +96,7 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
         let resultDeleteEvents = Schedule()
         getData(typeOfContent: .schedule_deleteForCurrentEvent,
                 returning: (Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)])
-        { [weak self] result in
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             resultDeleteEvents.responce = result

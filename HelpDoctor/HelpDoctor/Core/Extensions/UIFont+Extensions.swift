@@ -54,6 +54,17 @@ extension UIFont {
         return customFont
     }
     
+    class func semiBoldSystemFontOfSize(size: CGFloat) -> UIFont {
+        guard let customFont = UIFont(name: "FiraSans-SemiBold", size: size) else {
+            fatalError("""
+                Failed to load the "FiraSans-SemiBold" font.
+                Make sure the font file is included in the project and the font name is spelled correctly.
+                """
+            )
+        }
+        return customFont
+    }
+    
     class func mediumSystemFontOfSize(size: CGFloat) -> UIFont {
         guard let customFont = UIFont(name: "Roboto-Medium", size: size) else {
             fatalError("""

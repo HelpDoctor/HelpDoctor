@@ -16,16 +16,15 @@ class RegionsViewController: UIViewController {
     // MARK: - Constants
     var tableView = UITableView()
     private var okButton = HDButton()
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.getRegions()
-        setupBackground()
+        view.backgroundColor = .backgroundColor
         setupHeaderView()
+        setupSearchBar()
         setupTableView()
         setupOkButton()
     }
@@ -37,19 +36,42 @@ class RegionsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = true
     }
     
+    // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
+    }
+    
     // MARK: - Setup views
+    private func setupSearchBar() {
+        let top: CGFloat = 60
+        let height: CGFloat = 56
+        searchBar.delegate = self
+        searchBar.barTintColor = .searchBarTintColor
+        searchBar.searchTextField.backgroundColor = .white
+        searchBar.placeholder = "Поиск"
+        view.addSubview(searchBar)
+        
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: top).isActive = true
+        searchBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        searchBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        searchBar.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(RegionCell.self, forCellReuseIdentifier: "RegionCell")
-        tableView.backgroundColor = .white
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.backgroundColor = .backgroundColor
+        tableView.keyboardDismissMode = .onDrag
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70).isActive = true
-        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -58).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
+        tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     private func setupOkButton() {
@@ -59,8 +81,10 @@ class RegionsViewController: UIViewController {
         view.addSubview(okButton)
         
         okButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
+        okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                           constant: -20).isActive = true
+        okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                         constant: -18).isActive = true
         okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
         okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
     }
@@ -69,11 +93,28 @@ class RegionsViewController: UIViewController {
     @objc private func okButtonPressed() {
         presenter?.next(index: tableView.indexPathForSelectedRow?.item)
     }
+    
 }
 
-extension RegionsViewController: UITableViewDelegate {}
+// MARK: - UISearchBarDelegate
+extension RegionsViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard !searchText.isEmpty else {
+            presenter?.searchTextIsEmpty()
+            return
+        }
+        presenter?.filter(searchText: searchText)
+    }
+    
+}
 
+// MARK: - UITableViewDelegate
+extension RegionsViewController: UITableViewDelegate { }
+
+// MARK: - UITableViewDataSource
 extension RegionsViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter?.getCountRegions() ?? 0
     }
@@ -92,13 +133,13 @@ extension RegionsViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "SelectedEllipse.pdf")
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = true
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let icon = (tableView.cellForRow(at: indexPath) as? RegionCell)?.icon else { return }
-        icon.image = UIImage(named: "Ellipse.pdf")
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
     }
 
 }

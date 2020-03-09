@@ -13,6 +13,7 @@ protocol RegisterScreenPresenter {
     func registerButtonPressed(email: String)
     func topEmailChanged(topEmail: String?)
     func bottomEmailChanged(bottomEmail: String?)
+    func checkPolicyChanged(isAgree: Bool)
     func register(email: String)
     func back()
 }
@@ -26,9 +27,9 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     private let validateManager = ValidateManager()
     private var topEmail: String?
     private var bottomEmail: String?
-//    private let validImage = UIImage(named: "checkMarkTF")
     private var isValidatedTopEmail = false
     private var isValidatedBottomEmail = false
+    private var isAgreePolicy = false
     
     // MARK: - Init
     required init(view: RegisterScreenViewController) {
@@ -36,14 +37,15 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     }
     
     // MARK: - Public methods
+    /// Отправка на сервер запроса регистрации
+    /// - Parameter email: адрес электронной почты
     func registerButtonPressed(email: String) {
         view.stopActivityIndicator()
         let register = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .registrationMail,
                 returning: (Int?, String?).self,
-                requestParams: register.requestParams)
-        { [weak self] result in
+                requestParams: register.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             register.responce = result
             
@@ -62,6 +64,8 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         }
     }
     
+    /// Проверка адреса электронной почты
+    /// - Parameter topEmail: адрес электронной почты
     func topEmailChanged(topEmail: String?) {
         var isValidated = false
         if let validateEmail = checkValid(email: topEmail) {
@@ -70,11 +74,12 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.topEmail = nil
         }
-//        updateTopEmailViews(isValidated: isValidated)
         isValidatedTopEmail = isValidated
         checkInput()
     }
     
+    /// Проверка подтверждения адреса электронной почты
+    /// - Parameter bottomEmail: подтверждение адреса электронной почты
     func bottomEmailChanged(bottomEmail: String?) {
         var isValidated = false
         if let validateEmail = checkValid(email: bottomEmail) {
@@ -85,41 +90,34 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         } else {
             self.bottomEmail = nil
         }
-//        updateBottomEmailViews(isValidated: isValidated)
         isValidatedBottomEmail = isValidated
         checkInput()
     }
     
+    func checkPolicyChanged(isAgree: Bool) {
+        isAgreePolicy = isAgree
+        checkInput()
+    }
+    
     // MARK: - Private methods
+    /// Проверка введенных адресов
     private func checkInput() {
-        if isValidatedBottomEmail, isValidatedTopEmail, topEmail == bottomEmail {
+        if isValidatedBottomEmail, isValidatedTopEmail, topEmail == bottomEmail, isAgreePolicy {
             view.updateButtonRegister(isEnabled: true)
         } else {
             view.updateButtonRegister(isEnabled: false)
         }
     }
     
+    /// Проверка корректности адреса электронной почты
+    /// - Parameter email: адрес электронной почты
     private func checkValid(email: String?) -> String? {
         return validateManager.validate(email: email)
     }
     
-//    private func updateTopEmailViews(isValidated: Bool) {
-//        let shownImage = getValidImage(isValidated: isValidated)
-//        view.updateTopEmailSuccess(image: shownImage)
-//    }
-    
-//    private func updateBottomEmailViews(isValidated: Bool) {
-//        let shownImage = getValidImage(isValidated: isValidated)
-//        view.updateBottomEmailSuccess(image: shownImage)
-//    }
-    
-//    private func getValidImage(isValidated: Bool) -> UIImage? {
-//        return isValidated
-//            ? validImage
-//            : nil
-//    }
-    
     // MARK: - Coordinator
+    /// Переход к экрану завершения регистрации
+    /// - Parameter email: адрес электронной почты
     func register(email: String) {
         let viewController = RegisterEndViewController()
         let presenter = RegisterEndPresenter(view: viewController)
@@ -128,6 +126,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход к предыдущему экрану
     func back() {
         view.navigationController?.popViewController(animated: true)
     }

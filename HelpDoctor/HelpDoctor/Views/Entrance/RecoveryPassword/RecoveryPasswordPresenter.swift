@@ -25,15 +25,16 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
         self.view = view
     }
     
-    // MARK: - Publiv methods
+    // MARK: - Publiс methods
+    /// Отправка на сервер запроса по восстановлению пароля
+    /// - Parameter email: адрес электронной почты
     func sendButtonTapped(email: String) {
         view.startActivityIndicator()
         let recovery = Registration(email: email, password: nil, token: nil)
         
         getData(typeOfContent: .recoveryMail,
                 returning: (Int?, String?).self,
-                requestParams: recovery.requestParams)
-        { [weak self] result in
+                requestParams: recovery.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             recovery.responce = result
             
@@ -43,7 +44,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
                     print("result=\(String(describing: recovery.responce))")
                     guard let code = recovery.responce?.0 else { return }
                     if responceCode(code: code) {
-                        self?.view.toRecoveryPasswordEnd()
+                        self?.send()
                     } else {
                         self?.view.showAlert(message: recovery.responce?.1)
                     }
@@ -54,6 +55,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     }
     
     // MARK: - Coordinator
+    /// Переход к экрану входа
     func send() {
         let viewController = RecoveryPasswordEndViewController()
         let presenter = RecoveryPasswordEndPresenter(view: viewController)
@@ -62,6 +64,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход к предыдущему экрану
     func back() {
         view.navigationController?.popViewController(animated: true)
     }

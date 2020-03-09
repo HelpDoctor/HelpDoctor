@@ -46,6 +46,26 @@
 		46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */; };
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
+		4640B6B9240139420023C3A3 /* JobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6B8240139420023C3A3 /* JobCell.swift */; };
+		4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BA240159560023C3A3 /* SettingsRows.swift */; };
+		4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BC240194F30023C3A3 /* SettingsCell.swift */; };
+		4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */; };
+		4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */; };
+		4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */; };
+		4640B6C8240271550023C3A3 /* ChangePasswordPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */; };
+		4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */; };
+		4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */; };
+		4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6CF24028F030023C3A3 /* FAQViewController.swift */; };
+		4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */; };
+		4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D42402B0660023C3A3 /* EmailViewController.swift */; };
+		4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D62402B0710023C3A3 /* EmailPresenter.swift */; };
+		4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */; };
+		4640B6DE240A90D80023C3A3 /* Int+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */; };
+		4640B6E02413F0580023C3A3 /* BackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6DF2413F0580023C3A3 /* BackButton.swift */; };
+		4640B6E324166D350023C3A3 /* VerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E224166D350023C3A3 /* VerificationViewController.swift */; };
+		4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E424166D480023C3A3 /* VerificationPresenter.swift */; };
+		4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */; };
+		4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -180,8 +200,6 @@
 		C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */; };
 		C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */; };
 		C4CBC40023E2ACAD00434BFB /* MapItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */; };
-		C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */; };
-		C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -224,6 +242,26 @@
 		46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
+		4640B6B8240139420023C3A3 /* JobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCell.swift; sourceTree = "<group>"; };
+		4640B6BA240159560023C3A3 /* SettingsRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRows.swift; sourceTree = "<group>"; };
+		4640B6BC240194F30023C3A3 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
+		4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
+		4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedbackPresenter.swift; sourceTree = "<group>"; };
+		4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
+		4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordPresenter.swift; sourceTree = "<group>"; };
+		4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteViewController.swift; sourceTree = "<group>"; };
+		4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InvitePresenter.swift; sourceTree = "<group>"; };
+		4640B6CF24028F030023C3A3 /* FAQViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQViewController.swift; sourceTree = "<group>"; };
+		4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FAQPresenter.swift; sourceTree = "<group>"; };
+		4640B6D42402B0660023C3A3 /* EmailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailViewController.swift; sourceTree = "<group>"; };
+		4640B6D62402B0710023C3A3 /* EmailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmailPresenter.swift; sourceTree = "<group>"; };
+		4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodicButton.swift; sourceTree = "<group>"; };
+		4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extensions.swift"; sourceTree = "<group>"; };
+		4640B6DF2413F0580023C3A3 /* BackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButton.swift; sourceTree = "<group>"; };
+		4640B6E224166D350023C3A3 /* VerificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationViewController.swift; sourceTree = "<group>"; };
+		4640B6E424166D480023C3A3 /* VerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationPresenter.swift; sourceTree = "<group>"; };
+		4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndViewController.swift; sourceTree = "<group>"; };
+		4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndPresenter.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -360,8 +398,6 @@
 		C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
 		C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCompletionTableViewCell.swift; sourceTree = "<group>"; };
 		C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapItemTableViewCell.swift; sourceTree = "<group>"; };
-		C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestViewController.swift; sourceTree = "<group>"; };
-		C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateInterestPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -469,6 +505,80 @@
 			path = AddMembers;
 			sourceTree = "<group>";
 		};
+		4640B6BE24023E160023C3A3 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */,
+				46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */,
+				4640B6BA240159560023C3A3 /* SettingsRows.swift */,
+				4640B6BC240194F30023C3A3 /* SettingsCell.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
+		4640B6BF24023E2A0023C3A3 /* Feedback */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6C024023E3F0023C3A3 /* FeedbackViewController.swift */,
+				4640B6C224023E4B0023C3A3 /* FeedbackPresenter.swift */,
+			);
+			path = Feedback;
+			sourceTree = "<group>";
+		};
+		4640B6C42402712C0023C3A3 /* ChangePassword */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6C5240271480023C3A3 /* ChangePasswordViewController.swift */,
+				4640B6C7240271550023C3A3 /* ChangePasswordPresenter.swift */,
+			);
+			path = ChangePassword;
+			sourceTree = "<group>";
+		};
+		4640B6C924027C2E0023C3A3 /* Invite */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6CA24027C4E0023C3A3 /* InviteViewController.swift */,
+				4640B6CC24027C6F0023C3A3 /* InvitePresenter.swift */,
+			);
+			path = Invite;
+			sourceTree = "<group>";
+		};
+		4640B6CE24028EF30023C3A3 /* FAQ */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6CF24028F030023C3A3 /* FAQViewController.swift */,
+				4640B6D124028F0F0023C3A3 /* FAQPresenter.swift */,
+			);
+			path = FAQ;
+			sourceTree = "<group>";
+		};
+		4640B6D32402B02A0023C3A3 /* Email */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6D42402B0660023C3A3 /* EmailViewController.swift */,
+				4640B6D62402B0710023C3A3 /* EmailPresenter.swift */,
+			);
+			path = Email;
+			sourceTree = "<group>";
+		};
+		4640B6E124166D190023C3A3 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6E224166D350023C3A3 /* VerificationViewController.swift */,
+				4640B6E424166D480023C3A3 /* VerificationPresenter.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		4640B6E62416711E0023C3A3 /* VerificationEnd */ = {
+			isa = PBXGroup;
+			children = (
+				4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */,
+				4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */,
+			);
+			path = VerificationEnd;
+			sourceTree = "<group>";
+		};
 		4670346F23D480C300AFAA91 /* RepeatNotifications */ = {
 			isa = PBXGroup;
 			children = (
@@ -568,6 +678,7 @@
 			children = (
 				46F87F2823BC89760095264E /* CreateProfileWorkViewController.swift */,
 				46F87F2A23BC898D0095264E /* CreateProfileWorkPresenter.swift */,
+				4640B6B8240139420023C3A3 /* JobCell.swift */,
 			);
 			path = CreateProfileWork;
 			sourceTree = "<group>";
@@ -583,6 +694,8 @@
 				46072E2423C3446D0070F2F6 /* RadioButton.swift */,
 				46203F0523C5F6C30072653A /* TileButton.swift */,
 				46203F0C23C761A70072653A /* CheckBox.swift */,
+				4640B6D82402C5B20023C3A3 /* PeriodicButton.swift */,
+				4640B6DF2413F0580023C3A3 /* BackButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -806,6 +919,7 @@
 				46F87F6A23C09F240095264E /* String+Extensions.swift */,
 				C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */,
 				C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */,
+				4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -879,6 +993,8 @@
 		C48F167D23BA0576002D04E3 /* Entrance */ = {
 			isa = PBXGroup;
 			children = (
+				4640B6E62416711E0023C3A3 /* VerificationEnd */,
+				4640B6E124166D190023C3A3 /* Verification */,
 				C48F167123B9D4FB002D04E3 /* RecoveryPasswordEnd */,
 				46F87F0723B90CD40095264E /* RecoveryPassword */,
 				46F87F0023B8F8CE0095264E /* Login */,
@@ -892,7 +1008,6 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				C4CBC40123E2AD4000434BFB /* CreateInterest */,
 				46F87F6123BFC0710095264E /* Interests */,
 				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
 				46F87F5723BF7E460095264E /* MedicalOrganization */,
@@ -934,8 +1049,12 @@
 		C48F168123BA05DC002D04E3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */,
-				46203F0323C5F59A0072653A /* StartSettingsPresenter.swift */,
+				4640B6D32402B02A0023C3A3 /* Email */,
+				4640B6CE24028EF30023C3A3 /* FAQ */,
+				4640B6C924027C2E0023C3A3 /* Invite */,
+				4640B6C42402712C0023C3A3 /* ChangePassword */,
+				4640B6BF24023E2A0023C3A3 /* Feedback */,
+				4640B6BE24023E160023C3A3 /* Start */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -995,15 +1114,6 @@
 				C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		C4CBC40123E2AD4000434BFB /* CreateInterest */ = {
-			isa = PBXGroup;
-			children = (
-				C4CBC40223E2AD5400434BFB /* CreateInterestViewController.swift */,
-				C4CBC40423E2AD6C00434BFB /* CreateInterestPresenter.swift */,
-			);
-			path = CreateInterest;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1122,9 +1232,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4640B6E324166D350023C3A3 /* VerificationViewController.swift in Sources */,
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
+				4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
@@ -1136,6 +1248,7 @@
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
 				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
+				4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
 				46203EFE23C46A5A0072653A /* FindUsers.swift in Sources */,
@@ -1147,6 +1260,7 @@
 				C4CBC3F223E2AAE200434BFB /* CLPlacemark+Extensions.swift in Sources */,
 				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */,
+				4640B6C8240271550023C3A3 /* ChangePasswordPresenter.swift in Sources */,
 				4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
@@ -1163,29 +1277,34 @@
 				46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */,
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
+				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
 				46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
+				4640B6E02413F0580023C3A3 /* BackButton.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,
 				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
-				C4CBC40323E2AD5500434BFB /* CreateInterestViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
+				4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */,
 				46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */,
+				4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */,
 				46F87EFD23B8C6120095264E /* ValidateProtocol.swift in Sources */,
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,
+				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */,
 				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
+				4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */,
 				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
-				C4CBC40523E2AD6C00434BFB /* CreateInterestPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
+				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
@@ -1220,8 +1339,10 @@
 				46203EEE23C443E20072653A /* Schedule.swift in Sources */,
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
+				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
+				4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
@@ -1232,9 +1353,11 @@
 				C4CBC3AE23D026A900434BFB /* UpdateProfileInterest.swift in Sources */,
 				46203F1723C8EA460072653A /* InterestCollectionViewCell.swift in Sources */,
 				46072E1323C228E80070F2F6 /* TodayEventCell.swift in Sources */,
+				4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */,
 				46F87F0923B90CEE0095264E /* RecoveryPasswordViewController.swift in Sources */,
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
+				4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */,
 				46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */,
 				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
 				46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */,
@@ -1242,15 +1365,19 @@
 				46072E0A23C1F4D80070F2F6 /* StartSchedulePresenter.swift in Sources */,
 				46F87F4223BE11450095264E /* TabBarController.swift in Sources */,
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
+				4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
+				4640B6B9240139420023C3A3 /* JobCell.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,
 				4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */,
+				4640B6DE240A90D80023C3A3 /* Int+Extensions.swift in Sources */,
 				46203F2723CB278D0072653A /* AnimationBallSpinFadeLoader.swift in Sources */,
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
+				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
 				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
 				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
@@ -1265,6 +1392,7 @@
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,
 				46F87F4023BDEDA60095264E /* Presenter.swift in Sources */,
 				C48F162823B5FE87002D04E3 /* PublicMethod.swift in Sources */,
+				4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */,
 				C48F161D23B5FE87002D04E3 /* GetListOfInterests.swift in Sources */,
 				46F87F6D23C0EB890095264E /* SavedView.swift in Sources */,
 				C48F163923B61751002D04E3 /* UIFont+Extensions.swift in Sources */,

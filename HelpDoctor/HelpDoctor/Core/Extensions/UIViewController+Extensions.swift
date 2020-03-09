@@ -9,42 +9,41 @@
 import UIKit
 
 extension UIViewController {
+    
     func setupBackground() {
         let backgroundImage = UIImageView()
-        let backgroundImageName = "Background.png"
+        let backgroundImageName = "Background.pdf"
         guard let image = UIImage(named: backgroundImageName) else {
             assertionFailure("Missing ​​\(backgroundImageName) asset")
             return
         }
-        let width = UIScreen.main.bounds.width
-        let height = UIScreen.main.bounds.height
         backgroundImage.image = image
-        backgroundImage.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
         view.addSubview(backgroundImage)
     }
     
     func setupHeaderView() {
+        let height: CGFloat = 60
         let headerView = HeaderView(title: "HelpDoctor")
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     func setupClearHeaderView() {
+        let height: CGFloat = 60
         let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
-        let topConstraint = headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        let leadingConstraint = headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor)
-        let trailingConstraint = headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        let heightConstraint = headerView.heightAnchor.constraint(equalToConstant: 60)
-        view.addConstraints([topConstraint, leadingConstraint, trailingConstraint, heightConstraint])
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     func setupHeaderViewWithAvatar(title: String,
@@ -64,15 +63,38 @@ extension UIViewController {
         headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
+    func setupHeaderViewWithBack(title: String,
+                                 presenter: Presenter?) {
+        let headerView = HeaderViewWithoutLogo(title: title,
+                                               presenter: presenter)
+        view.addSubview(headerView)
+        let width = Session.width
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
     func showAlert(message: String?) {
-        view.viewWithTag(999)?.removeFromSuperview()
+        let tap = UITapGestureRecognizer(target: self, action: #selector(hideAlert))
+        let alertView = UIView()
         let alert = AlertView(message: message ?? "Ошибка")
-        alert.tag = 999
-        view.addSubview(alert)
+        view.viewWithTag(999)?.removeFromSuperview()
+        alertView.tag = 999
+        alertView.addGestureRecognizer(tap)
+        view.addSubview(alertView)
+        alertView.translatesAutoresizingMaskIntoConstraints = false
+        alertView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        alertView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        alertView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        alertView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        
+        alertView.addSubview(alert)
         alert.translatesAutoresizingMaskIntoConstraints = false
-        alert.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10).isActive = true
-        alert.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
-        alert.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
+        alert.topAnchor.constraint(equalTo: alertView.topAnchor, constant: 10).isActive = true
+        alert.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: 10).isActive = true
+        alert.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -10).isActive = true
         alert.heightAnchor.constraint(equalToConstant: 57).isActive = true
     }
     
@@ -110,8 +132,8 @@ extension UIViewController {
     }
     
     func startActivityIndicator() {
-        let activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.instance.width - 70) / 2,
-                                                                    y: (Session.instance.height - 70) / 2,
+        let activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.width - 70) / 2,
+                                                                    y: (Session.height - 70) / 2,
                                                                     width: 70,
                                                                     height: 70))
         addBlurEffect()
@@ -122,6 +144,10 @@ extension UIViewController {
     func stopActivityIndicator() {
         view.subviews.compactMap { $0 as? ActivityIndicatorView }.forEach { $0.removeFromSuperview() }
         removeBlurEffect()
+    }
+    
+    @objc func hideAlert() {
+        view.viewWithTag(999)?.removeFromSuperview()
     }
     
 }

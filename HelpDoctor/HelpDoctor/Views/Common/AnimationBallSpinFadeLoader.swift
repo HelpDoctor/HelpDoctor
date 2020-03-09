@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ActivityIndicatorAnimationDelegate {
+protocol ActivityIndicatorAnimationDelegate: AnyObject {
     func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor)
 }
 

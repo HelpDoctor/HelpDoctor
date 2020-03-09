@@ -15,6 +15,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
+    private let logoImage = UIImageView()
+    private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
@@ -22,20 +24,18 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
     private var registerButton = HDButton()
-    private let backButton = UIButton()
-    private var imageViewTopEmailSuccess = UIImageView()
-    private var imageViewBottomEmailSuccess = UIImageView()
+    private let backButton = BackButton()
+    private let checkButton = CheckBox(type: .square)
+    private let policyLabel = UILabel()
     private var keyboardHeight: CGFloat = 0
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
         setupScrollView()
-        setupHeaderView()
+        setupLogoImage()
+        setupDoctorsImage()
         setupTitleLabel()
         setupTopLabel()
         setupBottomLabel()
@@ -44,6 +44,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         setupBottomEmailTextField()
         setupRegisterButton()
         setupBackButton()
+        setupPolicyLabel()
+        setupCheckButton()
         addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
     }
@@ -54,47 +56,93 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
-    func updateTopEmailSuccess(image: UIImage?) {
-        imageViewTopEmailSuccess.image = image
-    }
-    
-    func updateBottomEmailSuccess(image: UIImage?) {
-        imageViewBottomEmailSuccess.image = image
-    }
-    
+    /// Обновление состояния кнопки "Отправить"
+    /// - Parameter isEnabled: состояние
     func updateButtonRegister(isEnabled: Bool) {
         self.registerButton.update(isEnabled: isEnabled)
     }
     
     // MARK: - Setup views
+    /// Установка ScrollView
     private func setupScrollView() {
+        let top = 0.f
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: top).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
+        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
+    /// Установка логотипа приложения
+    private func setupLogoImage() {
+        let top = 10.f
+        let leading = Session.width - top
+        let width = 50.f
+        let imageName = "Logo.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        logoImage.image = image
+        scrollView.addSubview(logoImage)
+        
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                       constant: top).isActive = true
+        logoImage.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Установка картинки
+    private func setupDoctorsImage() {
+        let width = 0.5 * Session.width
+        let imageName = "RegImage.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        doctorsImage.image = resizedImage
+        scrollView.addSubview(doctorsImage)
+        
+        doctorsImage.translatesAutoresizingMaskIntoConstraints = false
+        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
+    /// Установка заголовка
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
+        let top = 5.f
+        let height = 22.f
+        titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
         titleLabel.text = "Регистрация"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 54).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
+                                        constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 22).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка верхней надписи
     private func setupTopLabel() {
-        topLabel.font = UIFont.systemFontOfSize(size: 14)
+        let top = 6.f
+        let width = Session.width - 22.f
+        let height = 34.f
+        topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
         topLabel.text = "Чтобы воспользоваться функциями нашей программы, пожалуйста, зарегистрируйтесь."
         topLabel.textAlignment = .left
@@ -103,14 +151,18 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                      constant: 45).isActive = true
+                                      constant: top).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        topLabel.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        topLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка нижней надписи
     private func setupBottomLabel() {
-        bottomLabel.font = UIFont.systemFontOfSize(size: 14)
+        let top = 9.f
+        let width = Session.width - 22.f
+        let height = 34.f
+        bottomLabel.font = .systemFontOfSize(size: 14)
         bottomLabel.textColor = .white
         bottomLabel.text = "Укажите свой e-mail в поле ниже. На него будет выслан пароль для входа."
         bottomLabel.textAlignment = .left
@@ -119,21 +171,25 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
-                                         constant: 17).isActive = true
+                                         constant: top).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        bottomLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        bottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка поля ввода адреса электронной почты
     private func setupTopEmailTextField() {
+        let top = 10.f
+        let width = Session.width - 114.f
+        let height = 30.f
         topEmailTextField.addTarget(self,
                                     action: #selector(self.topEmailChanged(_:)),
                                     for: UIControl.Event.editingChanged)
-        topEmailTextField.font = UIFont.systemFontOfSize(size: 14)
+        topEmailTextField.font = .systemFontOfSize(size: 14)
         topEmailTextField.keyboardType = .emailAddress
         topEmailTextField.textColor = .textFieldTextColor
         topEmailTextField.autocapitalizationType = .none
-        topEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        topEmailTextField.placeholder = "E-mail*"
         topEmailTextField.textAlignment = .left
         topEmailTextField.backgroundColor = .white
         topEmailTextField.layer.cornerRadius = 5
@@ -146,14 +202,19 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(topEmailTextField)
         
         topEmailTextField.translatesAutoresizingMaskIntoConstraints = false
-        topEmailTextField.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 12).isActive = true
+        topEmailTextField.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
+                                               constant: top).isActive = true
         topEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topEmailTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
-        topEmailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        topEmailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
+        topEmailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка надписи подтверждения адреса электронной почты
     private func setupTextFieldLabel() {
-        textFieldLabel.font = UIFont.systemFontOfSize(size: 14)
+        let top = 7.f
+        let width = Session.width - 22.f
+        let height = 16.f
+        textFieldLabel.font = .systemFontOfSize(size: 14)
         textFieldLabel.textColor = .white
         textFieldLabel.text = "Подтвердите свой e-mail, пожалуйста"
         textFieldLabel.textAlignment = .left
@@ -162,21 +223,25 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         textFieldLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldLabel.topAnchor.constraint(equalTo: topEmailTextField.bottomAnchor,
-                                            constant: 20).isActive = true
+                                            constant: top).isActive = true
         textFieldLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        textFieldLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        textFieldLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        textFieldLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        textFieldLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка поля ввода подтверждения адреса электронной почты
     private func setupBottomEmailTextField() {
+        let top = 7.f
+        let width = Session.width - 114.f
+        let height = 30.f
         bottomEmailTextField.addTarget(self,
                                        action: #selector(self.bottomEmailChanged(_:)),
                                        for: UIControl.Event.editingChanged)
-        bottomEmailTextField.font = UIFont.systemFontOfSize(size: 14)
+        bottomEmailTextField.font = .systemFontOfSize(size: 14)
         bottomEmailTextField.keyboardType = .emailAddress
         bottomEmailTextField.textColor = .textFieldTextColor
         bottomEmailTextField.autocapitalizationType = .none
-        bottomEmailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        bottomEmailTextField.placeholder = "E-mail*"
         bottomEmailTextField.textAlignment = .left
         bottomEmailTextField.backgroundColor = .white
         bottomEmailTextField.layer.cornerRadius = 5
@@ -189,13 +254,18 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(bottomEmailTextField)
         
         bottomEmailTextField.translatesAutoresizingMaskIntoConstraints = false
-        bottomEmailTextField.topAnchor.constraint(equalTo: textFieldLabel.bottomAnchor, constant: 12).isActive = true
+        bottomEmailTextField.topAnchor.constraint(equalTo: textFieldLabel.bottomAnchor,
+                                                  constant: top).isActive = true
         bottomEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        bottomEmailTextField.widthAnchor.constraint(equalToConstant: width - 114).isActive = true
-        bottomEmailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        bottomEmailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
+        bottomEmailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка кнопки "Отправить"
     private func setupRegisterButton() {
+        let top = 10.f
+        let width = 150.f
+        let height = 35.f
         registerButton = HDButton(title: "Отправить")
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         registerButton.update(isEnabled: false)
@@ -203,31 +273,77 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         registerButton.translatesAutoresizingMaskIntoConstraints = false
         registerButton.topAnchor.constraint(equalTo: bottomEmailTextField.bottomAnchor,
-                                            constant: 34).isActive = true
+                                            constant: top).isActive = true
         registerButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        registerButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        registerButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        registerButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        registerButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка кнопки "Назад"
     private func setupBackButton() {
-        let titleButton = "< Назад"
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
-        backButton.titleLabel?.textColor = .white
-        backButton.setTitle(titleButton, for: .normal)
+        let leading = 8.f
+        let top = 10.f
+        let width = 57.f
+        let height = 21.f
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backButtonPressed))
+        backButton.addGestureRecognizer(tap)
         scrollView.addSubview(backButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
+        backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                           constant: top).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
+    private func setupPolicyLabel() {
+        let leading = 50.f
+        let top = 15.f
+        let height = 40.f
+        let width = Session.width - 70
+        
+        let text = "Нажимая «Отправить», вы принимаете следующие условия использования."
+        let range = (text as NSString).range(of: "условия использования")
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range)
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed))
+        policyLabel.addGestureRecognizer(tap)
+        policyLabel.isUserInteractionEnabled = true  
+        policyLabel.font = .systemFontOfSize(size: 12)
+        policyLabel.textColor = .black
+        policyLabel.attributedText = attributedString
+        policyLabel.textAlignment = .left
+        policyLabel.numberOfLines = 0
+        scrollView.addSubview(policyLabel)
+        
+        policyLabel.translatesAutoresizingMaskIntoConstraints = false
+        policyLabel.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
+                                            constant: top).isActive = true
+        policyLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: leading).isActive = true
+        policyLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        policyLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка чекбокса согласия с условиями использования
+    private func setupCheckButton() {
+        let leading = 20.f
+        let width = 20.f
+        checkButton.addTarget(self, action: #selector(checkButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(checkButton)
+        
+        checkButton.translatesAutoresizingMaskIntoConstraints = false
+        checkButton.centerYAnchor.constraint(equalTo: policyLabel.centerYAnchor).isActive = true
+        checkButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: leading).isActive = true
+        checkButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        checkButton.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
                                                          action: #selector(hideKeyboard))
@@ -253,20 +369,27 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
+    /// Проверка заполнения поля ввода адреса электронной почты
+    /// - Parameter textField: поле ввода адреса электронной почты
     @objc func topEmailChanged(_ textField: UITextField) {
         presenter?.topEmailChanged(topEmail: textField.text)
     }
     
+    /// Проверка заполнения поля ввода подтверждения адреса электронной почты
+    /// - Parameter textField: поле ввода подтверждения адреса электронной почты
     @objc func bottomEmailChanged(_ textField: UITextField) {
         presenter?.bottomEmailChanged(bottomEmail: textField.text)
     }
     
+    /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
         view.viewWithTag(998)?.removeFromSuperview()
         view.viewWithTag(999)?.removeFromSuperview()
     }
     
+    /// Изменение размера ScrollView при появлении клавиатуры
+    /// - Parameter notification: событие появления клавиатуры
     @objc func keyboardWasShown​(notification: Notification) {
         guard let info = notification.userInfo else {
             assertionFailure()
@@ -280,6 +403,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.scrollIndicatorInsets = contentInsets
     }
     
+    /// Изменение размера ScrollView при скрытии клавиатуры
+    /// - Parameter notification: событие скрытия клавиатуры
     @objc func keyboardWillBeHidden(notification: Notification) {
         let contentInsets = UIEdgeInsets.zero
         scrollView.contentInset = contentInsets
@@ -287,13 +412,25 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
         guard let email = bottomEmailTextField.text else { return }
         presenter?.registerButtonPressed(email: email)
     }
     
-    // MARK: - Navigation
+    /// Обработка нажатия кнопки "Назад"
     @objc private func backButtonPressed() {
         presenter?.back()
     }
+    
+    /// Обработка нажатия чекбокса
+    @objc private func checkButtonPressed() {
+        checkButton.isSelected = !checkButton.isSelected
+        presenter?.checkPolicyChanged(isAgree: checkButton.isSelected)
+    }
+    
+    @objc private func labelPressed() {
+        print("Условия использования")
+    }
+    
 }

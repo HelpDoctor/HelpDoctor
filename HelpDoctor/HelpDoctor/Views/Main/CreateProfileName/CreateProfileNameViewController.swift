@@ -147,6 +147,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         surnameTextField.textColor = .textFieldTextColor
         surnameTextField.attributedPlaceholder = redStar(text: "Фамилия*")
         surnameTextField.textAlignment = .left
+        surnameTextField.autocorrectionType = .no
         surnameTextField.backgroundColor = .white
         surnameTextField.layer.cornerRadius = 5
         surnameTextField.leftView = UIView(frame: CGRect(x: 0,
@@ -169,6 +170,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.textColor = .textFieldTextColor
         nameTextField.attributedPlaceholder = redStar(text: "Имя*")
         nameTextField.textAlignment = .left
+        nameTextField.autocorrectionType = .no
         nameTextField.backgroundColor = .white
         nameTextField.layer.cornerRadius = 5
         nameTextField.leftView = UIView(frame: CGRect(x: 0,
@@ -191,6 +193,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         patronymicTextField.textColor = .textFieldTextColor
         patronymicTextField.placeholder = "Отчество"
         patronymicTextField.textAlignment = .left
+        patronymicTextField.autocorrectionType = .no
         patronymicTextField.backgroundColor = .white
         patronymicTextField.layer.cornerRadius = 5
         patronymicTextField.leftView = UIView(frame: CGRect(x: 0,

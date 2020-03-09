@@ -39,6 +39,7 @@
 		<string>Ubuntu-R.ttf</string>
 		<string>FiraSans-Bold.ttf</string>
 		<string>FiraSans-Regular.ttf</string>
+		<string>FiraSans-SemiBold.ttf</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

@@ -13,7 +13,17 @@ class Session {
     
     private init() { }
     
-    var width: CGFloat = 0
-    var height: CGFloat = 0
+    static var width: CGFloat {
+        return UIScreen.main.bounds.width
+    }
+    
+    static var height: CGFloat {
+        return UIScreen.main.bounds.height
+    }
+    
+    static var statusBarHeight: CGFloat {
+        return UIApplication.shared.statusBarFrame.size.height
+    }
+    
     var user: ProfileKeyUser?
 }

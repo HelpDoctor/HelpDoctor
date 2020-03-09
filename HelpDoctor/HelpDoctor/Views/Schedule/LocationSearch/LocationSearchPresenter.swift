@@ -43,4 +43,3 @@ class LocationSearchPresenter: LocationSearchPresenterProtocol {
     func save(source: SourceEditTextField) { }
     
 }
-

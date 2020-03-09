@@ -37,8 +37,7 @@ class MedicalOrganizationSearchTextField: UITextField {
         
         getData(typeOfContent: .getMedicalOrganization,
                 returning: ([MedicalOrganization], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"])
-        { [weak self] result in
+                requestParams: ["region": "\(regionId)"]) { [weak self] result in
             let dispathGroup = DispatchGroup()
             
             getMedicalOrganization.medicalOrganization = result?.0

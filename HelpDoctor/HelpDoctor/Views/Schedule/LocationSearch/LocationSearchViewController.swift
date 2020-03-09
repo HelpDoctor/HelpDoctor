@@ -502,7 +502,6 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
     }
     
     // MARK: - Search Map Item
-    // TODO: Function too coupled with map gestures, create two functions or rename.
     private func searchRequestInFuture(withTimeInterval timeInterval: Double = 2.5,
                                        repeats: Bool = false,
                                        dismissKeyboard: Bool = false,

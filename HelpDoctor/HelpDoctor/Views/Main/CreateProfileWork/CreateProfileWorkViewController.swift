@@ -17,33 +17,28 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private let scrollView = UIScrollView()
     private let step4TitleLabel = UILabel()
     private let step4Label = UILabel()
-    private let regionTextField = RegionsSearchTextField()
+    private let regionTextField = UITextField()
     private let regionSearchButton = SearchButton()
-    private let cityTextField = CitiesSearchTextField()
+    private let cityTextField = UITextField()
     private let citySearchButton = SearchButton()
     private let step5TitleLabel = UILabel()
     private let step5TopLabel = UILabel()
-    private let workTextField = MedicalOrganizationSearchTextField()
-    private let workSearchButton = SearchButton()
-    private let addWorkTextField = MedicalOrganizationSearchTextField()
-    private let addWorkSearchButton = SearchButton()
+    private let jobTableView = UITableView()
     private let workPlusButton = PlusButton()
-    private let thirdWorkTextField = MedicalOrganizationSearchTextField()
-    private let thirdWorkSearchButton = SearchButton()
     private let step5BottomLabel = UILabel()
-    private let specTextField = MedicalSpecializationSearchTextField()
-    private let specSearchButton = SearchButton()
-    private let addSpecTextField = MedicalSpecializationSearchTextField()
-    private let addSpecSearchButton = SearchButton()
-    private let thirdSpecTextField = MedicalSpecializationSearchTextField()
-    private let thirdSpecSearchButton = SearchButton()
+    private let specTableView = UITableView()
     private let specPlusButton = PlusButton()
     private let backButton = UIButton()
     private let nextButton = UIButton()
-    private var keyboardHeight: CGFloat = 0
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private var jobTableViewHeight: NSLayoutConstraint?
+    private var specTableViewHeight: NSLayoutConstraint?
+    private var nextButtonTop: NSLayoutConstraint?
+    private var backButtonTop: NSLayoutConstraint?
+    private var jobRowCount = 2
+    private var specRowCount = 2
+    private var heightScroll = Session.height
+    private let widthTextField: CGFloat = Session.width - 60
+    private let heightTextField: CGFloat = 30
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -55,25 +50,16 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupStep4TitleLabel()
         setupStep4Label()
         setupRegionTextField()
-        setupRegionSearchButton()
         setupCityTextField()
-        setupCitySearchButton()
         setupStep5TitleLabel()
         setupStep5TopLabel()
-        setupWorkTextField()
-        setupWorkSearchButton()
-        setupAddWorkTextField()
-        setupAddWorkSearchButton()
+        setupJobTableView()
         setupWorkPlusButton()
         setupStep5BottomLabel()
-        setupSpecTextField()
-        setupSpecSearchButton()
-        setupAddSpecTextField()
-        setupAddSpecSearchButton()
+        setupSpecTableView()
         setupSpecPlusButton()
         setupBackButton()
         setupNextButton()
-        addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
     }
     
@@ -98,51 +84,25 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         cityTextField.text = city
     }
     
-    /// Заполнение основного места работы
-    /// - Parameter job: место работы
-    func setMainJob(job: String) {
-        workTextField.text = job
+    func reloadJobTableView() {
+        jobTableView.reloadData()
     }
     
-    /// Заполнение дополнительного места работы
-    /// - Parameter job: место работы
-    func setAddJob(job: String) {
-        addWorkTextField.text = job
-    }
-    
-    /// Заполнение третьего места работы
-    /// - Parameter job: место работы
-    func setThirdJob(job: String) {
-        thirdWorkTextField.text = job
-    }
-    
-    /// Заполнение основной специализации
-    /// - Parameter spec: специализация
-    func setMainSpec(spec: String) {
-        specTextField.text = spec
-    }
-    
-    /// Заполнение дополнительной специализации
-    /// - Parameter spec: специализация
-    func setAddSpec(spec: String) {
-        addSpecTextField.text = spec
-    }
-    
-    /// Заполнение третьей специализации
-    /// - Parameter spec: специализация
-    func setThirdSpec(spec: String) {
-        thirdSpecTextField.text = spec
+    func reloadSpecTableView() {
+        specTableView.reloadData()
     }
     
     // MARK: - Setup views
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
+        let top: CGFloat = 60
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        heightScroll = top
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: top).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
@@ -150,6 +110,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи
     private func setupStep4TitleLabel() {
+        let top: CGFloat = 16
+        let height: CGFloat = 20
+        heightScroll += top + height
         step4TitleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         step4TitleLabel.textColor = .white
         step4TitleLabel.text = "Шаг 4"
@@ -157,14 +120,18 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(step4TitleLabel)
         
         step4TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step4TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
+        step4TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                             constant: top).isActive = true
         step4TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step4TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step4TitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        step4TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        step4TitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка надписи указания места жительства
     private func setupStep4Label() {
+        let top: CGFloat = 3
+        let height: CGFloat = 51
+        heightScroll += top + height
         step4Label.font = UIFont.systemFontOfSize(size: 14)
         step4Label.textColor = .white
         step4Label.text = "Укажите свое место жительства"
@@ -174,22 +141,38 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         step4Label.translatesAutoresizingMaskIntoConstraints = false
         step4Label.topAnchor.constraint(equalTo: step4TitleLabel.bottomAnchor,
-                                        constant: 3).isActive = true
+                                        constant: top).isActive = true
         step4Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step4Label.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        step4Label.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка поля ввода региона места жительства
     private func setupRegionTextField() {
-        regionTextField.presenter = presenter
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(regionSearchButtonPressed))
+        let top: CGFloat = 5
+        heightScroll += top + heightTextField
+
+        regionTextField.font = UIFont.systemFontOfSize(size: 14)
+        regionTextField.textColor = .textFieldTextColor
+        regionTextField.textAlignment = .left
+        regionTextField.backgroundColor = .white
+        regionTextField.layer.cornerRadius = 5
+        regionTextField.leftView = UIView(frame: CGRect(x: 0,
+                                             y: 0,
+                                             width: 8,
+                                             height: regionTextField.frame.height))
+        regionTextField.leftViewMode = .always
         regionTextField.attributedPlaceholder = redStar(text: "Субъект*")
+        regionTextField.addGestureRecognizer(tap)
         scrollView.addSubview(regionTextField)
         
         regionTextField.translatesAutoresizingMaskIntoConstraints = false
-        regionTextField.topAnchor.constraint(equalTo: step4Label.bottomAnchor, constant: 5).isActive = true
+        regionTextField.topAnchor.constraint(equalTo: step4Label.bottomAnchor,
+                                             constant: top).isActive = true
         regionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        regionTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        regionTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        regionTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        regionTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка кнопки выбора из списка региона места жительства
@@ -208,18 +191,30 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода города места жительства
     private func setupCityTextField() {
-        cityTextField.presenter = presenter
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(citySearchButtonPressed))
+        let top: CGFloat = 5
+        heightScroll += top + heightTextField
         cityTextField.font = UIFont.systemFontOfSize(size: 14)
         cityTextField.textColor = .textFieldTextColor
+        cityTextField.textAlignment = .left
+        cityTextField.backgroundColor = .white
         cityTextField.layer.cornerRadius = 5
+        cityTextField.leftView = UIView(frame: CGRect(x: 0,
+                                             y: 0,
+                                             width: 8,
+                                             height: regionTextField.frame.height))
+        cityTextField.leftViewMode = .always
         cityTextField.attributedPlaceholder = redStar(text: "Город / район*")
+        cityTextField.addGestureRecognizer(tap)
         scrollView.addSubview(cityTextField)
         
         cityTextField.translatesAutoresizingMaskIntoConstraints = false
-        cityTextField.topAnchor.constraint(equalTo: regionTextField.bottomAnchor, constant: 5).isActive = true
+        cityTextField.topAnchor.constraint(equalTo: regionTextField.bottomAnchor,
+                                           constant: top).isActive = true
         cityTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        cityTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        cityTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        cityTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        cityTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка кнопки выбора из списка города места жительства
@@ -238,6 +233,10 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи
     private func setupStep5TitleLabel() {
+        let width: CGFloat = Session.width
+        let top: CGFloat = 12
+        let height: CGFloat = 20
+        heightScroll += top + height
         step5TitleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
         step5TitleLabel.textColor = .white
         step5TitleLabel.text = "Шаг 5"
@@ -245,134 +244,78 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(step5TitleLabel)
         
         step5TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step5TitleLabel.topAnchor.constraint(equalTo: cityTextField.bottomAnchor, constant: 12).isActive = true
+        step5TitleLabel.topAnchor.constraint(equalTo: cityTextField.bottomAnchor,
+                                             constant: top).isActive = true
         step5TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step5TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step5TitleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        step5TitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка надписи указания места работы
     private func setupStep5TopLabel() {
+        let top: CGFloat = 1
+        let height: CGFloat = 34
+        heightScroll += top + height
         step5TopLabel.font = UIFont.systemFontOfSize(size: 14)
         step5TopLabel.textColor = .white
+        step5TopLabel.numberOfLines = 0
         step5TopLabel.text = "Заполните данные о своей профессиональной деятельности"
         step5TopLabel.textAlignment = .left
         scrollView.addSubview(step5TopLabel)
         
         step5TopLabel.translatesAutoresizingMaskIntoConstraints = false
-        step5TopLabel.topAnchor.constraint(equalTo: step5TitleLabel.bottomAnchor, constant: 1).isActive = true
+        step5TopLabel.topAnchor.constraint(equalTo: step5TitleLabel.bottomAnchor,
+                                           constant: top).isActive = true
         step5TopLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step5TopLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        step5TopLabel.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        step5TopLabel.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        step5TopLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка поля ввода основного места работы
-    private func setupWorkTextField() {
-        workTextField.presenter = presenter
-        workTextField.mainWork = "main"
-        workTextField.attributedPlaceholder = redStar(text: "Основное место работы*")
-        workTextField.textColor = .textFieldTextColor
-        workTextField.layer.cornerRadius = 5
-        workTextField.font = UIFont.systemFontOfSize(size: 14)
-        scrollView.addSubview(workTextField)
+    private func setupJobTableView() {
+        let top: CGFloat = 5
+        let height: CGFloat = 70
+        heightScroll += top + height
+        scrollView.addSubview(jobTableView)
+        jobTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
+        jobTableView.backgroundColor = .clear
+        jobTableView.dataSource = self
+        jobTableView.delegate = self
+        jobTableView.separatorStyle = .none
+        jobTableView.showsVerticalScrollIndicator = false
+        jobTableView.isScrollEnabled = false
         
-        workTextField.translatesAutoresizingMaskIntoConstraints = false
-        workTextField.topAnchor.constraint(equalTo: step5TopLabel.bottomAnchor, constant: 5).isActive = true
-        workTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        workTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        workTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка основного места работы
-    private func setupWorkSearchButton() {
-        workSearchButton.addTarget(self, action: #selector(workSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(workSearchButton)
-        
-        workSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        workSearchButton.topAnchor.constraint(equalTo: workTextField.topAnchor,
-                                              constant: 5).isActive = true
-        workSearchButton.trailingAnchor.constraint(equalTo: workTextField.trailingAnchor,
-                                                   constant: -5).isActive = true
-        workSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        workSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-    
-    /// Установка поля ввода дополнительного места работы
-    private func setupAddWorkTextField() {
-        addWorkTextField.presenter = presenter
-        addWorkTextField.mainWork = "add"
-        addWorkTextField.textColor = .textFieldTextColor
-        addWorkTextField.layer.cornerRadius = 5
-        addWorkTextField.font = UIFont.systemFontOfSize(size: 14)
-        scrollView.addSubview(addWorkTextField)
-        
-        addWorkTextField.translatesAutoresizingMaskIntoConstraints = false
-        addWorkTextField.topAnchor.constraint(equalTo: workTextField.bottomAnchor, constant: 5).isActive = true
-        addWorkTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        addWorkTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        addWorkTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка дополнительного места работы
-    private func setupAddWorkSearchButton() {
-        addWorkSearchButton.addTarget(self, action: #selector(addWorkSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(addWorkSearchButton)
-        
-        addWorkSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        addWorkSearchButton.topAnchor.constraint(equalTo: addWorkTextField.topAnchor,
-                                                 constant: 5).isActive = true
-        addWorkSearchButton.trailingAnchor.constraint(equalTo: addWorkTextField.trailingAnchor,
-                                                      constant: -5).isActive = true
-        addWorkSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        addWorkSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-    
-    /// Установка поля ввода третьего места работы
-    private func setupThirdWorkTextField() {
-        thirdWorkTextField.presenter = presenter
-        thirdWorkTextField.mainWork = "third"
-        thirdWorkTextField.textColor = .textFieldTextColor
-        thirdWorkTextField.layer.cornerRadius = 5
-        thirdWorkTextField.font = UIFont.systemFontOfSize(size: 14)
-        scrollView.addSubview(thirdWorkTextField)
-        
-        thirdWorkTextField.translatesAutoresizingMaskIntoConstraints = false
-        thirdWorkTextField.topAnchor.constraint(equalTo: addWorkTextField.bottomAnchor, constant: 5).isActive = true
-        thirdWorkTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        thirdWorkTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        thirdWorkTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка третьего места работы
-    private func setupThirdWorkSearchButton() {
-        thirdWorkSearchButton.addTarget(self, action: #selector(thirdWorkSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(thirdWorkSearchButton)
-        
-        thirdWorkSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        thirdWorkSearchButton.topAnchor.constraint(equalTo: thirdWorkTextField.topAnchor,
-                                                   constant: 5).isActive = true
-        thirdWorkSearchButton.trailingAnchor.constraint(equalTo: thirdWorkTextField.trailingAnchor,
-                                                        constant: -5).isActive = true
-        thirdWorkSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        thirdWorkSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        jobTableView.translatesAutoresizingMaskIntoConstraints = false
+        jobTableView.topAnchor.constraint(equalTo: step5TopLabel.bottomAnchor,
+                                          constant: top).isActive = true
+        jobTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        jobTableView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: height)
+        jobTableViewHeight?.isActive = true
     }
     
     /// Установка кнопки добавления места работы
     private func setupWorkPlusButton() {
+        let leading: CGFloat = 30
+        let top: CGFloat = 5
+        let height: CGFloat = 20
+        heightScroll += top + height
         workPlusButton.addTarget(self, action: #selector(workPlusButtonPressed), for: .touchUpInside)
         view.addSubview(workPlusButton)
         
         workPlusButton.translatesAutoresizingMaskIntoConstraints = false
-        workPlusButton.topAnchor.constraint(equalTo: addWorkTextField.bottomAnchor,
-                                            constant: 5).isActive = true
+        workPlusButton.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
+                                            constant: top).isActive = true
         workPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                constant: 30).isActive = true
-        workPlusButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        workPlusButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+                                                constant: leading).isActive = true
+        workPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
+        workPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка надписи указания медицинской специализации
     private func setupStep5BottomLabel() {
+        let top: CGFloat = 40
+        let height: CGFloat = 15
+        heightScroll += top + height
         step5BottomLabel.font = UIFont.systemFontOfSize(size: 14)
         step5BottomLabel.textColor = .white
         step5BottomLabel.text = "Укажите медицинскую специализацию"
@@ -380,120 +323,62 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(step5BottomLabel)
         
         step5BottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        step5BottomLabel.topAnchor.constraint(equalTo: addWorkTextField.bottomAnchor, constant: 40).isActive = true
+        step5BottomLabel.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
+                                              constant: top).isActive = true
         step5BottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step5BottomLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        step5BottomLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        step5BottomLabel.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        step5BottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка поля ввода основной медицинской специализации
-    private func setupSpecTextField() {
-        specTextField.presenter = presenter
-        specTextField.mainSpec = true
-        specTextField.font = UIFont.systemFontOfSize(size: 14)
-        specTextField.textColor = .textFieldTextColor
-        specTextField.layer.cornerRadius = 5
-        specTextField.attributedPlaceholder = redStar(text: "Осн. специализация*")
-        scrollView.addSubview(specTextField)
+    private func setupSpecTableView() {
+        let top: CGFloat = 5
+        let height: CGFloat = 70
+        heightScroll += top + height
+        scrollView.addSubview(specTableView)
+        specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
+        specTableView.backgroundColor = .clear
+        specTableView.dataSource = self
+        specTableView.delegate = self
+        specTableView.separatorStyle = .none
+        specTableView.showsVerticalScrollIndicator = false
+        specTableView.isScrollEnabled = false
         
-        specTextField.translatesAutoresizingMaskIntoConstraints = false
-        specTextField.topAnchor.constraint(equalTo: step5BottomLabel.bottomAnchor, constant: 5).isActive = true
-        specTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        specTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка основной медицинской специализации
-    private func setupSpecSearchButton() {
-        specSearchButton.addTarget(self, action: #selector(specSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(specSearchButton)
-        
-        specSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        specSearchButton.topAnchor.constraint(equalTo: specTextField.topAnchor,
-                                              constant: 5).isActive = true
-        specSearchButton.trailingAnchor.constraint(equalTo: specTextField.trailingAnchor,
-                                                   constant: -5).isActive = true
-        specSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        specSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-    
-    /// Установка поля ввода дополнительной медицинской специализации
-    private func setupAddSpecTextField() {
-        addSpecTextField.presenter = presenter
-        addSpecTextField.mainSpec = false
-        addSpecTextField.font = UIFont.systemFontOfSize(size: 14)
-        addSpecTextField.textColor = .textFieldTextColor
-        addSpecTextField.layer.cornerRadius = 5
-        scrollView.addSubview(addSpecTextField)
-        
-        addSpecTextField.translatesAutoresizingMaskIntoConstraints = false
-        addSpecTextField.topAnchor.constraint(equalTo: specTextField.bottomAnchor, constant: 5).isActive = true
-        addSpecTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        addSpecTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        addSpecTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка дополнительной медицинской специализации
-    private func setupAddSpecSearchButton() {
-        addSpecSearchButton.addTarget(self, action: #selector(addSpecSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(addSpecSearchButton)
-        
-        addSpecSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        addSpecSearchButton.topAnchor.constraint(equalTo: addSpecTextField.topAnchor,
-                                                 constant: 5).isActive = true
-        addSpecSearchButton.trailingAnchor.constraint(equalTo: addSpecTextField.trailingAnchor,
-                                                      constant: -5).isActive = true
-        addSpecSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        addSpecSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-    
-    /// Установка поля ввода третьей медицинской специализации
-    private func setupThirdSpecTextField() {
-        thirdSpecTextField.presenter = presenter
-        thirdSpecTextField.mainSpec = false
-        thirdSpecTextField.font = UIFont.systemFontOfSize(size: 14)
-        thirdSpecTextField.textColor = .textFieldTextColor
-        thirdSpecTextField.layer.cornerRadius = 5
-        scrollView.addSubview(thirdSpecTextField)
-        
-        thirdSpecTextField.translatesAutoresizingMaskIntoConstraints = false
-        thirdSpecTextField.topAnchor.constraint(equalTo: addSpecTextField.bottomAnchor,
-                                                constant: 5).isActive = true
-        thirdSpecTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        thirdSpecTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        thirdSpecTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки выбора из списка третьей медицинской специализации
-    private func setupThirdSpecSearchButton() {
-        thirdSpecSearchButton.addTarget(self, action: #selector(thirdSpecSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(thirdSpecSearchButton)
-        
-        thirdSpecSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        thirdSpecSearchButton.topAnchor.constraint(equalTo: thirdSpecTextField.topAnchor,
-                                                   constant: 5).isActive = true
-        thirdSpecSearchButton.trailingAnchor.constraint(equalTo: thirdSpecTextField.trailingAnchor,
-                                                        constant: -5).isActive = true
-        thirdSpecSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        thirdSpecSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        specTableView.translatesAutoresizingMaskIntoConstraints = false
+        specTableView.topAnchor.constraint(equalTo: step5BottomLabel.bottomAnchor,
+                                          constant: top).isActive = true
+        specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        specTableView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: height)
+        specTableViewHeight?.isActive = true
     }
     
     /// Установка кнопки добавления медицинской специализации
     private func setupSpecPlusButton() {
+        let leading: CGFloat = 30
+        let top: CGFloat = 5
+        let height: CGFloat = 20
+        heightScroll += top + height
         specPlusButton.addTarget(self, action: #selector(specPlusButtonPressed), for: .touchUpInside)
         view.addSubview(specPlusButton)
         
         specPlusButton.translatesAutoresizingMaskIntoConstraints = false
-        specPlusButton.topAnchor.constraint(equalTo: addSpecTextField.bottomAnchor,
-                                            constant: 5).isActive = true
+        specPlusButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                            constant: top).isActive = true
         specPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                constant: 30).isActive = true
-        specPlusButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        specPlusButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+                                                constant: leading).isActive = true
+        specPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
+        specPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установки кнопки перехода к предыдущему экрану
     private func setupBackButton() {
+        let leading: CGFloat = 36
+        let width: CGFloat = 80
+        let top: CGFloat = 30
+        let height: CGFloat = 25
+        heightScroll += top + height
+        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
+        
         let titleButton = "< Назад"
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
@@ -501,52 +386,51 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         backButton.setTitle(titleButton, for: .normal)
         scrollView.addSubview(backButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        
+        if heightScroll > Session.height {
+            backButtonTop = backButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            backButtonTop?.isActive = true
+        } else {
+            backButtonTop = backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            backButtonTop?.isActive = true
+        }
+        
     }
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
+        let leading: CGFloat = 36
+        let width: CGFloat = 80
+        let top: CGFloat = 30
+        let height: CGFloat = 25
+        
         let titleButton = "Далее >"
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
         nextButton.titleLabel?.textColor = .white
         nextButton.setTitle(titleButton, for: .normal)
         scrollView.addSubview(nextButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
+
         nextButton.translatesAutoresizingMaskIntoConstraints = false
-        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 36).isActive = true
-        nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-    }
-    
-    /// Добавление распознавания касания экрана
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
+        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: Session.width - leading).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        if heightScroll > Session.height {
+            nextButtonTop = nextButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            nextButtonTop?.isActive = true
+        } else {
+            nextButtonTop = nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            nextButtonTop?.isActive = true
+        }
     }
     
     /// Добавляет свайп влево для перехода назад
@@ -558,31 +442,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
-    /// Скрытие клавиатуры
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
-    }
-    
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
     
     // MARK: - Buttons methods
     @objc private func regionSearchButtonPressed() {
@@ -593,41 +452,67 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         presenter?.citySearch()
     }
     
-    @objc private func workSearchButtonPressed() {
-        presenter?.medicalOrganizationSearch(mainWork: true, tag: "main")
-    }
-    
-    @objc private func addWorkSearchButtonPressed() {
-        presenter?.medicalOrganizationSearch(mainWork: false, tag: "add")
-    }
-    
-    @objc private func thirdWorkSearchButtonPressed() {
-        presenter?.medicalOrganizationSearch(mainWork: false, tag: "third")
-    }
-    
-    @objc private func specSearchButtonPressed() {
-        presenter?.medicalSpecializationSearch(mainSpec: true, tag: "main")
-    }
-    
-    @objc private func addSpecSearchButtonPressed() {
-        presenter?.medicalSpecializationSearch(mainSpec: false, tag: "add")
-    }
-    
-    @objc private func thirdSpecSearchButtonPressed() {
-        presenter?.medicalSpecializationSearch(mainSpec: false, tag: "third")
-    }
-    
     @objc private func workPlusButtonPressed() {
-        workPlusButton.isHidden = true
-        setupThirdWorkTextField()
-        setupThirdWorkSearchButton()
+        let top: CGFloat = 30
+        heightScroll += 35
+        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
+        jobTableViewHeight?.isActive = false
+        jobTableViewHeight?.constant += 35
+        jobTableViewHeight?.isActive = true
+        jobRowCount += 1
+        jobTableView.reloadData()
+        if jobRowCount > 4 {
+            workPlusButton.isHidden = true
+        }
+        backButtonTop?.isActive = false
+        nextButtonTop?.isActive = false
+        if heightScroll > Session.height {
+            backButtonTop = backButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            backButtonTop?.isActive = true
+            
+            nextButtonTop = nextButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            nextButtonTop?.isActive = true
+        } else {
+            backButtonTop = backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            backButtonTop?.isActive = true
+            nextButtonTop = nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            nextButtonTop?.isActive = true
+        }
+        
     }
     
     @objc private func specPlusButtonPressed() {
-        specPlusButton.isHidden = true
-        setupThirdSpecTextField()
-        setupThirdSpecSearchButton()
+        let top: CGFloat = 30
+        heightScroll += 35
+        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
+        specTableViewHeight?.isActive = false
+        specTableViewHeight?.constant += 35
+        specTableViewHeight?.isActive = true
+        specRowCount += 1
+        specTableView.reloadData()
+        if specRowCount > 4 {
+            specPlusButton.isHidden = true
+        }
+        backButtonTop?.isActive = false
+        nextButtonTop?.isActive = false
+        if heightScroll > Session.height {
+            backButtonTop = backButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            backButtonTop?.isActive = true
+            
+            nextButtonTop = nextButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                            constant: top)
+            nextButtonTop?.isActive = true
+        } else {
+            backButtonTop = backButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            backButtonTop?.isActive = true
+            nextButtonTop = nextButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            nextButtonTop?.isActive = true
+        }
     }
+    
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
         presenter?.next()
@@ -636,4 +521,84 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     @objc private func backButtonPressed() {
         presenter?.back()
     }
+    
+}
+
+// MARK: - Table view
+extension CreateProfileWorkViewController: UITableViewDelegate { }
+
+extension CreateProfileWorkViewController: UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        if tableView == self.jobTableView {
+            if presenter?.getCountJob() ?? 0 < jobRowCount {
+                return jobRowCount
+            } else {
+                return presenter?.getCountJob() ?? jobRowCount
+            }
+        } else {
+            if presenter?.getCountSpec() ?? 0 < specRowCount {
+                return specRowCount
+            } else {
+                return presenter?.getCountSpec() ?? specRowCount
+            }
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "JobCell",
+                                                       for: indexPath) as? JobCell
+            else { return UITableViewCell() }
+        
+        if tableView == self.jobTableView {
+            let job = presenter?.getJob(indexPath.row) ?? "Место работы"
+            var value = NSAttributedString(string: "")
+            if job == "" {
+                switch indexPath.row {
+                case 0:
+                    value = redStar(text: "Основное место работы*")
+                default:
+                    value = redStar(text: "Дополнительное место работы")
+                }
+                cell.configure(value)
+            } else {
+                cell.configure(job)
+            }
+        } else {
+            let spec = presenter?.getSpec(indexPath.row) ?? "Специализация"
+            var value = NSAttributedString(string: "")
+            if spec == "" {
+                switch indexPath.row {
+                case 0:
+                    value = redStar(text: "Основная специализация*")
+                default:
+                    value = redStar(text: "Дополнительная специализация")
+                }
+                cell.configure(value)
+            } else {
+                cell.configure(spec)
+            }
+        }
+        cell.layer.backgroundColor = UIColor.clear.cgColor
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return heightTextField + 5
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView == self.jobTableView {
+            presenter?.jobSearch(indexPath.row)
+        } else {
+            presenter?.specSearch(indexPath.row)
+        }
+        
+    }
+    
 }

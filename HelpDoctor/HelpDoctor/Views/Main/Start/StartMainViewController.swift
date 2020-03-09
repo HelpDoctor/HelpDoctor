@@ -169,9 +169,10 @@ class StartMainViewController: UIViewController {
     private func setupBottomLabel() {
         bottomLabel.font = UIFont.systemFontOfSize(size: 12)
         bottomLabel.textColor = .white
-        //swiftlint:disable line_length
-        bottomLabel.text = "Для того чтобы стать частью медицинского сообщества HelpDoctor нужно указать информацию о себе, заполнив профиль"
-        //swiftlint:enable line_length
+        bottomLabel.text =
+        """
+        Для того чтобы стать частью медицинского сообщества HelpDoctor нужно указать информацию о себе, заполнив профиль
+        """
         bottomLabel.textAlignment = .left
         bottomLabel.numberOfLines = 0
         bottomLabel.isHidden = true
