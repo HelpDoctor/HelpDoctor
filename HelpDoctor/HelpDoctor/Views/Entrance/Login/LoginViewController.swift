@@ -15,13 +15,15 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
+    private let logoImage = UIImageView()
+    private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
     private let passwordTextField = UITextField()
     private let forgotButton = UIButton()
     private let loginButton = HDButton(title: "Войти")
-    private let backButton = UIButton()
+    private let backButton = BackButton()
     private var keyboardHeight = 0.f
     private var isKeyboardShown = false
     private let widthTextField = Session.width - 114.f
@@ -32,7 +34,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         setupBackground()
         setupScrollView()
-        setupHeaderView()
+        setupLogoImage()
+        setupDoctorsImage()
         setupTitleLabel()
         setupLabel()
         setupEmailTextField()
@@ -64,22 +67,61 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup views
     /// Установка ScrollView
     private func setupScrollView() {
-        let top = 60.f
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
+    /// Установка логотипа приложения
+    private func setupLogoImage() {
+        let top = 10.f
+        let leading = Session.width - top
+        let width = 50.f
+        let imageName = "Logo.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        logoImage.image = image
+        scrollView.addSubview(logoImage)
+        
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                       constant: top).isActive = true
+        logoImage.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Установка картинки
+    private func setupDoctorsImage() {
+        let width = 0.6 * Session.width
+        let imageName = "LoginImage.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        doctorsImage.image = resizedImage
+        scrollView.addSubview(doctorsImage)
+        
+        doctorsImage.translatesAutoresizingMaskIntoConstraints = false
+        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
     /// Установка заголовка
     private func setupTitleLabel() {
-        let top = 54.f
+        let top = 5.f
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -88,7 +130,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor,
+        titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
                                         constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
@@ -97,9 +139,9 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка описания
     private func setupLabel() {
-        let top = 45.f
-        let width = Session.width - 60.f
-        let height = 51.f
+        let top = 17.f
+        let width = Session.width - 22.f
+        let height = 34.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text = "Для авторизации введите свой e-mail и ранее полученный пароль"
@@ -117,11 +159,11 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода адреса электронной почты
     private func setupEmailTextField() {
-        let top = 42.f
+        let top = 21.f
         emailTextField.font = .systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        emailTextField.placeholder = "E-mail*"
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
         emailTextField.textAlignment = .left
@@ -148,7 +190,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.font = .systemFontOfSize(size: 14)
         passwordTextField.isSecureTextEntry = true
         passwordTextField.textColor = .textFieldTextColor
-        passwordTextField.attributedPlaceholder = redStar(text: "Пароль*")
+        passwordTextField.placeholder = "Пароль*"
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5
@@ -190,7 +232,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установки кнопки "Войти"
     private func setupLoginButton() {
-        let top = 78.f
+        let top = 41.f
         let width = 150.f
         let height = 35.f
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
@@ -206,24 +248,19 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установки кнопки "Назад"
     private func setupBackButton() {
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        let bottom = Session.height - (bottomPadding ?? 0) - 98.f
-        let leading = 36.f
-        let width = 80.f
-        let height = 35.f
-        let titleButton = "< Назад"
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
-        backButton.titleLabel?.textColor = .white
-        backButton.setTitle(titleButton, for: .normal)
+        let leading = 8.f
+        let top = 10.f
+        let width = 57.f
+        let height = 21.f
+        let tap = UITapGestureRecognizer(target: self, action: #selector(backButtonPressed))
+        backButton.addGestureRecognizer(tap)
         scrollView.addSubview(backButton)
         
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: bottom).isActive = true
+        backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                           constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }

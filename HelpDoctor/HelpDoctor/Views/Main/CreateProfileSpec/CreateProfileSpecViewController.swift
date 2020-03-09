@@ -100,9 +100,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         let height: CGFloat = 51
         step6Label.font = UIFont.systemFontOfSize(size: 14)
         step6Label.textColor = .white
-        //swiftlint:disable line_length
-        step6Label.text = "Укажите область своих научных интересов. Если Вы не нашли нужное ключевое слово, добавьте своё"
-        //swiftlint:enable line_length
+        step6Label.text =
+        """
+        Укажите область своих научных интересов. Если Вы не нашли нужное ключевое слово, добавьте своё
+        """
         step6Label.textAlignment = .left
         step6Label.numberOfLines = 0
         scrollView.addSubview(step6Label)

@@ -137,9 +137,10 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         textLabel.textAlignment = .left
         textLabel.font = .systemFontOfSize(size: 16)
         textLabel.textColor = .white
-        //swiftlint:disable line_length
-        textLabel.text = "Чтобы изменить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа"
-        //swiftlint:enable line_length
+        textLabel.text =
+        """
+        "Чтобы изменить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа
+        """
         scrollView.addSubview(textLabel)
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false

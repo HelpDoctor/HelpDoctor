@@ -126,9 +126,11 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         textLabel.textAlignment = .left
         textLabel.font = .systemFontOfSize(size: 16)
         textLabel.textColor = .white
-        //swiftlint:disable line_length
-        textLabel.text = "Расскажите о своей проблеме, и мы приложим все усилия, чтобы решить ее оперативно.\nЕсли у Вас есть пожелания к улучшению работы приложения HelpDoctor, мы будем Вам благодарны"
-        //swiftlint:enable line_length
+        textLabel.text =
+        """
+        Расскажите о своей проблеме, и мы приложим все усилия, чтобы решить ее оперативно.\n
+        Если у Вас есть пожелания к улучшению работы приложения HelpDoctor, мы будем Вам благодарны
+        """
         scrollView.addSubview(textLabel)
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false

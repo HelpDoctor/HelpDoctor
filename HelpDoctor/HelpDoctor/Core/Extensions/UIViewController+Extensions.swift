@@ -12,7 +12,7 @@ extension UIViewController {
     
     func setupBackground() {
         let backgroundImage = UIImageView()
-        let backgroundImageName = "Background.png"
+        let backgroundImageName = "Background.pdf"
         guard let image = UIImage(named: backgroundImageName) else {
             assertionFailure("Missing ​​\(backgroundImageName) asset")
             return

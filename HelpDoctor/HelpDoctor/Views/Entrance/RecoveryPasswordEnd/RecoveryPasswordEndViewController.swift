@@ -14,24 +14,22 @@ class RecoveryPasswordEndViewController: UIViewController {
     var presenter: RecoveryPasswordEndPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let logoImage = UIImageView()
+    private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
-    private let topLabel = UILabel()
-    private let bottomLabel = UILabel()
-    private let topEmailTextField = UITextField()
-    private let textFieldLabel = UILabel()
-    private let bottomEmailTextField = UITextField()
+    private let textLabel = UILabel()
     private let loginButton = HDButton(title: "Войти")
     
-    private let widthLabel = Session.width - 60.f
+    private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupHeaderView()
+        setupLogoImage()
+        setupDoctorsImage()
         setupTitleLabel()
         setupTopLabel()
-        setupBottomLabel()
         setupLoginButton()
     }
     
@@ -41,9 +39,50 @@ class RecoveryPasswordEndViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    /// Установка логотипа приложения
+    private func setupLogoImage() {
+        let top = 10.f
+        let leading = Session.width - top
+        let width = 50.f
+        let imageName = "Logo.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        logoImage.image = image
+        view.addSubview(logoImage)
+        
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: top).isActive = true
+        logoImage.trailingAnchor.constraint(equalTo: view.leadingAnchor,
+                                            constant: leading).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Установка картинки
+    private func setupDoctorsImage() {
+        let width = 0.5 * Session.width
+        let imageName = "RegImage.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        doctorsImage.image = resizedImage
+        view.addSubview(doctorsImage)
+        
+        doctorsImage.translatesAutoresizingMaskIntoConstraints = false
+        doctorsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
     /// Установка заголовка
     private func setupTitleLabel() {
-        let top = 114.f
+        let top = 5.f
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
@@ -52,61 +91,46 @@ class RecoveryPasswordEndViewController: UIViewController {
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+        titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
                                         constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка верхней надписи
+    /// Установка надписи
     private func setupTopLabel() {
-        let top = 45.f
-        let height = 51.f
-        topLabel.font = .systemFontOfSize(size: 14)
-        topLabel.textColor = .white
-        topLabel.text = "Новый пароль был выслан на Ваш E-mail"
-        topLabel.textAlignment = .left
-        topLabel.numberOfLines = 0
-        view.addSubview(topLabel)
+        let top = 16.f
+        let height = 68.f
+        textLabel.font = .systemFontOfSize(size: 14)
+        textLabel.textColor = .white
+        textLabel.text =
+        """
+        Новый пароль был выслан на Ваш E-mail\n
+        Пожалуйста, войдите с новыми учетными данными
+        """
+        textLabel.textAlignment = .left
+        textLabel.numberOfLines = 0
+        view.addSubview(textLabel)
         
-        topLabel.translatesAutoresizingMaskIntoConstraints = false
-        topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                       constant: top).isActive = true
-        topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
-        topLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    /// Установка нижней надписи
-    private func setupBottomLabel() {
-        let top = 17.f
-        let height = 36.f
-        bottomLabel.font = .systemFontOfSize(size: 14)
-        bottomLabel.textColor = .white
-        bottomLabel.text = "Пожалуйста, войдите с новыми учетными данными"
-        bottomLabel.textAlignment = .left
-        bottomLabel.numberOfLines = 0
-        view.addSubview(bottomLabel)
-        
-        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
-                                         constant: top).isActive = true
-        bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
-        bottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        textLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
+        textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
-        let top = 17.f
+        let top = 35.f
         let width = 150.f
-        let height = 36.f
+        let height = 35.f
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
+        loginButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
                                          constant: top).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -118,4 +142,5 @@ class RecoveryPasswordEndViewController: UIViewController {
     @objc private func loginButtonPressed() {
         presenter?.login()
     }
+    
 }
