@@ -18,6 +18,7 @@ class VerificationEndViewController: UIViewController {
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let textLabel = UILabel()
+    private let okButton = HDButton(title: "Ok")
     private let backButton = BackButton()
     
     private let widthLabel = Session.width - 22.f
@@ -30,7 +31,8 @@ class VerificationEndViewController: UIViewController {
         setupDoctorsImage()
         setupTitleLabel()
         setupTopLabel()
-        setupBackButton()
+        setupOkButton()
+//        setupBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,6 +124,23 @@ class VerificationEndViewController: UIViewController {
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка кнопки Ок
+    private func setupOkButton() {
+        let top = 20.f
+        let width = 150.f
+        let height = 35.f
+        okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
+        okButton.update(isEnabled: true)
+        view.addSubview(okButton)
+        
+        okButton.translatesAutoresizingMaskIntoConstraints = false
+        okButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
+                                      constant: top).isActive = true
+        okButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка кнопки назад
     private func setupBackButton() {
         let leading = 8.f
@@ -142,6 +161,11 @@ class VerificationEndViewController: UIViewController {
     }
     
     // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Ок"
+    @objc private func okButtonPressed() {
+        presenter?.back()
+    }
+    
     /// Обработка нажатия кнопки "Назад"
     @objc private func backButtonPressed() {
         presenter?.back()

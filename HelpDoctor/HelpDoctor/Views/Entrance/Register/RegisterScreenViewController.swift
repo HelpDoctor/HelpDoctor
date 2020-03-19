@@ -309,7 +309,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed(tap:)))
         policyLabel.addGestureRecognizer(tap)
         policyLabel.isUserInteractionEnabled = true  
         policyLabel.font = .systemFontOfSize(size: 12)
@@ -429,8 +429,19 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         presenter?.checkPolicyChanged(isAgree: checkButton.isSelected)
     }
     
-    @objc private func labelPressed() {
-        print("Условия использования")
+    /// Обработка нажатия на гиперссылку
+    /// - Parameter tap: UITapGestureRecognizer
+    @objc private func labelPressed(tap: UITapGestureRecognizer) {
+        guard let range = rangeOfHost(text: policyLabel.text ?? "") else { return }
+        if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) {
+            print("Условия использования")
+        }
+    }
+    
+    private func rangeOfHost(text: String) -> NSRange? {
+        guard let range = text.range(of: "условия использования.") else { return nil }
+        return NSRange(location: range.lowerBound.utf16Offset(in: text),
+                       length: range.upperBound.utf16Offset(in: text) - range.lowerBound.utf16Offset(in: text))
     }
     
 }

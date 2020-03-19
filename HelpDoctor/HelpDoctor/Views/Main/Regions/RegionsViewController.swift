@@ -14,6 +14,8 @@ class RegionsViewController: UIViewController {
     var presenter: RegionsPresenterProtocol?
     
     // MARK: - Constants
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     var tableView = UITableView()
     private var okButton = HDButton()
     private let searchBar = UISearchBar()
@@ -22,8 +24,8 @@ class RegionsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.getRegions()
-        view.backgroundColor = .backgroundColor
-        setupHeaderView()
+        view.backgroundColor = backgroundColor
+        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupSearchBar()
         setupTableView()
         setupOkButton()

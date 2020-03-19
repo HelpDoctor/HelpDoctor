@@ -22,9 +22,11 @@ extension UIViewController {
         view.addSubview(backgroundImage)
     }
     
-    func setupHeaderView() {
-        let height: CGFloat = 60
-        let headerView = HeaderView(title: "HelpDoctor")
+    func setupHeaderView(color: UIColor, height: CGFloat, presenter: Presenter?) {
+        let headerView = HeaderView(title: "HelpDoctor",
+                                    color: color,
+                                    height: height,
+                                    presenter: presenter)
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -34,17 +36,17 @@ extension UIViewController {
         headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    func setupClearHeaderView() {
-        let height: CGFloat = 60
-        let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
-        view.addSubview(headerView)
-        
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
+//    func setupClearHeaderView(presenter: Presenter?) {
+//        let height: CGFloat = 60
+//        let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
+//        view.addSubview(headerView)
+//        
+//        headerView.translatesAutoresizingMaskIntoConstraints = false
+//        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+//        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+//        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+//        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
+//    }
     
     func setupHeaderViewWithAvatar(title: String,
                                    text: String?,

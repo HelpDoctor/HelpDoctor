@@ -10,8 +10,8 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+//    private let width = UIScreen.main.bounds.width
+//    private let height = UIScreen.main.bounds.height
     
     override func viewDidLoad() {
         super.viewDidLoad()

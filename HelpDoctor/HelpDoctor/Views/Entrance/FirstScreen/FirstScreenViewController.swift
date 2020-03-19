@@ -146,11 +146,12 @@ class FirstScreenViewController: UIViewController {
     private func setupBottomLabel() {
         let top = 11.f
         let height = 51.f
-        var label = String()
-        label = "Чтобы воспользоваться функциями приложения, войдите в существующий аккаунт или пройдите регистрацию."
         bottomLabel.font = .systemFontOfSize(size: 14)
         bottomLabel.textColor = .white
-        bottomLabel.text = label
+        bottomLabel.text =
+        """
+        Чтобы воспользоваться функциями приложения, войдите в существующий аккаунт или пройдите регистрацию.
+        """
         bottomLabel.textAlignment = .left
         bottomLabel.numberOfLines = 0
         view.addSubview(bottomLabel)

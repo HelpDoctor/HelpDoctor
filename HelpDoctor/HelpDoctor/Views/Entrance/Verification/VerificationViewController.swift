@@ -23,6 +23,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить")
     private let backButton = BackButton()
+    private var sourceFile: URL?
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
@@ -45,6 +46,19 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+    
+    // MARK: - Public methods
+    func authorized() {
+        label.text =
+        """
+        Спасибо за предоставленную информацию!\n
+        Пожалуйста, дождитесь результатов верификации. \
+        Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
+        """
+        sendButton.setTitle("Ok", for: .normal)
+        addFileTextField.isHidden = true
+        subscriptLabel.isHidden = true
     }
     
     // MARK: - Setup views
@@ -295,7 +309,16 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
-        presenter?.send()
+        if sendButton.isSelected {
+            presenter?.back()
+        } else {
+            guard let url = sourceFile else {
+                self.showAlert(message: "Ошибка")
+                return
+            }
+            presenter?.send(src: url)
+            sendButton.isSelected = true
+        }
     }
     
     /// Обработка нажатия кнопки "Назад"
@@ -311,6 +334,7 @@ extension VerificationViewController: UIDocumentPickerDelegate {
     func documentPicker(_ controller: UIDocumentPickerViewController,
                         didPickDocumentAt url: URL) {
         addFileTextField.text = url.lastPathComponent
+        sourceFile = url
     }
 
 }

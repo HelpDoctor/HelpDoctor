@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MedicalSpecializationPresenterProtocol {
+protocol MedicalSpecializationPresenterProtocol: Presenter {
     init(view: MedicalSpecializationViewController)
     func getMedicalSpecialization()
     func getCountMedicalSpecialization() -> Int?
@@ -84,5 +84,11 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
         let presenter = previous.presenter
         presenter?.setSpec(spec: medicalSpecialization)
     }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func save(source: SourceEditTextField) { }
     
 }

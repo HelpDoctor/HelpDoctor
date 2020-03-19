@@ -14,6 +14,8 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     var presenter: CreateProfileSpecPresenterProtocol?
     
     // MARK: - Constants
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     private let scrollView = UIScrollView()
     private let step6TitleLabel = UILabel()
     private let step6Label = UILabel()
@@ -34,7 +36,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         imagePicker.delegate = self
         setupBackground()
         setupScrollView()
-        setupHeaderView()
+        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep6TitleLabel()
         setupStep6Label()
         setupSpecTextField()

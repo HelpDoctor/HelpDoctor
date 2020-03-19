@@ -10,8 +10,7 @@ import UIKit
 
 protocol VerificationPresenterProtocol {
     init(view: VerificationViewController)
-    func sendButtonTapped(email: String)
-    func send()
+    func send(src: URL)
     func back()
 }
 
@@ -25,47 +24,31 @@ class VerificationPresenter: VerificationPresenterProtocol {
         self.view = view
     }
     
-    // MARK: - Publiс methods
-    /// Отправка на сервер запроса по восстановлению пароля
-    /// - Parameter email: адрес электронной почты
-    func sendButtonTapped(email: String) {
-        view.startActivityIndicator()
-        let recovery = Registration(email: email, password: nil, token: nil)
-        
-        getData(typeOfContent: .recoveryMail,
-                returning: (Int?, String?).self,
-                requestParams: recovery.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            recovery.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopActivityIndicator()
-                    print("result=\(String(describing: recovery.responce))")
-                    guard let code = recovery.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.send()
-                    } else {
-                        self?.view.showAlert(message: recovery.responce?.1)
-                    }
-                }
-            }
-        }
-        
-    }
-    
     // MARK: - Coordinator
     /// Переход к экрану входа
-    func send() {
-        let viewController = VerificationEndViewController()
-        let presenter = VerificationEndPresenter(view: viewController)
-        viewController.presenter = presenter
-        view.navigationController?.pushViewController(viewController, animated: true)
+    func send(src: URL) {
+        view.startActivityIndicator()
+        uploadImage(source: src,
+                    returning: (Int?, String?).self) { [weak self] result in
+                        let dispathGroup = DispatchGroup()
+                        
+                        dispathGroup.notify(queue: DispatchQueue.main) {
+                            DispatchQueue.main.async { [weak self] in
+                                self?.view.stopActivityIndicator()
+                                guard let code = result?.0 else { return }
+                                if responceCode(code: code) {
+                                    self?.view.authorized()
+                                } else {
+                                    self?.view.showAlert(message: result?.1)
+                                }
+                            }
+                        }
+        }
     }
     
     /// Переход к предыдущему экрану
     func back() {
-        view.navigationController?.popViewController(animated: true)
+        view.dismiss(animated: true, completion: nil)
     }
     
 }

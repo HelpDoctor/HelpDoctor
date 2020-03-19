@@ -9,6 +9,7 @@
 import UIKit
 
 extension String {
+    
     var westernArabicNumeralsOnly: String {
         let pattern = UnicodeScalar("0")..."9"
         return String(unicodeScalars
@@ -26,7 +27,7 @@ extension String {
         guard let data = Data(base64Encoded: self) else { return nil }
         return String(data: data, encoding: .utf8)
     }
-
+    
     func toBase64() -> String {
         return Data(self.utf8).base64EncodedString()
     }
@@ -92,17 +93,17 @@ extension String {
                                             options: .usesLineFragmentOrigin,
                                             attributes: [NSAttributedString.Key.font: font],
                                             context: nil)
-
+        
         return ceil(boundingBox.height)
     }
-
+    
     func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
         let boundingBox = self.boundingRect(with: constraintRect,
                                             options: .usesLineFragmentOrigin,
                                             attributes: [NSAttributedString.Key.font: font],
                                             context: nil)
-
+        
         return ceil(boundingBox.width)
     }
     

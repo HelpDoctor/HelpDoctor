@@ -10,8 +10,8 @@ import UIKit
 
 class RadioButton: UIButton {
     // Images
-    let checkedImage = UIImage(named: "WhiteSelectedEllipse.pdf")
-    let uncheckedImage = UIImage(named: "WhiteEllipse.pdf")
+    let checkedImage = UIImage(named: "SelectedEllipse.pdf")
+    let uncheckedImage = UIImage(named: "Ellipse.pdf")
     
     var alternateButton: [RadioButton]?
 

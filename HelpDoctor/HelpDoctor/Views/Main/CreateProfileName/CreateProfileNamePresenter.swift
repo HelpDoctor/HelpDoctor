@@ -8,9 +8,9 @@
 
 import UIKit
 
-protocol CreateProfileNamePresenterProtocol {
+protocol CreateProfileNamePresenterProtocol: Presenter {
     init(view: CreateProfileNameViewController)
-    func next(name: String, lastname: String, middleName: String, birthDate: String, phone: String)
+    func next(name: String, lastname: String, middleName: String, birthDate: String)
 }
 
 class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
@@ -27,7 +27,7 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func next(name: String, lastname: String, middleName: String, birthDate: String, phone: String) {
+    func next(name: String, lastname: String, middleName: String, birthDate: String) {
         if lastname == "" {
             view.showAlert(message: "Не заполнена фамилия")
             return
@@ -36,9 +36,6 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
             return
         } else if birthDate == "" {
             view.showAlert(message: "Не заполнена дата рождения")
-            return
-        } else if phone == "" {
-            view.showAlert(message: "Не указан номер телефона")
             return
         }
         let dateFormatter = DateFormatter()
@@ -54,15 +51,21 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
         user = UpdateProfileKeyUser(first_name: name,
                                     last_name: lastname,
                                     middle_name: middleName,
-                                    phone_number: phone.westernArabicNumeralsOnly,
+                                    phone_number: nil,
                                     birthday: strBirthday,
                                     city_id: nil,
                                     foto: nil)
-        let viewController = CreateProfileWorkViewController()
-        let presenter = CreateProfileWorkPresenter(view: viewController)
+        let viewController = CreateProfileScreen2ViewController()
+        let presenter = CreateProfileScreen2Presenter(view: viewController)
         viewController.presenter = presenter
         presenter.user = user
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func save(source: SourceEditTextField) { }
     
 }

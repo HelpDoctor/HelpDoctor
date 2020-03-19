@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CitiesPresenterProtocol {
+protocol CitiesPresenterProtocol: Presenter {
     init(view: CitiesViewController)
     func getCities(regionId: Int)
     func getCountCities() -> Int?
@@ -95,7 +95,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             let city = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileScreen2ViewController
             let presenter = previous.presenter
             presenter?.setCity(city: city)
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
@@ -124,5 +124,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
+    
+    func save(source: SourceEditTextField) { }
     
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol StartMainPresenterProtocol {
+protocol StartMainPresenterProtocol: Presenter {
     init(view: StartMainViewController)
     func profileCheck()
     func fillProfile()
@@ -33,6 +33,9 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func profileCheck() {
         view.startActivityIndicator()
         getUser()
+        if Session.instance.userStatus != .verified {
+            getStatusUser()
+        }
         let checkProfile = Registration(email: nil, password: nil, token: myToken)
         
         getData(typeOfContent: .checkProfile,
@@ -58,6 +61,40 @@ class StartMainPresenter: StartMainPresenterProtocol {
     }
     
     // MARK: - Private methods
+    private func getStatusUser() {
+        let userStatus = Registration(email: nil, password: nil, token: myToken)
+        
+        getData(typeOfContent: .userStatus,
+                returning: (Int?, String?).self,
+                requestParams: userStatus.requestParams) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    userStatus.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self] in
+                            print("result=\(String(describing: userStatus.responce))")
+                            guard let status = userStatus.responce?.1 else { return }
+                            switch status {
+                            case "denied":
+                                Session.instance.userStatus = .denied
+                                self?.toVerification()
+                            case "not_verification":
+                                Session.instance.userStatus = .notVerification
+                                self?.toVerification()
+                            case "processing":
+                                Session.instance.userStatus = .processing
+                                self?.toVerification() //Временно
+                            case "verified":
+                                Session.instance.userStatus = .verified
+                            default:
+                                break
+                            }
+                            print(Session.instance.userStatus.debugDescription)
+                        }
+                    }
+        }
+    }
+    
     /// Загрузка информации о пользователе с сервера
     private func getUser() {
         let getDataProfile = Profile()
@@ -112,5 +149,17 @@ class StartMainPresenter: StartMainPresenterProtocol {
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func toVerification() {
+        let viewController = VerificationViewController()
+        viewController.presenter = VerificationPresenter(view: viewController)
+        view.present(viewController, animated: true, completion: nil)
+    }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func save(source: SourceEditTextField) { }
     
 }

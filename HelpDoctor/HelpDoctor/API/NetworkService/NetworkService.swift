@@ -66,6 +66,81 @@ enum TypeOfRequest: String {
     case schedule_getEventsForCurrentId = "/event/get/"
     case schedule_deleteForCurrentEvent = "/event/del/"
     case findUsers = "/seach/users"
+    case userStatus = "/profile/user_status"
+}
+
+enum NetworkMimeType: String {
+    
+    case jpeg, jpg = "image/jpeg"
+    case png = "image/png"
+    case heic = "image/heic"
+    case pdf = "application/pdf"
+    
+}
+
+func uploadImage<T>(source: URL,
+                    returning: T.Type,
+                    completionBlock: @escaping (T?) -> Void) {
+    var replyReturn: T?
+    guard let url = URL(string: "http://demo22.tmweb.ru/public/api/profile/verification") else { return }
+    let fileName = source.path
+    var mimeType: NetworkMimeType?
+    switch source.pathExtension.lowercased() {
+    case "heic":
+        mimeType = .heic
+    case "jpeg":
+        mimeType = .jpeg
+    case "jpg":
+        mimeType = .jpg
+    case "png":
+        mimeType = .png
+    case "pdf":
+        mimeType = .pdf
+    default:
+        break
+    }
+
+    let boundary = "Boundary-\(UUID().uuidString)"
+    let session = URLSession.shared
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+
+    // Set Content-Type Header to multipart/form-data, this is equivalent to submitting form data with file upload in a web browser
+    // And the boundary is also set here
+    urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+    urlRequest.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+
+    var body = Data()
+    let encoding: UInt = String.Encoding.utf8.rawValue
+    guard let fileType = mimeType else { return }
+    if let boundaryStartData = "--\(boundary)\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let fileNameData = "Content-Disposition:form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let contentTypeData = "Content-Type: \(fileType)\r\n\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let endLineData = "\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let boundaryEndData = "--\(boundary)--\r\n".data(using: String.Encoding(rawValue: encoding)) {
+        body.append(boundaryStartData)
+        body.append(fileNameData)
+        body.append(contentTypeData)
+        body.append(endLineData)
+        body.append(boundaryEndData)
+
+    }
+    
+    session.uploadTask(with: urlRequest, from: body) { (data: Data?, response: URLResponse?, error: Error?) in
+        guard let data = data, error == nil else { return }
+        
+        guard let json = try? JSONSerialization.jsonObject(with: data,
+                                                           options: .allowFragments)
+            else { return }
+        
+        print(json)
+        guard let startPoint = json as? [String: AnyObject] else { return }
+        replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
+        DispatchQueue.main.async {
+            completionBlock(replyReturn)
+        }
+    }.resume()
+    
 }
 
 func getCurrentSession (typeOfContent: TypeOfRequest,
@@ -143,6 +218,10 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
+    case .userStatus:
+        request.httpMethod = "GET"
+        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+        
     default:
         break
     }
@@ -182,6 +261,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .deleteMail,
                  .logout,
                  .checkProfile,
+                 .userStatus,
                  .updateProfile,
                  .schedule_CreateOrUpdateEvent,
                  .schedule_deleteForCurrentEvent:

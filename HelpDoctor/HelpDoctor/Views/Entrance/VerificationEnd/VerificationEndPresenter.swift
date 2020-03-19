@@ -41,4 +41,9 @@ class VerificationEndPresenter: VerificationEndPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
+    /// Переход к предыдущему экрану
+    func hide() {
+        view.dismiss(animated: true, completion: nil)
+    }
+    
 }

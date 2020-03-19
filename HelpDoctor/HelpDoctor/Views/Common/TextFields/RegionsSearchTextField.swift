@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 04.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 class RegionsSearchTextField: UITextField {
@@ -206,3 +206,4 @@ extension RegionsSearchTextField: UITableViewDelegate, UITableViewDataSource {
     }
         
 }
+*/

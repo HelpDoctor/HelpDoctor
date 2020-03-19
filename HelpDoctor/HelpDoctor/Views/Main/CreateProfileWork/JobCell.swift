@@ -21,7 +21,6 @@ class JobCell: UITableViewCell {
         setupSeparatorView()
         setupStackView()
         setupJobTextLabel()
-//        setupJobSearchIcon()
     }
     
     required init?(coder: NSCoder) {
@@ -52,22 +51,6 @@ class JobCell: UITableViewCell {
         jobTextLabel.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         jobTextLabel.leadingAnchor.constraint(equalTo: stackView.leadingAnchor, constant: 8).isActive = true
         jobTextLabel.trailingAnchor.constraint(equalTo: stackView.trailingAnchor).isActive = true
-    }
-    
-    private func setupJobSearchIcon() {
-        let iconName = "Search_Button"
-        guard let image = UIImage(named: iconName) else {
-            assertionFailure("Missing ​​\(iconName) asset")
-            return
-        }
-        jobSearchIcon.image = image
-        stackView.addSubview(jobSearchIcon)
-        
-        jobSearchIcon.translatesAutoresizingMaskIntoConstraints = false
-        jobSearchIcon.centerYAnchor.constraint(equalTo: stackView.centerYAnchor).isActive = true
-        jobSearchIcon.trailingAnchor.constraint(equalTo: stackView.trailingAnchor, constant: -5).isActive = true
-        jobSearchIcon.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        jobSearchIcon.heightAnchor.constraint(equalToConstant: 20).isActive = true
     }
     
     private func setupSeparatorView() {

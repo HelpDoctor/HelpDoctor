@@ -14,6 +14,8 @@ class StartMainViewController: UIViewController {
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
@@ -31,7 +33,7 @@ class StartMainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupHeaderView()
+        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupEnterProfileButton()
         setupNewUserLabel()
         setupTopLine()
@@ -48,7 +50,8 @@ class StartMainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
-        setImage(image: Session.instance.user?.foto?.toImage())
+//        setImage(image: Session.instance.user?.foto?.toImage())
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods

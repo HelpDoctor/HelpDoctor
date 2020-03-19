@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol RegionsPresenterProtocol {
+protocol RegionsPresenterProtocol: Presenter {
     init(view: RegionsViewController)
     func getRegions()
     func getCountRegions() -> Int?
@@ -82,7 +82,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
             let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileScreen2ViewController
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
@@ -116,5 +116,11 @@ class RegionsPresenter: RegionsPresenterProtocol {
             view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func save(source: SourceEditTextField) { }
     
 }

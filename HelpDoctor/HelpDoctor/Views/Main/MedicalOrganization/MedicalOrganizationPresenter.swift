@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol MedicalOrganizationPresenterProtocol {
+protocol MedicalOrganizationPresenterProtocol: Presenter {
     init(view: MedicalOrganizationViewController)
     func getMedicalOrganization(regionId: Int, mainWork: Bool)
     func getCountMedicalOrganizations() -> Int?
@@ -87,5 +87,11 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
         presenter?.setJob(job: medicalOrganization)
         view.navigationController?.popToViewController(previous, animated: true)
     }
+    
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func save(source: SourceEditTextField) { }
     
 }

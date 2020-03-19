@@ -11,7 +11,9 @@ import UIKit
 class Session {
     static let instance = Session()
     
-    private init() { }
+    private init() {
+        self.userStatus = .notVerification
+    }
     
     static var width: CGFloat {
         return UIScreen.main.bounds.width
@@ -26,4 +28,12 @@ class Session {
     }
     
     var user: ProfileKeyUser?
+    var userStatus: UserStatus?
+}
+
+enum UserStatus: String {
+    case notVerification = "not_verification"
+    case verified = "verified"
+    case processing = "processing"
+    case denied = "denied"
 }

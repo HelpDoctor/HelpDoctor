@@ -9,44 +9,37 @@
 import UIKit
 
 class HeaderView: UIView {
-    private let session = Session.instance
+    private let backButton = UIButton()
     private let logoImage = UIImageView()
     private let titleLabel = UILabel()
-    private let userImage = UIImageView()
+    private var presenter: Presenter?
+    private var heightHeader = 0.f
     
-    convenience init(title: String) {
+    convenience init(title: String, color: UIColor, height: CGFloat, presenter: Presenter?) {
         self.init()
         self.titleLabel.text = title
-        UIApplication.statusBarBackgroundColor = .clear
-        userImage.isHidden = true
-        setupLogo()
+        self.presenter = presenter
+        self.heightHeader = height
+        backgroundColor = color
+        UIApplication.statusBarBackgroundColor = .tabBarColor
+        setupBackButton()
         setupTitle()
+        setupLogo()
     }
     
-    convenience init(title: String, withAvatar: Bool = true) {
-        self.init()
-        self.titleLabel.text = title
-        UIApplication.statusBarBackgroundColor = .clear
-        userImage.isHidden = !withAvatar
-        setupLogo()
-        setupTitle()
-        setupUserImage()
-    }
-    
-    private func setupLogo() {
-        let logoImageName = "Logo.pdf"
-        guard let image = UIImage(named: logoImageName) else {
-            assertionFailure("Missing ​​\(logoImageName) asset")
-            return
-        }
-        logoImage.image = image
-        self.addSubview(logoImage)
+    private func setupBackButton() {
+        let leading = 10.f
+        let width = 20.f
+        backButton.setImage(UIImage(named: "Back.pdf"), for: .normal)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
+        self.addSubview(backButton)
         
-        logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        logoImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10).isActive = true
-        logoImage.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        logoImage.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        backButton.translatesAutoresizingMaskIntoConstraints = false
+        backButton.leadingAnchor.constraint(equalTo: self.leadingAnchor,
+                                            constant: leading).isActive = true
+        backButton.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        backButton.heightAnchor.constraint(equalToConstant: width).isActive = true
+        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     private func setupTitle() {
@@ -61,19 +54,28 @@ class HeaderView: UIView {
         titleLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
     }
     
-    private func setupUserImage() {
-        userImage.image = session.user?.foto?.toImage()
-        self.addSubview(userImage)
+    private func setupLogo() {
+        let top = 10.f
+        let height = heightHeader - (2 * top)
+        let logoImageName = "Logo.pdf"
+        guard let image = UIImage(named: logoImageName) else {
+            assertionFailure("Missing ​​\(logoImageName) asset")
+            return
+        }
+        logoImage.image = image
+        self.addSubview(logoImage)
         
-        userImage.layer.cornerRadius = 20
-        userImage.contentMode = .scaleAspectFill
-        userImage.layer.masksToBounds = true
-        
-        userImage.translatesAutoresizingMaskIntoConstraints = false
-        userImage.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        userImage.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10).isActive = true
-        userImage.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        userImage.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        logoImage.translatesAutoresizingMaskIntoConstraints = false
+        logoImage.topAnchor.constraint(equalTo: self.topAnchor,
+                                       constant: top).isActive = true
+        logoImage.trailingAnchor.constraint(equalTo: self.trailingAnchor,
+                                            constant: -top).isActive = true
+        logoImage.widthAnchor.constraint(equalToConstant: height).isActive = true
+        logoImage.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    @objc private func backButtonPressed() {
+        presenter?.back()
     }
     
 }

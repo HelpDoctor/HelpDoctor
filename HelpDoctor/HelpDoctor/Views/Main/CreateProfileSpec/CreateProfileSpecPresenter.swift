@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol {
+protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol, Presenter {
     init(view: CreateProfileSpecViewController)
     func interestsSearch()
     func setPhoto(photoString: String?)
@@ -320,6 +320,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+    
+    func save(source: SourceEditTextField) { }
     
 }
 /*
