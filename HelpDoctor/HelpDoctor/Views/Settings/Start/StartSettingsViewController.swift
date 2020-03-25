@@ -63,8 +63,7 @@ class StartSettingsViewController: UIViewController {
 
         getData(typeOfContent: .logout,
                 returning: (Int?, String?).self,
-                requestParams: logout.requestParams)
-        { [weak self] result in
+                requestParams: logout.requestParams) { [weak self] result in
             let dispathGroup = DispatchGroup()
             logout.responce = result
 

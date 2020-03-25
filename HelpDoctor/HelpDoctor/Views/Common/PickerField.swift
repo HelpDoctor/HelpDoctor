@@ -138,46 +138,48 @@ public class PickerField: UITextField, UITextFieldDelegate {
         alert = UIAlertController(title: nil,
                                   message: "",
                                   preferredStyle: .actionSheet)
-        alert?.isModalInPopover = true
+        guard let alert = alert else { return }
+        alert.isModalInPopover = true
         
-        heightConstraint = NSLayoutConstraint(item: alert?.view as Any,
+        heightConstraint = NSLayoutConstraint(item: alert.view as Any,
                                               attribute: .height,
                                               relatedBy: .equal,
                                               toItem: nil,
                                               attribute: .notAnAttribute,
                                               multiplier: 1,
                                               constant: self.fieldHeight)
-        
-        alert?.view.addConstraint(heightConstraint!)
+        guard let heightConstraint = heightConstraint else { return }
+        alert.view.addConstraint(heightConstraint)
         
         //containerView
         containerView = UIView()
-        alert?.view.addSubview(containerView!)
-        addConstraint(containerView!,
-                      toView: alert!.view,
+        guard let containerView = containerView else { return }
+        alert.view.addSubview(containerView)
+        addConstraint(containerView,
+                      toView: alert.view,
                       top: 0,
                       leading: 0,
                       bottom: 0,
                       trailing: 0)
-        guard let containerView = containerView else { return }
         
         //titleLabel
         titleLabel = UILabel()
-        containerView.addSubview(titleLabel!)
-        addConstraint(titleLabel!,
+        guard let titleLabel = titleLabel else { return }
+        containerView.addSubview(titleLabel)
+        addConstraint(titleLabel,
                       toView: containerView,
                       top: nil,
                       leading: nil,
                       bottom: nil,
                       trailing: nil)
-        titleLabel?.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
-        titleTopConstraint = titleLabel?.topAnchor.constraint(equalTo: containerView.topAnchor,
-                                                              constant: 0)
+        titleLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor).isActive = true
+        titleTopConstraint = titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor,
+                                                             constant: 0)
         titleTopConstraint?.isActive = true
-        titleHeightConstraint = titleLabel?.heightAnchor.constraint(equalToConstant: 0)
+        titleHeightConstraint = titleLabel.heightAnchor.constraint(equalToConstant: 0)
         titleHeightConstraint?.isActive = true
-        titleLabel?.font = .systemFontOfSize(size: 14)
-        titleLabel?.textColor = .lightGray
+        titleLabel.font = .systemFontOfSize(size: 14)
+        titleLabel.textColor = .lightGray
         
         //buttons
         let bottomView = UIView()
@@ -193,28 +195,30 @@ public class PickerField: UITextField, UITextFieldDelegate {
             bottomView.heightAnchor.constraint(equalToConstant: DEFAULT_BOTTOM_SECTION_HEIGHT)
         bottomSectionHeightConstraint?.isActive = true
         okButton = UIButton(type: .system)
-        bottomView.addSubview(okButton!)
-        okButton?.addTarget(self, action: #selector(didOKTap), for: .touchUpInside)
-        okButton?.setTitle("OK", for: .normal)
-        addConstraint(okButton!,
+        guard let okButton = okButton else { return }
+        bottomView.addSubview(okButton)
+        okButton.addTarget(self, action: #selector(didOKTap), for: .touchUpInside)
+        okButton.setTitle("OK", for: .normal)
+        addConstraint(okButton,
                       toView: bottomView,
                       top: 0,
                       leading: 0,
                       bottom: 0,
                       trailing: nil)
-        okButton?.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
+        okButton.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
                                          multiplier: 0.5).isActive = true
         cancelButton = UIButton(type: .system)
-        bottomView.addSubview(cancelButton!)
-        cancelButton?.addTarget(self, action: #selector(didCancelTap), for: .touchUpInside)
-        cancelButton?.setTitle("Cancel", for: .normal)
-        addConstraint(cancelButton!,
+        guard let cancelButton = cancelButton else { return }
+        bottomView.addSubview(cancelButton)
+        cancelButton.addTarget(self, action: #selector(didCancelTap), for: .touchUpInside)
+        cancelButton.setTitle("Cancel", for: .normal)
+        addConstraint(cancelButton,
                       toView: bottomView,
                       top: 0,
                       leading: nil,
                       bottom: 0,
                       trailing: 0)
-        cancelButton?.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
+        cancelButton.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
                                              multiplier: 0.5).isActive = true
         
         //seperator
@@ -233,16 +237,17 @@ public class PickerField: UITextField, UITextFieldDelegate {
         
         //contentView
         contentView = UIView()
-        containerView.addSubview(contentView!)
-        addConstraint(contentView!,
+        guard let contentView = contentView else { return }
+        containerView.addSubview(contentView)
+        addConstraint(contentView,
                       toView: containerView,
                       top: nil,
                       leading: 8,
                       bottom: nil,
                       trailing: -8)
-        contentView?.bottomAnchor.constraint(equalTo: separator.topAnchor,
+        contentView.bottomAnchor.constraint(equalTo: separator.topAnchor,
                                              constant: -8).isActive = true
-        contentView?.topAnchor.constraint(equalTo: titleLabel!.bottomAnchor,
+        contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                           constant: 8).isActive = true
         
     }
@@ -252,9 +257,11 @@ public class PickerField: UITextField, UITextFieldDelegate {
         guard pickerView == nil else { return }
         
         pickerView = UIPickerView()
-        contentView?.addSubview(pickerView!)
-        addConstraint(pickerView!,
-                      toView: contentView!,
+        guard let pickerView = pickerView,
+            let contentView = contentView else { return }
+        contentView.addSubview(pickerView)
+        addConstraint(pickerView,
+                      toView: contentView,
                       top: 0,
                       leading: 0,
                       bottom: 0,
@@ -265,9 +272,11 @@ public class PickerField: UITextField, UITextFieldDelegate {
         guard datePicker == nil else { return }
         
         datePicker = UIDatePicker()
-        contentView?.addSubview(datePicker!)
-        addConstraint(datePicker!,
-                      toView: contentView!,
+        guard let datePicker = datePicker,
+            let contentView = contentView else { return }
+        contentView.addSubview(datePicker)
+        addConstraint(datePicker,
+                      toView: contentView,
                       top: 0,
                       leading: 0,
                       bottom: 0,
@@ -278,10 +287,12 @@ public class PickerField: UITextField, UITextFieldDelegate {
         guard tableView == nil else { return }
         
         tableView = UITableView()
-        tableView?.backgroundColor = .clear
-        contentView?.addSubview(tableView!)
-        addConstraint(tableView!,
-                      toView: contentView!,
+        guard let tableView = tableView,
+            let contentView = contentView else { return }
+        tableView.backgroundColor = .clear
+        contentView.addSubview(tableView)
+        addConstraint(tableView,
+                      toView: contentView,
                       top: 0,
                       leading: 0,
                       bottom: 0,
@@ -293,10 +304,12 @@ public class PickerField: UITextField, UITextFieldDelegate {
         
         collectionView = UICollectionView(frame: .zero,
                                           collectionViewLayout: UICollectionViewLayout())
-        collectionView?.backgroundColor = .clear
-        contentView?.addSubview(collectionView!)
-        addConstraint(collectionView!,
-                      toView: contentView!,
+        guard let collectionView = collectionView,
+            let contentView = contentView else { return }
+        collectionView.backgroundColor = .clear
+        contentView.addSubview(collectionView)
+        addConstraint(collectionView,
+                      toView: contentView,
                       top: 0,
                       leading: 0,
                       bottom: 0,
@@ -323,8 +336,8 @@ public class PickerField: UITextField, UITextFieldDelegate {
     
     private func getViewController() -> UIViewController? {
         
-        if let vc = self.viewController {
-            return vc
+        if let viewController = self.viewController {
+            return viewController
         }
         
         var responder: UIResponder? = self
@@ -384,7 +397,8 @@ public class PickerField: UITextField, UITextFieldDelegate {
             }
         } else if keyPath == "image" {
             
-            if let _ = change?[.newKey] as? UIImage {
+            //            if let _ = change?[.newKey] as? UIImage {
+            if change?[.newKey] as? UIImage != nil {
                 rightViewMode = .always
             } else {
                 rightViewMode = .never
@@ -414,9 +428,9 @@ public class PickerField: UITextField, UITextFieldDelegate {
             
             unSelf.pickerFieldDelegate?.pickerField(didShowPicker: unSelf)
             
-            if let ousideView = unSelf.alert!.view.superview?.subviews.first {
-                ousideView.isUserInteractionEnabled = true
-                ousideView.addGestureRecognizer(UITapGestureRecognizer(target: unSelf,
+            if let outsideView = unSelf.alert?.view.superview?.subviews.first {
+                outsideView.isUserInteractionEnabled = true
+                outsideView.addGestureRecognizer(UITapGestureRecognizer(target: unSelf,
                                                                         action: #selector(unSelf.dismiss)))
             }
             
@@ -433,4 +447,5 @@ public class PickerField: UITextField, UITextFieldDelegate {
             unSelf.pickerFieldDelegate?.pickerField(didHidePicker: unSelf)
         }
     }
+    
 }
