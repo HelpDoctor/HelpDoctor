@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CreateProfileNamePresenterProtocol: Presenter {
+protocol CreateProfileNamePresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileNameViewController)
     func setGender(_ gender: String)
     func next(name: String, lastname: String, middleName: String, birthDate: String)
@@ -78,5 +78,21 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     }
     
     func save(source: SourceEditTextField) { }
+    
+}
+
+// MARK: - PickerFieldDelegate
+extension CreateProfileNamePresenter {
+    
+    func pickerField(didOKClick pickerField: PickerField) {
+        if pickerField.type == .datePicker {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+            guard let datePicker = pickerField.datePicker else { return }
+            let date = dateFormatter.string(from: datePicker.date)
+            pickerField.text =  "\(date)"
+        }
+
+    }
     
 }

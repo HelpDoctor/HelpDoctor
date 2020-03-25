@@ -31,7 +31,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let maleButton = RadioButton()
     private let femaleButton = RadioButton()
     private let nosexButton = RadioButton()
-    private let birthDateTextField = UITextField()
+    private let birthDateTextField = PickerField()
     private let step3TitleLabel = UILabel()
     private let step3Label = UILabel()
     private let nextButton = HDButton(title: "Далее")
@@ -380,14 +380,15 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     /// Установка поля ввода даты рождения
     private func setupBirthDateTextField() {
         let top = 10.f
-        birthDateTextField.delegate = self
-        birthDateTextField.font = UIFont.systemFontOfSize(size: 14)
-        birthDateTextField.textColor = .textFieldTextColor
-        birthDateTextField.keyboardType = .numberPad
-        birthDateTextField.placeholder = "__.__.____*"
-        birthDateTextField.textAlignment = .left
         birthDateTextField.backgroundColor = .white
         birthDateTextField.layer.cornerRadius = 5
+        birthDateTextField.font = .systemFontOfSize(size: 14)
+        birthDateTextField.textColor = .textFieldTextColor
+        birthDateTextField.type = .datePicker
+        birthDateTextField.placeholder = "__.__.____*"
+        birthDateTextField.pickerFieldDelegate = presenter
+        birthDateTextField.datePicker?.datePickerMode = .date
+        birthDateTextField.datePicker?.maximumDate = Date()
         birthDateTextField.leftView = UIView(frame: CGRect(x: 0,
                                                            y: 0,
                                                            width: 8,

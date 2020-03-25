@@ -326,16 +326,3 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     func save(source: SourceEditTextField) { }
     
 }
-/*
-extension CreateProfileSpecPresenter: CreateInterestPresenterDelegate {
-    
-    func callback(interests: [ListOfInterests]) {
-        interests.forEach {
-            userInterests.append($0.self)
-            arrayOfAllInterests?.append($0.self)
-        }
-        view.reloadCollectionView()
-    }
-    
-}
-*/
