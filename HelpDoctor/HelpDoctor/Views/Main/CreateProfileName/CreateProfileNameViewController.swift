@@ -35,7 +35,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let step3TitleLabel = UILabel()
     private let step3Label = UILabel()
     private let nextButton = HDButton(title: "Далее")
-    private var keyboardHeight: CGFloat = 0
+    private var keyboardHeight = 0.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -60,13 +60,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupBirthDateTextField()
         setupNextButton()
         addTapGestureToHideKeyboard()
-        
-        maleButton.isSelected = false
-        femaleButton.isSelected = false
-        nosexButton.isSelected = false
-        maleButton.alternateButton = [femaleButton, nosexButton]
-        femaleButton.alternateButton = [maleButton, nosexButton]
-        nosexButton.alternateButton = [maleButton, femaleButton]
+        configureRadioButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -287,6 +281,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         maleButton.setTitle(" Мужской", for: .normal)
         maleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
         maleButton.setTitleColor(.white, for: .normal)
+        maleButton.isSelected = false
+        maleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(maleButton)
         
         maleButton.translatesAutoresizingMaskIntoConstraints = false
@@ -307,6 +303,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         femaleButton.setTitle(" Женский", for: .normal)
         femaleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
         femaleButton.setTitleColor(.white, for: .normal)
+        femaleButton.isSelected = false
+        femaleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(femaleButton)
         
         femaleButton.translatesAutoresizingMaskIntoConstraints = false
@@ -328,6 +326,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nosexButton.setTitle(" Не указывать", for: .normal)
         nosexButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
         nosexButton.setTitleColor(.white, for: .normal)
+        nosexButton.isSelected = false
+        nosexButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(nosexButton)
         
         nosexButton.translatesAutoresizingMaskIntoConstraints = false
@@ -423,6 +423,13 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
+    /// Настройка выбора радиокнопки
+    private func configureRadioButtons() {
+        maleButton.alternateButton = [femaleButton, nosexButton]
+        femaleButton.alternateButton = [maleButton, nosexButton]
+        nosexButton.alternateButton = [maleButton, femaleButton]
+    }
+    
     /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
@@ -468,6 +475,15 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    @objc private func genderButtonPressed() {
+        if maleButton.isSelected {
+            presenter?.setGender("male")
+        } else if femaleButton.isSelected {
+            presenter?.setGender("female")
+        } else {
+            presenter?.setGender("null")
+        }
+    }
     
     // MARK: - Navigation
     @objc private func nextButtonPressed() {

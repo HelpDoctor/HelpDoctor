@@ -46,6 +46,8 @@
 		46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */; };
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
+		46395E102423EBD600BE4F70 /* CitiesSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46395E0F2423EBD500BE4F70 /* CitiesSearchTextField.swift */; };
+		46395E122423EBE000BE4F70 /* RegionsSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46395E112423EBE000BE4F70 /* RegionsSearchTextField.swift */; };
 		4640B6B9240139420023C3A3 /* JobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6B8240139420023C3A3 /* JobCell.swift */; };
 		4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BA240159560023C3A3 /* SettingsRows.swift */; };
 		4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6BC240194F30023C3A3 /* SettingsCell.swift */; };
@@ -126,8 +128,6 @@
 		46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6823C09E120095264E /* UIImage+Extensions.swift */; };
 		46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6A23C09F240095264E /* String+Extensions.swift */; };
 		46F87F6D23C0EB890095264E /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6C23C0EB880095264E /* SavedView.swift */; };
-		46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6E23C110C90095264E /* RegionsSearchTextField.swift */; };
-		46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F7223C1B3F20095264E /* CitiesSearchTextField.swift */; };
 		46F87F7523C1BEF60095264E /* MedicalOrganizationSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F7423C1BEF60095264E /* MedicalOrganizationSearchTextField.swift */; };
 		46F87F7723C1C33A0095264E /* MedicalSpecializationSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F7623C1C33A0095264E /* MedicalSpecializationSearchTextField.swift */; };
 		46F87F7923C1C5A00095264E /* InterestsSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F7823C1C5A00095264E /* InterestsSearchTextField.swift */; };
@@ -246,6 +246,8 @@
 		46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
+		46395E0F2423EBD500BE4F70 /* CitiesSearchTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitiesSearchTextField.swift; sourceTree = "<group>"; };
+		46395E112423EBE000BE4F70 /* RegionsSearchTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionsSearchTextField.swift; sourceTree = "<group>"; };
 		4640B6B8240139420023C3A3 /* JobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCell.swift; sourceTree = "<group>"; };
 		4640B6BA240159560023C3A3 /* SettingsRows.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRows.swift; sourceTree = "<group>"; };
 		4640B6BC240194F30023C3A3 /* SettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsCell.swift; sourceTree = "<group>"; };
@@ -326,8 +328,6 @@
 		46F87F6823C09E120095264E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
 		46F87F6A23C09F240095264E /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		46F87F6C23C0EB880095264E /* SavedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SavedView.swift; sourceTree = "<group>"; };
-		46F87F6E23C110C90095264E /* RegionsSearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionsSearchTextField.swift; sourceTree = "<group>"; };
-		46F87F7223C1B3F20095264E /* CitiesSearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CitiesSearchTextField.swift; sourceTree = "<group>"; };
 		46F87F7423C1BEF60095264E /* MedicalOrganizationSearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalOrganizationSearchTextField.swift; sourceTree = "<group>"; };
 		46F87F7623C1C33A0095264E /* MedicalSpecializationSearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MedicalSpecializationSearchTextField.swift; sourceTree = "<group>"; };
 		46F87F7823C1C5A00095264E /* InterestsSearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterestsSearchTextField.swift; sourceTree = "<group>"; };
@@ -788,8 +788,8 @@
 			isa = PBXGroup;
 			children = (
 				46F87F4723BE33A60095264E /* EditTextField.swift */,
-				46F87F6E23C110C90095264E /* RegionsSearchTextField.swift */,
-				46F87F7223C1B3F20095264E /* CitiesSearchTextField.swift */,
+				46395E112423EBE000BE4F70 /* RegionsSearchTextField.swift */,
+				46395E0F2423EBD500BE4F70 /* CitiesSearchTextField.swift */,
 				46F87F7423C1BEF60095264E /* MedicalOrganizationSearchTextField.swift */,
 				46F87F7623C1C33A0095264E /* MedicalSpecializationSearchTextField.swift */,
 				46F87F7823C1C5A00095264E /* InterestsSearchTextField.swift */,
@@ -1297,6 +1297,7 @@
 				4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */,
 				46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */,
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
+				46395E122423EBE000BE4F70 /* RegionsSearchTextField.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
@@ -1322,8 +1323,6 @@
 				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
-				46F87F7323C1B3F20095264E /* CitiesSearchTextField.swift in Sources */,
-				46F87F6F23C110C90095264E /* RegionsSearchTextField.swift in Sources */,
 				4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */,
 				4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */,
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
@@ -1352,6 +1351,7 @@
 				C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */,
 				46F87F7523C1BEF60095264E /* MedicalOrganizationSearchTextField.swift in Sources */,
 				46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */,
+				46395E102423EBD600BE4F70 /* CitiesSearchTextField.swift in Sources */,
 				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
 				46203F0623C5F6C30072653A /* TileButton.swift in Sources */,
 				46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */,

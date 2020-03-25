@@ -131,7 +131,9 @@ class ProfilePresenter: ProfilePresenterProtocol {
                                                phone_number: phoneNumber,
                                                birthday: birthday,
                                                city_id: cityId,
-                                               foto: view.getUserPhoto()?.toString())
+                                               foto: view.getUserPhoto()?.toString(),
+                                               gender: nil,
+                                               is_medic_worker: nil)//Заполнить пол и is_medic_worker
             updateProfile(profile: profile)
         case .spec:
             updateSpec()

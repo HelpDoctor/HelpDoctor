@@ -62,13 +62,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupHideEmploymentButton()
         setupNextButton()
         addSwipeGestureToBack()
-        
-        medicalButton.isSelected = false
-        notMedicalButton.isSelected = false
-        hideEmploymentButton.isSelected = false
-        medicalButton.alternateButton = [notMedicalButton, hideEmploymentButton]
-        notMedicalButton.alternateButton = [medicalButton, hideEmploymentButton]
-        hideEmploymentButton.alternateButton = [medicalButton, notMedicalButton]
+        configureRadioButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -292,6 +286,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         medicalButton.setTitle(" Я работаю как медицинский работник", for: .normal)
         medicalButton.titleLabel?.font = .systemFontOfSize(size: 12)
         medicalButton.setTitleColor(.white, for: .normal)
+        medicalButton.isSelected = false
+        medicalButton.addTarget(self, action: #selector(employmentButtonPressed), for: .touchUpInside)
         scrollView.addSubview(medicalButton)
         
         medicalButton.translatesAutoresizingMaskIntoConstraints = false
@@ -311,6 +307,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                   for: .normal)
         notMedicalButton.titleLabel?.font = .systemFontOfSize(size: 12)
         notMedicalButton.setTitleColor(.white, for: .normal)
+        notMedicalButton.isSelected = false
+        notMedicalButton.addTarget(self, action: #selector(employmentButtonPressed), for: .touchUpInside)
         scrollView.addSubview(notMedicalButton)
         
         notMedicalButton.translatesAutoresizingMaskIntoConstraints = false
@@ -331,6 +329,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                for: .normal)
         hideEmploymentButton.titleLabel?.font = .systemFontOfSize(size: 12)
         hideEmploymentButton.setTitleColor(.white, for: .normal)
+        hideEmploymentButton.isSelected = false
         scrollView.addSubview(hideEmploymentButton)
         
         hideEmploymentButton.translatesAutoresizingMaskIntoConstraints = false
@@ -368,6 +367,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         view.addGestureRecognizer(swipeLeft)
     }
     
+    /// Настройка выбора радиокнопки
+    private func configureRadioButtons() {
+        medicalButton.alternateButton = [notMedicalButton]
+        notMedicalButton.alternateButton = [medicalButton]
+    }
+    
     // MARK: - IBActions
     
     // MARK: - Buttons methods 
@@ -397,6 +402,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    @objc private func employmentButtonPressed() {
+        if medicalButton.isSelected {
+            presenter?.setEmployment(true)
+        } else {
+            presenter?.setEmployment(false)
+        }
+    }
+    
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
         presenter?.next()
@@ -409,7 +422,23 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
 }
 
 // MARK: - Table view
-extension CreateProfileWorkViewController: UITableViewDelegate { }
+extension CreateProfileWorkViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return textFieldHeight + 5
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        if tableView == self.jobTableView {
+            presenter?.jobSearch(indexPath.row)
+        } else {
+            presenter?.specSearch(indexPath.row)
+        }
+        
+    }
+    
+}
 
 extension CreateProfileWorkViewController: UITableViewDataSource {
     
@@ -468,20 +497,6 @@ extension CreateProfileWorkViewController: UITableViewDataSource {
         cell.layer.backgroundColor = UIColor.clear.cgColor
         
         return cell
-        
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return textFieldHeight + 5
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        if tableView == self.jobTableView {
-            presenter?.jobSearch(indexPath.row)
-        } else {
-            presenter?.specSearch(indexPath.row)
-        }
         
     }
     

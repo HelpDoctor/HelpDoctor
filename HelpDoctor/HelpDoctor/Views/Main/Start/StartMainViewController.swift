@@ -26,9 +26,6 @@ class StartMainViewController: UIViewController {
     private let bottomLabel = UILabel()
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,8 +47,7 @@ class StartMainViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
-//        setImage(image: Session.instance.user?.foto?.toImage())
-        self.tabBarController?.tabBar.isHidden = false
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -119,13 +115,14 @@ class StartMainViewController: UIViewController {
     
     /// Временная View
     private func setupUserView() {
+        let width = Session.width - 40
         userView.backgroundColor = .white
         view.addSubview(userView)
         
         userView.translatesAutoresizingMaskIntoConstraints = false
         userView.topAnchor.constraint(equalTo: topLine.bottomAnchor, constant: 10).isActive = true
         userView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        userView.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        userView.widthAnchor.constraint(equalToConstant: width).isActive = true
         userView.heightAnchor.constraint(equalToConstant: 170).isActive = true
     }
     
@@ -158,18 +155,20 @@ class StartMainViewController: UIViewController {
     
     /// Временная View
     private func setupEventView() {
+        let width = Session.width - 40
         eventView.backgroundColor = .white
         view.addSubview(eventView)
         
         eventView.translatesAutoresizingMaskIntoConstraints = false
         eventView.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 10).isActive = true
         eventView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        eventView.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventView.widthAnchor.constraint(equalToConstant: width).isActive = true
         eventView.heightAnchor.constraint(equalToConstant: 68).isActive = true
     }
     
     /// Установка подписи под формой с новыми событиями
     private func setupBottomLabel() {
+        let width = Session.width - 42
         bottomLabel.font = UIFont.systemFontOfSize(size: 12)
         bottomLabel.textColor = .white
         bottomLabel.text =
@@ -184,7 +183,7 @@ class StartMainViewController: UIViewController {
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.topAnchor.constraint(equalTo: eventView.bottomAnchor, constant: 9).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width - 42).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         bottomLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     

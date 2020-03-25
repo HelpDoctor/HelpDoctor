@@ -12,14 +12,13 @@ protocol CreateProfileWorkPresenterProtocol: Presenter {
     init(view: CreateProfileWorkViewController)
     func jobSearch(_ index: Int)
     func specSearch(_ index: Int)
-//    func citySearch()
-//    func regionSearch()
     func getCountJob() -> Int
     func getCountSpec() -> Int
     func getJob(_ index: Int) -> String
     func getSpec(_ index: Int) -> String
     func setJob(job: MedicalOrganization)
     func setSpec(spec: MedicalSpecialization)
+    func setEmployment(_ employment: Bool)
     func next()
     func back()
 }
@@ -35,8 +34,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     private var specArray: [MedicalSpecialization?] = [nil, nil, nil, nil, nil]
     private var jobIndex = 0
     private var specIndex = 0
-//    private var region: Regions?
-//    private var city: Cities?
     
     required init(view: CreateProfileWorkViewController) {
         self.view = view
@@ -60,25 +57,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         presenter.getMedicalSpecialization()
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-//    func citySearch() {
-//        guard let regionId = region?.regionId,
-//            let region = region else {
-//                view.showAlert(message: "Сначала необходимо выбрать регион")
-//                return }
-//        let viewController = CitiesViewController()
-//        let presenter = CitiesPresenter(view: viewController, region: region)
-//        viewController.presenter = presenter
-//        presenter.getCities(regionId: regionId)
-//        view.navigationController?.pushViewController(viewController, animated: true)
-//    }
-//
-//    func regionSearch() {
-//        let viewController = RegionsViewController()
-//        let presenter = RegionsPresenter(view: viewController)
-//        viewController.presenter = presenter
-//        view.navigationController?.pushViewController(viewController, animated: true)
-//    }
     
     func getCountJob() -> Int {
         return jobArray.count
@@ -114,17 +92,12 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         view.reloadSpecTableView()
     }
     
+    func setEmployment(_ employment: Bool) {
+        user?.is_medic_worker = employment ? 1 : 0
+    }
+    
     // MARK: - Coordinator
     func next() {
-//        guard region != nil else {
-//            view.showAlert(message: "Не указан регион места жительства")
-//            return
-//        }
-//        guard city != nil else {
-//            view.showAlert(message: "Не указан город места жительства")
-//            return
-//        }
-        
         let viewController = CreateProfileSpecViewController()
         let presenter = CreateProfileSpecPresenter(view: viewController)
         viewController.presenter = presenter

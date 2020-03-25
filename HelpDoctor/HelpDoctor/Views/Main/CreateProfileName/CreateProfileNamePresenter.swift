@@ -10,6 +10,7 @@ import UIKit
 
 protocol CreateProfileNamePresenterProtocol: Presenter {
     init(view: CreateProfileNameViewController)
+    func setGender(_ gender: String)
     func next(name: String, lastname: String, middleName: String, birthDate: String)
 }
 
@@ -20,10 +21,15 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var gender: String?
     
     // MARK: - Init
     required init(view: CreateProfileNameViewController) {
         self.view = view
+    }
+    
+    func setGender(_ gender: String) {
+        self.gender = gender
     }
     
     // MARK: - Coordinator
@@ -36,6 +42,9 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
             return
         } else if birthDate == "" {
             view.showAlert(message: "Не заполнена дата рождения")
+            return
+        } else if gender == nil {
+            view.showAlert(message: "Не указан пол")
             return
         }
         let dateFormatter = DateFormatter()
@@ -54,7 +63,9 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
                                     phone_number: nil,
                                     birthday: strBirthday,
                                     city_id: nil,
-                                    foto: nil)
+                                    foto: nil,
+                                    gender: gender,
+                                    is_medic_worker: nil)
         let viewController = CreateProfileScreen2ViewController()
         let presenter = CreateProfileScreen2Presenter(view: viewController)
         viewController.presenter = presenter

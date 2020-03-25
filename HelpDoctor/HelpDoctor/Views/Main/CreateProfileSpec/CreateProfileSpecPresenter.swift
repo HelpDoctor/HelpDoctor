@@ -155,7 +155,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                                                  phone_number: user?.phone_number,
                                                  birthday: user?.birthday,
                                                  city_id: user?.city_id,
-                                                 foto: user?.foto)
+                                                 foto: user?.foto,
+                                                 gender: user?.gender,
+                                                 is_medic_worker: user?.is_medic_worker)
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,

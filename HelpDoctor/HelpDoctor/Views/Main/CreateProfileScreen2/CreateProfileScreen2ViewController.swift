@@ -38,7 +38,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private let professorButton = RadioButton()
     private let docentButton = RadioButton()
     private let nextButton = HDButton(title: "Далее")
-    private var keyboardHeight: CGFloat = 0
+    private var keyboardHeight = 0.f
     private var heightScroll = Session.height
     
     // MARK: - Lifecycle ViewController
@@ -67,24 +67,14 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupDocentButton()
         setupNextButton()
         addTapGestureToHideKeyboard()
-        
-        academicButton.isSelected = false
-        doctorButton.isSelected = false
-        candidateButton.isSelected = false
-        professorButton.isSelected = false
-        docentButton.isSelected = false
-        academicButton.alternateButton = [doctorButton, candidateButton, professorButton, docentButton]
-        doctorButton.alternateButton = [academicButton, candidateButton, professorButton, docentButton]
-        candidateButton.alternateButton = [academicButton, doctorButton, professorButton, docentButton]
-        professorButton.alternateButton = [academicButton, doctorButton, candidateButton, docentButton]
-        docentButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton]
+        configureRadioButtons()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.statusBarBackgroundColor = .clear
-        self.tabBarController?.tabBar.isHidden = true
+        tabBarController?.tabBar.isHidden = true
     }
     
     // MARK: - Public methods
@@ -217,7 +207,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private func setupRegionTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(regionSearchButtonPressed))
-        let top: CGFloat = 10
+        let top = 10.f
         heightScroll += top + textFieldHeight
         
         regionTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -246,7 +236,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private func setupCityTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(citySearchButtonPressed))
-        let top: CGFloat = 10
+        let top = 10.f
         heightScroll += top + textFieldHeight
         cityTextField.font = UIFont.systemFontOfSize(size: 14)
         cityTextField.textColor = .textFieldTextColor
@@ -309,7 +299,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     /// Установка поля ввода университета
     private func setupUniversityTextFiled() {
-        let top: CGFloat = 10
+        let top = 10.f
         heightScroll += top + textFieldHeight
         universityTextField.autocorrectionType = .no
         universityTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -353,7 +343,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     /// Установка поля ввода даты окончания учебы
     private func setupDateOfGraduateTextField() {
-        let top: CGFloat = 10
+        let top = 10.f
         heightScroll += top + textFieldHeight
         dateOfGraduateTextField.delegate = self
         dateOfGraduateTextField.font = UIFont.systemFontOfSize(size: 14)
@@ -405,6 +395,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         academicButton.setTitle(" Академик наук", for: .normal)
         academicButton.titleLabel?.font = .systemFontOfSize(size: 12)
         academicButton.setTitleColor(.white, for: .normal)
+        academicButton.isSelected = false
         scrollView.addSubview(academicButton)
         
         academicButton.translatesAutoresizingMaskIntoConstraints = false
@@ -425,6 +416,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         doctorButton.setTitle(" Доктор наук", for: .normal)
         doctorButton.titleLabel?.font = .systemFontOfSize(size: 12)
         doctorButton.setTitleColor(.white, for: .normal)
+        doctorButton.isSelected = false
         scrollView.addSubview(doctorButton)
         
         doctorButton.translatesAutoresizingMaskIntoConstraints = false
@@ -446,6 +438,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         candidateButton.setTitle(" Кандидат наук", for: .normal)
         candidateButton.titleLabel?.font = .systemFontOfSize(size: 12)
         candidateButton.setTitleColor(.white, for: .normal)
+        candidateButton.isSelected = false
         scrollView.addSubview(candidateButton)
         
         candidateButton.translatesAutoresizingMaskIntoConstraints = false
@@ -461,12 +454,13 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     /// Установка радиокнопки выбора профессора
     private func setupProfessorButton() {
         let top = 9.f
-        let leading = Session.width / 2 + 20.f
+        let leading = Session.width / 2 + 20
         let height = 15.f
         professorButton.contentHorizontalAlignment = .left
         professorButton.setTitle(" Профессор", for: .normal)
         professorButton.titleLabel?.font = .systemFontOfSize(size: 12)
         professorButton.setTitleColor(.white, for: .normal)
+        professorButton.isSelected = false
         scrollView.addSubview(professorButton)
         
         professorButton.translatesAutoresizingMaskIntoConstraints = false
@@ -482,12 +476,13 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     /// Установка радиокнопки выбора доцента
     private func setupDocentButton() {
         let top = 9.f
-        let leading = Session.width / 2 + 20.f
+        let leading = Session.width / 2 + 20
         let height = 15.f
         docentButton.contentHorizontalAlignment = .left
         docentButton.setTitle(" Доцент", for: .normal)
         docentButton.titleLabel?.font = .systemFontOfSize(size: 12)
         docentButton.setTitleColor(.white, for: .normal)
+        docentButton.isSelected = false
         scrollView.addSubview(docentButton)
         
         docentButton.translatesAutoresizingMaskIntoConstraints = false
@@ -535,6 +530,15 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
+    }
+    
+    /// Настройка выбора радиокнопки
+    private func configureRadioButtons() {
+        academicButton.alternateButton = [doctorButton, candidateButton, professorButton, docentButton]
+        doctorButton.alternateButton = [academicButton, candidateButton, professorButton, docentButton]
+        candidateButton.alternateButton = [academicButton, doctorButton, professorButton, docentButton]
+        professorButton.alternateButton = [academicButton, doctorButton, candidateButton, docentButton]
+        docentButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton]
     }
     
     // MARK: - IBActions
