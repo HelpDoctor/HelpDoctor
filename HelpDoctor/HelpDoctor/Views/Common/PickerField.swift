@@ -206,7 +206,7 @@ public class PickerField: UITextField, UITextFieldDelegate {
                       bottom: 0,
                       trailing: nil)
         okButton.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
-                                         multiplier: 0.5).isActive = true
+                                        multiplier: 0.5).isActive = true
         cancelButton = UIButton(type: .system)
         guard let cancelButton = cancelButton else { return }
         bottomView.addSubview(cancelButton)
@@ -219,7 +219,7 @@ public class PickerField: UITextField, UITextFieldDelegate {
                       bottom: 0,
                       trailing: 0)
         cancelButton.widthAnchor.constraint(equalTo: bottomView.widthAnchor,
-                                             multiplier: 0.5).isActive = true
+                                            multiplier: 0.5).isActive = true
         
         //seperator
         let separator = UIView()
@@ -246,9 +246,9 @@ public class PickerField: UITextField, UITextFieldDelegate {
                       bottom: nil,
                       trailing: -8)
         contentView.bottomAnchor.constraint(equalTo: separator.topAnchor,
-                                             constant: -8).isActive = true
+                                            constant: -8).isActive = true
         contentView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                          constant: 8).isActive = true
+                                         constant: 8).isActive = true
         
     }
     
@@ -397,7 +397,6 @@ public class PickerField: UITextField, UITextFieldDelegate {
             }
         } else if keyPath == "image" {
             
-            //            if let _ = change?[.newKey] as? UIImage {
             if change?[.newKey] as? UIImage != nil {
                 rightViewMode = .always
             } else {

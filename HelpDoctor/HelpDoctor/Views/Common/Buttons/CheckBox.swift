@@ -20,9 +20,6 @@ class CheckBox: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        layer.cornerRadius = 5
-        layer.masksToBounds = true
-        clipsToBounds = true
         setImage(checkedImage, for: .selected)
         setImage(uncheckedImage, for: .normal)
     }
@@ -35,6 +32,9 @@ class CheckBox: UIButton {
         self.init()
         switch type {
         case .circle:
+            layer.cornerRadius = 5
+            layer.masksToBounds = true
+            clipsToBounds = true
             setImage(checkedImage, for: .selected)
             setImage(uncheckedImage, for: .normal)
         case .square:

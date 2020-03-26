@@ -34,6 +34,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let birthDateTextField = PickerField()
     private let step3TitleLabel = UILabel()
     private let step3Label = UILabel()
+    private let hideBirthdayCheckbox = CheckBox(type: .square)
     private let nextButton = HDButton(title: "Далее")
     private var keyboardHeight = 0.f
     
@@ -58,6 +59,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupStep3TitleLabel()
         setupStep3Label()
         setupBirthDateTextField()
+        setupHideBirthdayCheckbox()
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
@@ -405,6 +407,29 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         birthDateTextField.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
     }
     
+    /// Установка чекбокса скрытия даты рождения в профиле
+    private func setupHideBirthdayCheckbox() {
+        let top = 7.f
+        let leading = 0.f
+        let height = 15.f
+        hideBirthdayCheckbox.contentHorizontalAlignment = .left
+        hideBirthdayCheckbox.contentVerticalAlignment = .center
+        hideBirthdayCheckbox.setTitle(" Не указывать в профиле", for: .normal)
+        hideBirthdayCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
+        hideBirthdayCheckbox.setTitleColor(.white, for: .normal)
+        hideBirthdayCheckbox.addTarget(self, action: #selector(hideBirthdayCheckboxPressed), for: .touchUpInside)
+        scrollView.addSubview(hideBirthdayCheckbox)
+        
+        hideBirthdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        hideBirthdayCheckbox.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor,
+                                                  constant: top).isActive = true
+        hideBirthdayCheckbox.leadingAnchor.constraint(equalTo: birthDateTextField.leadingAnchor,
+                                                      constant: leading).isActive = true
+        hideBirthdayCheckbox.trailingAnchor.constraint(equalTo: birthDateTextField.trailingAnchor,
+                                                       constant: -leading).isActive = true
+        hideBirthdayCheckbox.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let width = 90.f
@@ -487,6 +512,10 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         }
     }
     
+    @objc private func hideBirthdayCheckboxPressed() {
+        hideBirthdayCheckbox.isSelected = !hideBirthdayCheckbox.isSelected
+    }
+    
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
         guard let name = nameTextField.text,
@@ -494,33 +523,5 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
             let middleName = patronymicTextField.text,
             let birthDate = birthDateTextField.text else { return }
         presenter?.next(name: name, lastname: lastname, middleName: middleName, birthDate: birthDate)
-    }
-}
-//swiftlint:disable force_unwrapping
-extension CreateProfileNameViewController: UITextFieldDelegate {
-    // MARK: - text field masking
-    internal func textField(_ textField: UITextField,
-                            shouldChangeCharactersIn range: NSRange,
-                            replacementString string: String) -> Bool {
-        
-        // MARK: - If Delete button click
-        let char = string.cString(using: String.Encoding.utf8)!
-        let isBackSpace = strcmp(char, "\\b")
-        
-        if isBackSpace == -92 {
-            textField.text!.removeLast()
-            return false
-        }
-        
-        if textField == birthDateTextField {
-            if (textField.text?.count)! == 2 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! == 5 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! > 9 {
-                return false
-            }
-        } 
-        return true
     }
 }
