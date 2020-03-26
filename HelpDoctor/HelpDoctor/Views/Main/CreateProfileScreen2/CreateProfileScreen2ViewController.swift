@@ -73,7 +73,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         tabBarController?.tabBar.isHidden = true
     }
     

@@ -89,7 +89,7 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         tabBarController?.tabBar.isHidden = false
     }
     

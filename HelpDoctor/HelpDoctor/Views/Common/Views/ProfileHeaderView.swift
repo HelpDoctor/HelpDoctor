@@ -24,7 +24,7 @@ class ProfileHeaderView: UIView {
         self.userImage.image = UIImage(named: userImage ?? "Avatar.pdf")
         self.presenter = presenter
         backgroundColor = .tabBarColor
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         setupBackButton()
         setupTitle()
         setupUserImage()

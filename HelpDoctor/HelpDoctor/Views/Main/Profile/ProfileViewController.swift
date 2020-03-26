@@ -81,7 +81,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         tabBarController?.tabBar.isHidden = false
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
     // MARK: - Public methods

@@ -21,7 +21,7 @@ class HeaderView: UIView {
         self.presenter = presenter
         self.heightHeader = height
         backgroundColor = color
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         setupBackButton()
         setupTitle()
         setupLogo()

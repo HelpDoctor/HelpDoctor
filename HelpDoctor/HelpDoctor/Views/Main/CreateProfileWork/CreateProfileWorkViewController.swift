@@ -68,7 +68,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         view.viewWithTag(998)?.removeFromSuperview()
         view.viewWithTag(999)?.removeFromSuperview()
     }

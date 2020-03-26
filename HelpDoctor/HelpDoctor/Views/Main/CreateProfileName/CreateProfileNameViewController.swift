@@ -66,7 +66,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -394,6 +394,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
                                                            width: 8,
                                                            height: birthDateTextField.frame.height))
         birthDateTextField.leftViewMode = .always
+        birthDateTextField.rightImageView.image = UIImage(named: "calendar")
         scrollView.addSubview(birthDateTextField)
         
         birthDateTextField.translatesAutoresizingMaskIntoConstraints = false

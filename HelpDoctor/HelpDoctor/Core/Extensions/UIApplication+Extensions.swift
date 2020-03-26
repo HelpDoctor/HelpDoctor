@@ -10,14 +10,10 @@ import UIKit
 
 extension UIApplication {
     
-    class var statusBarBackgroundColor: UIColor? {
-        get {
-            return statusBarUIView?.backgroundColor
-        } set {
-            statusBarUIView?.backgroundColor = newValue
-        }
+    func setStatusBarBackgroundColor(color: UIColor) {
+        UIApplication.statusBarUIView?.backgroundColor = color
     }
-    
+
     class var statusBarUIView: UIView? {
         if #available(iOS 13.0, *) {
             let tag = 987654321

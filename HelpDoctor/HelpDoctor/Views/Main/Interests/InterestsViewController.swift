@@ -44,7 +44,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -86,7 +86,12 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.barTintColor = .searchBarTintColor
-        searchBar.searchTextField.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = .white
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.backgroundColor = .white
+        }
         searchBar.placeholder = "Поиск"
         scrollView.addSubview(searchBar)
         
