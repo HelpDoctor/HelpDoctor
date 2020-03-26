@@ -29,14 +29,14 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private let step6TitleLabel = UILabel()
     private let step6Label = UILabel()
     private let universityTextField = UITextField()
-    private let step6BottomLabel = UILabel()
-    private let dateOfGraduateTextField = UITextField()
+    private let dateOfGraduateTextField = PickerField()
     private let graduateLabel = UILabel()
     private let academicButton = RadioButton()
     private let doctorButton = RadioButton()
     private let candidateButton = RadioButton()
     private let professorButton = RadioButton()
     private let docentButton = RadioButton()
+    private let nodegreeButton = RadioButton()
     private let nextButton = HDButton(title: "Далее")
     private var keyboardHeight = 0.f
     private var heightScroll = Session.height
@@ -57,7 +57,6 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupStep6TitleLabel()
         setupStep6Label()
         setupUniversityTextFiled()
-        setupStep6BottomLabel()
         setupDateOfGraduateTextField()
         setupGraduateLabel()
         setupAcademicButton()
@@ -65,6 +64,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupCandidateButton()
         setupProfessorButton()
         setupDocentButton()
+        setupNodegreeButton()
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
@@ -285,7 +285,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         let height = 15.f
         step6Label.font = UIFont.systemFontOfSize(size: 14)
         step6Label.textColor = .white
-        step6Label.text = "Укажите место учебы"
+        step6Label.text = "Укажите информацию об образовании"
         step6Label.textAlignment = .left
         scrollView.addSubview(step6Label)
         
@@ -323,45 +323,31 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         universityTextField.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
     }
     
-    /// Установка поясняющей надписи перед вводом даты окончания учебы
-    private func setupStep6BottomLabel() {
-        let top = 5.f
-        let height = 15.f
-        step6BottomLabel.font = UIFont.systemFontOfSize(size: 14)
-        step6BottomLabel.textColor = .white
-        step6BottomLabel.text = "Укажите дату окончания учебы"
-        step6BottomLabel.textAlignment = .left
-        scrollView.addSubview(step6BottomLabel)
-        
-        step6BottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        step6BottomLabel.topAnchor.constraint(equalTo: universityTextField.bottomAnchor,
-                                        constant: top).isActive = true
-        step6BottomLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step6BottomLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step6BottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
     /// Установка поля ввода даты окончания учебы
     private func setupDateOfGraduateTextField() {
         let top = 10.f
         heightScroll += top + textFieldHeight
-        dateOfGraduateTextField.delegate = self
         dateOfGraduateTextField.font = UIFont.systemFontOfSize(size: 14)
         dateOfGraduateTextField.textColor = .textFieldTextColor
         dateOfGraduateTextField.textAlignment = .left
         dateOfGraduateTextField.backgroundColor = .white
         dateOfGraduateTextField.layer.cornerRadius = 5
         dateOfGraduateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                            y: 0,
-                                                            width: 8,
-                                                            height: dateOfGraduateTextField.frame.height))
+                                                                y: 0,
+                                                                width: 8,
+                                                                height: dateOfGraduateTextField.frame.height))
         dateOfGraduateTextField.leftViewMode = .always
-        dateOfGraduateTextField.placeholder = "__.__.____*"
+        dateOfGraduateTextField.placeholder = "__.__.____* (Дата выпуска)"
+        dateOfGraduateTextField.type = .datePicker
+        dateOfGraduateTextField.pickerFieldDelegate = presenter
+        dateOfGraduateTextField.datePicker?.datePickerMode = .date
+        dateOfGraduateTextField.datePicker?.maximumDate = Date()
+        dateOfGraduateTextField.rightImageView.image = UIImage(named: "calendar")
         scrollView.addSubview(dateOfGraduateTextField)
         
         dateOfGraduateTextField.translatesAutoresizingMaskIntoConstraints = false
-        dateOfGraduateTextField.topAnchor.constraint(equalTo: step6BottomLabel.bottomAnchor,
-                                                 constant: top).isActive = true
+        dateOfGraduateTextField.topAnchor.constraint(equalTo: universityTextField.bottomAnchor,
+                                                     constant: top).isActive = true
         dateOfGraduateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         dateOfGraduateTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
         dateOfGraduateTextField.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
@@ -443,11 +429,11 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         
         candidateButton.translatesAutoresizingMaskIntoConstraints = false
         candidateButton.topAnchor.constraint(equalTo: doctorButton.bottomAnchor,
-                                          constant: top).isActive = true
+                                             constant: top).isActive = true
         candidateButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: leading).isActive = true
+                                                 constant: leading).isActive = true
         candidateButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                            multiplier: 1).isActive = true
+                                               multiplier: 1).isActive = true
         candidateButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
@@ -495,6 +481,28 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         docentButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка радиокнопки выбора значения без степени
+    private func setupNodegreeButton() {
+        let top = 9.f
+        let leading = 0.f
+        let height = 15.f
+        nodegreeButton.contentHorizontalAlignment = .left
+        nodegreeButton.setTitle(" Нет степени", for: .normal)
+        nodegreeButton.titleLabel?.font = .systemFontOfSize(size: 12)
+        nodegreeButton.setTitleColor(.white, for: .normal)
+        nodegreeButton.isSelected = false
+        scrollView.addSubview(nodegreeButton)
+        
+        nodegreeButton.translatesAutoresizingMaskIntoConstraints = false
+        nodegreeButton.topAnchor.constraint(equalTo: docentButton.bottomAnchor,
+                                            constant: top).isActive = true
+        nodegreeButton.leadingAnchor.constraint(equalTo: docentButton.leadingAnchor,
+                                                constant: leading).isActive = true
+        nodegreeButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
+                                              multiplier: 1).isActive = true
+        nodegreeButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let width = 90.f
@@ -534,11 +542,12 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     /// Настройка выбора радиокнопки
     private func configureRadioButtons() {
-        academicButton.alternateButton = [doctorButton, candidateButton, professorButton, docentButton]
-        doctorButton.alternateButton = [academicButton, candidateButton, professorButton, docentButton]
-        candidateButton.alternateButton = [academicButton, doctorButton, professorButton, docentButton]
-        professorButton.alternateButton = [academicButton, doctorButton, candidateButton, docentButton]
-        docentButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton]
+        academicButton.alternateButton = [doctorButton, candidateButton, professorButton, docentButton, nodegreeButton]
+        doctorButton.alternateButton = [academicButton, candidateButton, professorButton, docentButton, nodegreeButton]
+        candidateButton.alternateButton = [academicButton, doctorButton, professorButton, docentButton, nodegreeButton]
+        professorButton.alternateButton = [academicButton, doctorButton, candidateButton, docentButton, nodegreeButton]
+        docentButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton, nodegreeButton]
+        nodegreeButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton, docentButton]
     }
     
     // MARK: - IBActions
@@ -611,15 +620,8 @@ extension CreateProfileScreen2ViewController: UITextFieldDelegate {
             } else if (textField.text?.count)! > 17 {
                 return false
             }
-        } else if textField == dateOfGraduateTextField {
-            if (textField.text?.count)! == 2 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! == 5 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! > 9 {
-                return false
-            }
         }
+        
         return true
     }
 }

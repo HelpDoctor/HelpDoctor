@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CreateProfileScreen2PresenterProtocol: Presenter {
+protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileScreen2ViewController)
     func citySearch()
     func regionSearch()
@@ -91,5 +91,21 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     }
     
     func save(source: SourceEditTextField) { }
+    
+}
+
+// MARK: - PickerFieldDelegate
+extension CreateProfileScreen2Presenter {
+    
+    func pickerField(didOKClick pickerField: PickerField) {
+        if pickerField.type == .datePicker {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd.MM.yyyy"
+            guard let datePicker = pickerField.datePicker else { return }
+            let date = dateFormatter.string(from: datePicker.date)
+            pickerField.text =  "\(date)"
+        }
+
+    }
     
 }
