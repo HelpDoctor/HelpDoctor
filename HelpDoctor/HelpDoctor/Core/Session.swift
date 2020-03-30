@@ -27,6 +27,10 @@ class Session {
         return UIApplication.shared.statusBarFrame.size.height
     }
     
+    static var bottomPadding: CGFloat {
+        return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+    }
+    
     var user: ProfileKeyUser?
     var userStatus: UserStatus?
 }

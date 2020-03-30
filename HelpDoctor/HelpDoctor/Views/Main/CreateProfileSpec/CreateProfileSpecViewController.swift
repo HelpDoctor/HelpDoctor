@@ -250,13 +250,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         backButton.setTitle(titleButton, for: .normal)
         scrollView.addSubview(backButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         backButton.translatesAutoresizingMaskIntoConstraints = false
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
         backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: Session.height - (bottomPadding ?? 0) - 98).isActive = true
+                                           constant: Session.height - Session.bottomPadding - 98).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
     }
@@ -266,12 +263,9 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         saveButton.isEnabled = true
         view.addSubview(saveButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: Session.height - (bottomPadding ?? 0) - 92).isActive = true
+                                           constant: Session.height - Session.bottomPadding - 92).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: Session.width - 20).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 150).isActive = true

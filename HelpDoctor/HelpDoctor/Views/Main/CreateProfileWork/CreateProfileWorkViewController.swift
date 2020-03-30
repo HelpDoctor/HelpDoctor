@@ -37,15 +37,12 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private var jobRowCount = 2
     private var specRowCount = 2
     private var heightScroll = Session.height
-    private let window = UIApplication.shared.keyWindow
-    private var bottomPadding = 0.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isHidden = true
         view.backgroundColor = backgroundColor
-        bottomPadding = window?.safeAreaInsets.bottom ?? 0
         setupScrollView()
         setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep7TitleLabel()

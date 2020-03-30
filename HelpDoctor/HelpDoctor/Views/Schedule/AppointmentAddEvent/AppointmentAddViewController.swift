@@ -466,15 +466,12 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSaveButton() {
+        let yAnchor = height - Session.bottomPadding - (tabBarController?.tabBar.frame.height ?? 0) - 75
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         saveButton.setImage(UIImage(named: "SaveButton.pdf"), for: .normal)
         saveButton.backgroundColor = .hdButtonColor
         saveButton.layer.cornerRadius = 22
         view.addSubview(saveButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        let yAnchor = height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
@@ -486,15 +483,12 @@ class AppointmentAddViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupDeleteButton() {
+        let yAnchor = height - Session.bottomPadding - (tabBarController?.tabBar.frame.height ?? 0) - 75
         deleteButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
         deleteButton.setImage(UIImage(named: "Trash Icon.pdf"), for: .normal)
         deleteButton.backgroundColor = .hdButtonColor
         deleteButton.layer.cornerRadius = 22
         view.addSubview(deleteButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        let yAnchor = height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
         
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,

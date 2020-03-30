@@ -77,15 +77,12 @@ class OtherTimeNotifyViewController: UIViewController {
     }
     
     private func setupSaveButton() {
+        let yAnchor = height - Session.bottomPadding - (tabBarController?.tabBar.frame.height ?? 0) - 75
         saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
         saveButton.setImage(UIImage(named: "SaveButton.pdf"), for: .normal)
         saveButton.backgroundColor = .hdButtonColor
         saveButton.layer.cornerRadius = 22
         view.addSubview(saveButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        let yAnchor = height - (bottomPadding ?? 0) - (tabBarController?.tabBar.frame.height ?? 0) - 75
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: view.topAnchor,

@@ -76,7 +76,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height - headerHeight)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -438,14 +438,11 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: Session.width - 10).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: Session.height - (bottomPadding ?? 0) - 98).isActive = true
+                                           constant: Session.height - Session.bottomPadding - 98).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
