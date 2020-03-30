@@ -327,6 +327,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private func setupDateOfGraduateTextField() {
         let top = 10.f
         heightScroll += top + textFieldHeight
+        dateOfGraduateTextField.titleLabel?.text = "Укажиет дату выпуска"
         dateOfGraduateTextField.font = UIFont.systemFontOfSize(size: 14)
         dateOfGraduateTextField.textColor = .textFieldTextColor
         dateOfGraduateTextField.textAlignment = .left

@@ -93,7 +93,7 @@ class RegionsViewController: UIViewController {
         okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                          constant: -18).isActive = true
         okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
     }
 
     // MARK: - Navigation

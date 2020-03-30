@@ -382,6 +382,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     /// Установка поля ввода даты рождения
     private func setupBirthDateTextField() {
         let top = 10.f
+        birthDateTextField.titleLabel?.text = "Укажите дату рождения"
         birthDateTextField.backgroundColor = .white
         birthDateTextField.layer.cornerRadius = 5
         birthDateTextField.font = .systemFontOfSize(size: 14)
