@@ -82,7 +82,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
                 return
         }
         let medicalOrganization = filteredArray[index]
-        let previous = view.navigationController?.viewControllers[2] as! CreateProfileWorkViewController
+        let previous = view.navigationController?.viewControllers[3] as! CreateProfileWorkViewController
         let presenter = previous.presenter
         presenter?.setJob(job: medicalOrganization)
         view.navigationController?.popToViewController(previous, animated: true)

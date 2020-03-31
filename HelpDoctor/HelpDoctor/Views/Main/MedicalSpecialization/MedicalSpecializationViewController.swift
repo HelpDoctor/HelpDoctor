@@ -113,7 +113,23 @@ extension MedicalSpecializationViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension MedicalSpecializationViewController: UITableViewDelegate { }
+extension MedicalSpecializationViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = true
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
+    }
+    
+}
 
 // MARK: - UITableViewDataSource
 extension MedicalSpecializationViewController: UITableViewDataSource {
@@ -128,20 +144,6 @@ extension MedicalSpecializationViewController: UITableViewDataSource {
 
         cell.configure(presenter?.getMedicalSpecializationTitle(index: indexPath.row) ?? "Specialization not found")
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = true
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = false
     }
 
 }

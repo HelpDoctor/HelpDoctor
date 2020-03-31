@@ -138,12 +138,12 @@ class InterestsPresenter: InterestsPresenterProtocol {
             let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
             let presenter = previous.presenter
             presenter?.setInterests(interests: userInterests)
-        } else if prevVC is ProfileViewController {
+        } /*else if prevVC is ProfileViewController {
             let previous = view.navigationController?.viewControllers.last as! ProfileViewController
             let presenter = previous.presenter
             presenter?.setInterests(interests: userInterests)
             presenter?.save(source: .interest)
-        }
+        }*/
     }
     
     func save(source: SourceEditTextField) {

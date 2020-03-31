@@ -79,6 +79,10 @@
 		4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347C23DD705200AFAA91 /* SelectDateViewController.swift */; };
 		4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
+		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
+		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
+		46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D624334654004B9558 /* ProfileCareerView.swift */; };
+		46EFF4D924335FDB004B9558 /* ProfileInterestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -280,6 +284,10 @@
 		4670347C23DD705200AFAA91 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
 		4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePresenter.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
+		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
+		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
+		46EFF4D624334654004B9558 /* ProfileCareerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCareerView.swift; sourceTree = "<group>"; };
+		46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInterestsView.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -736,6 +744,10 @@
 			children = (
 				46F87F3923BDE93B0095264E /* ProfileViewController.swift */,
 				46F87F3B23BDE9450095264E /* ProfilePresenter.swift */,
+				46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */,
+				46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */,
+				46EFF4D624334654004B9558 /* ProfileCareerView.swift */,
+				46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1344,6 +1356,7 @@
 				46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */,
 				46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */,
 				C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */,
+				46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
 				C48F161E23B5FE87002D04E3 /* KeychainItemAccessibility.swift in Sources */,
 				46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */,
@@ -1385,6 +1398,7 @@
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
 				4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */,
+				46EFF4D924335FDB004B9558 /* ProfileInterestsView.swift in Sources */,
 				46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */,
 				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
 				46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */,
@@ -1410,6 +1424,7 @@
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				C4CBC3F023E2AAC600434BFB /* MKMapView+Extensions.swift in Sources */,
+				46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
 				C48F162C23B5FE87002D04E3 /* ProfileKeyUser.swift in Sources */,
 				46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */,
@@ -1423,6 +1438,7 @@
 				4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */,
 				C48F161D23B5FE87002D04E3 /* GetListOfInterests.swift in Sources */,
 				46F87F6D23C0EB890095264E /* SavedView.swift in Sources */,
+				46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */,
 				C48F163923B61751002D04E3 /* UIFont+Extensions.swift in Sources */,
 				C48F162723B5FE87002D04E3 /* GetMedicalSpecialization.swift in Sources */,
 				46F87F3523BCBEFB0095264E /* CreateProfileSpecPresenter.swift in Sources */,

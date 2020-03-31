@@ -51,7 +51,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
                     if responceCode(code: code) && status == "True" {
-                        self?.view.hideFillProfileButton()
+//                        self?.view.hideFillProfileButton()
+                        self?.view.showFillProfileButton()
                     } else {
                         self?.view.showFillProfileButton()
                     }
@@ -132,7 +133,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                    cityName: userData[0].cityName,
                                    regionId: userData[0].regionId,
                                    regionName: userData[0].regionName,
-                                   foto: userData[0].foto)
+                                   foto: userData[0].foto,
+                                   gender: userData[0].gender)
         view.setImage(image: Session.instance.user?.foto?.toImage())
     }
     

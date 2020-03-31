@@ -38,7 +38,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         setupAddTextField()
         setupTableView()
         selectRows()
-        addTapGestureToHideKeyboard()
+//        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -196,7 +196,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         tableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         tableView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
     }
-    
+/*
     /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
@@ -244,7 +244,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
     }
-    
+    */
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки добавления интереса
     @objc private func addButtonPressed() {
@@ -268,7 +268,24 @@ extension InterestsViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension InterestsViewController: UITableViewDelegate {}
+extension InterestsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("tap")
+        tableView.cellForRow(at: indexPath)?.isSelected = true
+        presenter?.appendIndexArray(index: indexPath.item)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+        presenter?.removeIndexArray(index: indexPath.item)
+    }
+    
+}
 
 // MARK: - UITableViewDataSource
 extension InterestsViewController: UITableViewDataSource {
@@ -284,20 +301,6 @@ extension InterestsViewController: UITableViewDataSource {
 
         cell.configure(presenter?.getInterestsTitle(index: indexPath.row) ?? "Not found")
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = true
-        presenter?.appendIndexArray(index: indexPath.item)
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = false
-        presenter?.removeIndexArray(index: indexPath.item)
     }
 
 }

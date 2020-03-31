@@ -37,7 +37,8 @@ func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
                                          cityName: user["cityName"] as? String,
                                          regionId: user["regionId"] as? Int,
                                          regionName: user["regionName"] as? String,
-                                         foto: user["foto"] as? String))
+                                         foto: user["foto"] as? String,
+                                         gender: user["gender"] as? String))
     
     dataProfile["user"] = profileKeyUser as [AnyObject]
     startPoint.removeValue(forKey: "user")

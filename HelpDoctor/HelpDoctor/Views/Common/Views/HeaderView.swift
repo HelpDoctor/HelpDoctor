@@ -21,7 +21,7 @@ class HeaderView: UIView {
         self.presenter = presenter
         self.heightHeader = height
         backgroundColor = color
-        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        UIApplication.shared.setStatusBarBackgroundColor(color: color)
         setupBackButton()
         setupTitle()
         setupLogo()
@@ -55,8 +55,8 @@ class HeaderView: UIView {
     }
     
     private func setupLogo() {
-        let top = 10.f
-        let height = heightHeader - (2 * top)
+        let trailing = heightHeader * 0.2
+        let height = heightHeader * 0.75
         let logoImageName = "Logo.pdf"
         guard let image = UIImage(named: logoImageName) else {
             assertionFailure("Missing ​​\(logoImageName) asset")
@@ -66,10 +66,9 @@ class HeaderView: UIView {
         self.addSubview(logoImage)
         
         logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.topAnchor.constraint(equalTo: self.topAnchor,
-                                       constant: top).isActive = true
+        logoImage.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         logoImage.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-                                            constant: -top).isActive = true
+                                            constant: -trailing).isActive = true
         logoImage.widthAnchor.constraint(equalToConstant: height).isActive = true
         logoImage.heightAnchor.constraint(equalToConstant: height).isActive = true
     }

@@ -33,6 +33,8 @@ class Session {
     
     var user: ProfileKeyUser?
     var userStatus: UserStatus?
+    var userJob: [ProfileKeyJob?]?
+    var userInterests: [ProfileKeyInterests]?
 }
 
 enum UserStatus: String {
