@@ -113,19 +113,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
         view.setupInterestsView()
     }
     
-    /// Конвертирование серверного формата даты для отображения на форме
-    /// - Parameter birthday: дата с сервера
-    private func convertDate(birthday: String?) -> String {
-        guard let birthday = birthday else { return "" }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale.current
-        guard let birthDate = dateFormatter.date(from: birthday) else { return "" }
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        return dateFormatter.string(from: birthDate)
-    }
-    
     /// Конвертирование формата даты с формы в серверный
     /// - Parameter birthday: дата с формы
     private func convertDateFromView(birthday: String?) -> String {
@@ -155,4 +142,46 @@ class ProfilePresenter: ProfilePresenterProtocol {
         
     }
     
+    /* Обновление аватара
+    /// Обновление информации о пользователе на сервере
+    /// - Parameter source: тип изменений
+    func save(source: SourceEditTextField) {
+        let image = view.getUserPhoto()/*?.resizeImage(240, opaque: true)
+        view.setImage(image: image)
+        print(image?.jpegData(compressionQuality: 1)?.count)*/
+        let profile = UpdateProfileKeyUser(first_name: session.user?.first_name,
+                                           last_name: session.user?.last_name,
+                                           middle_name: session.user?.middle_name,
+                                           phone_number: session.user?.phone_number,
+                                           birthday: session.user?.birthday,
+                                           city_id: session.user?.city_id,
+                                           foto: image?.toString(),
+                                           gender: session.user?.gender,
+                                           is_medic_worker: nil)//Заполнить пол и is_medic_worker
+        updateProfile(profile: profile)
+    }
+    
+    /// Обновление информации о пользователе на сервере
+    /// - Parameter profile: информация для обновления
+    private func updateProfile(profile: UpdateProfileKeyUser) {
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": profile.jsonData as Any] ) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            profile.responce = result
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("updateProfile = \(String(describing: profile.responce))")
+                    guard let code = profile.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.view.showSaved(message: "Сохранено")
+                    } else {
+                        self?.view.showAlert(message: profile.responce?.1)
+                    }
+                }
+            }
+        }
+    }
+*/
 }

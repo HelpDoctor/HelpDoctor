@@ -83,6 +83,7 @@
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
 		46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D624334654004B9558 /* ProfileCareerView.swift */; };
 		46EFF4D924335FDB004B9558 /* ProfileInterestsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */; };
+		46EFF4DD2434EA11004B9558 /* ProfilePopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -288,6 +289,7 @@
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
 		46EFF4D624334654004B9558 /* ProfileCareerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCareerView.swift; sourceTree = "<group>"; };
 		46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInterestsView.swift; sourceTree = "<group>"; };
+		46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePopoverButton.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -748,6 +750,7 @@
 				46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */,
 				46EFF4D624334654004B9558 /* ProfileCareerView.swift */,
 				46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */,
+				46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1312,6 +1315,7 @@
 				4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */,
 				46203EF623C469B00072653A /* GetFindedUsers.swift in Sources */,
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
+				46EFF4DD2434EA11004B9558 /* ProfilePopoverButton.swift in Sources */,
 				46395E122423EBE000BE4F70 /* RegionsSearchTextField.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,

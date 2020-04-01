@@ -66,9 +66,9 @@ extension UIFont {
     }
     
     class func mediumSystemFontOfSize(size: CGFloat) -> UIFont {
-        guard let customFont = UIFont(name: "Roboto-Medium", size: size) else {
+        guard let customFont = UIFont(name: "FiraSans-Medium", size: size) else {
             fatalError("""
-                Failed to load the "Roboto-Medium" font.
+                Failed to load the "FiraSans-Medium" font.
                 Make sure the font file is included in the project and the font name is spelled correctly.
                 """
             )

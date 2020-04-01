@@ -36,11 +36,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private var educationView = ProfileEducationView()
     private var careerView = ProfileCareerView()
     private var interestsView = ProfileInterestsView()
+//    private lazy var imagePicker = ImagePicker()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter?.getUser()
+//        imagePicker.delegate = self
         view.backgroundColor = backgroundColor
         setupScrollView()
         setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter)
@@ -195,6 +197,20 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         userPhoto.layer.cornerRadius = imageSize / 2
         userPhoto.contentMode = .scaleAspectFill
         userPhoto.layer.masksToBounds = true
+        /*
+        let button = UIButton()
+        button.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
+        scrollView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        button.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
+        button.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
+        
+        button.layer.cornerRadius = imageSize / 2
+        button.contentMode = .scaleAspectFill
+        button.layer.masksToBounds = true
+ */
     }
     
     /// Установка иконки верифицированный пользователь
@@ -274,8 +290,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки редактирования / выхода их профиля
     private func setupEditButton() {
         let trailing = 7.f
-        let width = 5.f
+        let width = 10.f
         let height = 20.f
+        editButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
         editButton.setImage(UIImage(named: "EditDotsButton"), for: .normal)
         topStackView.addSubview(editButton)
         
@@ -397,6 +414,39 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - IBActions
     
     // MARK: - Buttons methods
+    @objc private func editButtonPressed() {
+        let popoverContentController = UIViewController()
+        guard let popoverView = popoverContentController.view else { return }
+        let editProfileButton = ProfilePopoverButton(text: "Редактировать профиль",
+                                                     image: UIImage(named: "EditProfile"))
+        let exitProfileButton = ProfilePopoverButton(text: "Выйти из профиля",
+                                                     image: UIImage(named: "ExitProfile"))
+        popoverContentController.view.backgroundColor = UIColor(red: 0.171, green: 0.521, blue: 0.758, alpha: 1)
+        popoverContentController.preferredContentSize = CGSize(width: 180, height: 100)
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.popoverPresentationController?.delegate = self
+
+        let editTap = UITapGestureRecognizer(target: self, action: #selector(editProfilePressed(tap:)))
+        editProfileButton.addGestureRecognizer(editTap)
+        editProfileButton.isUserInteractionEnabled = true
+        let exitTap = UITapGestureRecognizer(target: self, action: #selector(exitProfilePressed(tap:)))
+        exitProfileButton.addGestureRecognizer(exitTap)
+        exitProfileButton.isUserInteractionEnabled = true
+        popoverView.addSubview(editProfileButton)
+        popoverView.addSubview(exitProfileButton)
+        editProfileButton.translatesAutoresizingMaskIntoConstraints = false
+        editProfileButton.topAnchor.constraint(equalTo: popoverView.topAnchor).isActive = true
+        editProfileButton.leadingAnchor.constraint(equalTo: popoverView.leadingAnchor).isActive = true
+        editProfileButton.trailingAnchor.constraint(equalTo: popoverView.trailingAnchor).isActive = true
+        editProfileButton.heightAnchor.constraint(equalTo: popoverView.heightAnchor, multiplier: 0.5).isActive = true
+        exitProfileButton.translatesAutoresizingMaskIntoConstraints = false
+        exitProfileButton.bottomAnchor.constraint(equalTo: popoverView.bottomAnchor).isActive = true
+        exitProfileButton.leadingAnchor.constraint(equalTo: popoverView.leadingAnchor).isActive = true
+        exitProfileButton.trailingAnchor.constraint(equalTo: popoverView.trailingAnchor).isActive = true
+        exitProfileButton.heightAnchor.constraint(equalTo: popoverView.heightAnchor, multiplier: 0.5).isActive = true
+        // Present the popover.
+        self.present(popoverContentController, animated: true, completion: nil)
+    }
     
     /// Изменение отображения информации о пользователе при нажатии на кнопку Общее
     @objc private func generalPageButtonPressed() {
@@ -450,6 +500,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsView.isHidden = false
     }
     
+    @objc private func editProfilePressed(tap: UITapGestureRecognizer) {
+        print("Редактирование профиля")
+    }
+    
+    @objc private func exitProfilePressed(tap: UITapGestureRecognizer) {
+        print("Выход из профиля")
+    }
+    
     // MARK: - Navigation
     /// Переход на предыдущий экран
     @objc private func backButtonPressed() {
@@ -457,3 +515,71 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
 }
+
+// MARK: - UIPopoverPresentationControllerDelegate
+extension ProfileViewController: UIPopoverPresentationControllerDelegate {
+    
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        popoverPresentationController.permittedArrowDirections = .any
+        popoverPresentationController.sourceView = editButton
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+}
+/*
+// MARK: - ImagePickerDelegate
+extension ProfileViewController: ImagePickerDelegate {
+    
+    func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
+        userPhoto.image = image
+        presenter?.save(source: .user)
+        imagePicker.dismiss()
+    }
+    
+    func imagePickerDelegate(didCancel delegatedForm: ImagePicker) {
+        imagePicker.dismiss()
+    }
+    
+    func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
+        if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
+    }
+    
+    func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
+        // works only on real device (crash on simulator)
+        if accessIsAllowed { presentImagePicker(sourceType: .camera) }
+    }
+    
+    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
+        imagePicker.present(parent: self, sourceType: sourceType)
+    }
+    
+    /// Выбор фотографии при нажатии на аватар
+    /// - Parameter sender:
+    @objc func photoButtonTapped(_ sender: UIButton) {
+        let alertVC = UIAlertController(title: "Установить аватар",
+                                        message: nil,
+                                        preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Отменить",
+                                         style: .cancel,
+                                         handler: nil)
+        let takePhotoAction = UIAlertAction(title: "Сделать снимок",
+                                            style: .default,
+                                            handler: { _ in self.imagePicker.cameraAsscessRequest() })
+        let choosePhotoAction = UIAlertAction(title: "Выбрать фотографию",
+                                              style: .default,
+                                              handler: { _ in self.imagePicker.photoGalleryAsscessRequest() })
+        alertVC.addAction(cancelAction)
+        alertVC.addAction(takePhotoAction)
+        alertVC.addAction(choosePhotoAction)
+        self.present(alertVC, animated: true, completion: nil)
+    }
+    
+    func getUserPhoto() -> UIImage? {
+        return userPhoto.image
+    }
+    
+}
+*/

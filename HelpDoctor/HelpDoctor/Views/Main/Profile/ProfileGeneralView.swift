@@ -26,8 +26,8 @@ class ProfileGeneralView: UIView {
     
     convenience init(user: ProfileKeyUser) {
         self.init()
-        self.birthdayDataLabel.text = user.birthday
-        self.genderDataLabel.text = user.gender
+        self.birthdayDataLabel.text = convertDate(user.birthday)
+        self.genderDataLabel.text = formatGender(user.gender)
         self.emailLabel.text = user.email
         self.phoneLabel.text = user.phone_number
         self.addressDataLabel.text = "\(user.regionName ?? ""), \(user.cityName ?? "")"
@@ -217,6 +217,30 @@ class ProfileGeneralView: UIView {
                                               constant: verticalSpacing).isActive = true
         addressDataLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                                    constant: -leading).isActive = true
+    }
+    
+    private func formatGender(_ gender: String?) -> String? {
+        switch gender {
+        case "male":
+            return "Мужской"
+        case "female":
+            return "Женский"
+        default:
+            return "Не указан"
+        }
+    }
+    
+    /// Конвертирование серверного формата даты для отображения на форме
+    /// - Parameter birthday: дата с сервера
+    private func convertDate(_ birthday: String?) -> String {
+        guard let birthday = birthday else { return "" }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        guard let birthDate = dateFormatter.date(from: birthday) else { return "" }
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: birthDate)
     }
     
 }
