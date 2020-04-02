@@ -11,6 +11,7 @@ import UIKit
 protocol ProfilePresenterProtocol: Presenter {
     init(view: ProfileViewController)
     func getUser()
+    func logout()
     func back()
 }
 
@@ -54,6 +55,30 @@ class ProfilePresenter: ProfilePresenterProtocol {
                     self?.setJob(jobData: jobData)
                     self?.setSpec(specData: specData)
                     self?.setInterests(interestData: interestData)
+                }
+            }
+        }
+    }
+    
+    func logout() {
+        let logout = Registration(email: nil, password: nil, token: myToken)
+
+        getData(typeOfContent: .logout,
+                returning: (Int?, String?).self,
+                requestParams: logout.requestParams) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            logout.responce = result
+
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    print("result=\(String(describing: logout.responce))")
+                    guard let code = logout.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        print("Logout")
+                        AppDelegate.shared.rootViewController.switchToLogout()
+                    } else {
+                        self?.view.showAlert(message: logout.responce?.1)
+                    }
                 }
             }
         }

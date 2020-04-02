@@ -86,6 +86,7 @@
 		46EFF4DD2434EA11004B9558 /* ProfilePopoverButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */; };
 		46EFF4E024359EF3004B9558 /* VerificationErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4DF24359EF3004B9558 /* VerificationErrorViewController.swift */; };
 		46EFF4E224359F05004B9558 /* VerificationErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E124359F05004B9558 /* VerificationErrorPresenter.swift */; };
+		46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -294,6 +295,7 @@
 		46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePopoverButton.swift; sourceTree = "<group>"; };
 		46EFF4DF24359EF3004B9558 /* VerificationErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationErrorViewController.swift; sourceTree = "<group>"; };
 		46EFF4E124359F05004B9558 /* VerificationErrorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationErrorPresenter.swift; sourceTree = "<group>"; };
+		46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePopoverController.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -764,6 +766,7 @@
 				46EFF4D624334654004B9558 /* ProfileCareerView.swift */,
 				46EFF4D824335FDB004B9558 /* ProfileInterestsView.swift */,
 				46EFF4DC2434EA11004B9558 /* ProfilePopoverButton.swift */,
+				46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -1421,6 +1424,7 @@
 				46EFF4D924335FDB004B9558 /* ProfileInterestsView.swift in Sources */,
 				46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */,
 				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
+				46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */,
 				46203EF823C469CB0072653A /* GetEventsForCurrentDate.swift in Sources */,
 				46072E1A23C23FF20070F2F6 /* StartAddEventViewController.swift in Sources */,
 				46072E0A23C1F4D80070F2F6 /* StartSchedulePresenter.swift in Sources */,

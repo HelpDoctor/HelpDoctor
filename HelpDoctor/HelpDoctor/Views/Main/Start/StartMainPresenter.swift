@@ -87,7 +87,6 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                 self?.toEndVerification()
                             case "verified":
                                 Session.instance.userStatus = .verified
-                                self?.toErrorVerification(.error) //Временно
                             default:
                                 break
                             }

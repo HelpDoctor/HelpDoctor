@@ -44,6 +44,7 @@ class FirstScreenViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
     }
     
     // MARK: - Setup views

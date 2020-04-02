@@ -415,36 +415,13 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Buttons methods
     @objc private func editButtonPressed() {
-        let popoverContentController = UIViewController()
-        guard let popoverView = popoverContentController.view else { return }
-        let editProfileButton = ProfilePopoverButton(text: "Редактировать профиль",
-                                                     image: UIImage(named: "EditProfile"))
-        let exitProfileButton = ProfilePopoverButton(text: "Выйти из профиля",
-                                                     image: UIImage(named: "ExitProfile"))
-        popoverContentController.view.backgroundColor = UIColor(red: 0.171, green: 0.521, blue: 0.758, alpha: 1)
-        popoverContentController.preferredContentSize = CGSize(width: 180, height: 100)
+        let popoverContentController = ProfilePopoverController()
         popoverContentController.modalPresentationStyle = .popover
-        popoverContentController.popoverPresentationController?.delegate = self
-
-        let editTap = UITapGestureRecognizer(target: self, action: #selector(editProfilePressed(tap:)))
-        editProfileButton.addGestureRecognizer(editTap)
-        editProfileButton.isUserInteractionEnabled = true
-        let exitTap = UITapGestureRecognizer(target: self, action: #selector(exitProfilePressed(tap:)))
-        exitProfileButton.addGestureRecognizer(exitTap)
-        exitProfileButton.isUserInteractionEnabled = true
-        popoverView.addSubview(editProfileButton)
-        popoverView.addSubview(exitProfileButton)
-        editProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        editProfileButton.topAnchor.constraint(equalTo: popoverView.topAnchor).isActive = true
-        editProfileButton.leadingAnchor.constraint(equalTo: popoverView.leadingAnchor).isActive = true
-        editProfileButton.trailingAnchor.constraint(equalTo: popoverView.trailingAnchor).isActive = true
-        editProfileButton.heightAnchor.constraint(equalTo: popoverView.heightAnchor, multiplier: 0.5).isActive = true
-        exitProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        exitProfileButton.bottomAnchor.constraint(equalTo: popoverView.bottomAnchor).isActive = true
-        exitProfileButton.leadingAnchor.constraint(equalTo: popoverView.leadingAnchor).isActive = true
-        exitProfileButton.trailingAnchor.constraint(equalTo: popoverView.trailingAnchor).isActive = true
-        exitProfileButton.heightAnchor.constraint(equalTo: popoverView.heightAnchor, multiplier: 0.5).isActive = true
-        // Present the popover.
+        popoverContentController.preferredContentSize = CGSize(width: 180, height: 100)
+        popoverContentController.delegate = self
+        if let ppc = popoverContentController.popoverPresentationController {
+            ppc.delegate = self
+        }
         self.present(popoverContentController, animated: true, completion: nil)
     }
     
@@ -500,14 +477,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         interestsView.isHidden = false
     }
     
-    @objc private func editProfilePressed(tap: UITapGestureRecognizer) {
-        print("Редактирование профиля")
-    }
-    
-    @objc private func exitProfilePressed(tap: UITapGestureRecognizer) {
-        print("Выход из профиля")
-    }
-    
     // MARK: - Navigation
     /// Переход на предыдущий экран
     @objc private func backButtonPressed() {
@@ -526,6 +495,15 @@ extension ProfileViewController: UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
+    }
+    
+}
+
+// MARK: - ProfilePopoverDelegate
+extension ProfileViewController: ProfilePopoverDelegate {
+    
+    func logout() {
+        presenter?.logout()
     }
     
 }
