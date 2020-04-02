@@ -18,9 +18,8 @@ class VerificationEndViewController: UIViewController {
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let textLabel = UILabel()
-    private let okButton = HDButton(title: "Ok")
+    private let okButton = HDButton(title: "Ок")
     private let backButton = BackButton()
-    
     private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
@@ -32,7 +31,9 @@ class VerificationEndViewController: UIViewController {
         setupTitleLabel()
         setupTopLabel()
         setupOkButton()
-//        setupBackButton()
+        if #available(iOS 13.0, *) {} else {
+            setupBackButton()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -85,11 +86,16 @@ class VerificationEndViewController: UIViewController {
     /// Установка заголовка
     private func setupTitleLabel() {
         let top = 5.f
-        let height = 22.f
+        let height = 44.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Верификация"
+        titleLabel.text =
+        """
+        Верификация
+        На рассмотрении
+        """
         titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -155,7 +161,7 @@ class VerificationEndViewController: UIViewController {
         backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
+                                           constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }

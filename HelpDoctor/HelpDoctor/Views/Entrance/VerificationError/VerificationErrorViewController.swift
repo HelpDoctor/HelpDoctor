@@ -1,30 +1,42 @@
 //
-//  VerificationViewController.swift
+//  VerificationErrorViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 09.03.2020.
+//  Created by Mikhail Semerikov on 02.04.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class VerificationViewController: UIViewController, UIScrollViewDelegate {
+enum StatusVerification {
+    case error
+    case denied
+}
+
+class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
-    var presenter: VerificationPresenterProtocol?
+    var presenter: VerificationErrorPresenterProtocol?
+    var statusVerification: StatusVerification?
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private let label = UILabel()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить")
+    private let commentTextView = UITextView()
     private let backButton = BackButton()
     private var sourceFile: URL?
     private var keyboardHeight: CGFloat = 0
+    
+    private var topConstraintImage: NSLayoutConstraint?
+    private var widthConstraintImage: NSLayoutConstraint?
+    private var heightConstraintImage: NSLayoutConstraint?
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -34,15 +46,16 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
+        setupSubtitleLabel()
         setupLabel()
         setupAddFileTextField()
         setupSubscriptLabel()
         setupSendButton()
+        setupCommentTextView()
         if #available(iOS 13.0, *) {} else {
             setupBackButton()
         }
         addTapGestureToHideKeyboard()
-        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,6 +65,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func authorized() {
+        subtitleLabel.text = "На рассмотрении"
         label.text =
         """
         Спасибо за предоставленную информацию!\n
@@ -61,6 +75,8 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         sendButton.setTitle("Ok", for: .normal)
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
+        commentTextView.isHidden = true
+        setupVerificationEndImage()
     }
     
     // MARK: - Setup views
@@ -101,8 +117,17 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка картинки
     private func setupDoctorsImage() {
-        let width = Session.width - 30
-        let imageName = "VerificationImage.pdf"
+        let top = 25.f
+        let width = Session.width - 140
+        var imageName = "VerificationError.pdf"
+        switch statusVerification {
+        case .denied:
+            imageName = "VerificationDenied.pdf"
+        case .error:
+            imageName = "VerificationError.pdf"
+        default:
+            break
+        }
         guard let image = UIImage(named: imageName) else {
             assertionFailure("Missing ​​\(imageName) asset")
             return
@@ -112,10 +137,14 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(doctorsImage)
         
         doctorsImage.translatesAutoresizingMaskIntoConstraints = false
-        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        topConstraintImage = doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
+                                          constant: top)
+        topConstraintImage?.isActive = true
         doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
-        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+        widthConstraintImage = doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width)
+        widthConstraintImage?.isActive = true
+        heightConstraintImage = doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height)
+        heightConstraintImage?.isActive = true
     }
     
     /// Установка заголовка
@@ -136,24 +165,68 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка подзаголовка
+    private func setupSubtitleLabel() {
+        let top = 14.f
+        let height = 40.f
+        subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
+        subtitleLabel.textColor = .white
+        switch statusVerification {
+        case .denied:
+            subtitleLabel.text =
+            """
+            Отказ
+            В верификации данного аккаунта отказано
+            """
+        case .error:
+            subtitleLabel.text =
+            """
+            Ошибка
+            При верификации произошла ошибка
+            """
+        default:
+            break
+        }
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 0
+        scrollView.addSubview(subtitleLabel)
+        
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                        constant: top).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка описания
     private func setupLabel() {
-        let top = 16.f
+        let top = 5.f
         let width = Session.width - 22.f
         let height = 85.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
-        label.text =
-        """
-        Чтобы завершить регистрацию, Вам необходимо предоставить копию документа,
-        подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании
-        """
+        switch statusVerification {
+        case .denied:
+            label.text =
+            """
+            Мы не можем верифицировать этот аккаунт
+            """
+        case .error:
+            label.text =
+            """
+            Возможно, это произошло из-за некачественной копии документов.
+            Попробуйте сделать более четкую фотографию или скан, и отправьте еще раз
+            """
+        default:
+            break
+        }
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+        label.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor,
                                    constant: top).isActive = true
         label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -164,7 +237,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     private func setupAddFileTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(addFileTextFieldPressed))
-        let top = 60.f
+        let top = 10.f
         let width = Session.width - 114.f
         let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
@@ -227,6 +300,27 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    private func setupCommentTextView() {
+        let top = 15.f
+        let width = Session.width - 40
+        let height = 50.f
+        commentTextView.textAlignment = .left
+        commentTextView.font = .systemFontOfSize(size: 14)
+        commentTextView.textColor = .black
+        commentTextView.layer.cornerRadius = 5
+        commentTextView.delegate = self
+        commentTextView.text = "Поле для комментария"
+        commentTextView.textColor = .lightGray
+        scrollView.addSubview(commentTextView)
+        
+        commentTextView.translatesAutoresizingMaskIntoConstraints = false
+        commentTextView.topAnchor.constraint(equalTo: sendButton.bottomAnchor,
+                                             constant: top).isActive = true
+        commentTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        commentTextView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        commentTextView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка кнопки назад
     private func setupBackButton() {
         let leading = 8.f
@@ -246,6 +340,26 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
+    /// Установка картинки
+    private func setupVerificationEndImage() {
+        let width = Session.width - 30
+        let imageName = "VerificationImage.pdf"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        doctorsImage.image = resizedImage
+        scrollView.addSubview(doctorsImage)
+        
+        topConstraintImage?.isActive = false
+        widthConstraintImage?.isActive = false
+        heightConstraintImage?.isActive = false
+        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
     /// Добавление распознавания касания экрана
     private func addTapGestureToHideKeyboard() {
         let hideKeyboardGesture = UITapGestureRecognizer(target: self,
@@ -261,14 +375,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
                                                selector: #selector(keyboardWillBeHidden(notification:)),
                                                name: UIResponder.keyboardWillHideNotification,
                                                object: nil)
-    }
-    
-    /// Добавляет свайп влево для перехода назад
-    private func addSwipeGestureToBack() {
-        let swipeLeft = UISwipeGestureRecognizer()
-        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
-        swipeLeft.direction = .right
-        view.addGestureRecognizer(swipeLeft)
     }
     
     // MARK: - IBActions
@@ -331,7 +437,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
 }
 
 // MARK: - UIDocumentPickerDelegate
-extension VerificationViewController: UIDocumentPickerDelegate {
+extension VerificationErrorViewController: UIDocumentPickerDelegate {
     
     func documentPicker(_ controller: UIDocumentPickerViewController,
                         didPickDocumentAt url: URL) {
@@ -339,4 +445,26 @@ extension VerificationViewController: UIDocumentPickerDelegate {
         sourceFile = url
     }
 
+}
+
+// MARK: - UITextViewDelegate
+extension VerificationErrorViewController: UITextViewDelegate {
+    
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.text == "Поле для комментария"
+            && textView.textColor == .lightGray {
+            textView.text = ""
+            textView.textColor = .black
+        }
+        textView.becomeFirstResponder()
+    }
+
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text == "" {
+            textView.text = "Поле для комментария"
+            textView.textColor = .lightGray
+        }
+        textView.resignFirstResponder()
+    }
+    
 }

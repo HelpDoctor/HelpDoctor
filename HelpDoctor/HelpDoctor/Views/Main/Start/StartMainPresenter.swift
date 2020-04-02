@@ -33,9 +33,6 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func profileCheck() {
         view.startActivityIndicator()
         getUser()
-        if Session.instance.userStatus != .verified {
-            getStatusUser()
-        }
         let checkProfile = Registration(email: nil, password: nil, token: myToken)
         
         getData(typeOfContent: .checkProfile,
@@ -51,8 +48,11 @@ class StartMainPresenter: StartMainPresenterProtocol {
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
                     if responceCode(code: code) && status == "True" {
-//                        self?.view.hideFillProfileButton()
-                        self?.view.showFillProfileButton()
+                        self?.view.hideFillProfileButton()
+//                        self?.view.showFillProfileButton()
+                        if Session.instance.userStatus != .verified {
+                            self?.getStatusUser()
+                        }
                     } else {
                         self?.view.showFillProfileButton()
                     }
@@ -78,15 +78,16 @@ class StartMainPresenter: StartMainPresenterProtocol {
                             switch status {
                             case "denied":
                                 Session.instance.userStatus = .denied
-                                self?.toVerification()
+                                self?.toErrorVerification(.denied)
                             case "not_verification":
                                 Session.instance.userStatus = .notVerification
                                 self?.toVerification()
                             case "processing":
                                 Session.instance.userStatus = .processing
-                                self?.toVerification() //Временно
+                                self?.toEndVerification()
                             case "verified":
                                 Session.instance.userStatus = .verified
+                                self?.toErrorVerification(.error) //Временно
                             default:
                                 break
                             }
@@ -155,6 +156,19 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func toVerification() {
         let viewController = VerificationViewController()
         viewController.presenter = VerificationPresenter(view: viewController)
+        view.present(viewController, animated: true, completion: nil)
+    }
+    
+    func toEndVerification() {
+        let viewController = VerificationEndViewController()
+        viewController.presenter = VerificationEndPresenter(view: viewController)
+        view.present(viewController, animated: true, completion: nil)
+    }
+    
+    func toErrorVerification(_ status: StatusVerification) {
+        let viewController = VerificationErrorViewController()
+        viewController.statusVerification = status
+        viewController.presenter = VerificationErrorPresenter(view: viewController)
         view.present(viewController, animated: true, completion: nil)
     }
     
