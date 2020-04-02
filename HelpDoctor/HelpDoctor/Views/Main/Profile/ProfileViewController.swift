@@ -96,6 +96,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     func setupGeneralView() {
         guard let user = Session.instance.user else { return }
         generalView = ProfileGeneralView(user: user)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(educationPageButtonPressed))
+        swipeRight.direction = .left
+        generalView.addGestureRecognizer(swipeRight)
         scrollView.addSubview(generalView)
         
         generalView.translatesAutoresizingMaskIntoConstraints = false
@@ -109,6 +113,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     func setupEducationView() {
         guard let user = Session.instance.user else { return }
         educationView = ProfileEducationView(user: user)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(careerPageButtonPressed))
+        swipeRight.direction = .left
+        educationView.addGestureRecognizer(swipeRight)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(generalPageButtonPressed))
+        swipeLeft.direction = .right
+        educationView.addGestureRecognizer(swipeLeft)
         educationView.isHidden = true
         scrollView.addSubview(educationView)
         
@@ -123,6 +135,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     func setupCareerView() {
         guard let job = Session.instance.userJob else { return }
         careerView = ProfileCareerView(job: job)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(interestsPageButtonPressed))
+        swipeRight.direction = .left
+        careerView.addGestureRecognizer(swipeRight)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(educationPageButtonPressed))
+        swipeLeft.direction = .right
+        careerView.addGestureRecognizer(swipeLeft)
         careerView.isHidden = true
         scrollView.addSubview(careerView)
         
@@ -137,6 +157,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     func setupInterestsView() {
         guard let interests = Session.instance.userInterests else { return }
         interestsView = ProfileInterestsView(interests: interests)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(careerPageButtonPressed))
+        swipeLeft.direction = .right
+        interestsView.addGestureRecognizer(swipeLeft)
         interestsView.isHidden = true
         scrollView.addSubview(interestsView)
         
