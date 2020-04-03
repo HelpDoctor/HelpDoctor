@@ -19,8 +19,8 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
     private var cache: [IndexPath: UICollectionViewLayoutAttributes] = [:]
     
     override var collectionViewContentSize: CGSize {
-        var maxX: CGFloat = 0.0
-        var maxY: CGFloat = 0.0
+        var maxX = 0.f
+        var maxY = 0.f
         for attribute in self.cache.values {
             if maxX < attribute.frame.maxX {
                 maxX = attribute.frame.maxX
@@ -39,21 +39,36 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
             return
         }
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
-        let cellHeight: CGFloat = 27
+        let cellHeight = 29.f
         
-        var firstRowWidth: CGFloat = 0.0
-        var secondRowWidth: CGFloat = 0.0
+        var firstRowWidth = 0.f
+        var secondRowWidth = 0.f
+        var thirdRowWidth = 0.f
         var allAttributes: [IndexPath: UICollectionViewLayoutAttributes] = [:]
         for itemIndex in 0 ..< numberOfItems {
             let indexPath = IndexPath(item: itemIndex, section: 0)
             let cellWidth = delegate.width(forItemAt: indexPath)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
             let isForFirstRow = firstRowWidth <= secondRowWidth
-            let x = isForFirstRow ? firstRowWidth : secondRowWidth
-            let y = isForFirstRow ? 0.0 : cellHeight + 2
-            attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
-            allAttributes[indexPath] = attributes
-            isForFirstRow ? (firstRowWidth += cellWidth + 2) : (secondRowWidth += cellWidth + 2)
+            let isForSecondRow = secondRowWidth <= thirdRowWidth
+            if isForFirstRow {
+                let x = firstRowWidth
+                let y = 0.f
+                attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
+                allAttributes[indexPath] = attributes
+                firstRowWidth += cellWidth + 9
+            } else {
+                let x = isForSecondRow ? secondRowWidth : thirdRowWidth
+                let y = isForSecondRow ? cellHeight + 12 : (cellHeight + 12) * 2
+                attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
+                allAttributes[indexPath] = attributes
+                isForSecondRow ? (secondRowWidth += cellWidth + 9) : (thirdRowWidth += cellWidth + 9)
+            }
+//            let x = isForFirstRow ? firstRowWidth : secondRowWidth
+//            let y = isForFirstRow ? 0.0 : cellHeight + 2
+//            attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
+//            allAttributes[indexPath] = attributes
+//            isForFirstRow ? (firstRowWidth += cellWidth + 2) : (secondRowWidth += cellWidth + 2)
         }
         self.cache = allAttributes
     }
@@ -65,4 +80,5 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
     override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
         return self.cache[indexPath]
     }
+    
 }

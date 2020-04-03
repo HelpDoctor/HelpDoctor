@@ -45,7 +45,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
 //        imagePicker.delegate = self
         view.backgroundColor = backgroundColor
         setupScrollView()
-        setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter)
+        setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter, title: "Мой профиль")
         setupTopView()
         setupUserPhotoView()
         setupVerificationIcon()

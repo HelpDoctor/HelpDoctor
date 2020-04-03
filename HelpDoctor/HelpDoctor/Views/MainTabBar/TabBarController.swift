@@ -33,9 +33,9 @@ class TabBarController: UITabBarController {
         secondVc.presenter = StartSchedulePresenter(view: secondVc)
         secondVc.tabBarItem = UITabBarItem(title: "Расписание", image: UIImage(named: "Schedule.pdf"), tag: 1)
         
-//        let thirdVc = StartMessagesViewController()
-        let thirdVc = ProfileViewController()
-        thirdVc.presenter = ProfilePresenter(view: thirdVc)
+        let thirdVc = StartMessagesViewController()
+//        let thirdVc = ProfileViewController()
+//        thirdVc.presenter = ProfilePresenter(view: thirdVc)
         thirdVc.tabBarItem = UITabBarItem(title: "Сообщения", image: UIImage(named: "Messages.pdf"), tag: 2)
         
         let fourthVc = StartSettingsViewController()

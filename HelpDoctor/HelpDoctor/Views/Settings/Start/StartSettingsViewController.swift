@@ -14,6 +14,7 @@ class StartSettingsViewController: UIViewController {
     var presenter: StartSettingsPresenterProtocol?
     
     // MARK: - Constants
+    private let headerHeight = 40.f
     private let settingsArray = [
         [SettingsRow.user, SettingsRow.generalSettings, SettingsRow.securitySettings, SettingsRow.addFriends],
         [SettingsRow.notificationSettings, SettingsRow.emailSettings],
@@ -24,11 +25,8 @@ class StartSettingsViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
-        setupHeaderViewWithAvatar(title: "Настройки",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupTableView()
     }
     
@@ -42,7 +40,7 @@ class StartSettingsViewController: UIViewController {
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
-        tableView.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
+        tableView.backgroundColor = .backgroundColor
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
@@ -50,37 +48,13 @@ class StartSettingsViewController: UIViewController {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                       constant: 50).isActive = true
+                                       constant: headerHeight).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                           constant: -48).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
-    
 
-    @objc private func logouButtonPressed() {
-        let logout = Registration(email: nil, password: nil, token: myToken)
-
-        getData(typeOfContent: .logout,
-                returning: (Int?, String?).self,
-                requestParams: logout.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            logout.responce = result
-
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result=\(String(describing: logout.responce))")
-                    guard let code = logout.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        print("Logout")
-                        AppDelegate.shared.rootViewController.switchToLogout()
-                    } else {
-                        self?.showAlert(message: logout.responce?.1)
-                    }
-                }
-            }
-        }
-    }
 //
 //    @objc private func deleteButtonPressed() {
 //        let unRegistration = Registration(email: nil, password: nil, token: nil)
@@ -169,7 +143,7 @@ extension StartSettingsViewController: UITableViewDataSource {
         case 0:
             switch indexPath.row {
             case 0:
-                print("\(indexPath.section)")
+                presenter?.userRow()
             case 2:
                 presenter?.securityRow()
             case 3:
@@ -180,8 +154,7 @@ extension StartSettingsViewController: UITableViewDataSource {
         case 1:
             switch indexPath.row {
             case 0:
-                logouButtonPressed()
-//                print("\(indexPath.section)")
+                print("\(indexPath.section)")
             case 1:
                 presenter?.emailRow()
             default:

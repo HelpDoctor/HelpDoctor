@@ -22,8 +22,8 @@ extension UIViewController {
         view.addSubview(backgroundImage)
     }
     
-    func setupHeaderView(color: UIColor, height: CGFloat, presenter: Presenter?) {
-        let headerView = HeaderView(title: "HelpDoctor",
+    func setupHeaderView(color: UIColor, height: CGFloat, presenter: Presenter?, title: String = "HelpDoctor") {
+        let headerView = HeaderView(title: title,
                                     color: color,
                                     height: height,
                                     presenter: presenter)

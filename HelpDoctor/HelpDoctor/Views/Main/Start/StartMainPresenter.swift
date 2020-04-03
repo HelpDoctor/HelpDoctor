@@ -48,8 +48,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                     guard let code = checkProfile.responce?.0,
                         let status = checkProfile.responce?.1 else { return }
                     if responceCode(code: code) && status == "True" {
-                        self?.view.hideFillProfileButton()
-//                        self?.view.showFillProfileButton()
+//                        self?.view.hideFillProfileButton()
+                        self?.view.showFillProfileButton()
                         if Session.instance.userStatus != .verified {
                             self?.getStatusUser()
                         }

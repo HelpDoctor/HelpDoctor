@@ -10,6 +10,7 @@ import UIKit
 
 protocol StartSettingsPresenterProtocol: Presenter {
     init(view: StartSettingsViewController)
+    func userRow()
     func securityRow()
     func feedbackRow()
     func inviteRow()
@@ -26,6 +27,13 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     }
     
     // MARK: - Public methods
+    func userRow() {
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenter(view: viewController)
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func feedbackRow() {
         let viewController = FeedbackViewController()
         let presenter = FeedbackPresenter(view: viewController)

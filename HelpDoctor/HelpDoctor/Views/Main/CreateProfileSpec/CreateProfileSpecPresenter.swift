@@ -8,15 +8,18 @@
 
 import UIKit
 
-protocol CreateProfileSpecPresenterProtocol: InterestsSearchProtocol, Presenter {
+protocol CreateProfileSpecPresenterProtocol: Presenter {
     init(view: CreateProfileSpecViewController)
+    func loadPopularInterests()
     func interestsSearch()
     func setPhoto(photoString: String?)
     func save()
     func getInterestTitle(index: Int) -> String?
     func getInterestsCount() -> Int?
     func getInterestFromView()
+    func addInterest(index: Int)
     func deleteInterest(index: Int)
+    func next()
     func back()
 }
 
@@ -31,6 +34,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
     var arrayOfAllInterests: [ListOfInterests]?
+    var popularInterests: [ListOfInterests]?
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -38,6 +42,28 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     // MARK: - Public methods
+    func loadPopularInterests() {
+        let mainSpec = specArray[0]?.code ?? "general"
+        let getListOfInterest = Profile()
+        
+        getData(typeOfContent: .getListOfInterestsExtOne,
+                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getListOfInterest.listOfInterests = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self]  in
+                    let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                    let sliceArray = interestMainSpec?.prefix(10)
+                    self?.popularInterests = Array(sliceArray ?? [])
+                    self?.view.reloadCollectionView()
+                }
+            }
+        }
+    }
+    
     /// Открытие формы со списком интересов
     func interestsSearch() {
         guard specArray.count != 0 else {
@@ -68,12 +94,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Установка названия в ячейку коллекции
     /// - Parameter index: индекс ячейки
     func getInterestTitle(index: Int) -> String? {
-        return userInterests[index].name
+        return popularInterests?[index].name
     }
     
     /// Подсчет количества ячеек коллекции
     func getInterestsCount() -> Int? {
-        return userInterests.count
+        return popularInterests?.count
     }
     
     /// Заполнение массива интересов
@@ -91,9 +117,19 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Удаление интереса из массива интересов пользователя, при отмене выделения ячейки коллекции
     /// - Parameter index: индекс ячейки
     func deleteInterest(index: Int) {
-        guard (arrayOfAllInterests?[index].id) != nil else { return }
-        userInterests.remove(at: index)
-        view.reloadCollectionView()
+//        guard (popularInterests?[index].id) != nil else { return }
+//        userInterests.remove(at: index)
+//        view.reloadCollectionView()
+        
+        
+        guard let removingInterest = popularInterests?[index] else { return }
+        guard let removeIndex = userInterests.firstIndex(where: { $0.id == removingInterest.id }) else { return }
+        userInterests.remove(at: removeIndex)
+    }
+    
+    func addInterest(index: Int) {
+        guard let interest = popularInterests?[index] else { return }
+        userInterests.append(interest)
     }
     
     // MARK: - Private methods
@@ -296,11 +332,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Добавление в массив интересов пользователя значения из таблицы под строкой
     /// - Parameter interest: выбранный интерес
-    func addInterest(interest: ListOfInterests) {
-        view.setSpecTextField(text: "")
-        userInterests.append(interest)
-        view.reloadCollectionView()
-    }
+//    func addInterest(interest: ListOfInterests) {
+//        userInterests.append(interest)
+//        view.reloadCollectionView()
+//    }
     /*
     func createInterest() {
         let viewController = CreateInterestViewController()
@@ -317,7 +352,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     /// Переход к следующему экрану
-    private func next() {
+    func next() {
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
