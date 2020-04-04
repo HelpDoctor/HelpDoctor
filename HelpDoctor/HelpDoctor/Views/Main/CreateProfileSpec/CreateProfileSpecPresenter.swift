@@ -43,7 +43,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Public methods
     func loadPopularInterests() {
-        let mainSpec = specArray[0]?.code ?? "general"
+        var mainSpec = "general"
+        if specArray.count != 0 {
+            mainSpec = specArray[0]?.code ?? "general"
+        }
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtOne,
@@ -353,11 +356,18 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Переход к следующему экрану
     func next() {
-        let viewController = ProfileViewController()
-        viewController.presenter = ProfilePresenter(view: viewController)
+        let viewController = CreateProfileImageViewController()
+        let presenter = CreateProfileImagePresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.user = user
+        presenter.jobArray = jobArray.filter {
+            $0?.oid != nil
+        }
+        presenter.specArray = specArray.filter {
+            $0?.id != nil
+        }
+        presenter.userInterests = userInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    func save(source: SourceEditTextField) { }
     
 }

@@ -77,8 +77,6 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }
 
 // MARK: - PickerFieldDelegate

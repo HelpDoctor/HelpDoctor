@@ -98,6 +98,10 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Coordinator
     func next() {
+        guard (user?.is_medic_worker) != nil else {
+            view.showAlert(message: "Поле занятость не заполнено")
+            return
+        }
         let viewController = CreateProfileSpecViewController()
         let presenter = CreateProfileSpecPresenter(view: viewController)
         viewController.presenter = presenter
@@ -114,7 +118,5 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
-    
-    func save(source: SourceEditTextField) { }
     
 }

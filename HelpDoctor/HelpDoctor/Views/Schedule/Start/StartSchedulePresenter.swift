@@ -142,8 +142,6 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     }
     
     // MARK: - PresenterProtocol
-    func save(source: SourceEditTextField) { }
-    
     func back() { }
     
 }

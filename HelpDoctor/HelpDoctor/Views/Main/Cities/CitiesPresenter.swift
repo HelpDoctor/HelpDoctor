@@ -125,6 +125,4 @@ class CitiesPresenter: CitiesPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

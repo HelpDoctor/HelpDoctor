@@ -114,6 +114,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Установка информации о работе пользователя в форму
     /// - Parameter jobData: информация с сервера
     private func setJob(jobData: [ProfileKeyJob]) {
+        session.userJob?.removeAll()
         session.userJob = jobData
         jobArray = jobData
         view.setupCareerView()
@@ -163,11 +164,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) {
-        
-    }
-    
-    /* Обновление аватара
+/* Обновление аватара
     /// Обновление информации о пользователе на сервере
     /// - Parameter source: тип изменений
     func save(source: SourceEditTextField) {

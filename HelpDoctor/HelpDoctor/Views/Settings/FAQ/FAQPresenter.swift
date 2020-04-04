@@ -25,6 +25,4 @@ class FAQPresenter: FAQPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

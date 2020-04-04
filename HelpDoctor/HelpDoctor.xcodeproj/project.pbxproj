@@ -87,6 +87,8 @@
 		46EFF4E024359EF3004B9558 /* VerificationErrorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4DF24359EF3004B9558 /* VerificationErrorViewController.swift */; };
 		46EFF4E224359F05004B9558 /* VerificationErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E124359F05004B9558 /* VerificationErrorPresenter.swift */; };
 		46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */; };
+		46EFF4E9243797B3004B9558 /* CreateProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E8243797B3004B9558 /* CreateProfileImageViewController.swift */; };
+		46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4EA243797C4004B9558 /* CreateProfileImagePresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -296,6 +298,8 @@
 		46EFF4DF24359EF3004B9558 /* VerificationErrorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationErrorViewController.swift; sourceTree = "<group>"; };
 		46EFF4E124359F05004B9558 /* VerificationErrorPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationErrorPresenter.swift; sourceTree = "<group>"; };
 		46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePopoverController.swift; sourceTree = "<group>"; };
+		46EFF4E8243797B3004B9558 /* CreateProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileImageViewController.swift; sourceTree = "<group>"; };
+		46EFF4EA243797C4004B9558 /* CreateProfileImagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileImagePresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -640,6 +644,15 @@
 				46EFF4E124359F05004B9558 /* VerificationErrorPresenter.swift */,
 			);
 			path = VerificationError;
+			sourceTree = "<group>";
+		};
+		46EFF4E72437978E004B9558 /* CreateProfileImage */ = {
+			isa = PBXGroup;
+			children = (
+				46EFF4E8243797B3004B9558 /* CreateProfileImageViewController.swift */,
+				46EFF4EA243797C4004B9558 /* CreateProfileImagePresenter.swift */,
+			);
+			path = CreateProfileImage;
 			sourceTree = "<group>";
 		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
@@ -1068,6 +1081,7 @@
 				46F87F5223BF618B0095264E /* Cities */,
 				46F87F4923BE63000095264E /* Regions */,
 				46F87F3823BDE9270095264E /* Profile */,
+				46EFF4E72437978E004B9558 /* CreateProfileImage */,
 				46F87F3123BCBEB80095264E /* CreateProfileSpec */,
 				46F87F2723BC89440095264E /* CreateProfileWork */,
 				4640B6EF24237ACC0023C3A3 /* CreateProfileScreen2 */,
@@ -1335,6 +1349,7 @@
 				C48F162023B5FE87002D04E3 /* ProfileKeyJob.swift in Sources */,
 				46EFF4DD2434EA11004B9558 /* ProfilePopoverButton.swift in Sources */,
 				46395E122423EBE000BE4F70 /* RegionsSearchTextField.swift in Sources */,
+				46EFF4E9243797B3004B9558 /* CreateProfileImageViewController.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
@@ -1366,6 +1381,7 @@
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
+				46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
 				C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */,

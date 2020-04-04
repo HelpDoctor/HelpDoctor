@@ -26,8 +26,6 @@ class StartAddEventPresenter: StartAddEventPresenterProtocol {
         self.view = view
     }
     
-    func save(source: SourceEditTextField) { }
-    
     // MARK: - Coordinator
     func appointmentButtonPressed() {
         let viewController = AppointmentAddViewController()

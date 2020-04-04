@@ -72,6 +72,4 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     // MARK: - Coordinator
     func back() { }
     
-    func save(source: SourceEditTextField) { }
-    
 }

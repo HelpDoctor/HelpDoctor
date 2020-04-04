@@ -243,11 +243,16 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
 extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
     
     func width(forItemAt indexPath: IndexPath) -> CGFloat {
-        let constraintRect = CGSize(width: contentWidth / 3, height: 29)
+        let font = UIFont.systemFontOfSize(size: 12)
+        var constraintRect = CGSize(width: contentWidth / 3, height: 29)
         let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
+        let newWidth = data.width(withConstrainedHeight: 29, font: font, minimumTextWrapWidth: 30)
+        if newWidth > constraintRect.width {
+            constraintRect = CGSize(width: contentWidth / 2, height: 29)
+        }
         let box = data.boundingRect(with: constraintRect,
                                     options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                    attributes: [NSAttributedString.Key.font: UIFont.systemFontOfSize(size: 12)],
+                                    attributes: [NSAttributedString.Key.font: font],
                                     context: nil)
         return box.width
     }

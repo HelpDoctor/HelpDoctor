@@ -141,8 +141,4 @@ class InterestsPresenter: InterestsPresenterProtocol {
         } 
     }
     
-    func save(source: SourceEditTextField) {
-        print("Not available")
-    }
-    
 }

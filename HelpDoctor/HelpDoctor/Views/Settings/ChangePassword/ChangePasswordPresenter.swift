@@ -25,6 +25,4 @@ class ChangePasswordPresenter: ChangePasswordPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

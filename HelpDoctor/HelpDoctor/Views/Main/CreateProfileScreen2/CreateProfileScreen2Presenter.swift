@@ -90,8 +90,6 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }
 
 // MARK: - PickerFieldDelegate

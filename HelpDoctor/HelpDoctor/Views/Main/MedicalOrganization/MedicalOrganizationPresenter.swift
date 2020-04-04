@@ -92,6 +92,4 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

@@ -185,12 +185,12 @@ class AppointmentAddPresenter: AppointmentAddPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }
 
 extension AppointmentAddPresenter: OtherTimeControllerDelegate {
+    
     func callback(notifyDate: Date) {
         setNotifyDate(date: notifyDate)
     }
+    
 }

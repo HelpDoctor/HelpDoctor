@@ -10,5 +10,4 @@ import UIKit
 
 protocol Presenter {
     func back()
-    func save(source: SourceEditTextField)
 }

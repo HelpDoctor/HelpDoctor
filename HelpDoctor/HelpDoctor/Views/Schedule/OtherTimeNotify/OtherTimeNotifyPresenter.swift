@@ -40,6 +40,4 @@ class OtherTimeNotifyPresenter: OtherTimeNotifyPresenterProtocol {
         view.navigationController?.popToRootViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

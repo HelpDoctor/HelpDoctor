@@ -121,6 +121,4 @@ class RegionsPresenter: RegionsPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }
