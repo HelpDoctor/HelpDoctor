@@ -18,13 +18,17 @@ protocol InterestsPresenterProtocol: Presenter {
     func searchTextIsEmpty()
     func filter(searchText: String)
     func createInterest(interest: String?)
+    func next()
 }
 
 class InterestsPresenter: InterestsPresenterProtocol {
     
     var view: InterestsViewController
-    var arrayInterests: [ListOfInterests]?
+    var user: UpdateProfileKeyUser?
+    var jobArray: [MedicalOrganization?] = []
+    var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
+    var arrayInterests: [ListOfInterests]?
     var filteredArray: [ListOfInterests] = []
     
     required init(view: InterestsViewController) {
@@ -139,6 +143,21 @@ class InterestsPresenter: InterestsPresenterProtocol {
 //            let presenter = previous.presenter
 //            presenter?.setInterests(interests: userInterests)
         } 
+    }
+    
+    func next() {
+        let viewController = CreateProfileImageViewController()
+        let presenter = CreateProfileImagePresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.user = user
+        presenter.jobArray = jobArray.filter {
+            $0?.oid != nil
+        }
+        presenter.specArray = specArray.filter {
+            $0?.id != nil
+        }
+        presenter.userInterests = userInterests
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

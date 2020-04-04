@@ -13,6 +13,7 @@ protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     func citySearch()
     func regionSearch()
     func setRegion(region: Regions)
+    func setRegionFromDevice(_ idRegion: Int)
     func setCity(city: Cities)
     func next(phone: String)
 }
@@ -57,10 +58,49 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         view.setRegion(region: region.regionName ?? "")
     }
     
+    func setRegionFromDevice(_ idRegion: Int) {
+        let getRegions = Profile()
+        
+        getData(typeOfContent: .getRegions,
+                returning: ([Regions], Int?, String?).self,
+                requestParams: [:]) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    
+                    getRegions.regions = result?.0
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            self?.region = getRegions.regions?.first(where: { $0.regionId == idRegion })
+                            guard let cityId = Session.instance.user?.city_id else { return }
+                            self?.setCityFromDevice(cityId)
+                        }
+                    }
+        }
+    }
+    
     func setCity(city: Cities) {
         self.city = city
         view.setCity(city: city.cityName ?? "")
         user?.city_id = city.id
+    }
+    
+    private func setCityFromDevice(_ idCity: Int) {
+        let getCities = Profile()
+        guard let regionId = region?.regionId else { return }
+        
+        getData(typeOfContent: .getListCities,
+                returning: ([Cities], Int?, String?).self,
+                requestParams: ["region": "\(regionId)"]) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            getCities.cities = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    self?.city = getCities.cities?.first(where: { $0.id == idCity })
+                }
+            }
+        }
     }
     
     // MARK: - Coordinator

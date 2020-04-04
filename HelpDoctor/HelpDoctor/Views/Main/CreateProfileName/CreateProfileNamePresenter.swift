@@ -11,6 +11,7 @@ import UIKit
 protocol CreateProfileNamePresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileNameViewController)
     func setGender(_ gender: String)
+    func convertDate(_ birthDate: String) -> String?
     func next(name: String, lastname: String, middleName: String, birthDate: String)
 }
 
@@ -30,6 +31,16 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     func setGender(_ gender: String) {
         self.gender = gender
+    }
+    
+    func convertDate(_ birthDate: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        guard let birthday = dateFormatter.date(from: birthDate) else { return nil }
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: birthday)
     }
     
     // MARK: - Coordinator

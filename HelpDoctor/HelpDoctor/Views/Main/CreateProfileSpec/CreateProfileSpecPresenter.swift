@@ -19,6 +19,7 @@ protocol CreateProfileSpecPresenterProtocol: Presenter {
     func getInterestFromView()
     func addInterest(index: Int)
     func deleteInterest(index: Int)
+    func toAddInterest()
     func next()
     func back()
 }
@@ -367,6 +368,23 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
             $0?.id != nil
         }
         presenter.userInterests = userInterests
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func toAddInterest() {
+        let viewController = InterestsViewController()
+        let presenter = InterestsPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.user = user
+        presenter.jobArray = jobArray.filter {
+            $0?.oid != nil
+        }
+        presenter.specArray = specArray.filter {
+            $0?.id != nil
+        }
+        presenter.arrayInterests = arrayOfAllInterests
+        presenter.userInterests = userInterests
+        presenter.filteredArray = arrayOfAllInterests ?? []
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

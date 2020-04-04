@@ -153,6 +153,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         let width = 92.f
         let height = 29.f
         let top = 17.f
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.backgroundColor = UIColor(red: 0.4, green: 0.063, blue: 0.949, alpha: 1)
         addButton.setTitleColor(.white, for: .normal)
         addButton.setTitle("Добавить интересы", for: .normal)
@@ -205,6 +206,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func backButtonPressed() {
         presenter?.back()
+    }
+    
+    @objc private func addButtonPressed() {
+        presenter?.toAddInterest()
     }
     
     // MARK: - Navigation

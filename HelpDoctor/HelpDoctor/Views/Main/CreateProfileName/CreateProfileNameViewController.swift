@@ -63,6 +63,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
+        setUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -70,6 +71,25 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Private methods
+    private func setUser() {
+        surnameTextField.text = Session.instance.user?.last_name
+        nameTextField.text = Session.instance.user?.first_name
+        patronymicTextField.text = Session.instance.user?.middle_name
+        switch Session.instance.user?.gender {
+        case "male":
+            maleButton.isSelected = true
+            presenter?.setGender("male")
+        case "female":
+            femaleButton.isSelected = true
+            presenter?.setGender("female")
+        default:
+            break
+        }
+        guard let birthday = Session.instance.user?.birthday else { return }
+        birthDateTextField.text = presenter?.convertDate(birthday)
     }
     
     // MARK: - Setup views

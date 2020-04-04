@@ -68,6 +68,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
+        setUser()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,6 +89,15 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     /// - Parameter city: город
     func setCity(city: String) {
         cityTextField.text = city
+    }
+    
+    // MARK: - Private methods
+    private func setUser() {
+        phoneTextField.text = Session.instance.user?.phone_number
+        regionTextField.text = Session.instance.user?.regionName
+        cityTextField.text = Session.instance.user?.cityName
+        guard let regionId = Session.instance.user?.regionId else { return }
+        presenter?.setRegionFromDevice(regionId)
     }
     
     // MARK: - Setup views

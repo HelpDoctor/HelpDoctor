@@ -75,10 +75,9 @@ class RegionsPresenter: RegionsPresenterProtocol {
     // MARK: - Coordinator
     func next(index: Int?) {
         if sender == nil {
-            guard let index = index/*,
-                let region = arrayRegions?[index]*/ else {
-                    view.showAlert(message: "Выберите один регион")
-                    return }
+            guard let index = index else {
+                view.showAlert(message: "Выберите один регион")
+                return }
             let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
@@ -86,20 +85,6 @@ class RegionsPresenter: RegionsPresenterProtocol {
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
-//        } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
-//            guard let index = index/*,
-//                let regionId = arrayRegions?[index].regionId*/ else {
-//                    view.showAlert(message: "Выберите один регион")
-//                    return }
-//            let region = filteredArray[index]
-//            let regionId = filteredArray[index].regionId
-//            let viewController = CitiesViewController()
-//            let presenter = CitiesPresenter(view: viewController, region: region)
-//            viewController.presenter = presenter
-//            presenter.getCities(regionId: regionId)
-//            presenter.sender = sender
-//            presenter.regionId = regionId
-//            view.navigationController?.pushViewController(viewController, animated: true)
         } else if sender == "Work" {
             guard let index = index/*,
                 let regionId = arrayRegions?[index].regionId*/ else {
