@@ -67,6 +67,7 @@ enum TypeOfRequest: String {
     case schedule_deleteForCurrentEvent = "/event/del/"
     case findUsers = "/seach/users"
     case userStatus = "/profile/user_status"
+    case getSetings = "/profile/settings"
 }
 
 enum NetworkMimeType: String {
@@ -218,7 +219,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
-    case .userStatus:
+    case .userStatus, .getSetings:
         request.httpMethod = "GET"
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
@@ -351,6 +352,9 @@ func getData<T>(typeOfContent: TypeOfRequest,
             case .findUsers:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getFindedUsers(for: startPoint, response: response) as? T)
+            case .getSetings:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSON_getSettings(for: startPoint, response: response) as? T)
             }
             DispatchQueue.main.async {
                 completionBlock(replyReturn)

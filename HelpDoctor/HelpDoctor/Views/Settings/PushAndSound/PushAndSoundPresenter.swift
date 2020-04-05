@@ -1,24 +1,24 @@
 //
-//  EmailPresenter.swift
+//  PushAndSoundPresenter.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 23.02.2020.
+//  Created by Mikhail Semerikov on 05.04.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-protocol EmailPresenterProtocol: Presenter {
-    init(view: EmailViewController)
+protocol PushAndSoundPresenterProtocol: Presenter {
+    init(view: PushAndSoundViewController)
     func loadSettings()
 }
 
-class EmailPresenter: EmailPresenterProtocol {
+class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     
-    var view: EmailViewController
+    var view: PushAndSoundViewController
     var settings: Settings?
     
-    required init(view: EmailViewController) {
+    required init(view: PushAndSoundViewController) {
         self.view = view
     }
     
@@ -41,31 +41,10 @@ class EmailPresenter: EmailPresenterProtocol {
     
     private func setSettingsOnView() {
         guard let settings = settings else { return }
-        if settings.email_notification == 1 {
-            view.setValueOnSwitch(true)
-            setPeriodicityOnView()
-        } else {
-            view.setValueOnSwitch(false)
-        }
         
-        settings.invite_pharmcompany == 1 ? view.setValueOnCompanyCheckbox(true) : view.setValueOnCompanyCheckbox(false)
-        settings.consultation == 1 ? view.setValueOnPatientsCheckbox(true) : view.setValueOnPatientsCheckbox(false)
-        
-    }
-    
-    private func setPeriodicityOnView() {
-        switch settings?.periodicity {
-        case 1:
-            view.dayButtonPressed()
-        case 3:
-            view.threeDaysButtonPressed()
-        case 7:
-            view.weekButtonPressed()
-        case 30:
-            view.monthButtonPressed()
-        default:
-            break
-        }
+        settings.push_notification == 1 ? view.setValueOnSwitch(true) : view.setValueOnSwitch(false)
+        settings.add_friend == 1 ? view.setContactsCheckbox(true) : view.setContactsCheckbox(false)
+        settings.message_friend == 1 ? view.setMessagesCheckbox(true) : view.setMessagesCheckbox(false)
     }
     
     // MARK: - Coordinator

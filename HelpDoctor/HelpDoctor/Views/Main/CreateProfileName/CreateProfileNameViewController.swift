@@ -432,7 +432,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private func setupHideBirthdayCheckbox() {
         let top = 7.f
         let leading = 0.f
-        let height = 15.f
+        let height = 20.f
         hideBirthdayCheckbox.contentHorizontalAlignment = .left
         hideBirthdayCheckbox.contentVerticalAlignment = .center
         hideBirthdayCheckbox.setTitle(" Не указывать в профиле", for: .normal)

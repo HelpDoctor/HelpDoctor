@@ -14,11 +14,12 @@ class EmailViewController: UIViewController {
     var presenter: EmailPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let headerHeight = 40.f
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
     private let headerLabel = UILabel()
     private let allowLabel = UILabel()
-    private let emailSwitch = UISwitch()
+    let emailSwitch = UISwitch()
     private let periodLabel = UILabel()
     private let dayButton = PeriodicButton(title: "Раз в день")
     private let threeDaysButton = PeriodicButton(title: "Раз в 3 дня")
@@ -33,11 +34,8 @@ class EmailViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
-        setupHeaderViewWithAvatar(title: "Настройки",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()
@@ -53,6 +51,7 @@ class EmailViewController: UIViewController {
         setupBottomHeaderLabel()
         setupCompanyCheckbox()
         setupPatientsCheckbox()
+        presenter?.loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,24 +60,44 @@ class EmailViewController: UIViewController {
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
+    // MARK: - Public methods
+    func setValueOnSwitch(_ value: Bool) {
+        emailSwitch.isOn = value
+        if value {
+            print("UISwitch state is now ON")
+            emailSwitch.thumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
+        } else {
+            print("UISwitch state is now Off")
+            emailSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        }
+    }
+    
+    func setValueOnCompanyCheckbox(_ value: Bool) {
+        companyCheckbox.isSelected = value
+    }
+    
+    func setValueOnPatientsCheckbox(_ value: Bool) {
+        patientsCheckbox.isSelected = value
+    }
+    
     // MARK: - Setup views
     private func setupTopStackView() {
-        let height: CGFloat = 40
+        let height = 40.f
         
-        topStackView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
+        topStackView.backgroundColor = .searchBarTintColor
         view.addSubview(topStackView)
         
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                          constant: 50).isActive = true
+                                          constant: headerHeight).isActive = true
         topStackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupHeaderIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 20
+        let width = 30.f
+        let leading = 20.f
         headerIcon.image = UIImage(named: "emailSettings")
         topStackView.addSubview(headerIcon)
         
@@ -91,11 +110,11 @@ class EmailViewController: UIViewController {
     }
     
     private func setupHeaderLabel() {
-        let leading: CGFloat = 20
+        let leading = 20.f
         
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
-        headerLabel.font = .systemFontOfSize(size: 14)
+        headerLabel.font = .boldSystemFontOfSize(size: 14)
         headerLabel.textColor = .white
         headerLabel.text = "Настройки почтовой рассылки"
         topStackView.addSubview(headerLabel)
@@ -110,14 +129,14 @@ class EmailViewController: UIViewController {
     }
     
     private func setupAllowLabel() {
-        let leading: CGFloat = 20
-        let top: CGFloat = 11
-        let height: CGFloat = 19
-        let width: CGFloat = 210
+        let leading = 20.f
+        let top = 11.f
+        let height = 19.f
+        let width = 210.f
         
         allowLabel.numberOfLines = 1
         allowLabel.textAlignment = .left
-        allowLabel.font = .systemFontOfSize(size: 14)
+        allowLabel.font = .mediumSystemFontOfSize(size: 14)
         allowLabel.textColor = .white
         allowLabel.text = "Разрешить рассылку на e-mail"
         view.addSubview(allowLabel)
@@ -132,7 +151,7 @@ class EmailViewController: UIViewController {
     }
     
     private func setupEmailSwitch() {
-        let trailing: CGFloat = 25
+        let trailing = 25.f
         emailSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
         emailSwitch.setOn(false, animated: true)
         emailSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
@@ -147,14 +166,14 @@ class EmailViewController: UIViewController {
     }
     
     private func setupPeriodLabel() {
-        let leading: CGFloat = 20
-        let top: CGFloat = 11
-        let height: CGFloat = 19
-        let width: CGFloat = 210
+        let leading = 20.f
+        let top = 11.f
+        let height = 19.f
+        let width = 210.f
         
         periodLabel.numberOfLines = 1
         periodLabel.textAlignment = .left
-        periodLabel.font = .systemFontOfSize(size: 14)
+        periodLabel.font = .mediumSystemFontOfSize(size: 14)
         periodLabel.textColor = .white
         periodLabel.text = "Периодичность"
         view.addSubview(periodLabel)
@@ -169,10 +188,10 @@ class EmailViewController: UIViewController {
     }
     
     private func setupDayButton() {
-        let top: CGFloat = 19
-        let leading: CGFloat = 40
-        let width: CGFloat = 90
-        let height: CGFloat = 30
+        let top = 19.f
+        let leading = 40.f
+        let width = 90.f
+        let height = 30.f
         dayButton.addTarget(self, action: #selector(dayButtonPressed), for: .touchUpInside)
         dayButton.update(isSelected: false)
         view.addSubview(dayButton)
@@ -187,9 +206,9 @@ class EmailViewController: UIViewController {
     }
     
     private func setupThreeDaysButton() {
-        let trailing: CGFloat = 40
-        let width: CGFloat = 90
-        let height: CGFloat = 30
+        let trailing = 40.f
+        let width = 90.f
+        let height = 30.f
         threeDaysButton.addTarget(self, action: #selector(threeDaysButtonPressed), for: .touchUpInside)
         threeDaysButton.update(isSelected: false)
         view.addSubview(threeDaysButton)
@@ -203,10 +222,10 @@ class EmailViewController: UIViewController {
     }
     
     private func setupWeekButton() {
-        let top: CGFloat = 10
-        let leading: CGFloat = 40
-        let width: CGFloat = 90
-        let height: CGFloat = 30
+        let top = 10.f
+        let leading = 40.f
+        let width = 90.f
+        let height = 30.f
         weekButton.addTarget(self, action: #selector(weekButtonPressed), for: .touchUpInside)
         weekButton.update(isSelected: false)
         view.addSubview(weekButton)
@@ -221,9 +240,9 @@ class EmailViewController: UIViewController {
     }
     
     private func setupMonthButton() {
-        let trailing: CGFloat = 40
-        let width: CGFloat = 90
-        let height: CGFloat = 30
+        let trailing = 40.f
+        let width = 90.f
+        let height = 30.f
         monthButton.addTarget(self, action: #selector(monthButtonPressed), for: .touchUpInside)
         monthButton.update(isSelected: false)
         view.addSubview(monthButton)
@@ -237,8 +256,8 @@ class EmailViewController: UIViewController {
     }
     
     private func setupBottomStackView() {
-        let height: CGFloat = 40
-        let top: CGFloat = 20
+        let height = 40.f
+        let top = 20.f
         
         bottomStackView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
         view.addSubview(bottomStackView)
@@ -252,8 +271,8 @@ class EmailViewController: UIViewController {
     }
     
     private func setupBottomHeaderIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 20
+        let width = 30.f
+        let leading = 20.f
         bottomHeaderIcon.image = UIImage(named: "emailInvite")
         bottomStackView.addSubview(bottomHeaderIcon)
         
@@ -266,11 +285,11 @@ class EmailViewController: UIViewController {
     }
     
     private func setupBottomHeaderLabel() {
-        let leading: CGFloat = 20
+        let leading = 20.f
         
         bottomHeaderLabel.numberOfLines = 1
         bottomHeaderLabel.textAlignment = .left
-        bottomHeaderLabel.font = .systemFontOfSize(size: 14)
+        bottomHeaderLabel.font = .boldSystemFontOfSize(size: 14)
         bottomHeaderLabel.textColor = .white
         bottomHeaderLabel.text = "Настройки приглашений"
         bottomStackView.addSubview(bottomHeaderLabel)
@@ -285,9 +304,9 @@ class EmailViewController: UIViewController {
     }
     
     private func setupCompanyCheckbox() {
-        let top: CGFloat = 23
-        let leading: CGFloat = 23
-        let height: CGFloat = 20
+        let top = 23.f
+        let leading = 23.f
+        let height = 20.f
         companyCheckbox.contentHorizontalAlignment = .left
         companyCheckbox.contentVerticalAlignment = .center
         companyCheckbox.setTitle("Получать приглашения от компаний", for: .normal)
@@ -307,9 +326,9 @@ class EmailViewController: UIViewController {
     }
     
     private func setupPatientsCheckbox() {
-        let top: CGFloat = 23
-        let leading: CGFloat = 23
-        let height: CGFloat = 35
+        let top = 23.f
+        let leading = 23.f
+        let height = 35.f
         patientsCheckbox.contentHorizontalAlignment = .left
         patientsCheckbox.contentVerticalAlignment = .center
         patientsCheckbox.setTitle(" Получать запросы от пациентов на проведение консультаций", for: .normal)
@@ -339,28 +358,28 @@ class EmailViewController: UIViewController {
         }
     }
     
-    @objc private func dayButtonPressed() {
+    @objc func dayButtonPressed() {
         dayButton.update(isSelected: !dayButton.isSelected)
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: false)
         monthButton.update(isSelected: false)
     }
     
-    @objc private func threeDaysButtonPressed() {
+    @objc func threeDaysButtonPressed() {
         dayButton.update(isSelected: false)
         threeDaysButton.update(isSelected: !threeDaysButton.isSelected)
         weekButton.update(isSelected: false)
         monthButton.update(isSelected: false)
     }
     
-    @objc private func weekButtonPressed() {
+    @objc func weekButtonPressed() {
         dayButton.update(isSelected: false)
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: !weekButton.isSelected)
         monthButton.update(isSelected: false)
     }
     
-    @objc private func monthButtonPressed() {
+    @objc func monthButtonPressed() {
         dayButton.update(isSelected: false)
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: false)

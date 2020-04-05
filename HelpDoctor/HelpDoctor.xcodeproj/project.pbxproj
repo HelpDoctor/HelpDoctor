@@ -78,6 +78,9 @@
 		4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */; };
 		4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347C23DD705200AFAA91 /* SelectDateViewController.swift */; };
 		4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */; };
+		46787A75243906D9005C0258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A74243906D9005C0258 /* Settings.swift */; };
+		46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */; };
+		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
 		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
@@ -289,6 +292,9 @@
 		4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		4670347C23DD705200AFAA91 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
 		4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePresenter.swift; sourceTree = "<group>"; };
+		46787A74243906D9005C0258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundViewController.swift; sourceTree = "<group>"; };
+		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
@@ -637,6 +643,15 @@
 			path = SelectDate;
 			sourceTree = "<group>";
 		};
+		46787A762439A6BC005C0258 /* PushAndSound */ = {
+			isa = PBXGroup;
+			children = (
+				46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */,
+				46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */,
+			);
+			path = PushAndSound;
+			sourceTree = "<group>";
+		};
 		46EFF4DE24359ED4004B9558 /* VerificationError */ = {
 			isa = PBXGroup;
 			children = (
@@ -922,6 +937,7 @@
 				46203EEF23C443F50072653A /* ResultFindedUsers.swift */,
 				46203EEA23C443E20072653A /* Schedule */,
 				46203EE823C443C40072653A /* ScheduleEvents.swift */,
+				46787A74243906D9005C0258 /* Settings.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1118,6 +1134,7 @@
 		C48F168123BA05DC002D04E3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				46787A762439A6BC005C0258 /* PushAndSound */,
 				4640B6D32402B02A0023C3A3 /* Email */,
 				4640B6CE24028EF30023C3A3 /* FAQ */,
 				4640B6C924027C2E0023C3A3 /* Invite */,
@@ -1391,6 +1408,7 @@
 				C4CBC3B323D026D600434BFB /* Registration.swift in Sources */,
 				C4CBC3AD23D026A900434BFB /* Profile.swift in Sources */,
 				C48F162623B5FE87002D04E3 /* GetMedicalOrganization.swift in Sources */,
+				46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */,
 				C48F162A23B5FE87002D04E3 /* KeychainWrapper.swift in Sources */,
 				46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */,
 				46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */,
@@ -1438,6 +1456,7 @@
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
 				4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */,
 				46EFF4D924335FDB004B9558 /* ProfileInterestsView.swift in Sources */,
+				46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */,
 				46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */,
 				46F87F2923BC89760095264E /* CreateProfileWorkViewController.swift in Sources */,
 				46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */,
@@ -1459,6 +1478,7 @@
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
 				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
+				46787A75243906D9005C0258 /* Settings.swift in Sources */,
 				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
 				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,

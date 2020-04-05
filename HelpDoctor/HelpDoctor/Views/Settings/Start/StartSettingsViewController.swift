@@ -154,7 +154,7 @@ extension StartSettingsViewController: UITableViewDataSource {
         case 1:
             switch indexPath.row {
             case 0:
-                print("\(indexPath.section)")
+                presenter?.pushRow()
             case 1:
                 presenter?.emailRow()
             default:

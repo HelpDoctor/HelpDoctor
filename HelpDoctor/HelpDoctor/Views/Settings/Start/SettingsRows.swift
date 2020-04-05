@@ -17,4 +17,6 @@ enum SettingsRow: String {
     case emailSettings = "Настройка почтовой рыссылки и приглашений"
     case callback = "Связаться с разработчиками"
     case help = "Помощь HelpDoctor"
+    case push = "Настройки уведомлений"
+    case sound = "Звук уведомлений"
 }

@@ -15,6 +15,7 @@ protocol StartSettingsPresenterProtocol: Presenter {
     func feedbackRow()
     func inviteRow()
     func helpRow()
+    func pushRow()
     func emailRow()
 }
 
@@ -58,6 +59,13 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     func helpRow() {
         let viewController = FAQViewController()
         let presenter = FAQPresenter(view: viewController)
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func pushRow() {
+        let viewController = PushAndSoundViewController()
+        let presenter = PushAndSoundPresenter(view: viewController)
         viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: true)
     }
