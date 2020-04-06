@@ -15,11 +15,13 @@ class EmailViewController: UIViewController {
     
     // MARK: - Constants and variables
     private let headerHeight = 40.f
+    private let onThumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
+    private let offThumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
     private let headerLabel = UILabel()
     private let allowLabel = UILabel()
-    let emailSwitch = UISwitch()
+    private let emailSwitch = UISwitch()
     private let periodLabel = UILabel()
     private let dayButton = PeriodicButton(title: "Раз в день")
     private let threeDaysButton = PeriodicButton(title: "Раз в 3 дня")
@@ -51,25 +53,19 @@ class EmailViewController: UIViewController {
         setupBottomHeaderLabel()
         setupCompanyCheckbox()
         setupPatientsCheckbox()
-        presenter?.loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        presenter?.setSettingsOnView()
     }
     
     // MARK: - Public methods
     func setValueOnSwitch(_ value: Bool) {
         emailSwitch.isOn = value
-        if value {
-            print("UISwitch state is now ON")
-            emailSwitch.thumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
-        } else {
-            print("UISwitch state is now Off")
-            emailSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        }
+        emailSwitch.thumbTintColor = emailSwitch.isOn ? onThumbTintColor : offThumbTintColor
     }
     
     func setValueOnCompanyCheckbox(_ value: Bool) {
@@ -349,12 +345,10 @@ class EmailViewController: UIViewController {
     }
     
     @objc func switchStateDidChange(_ sender: UISwitch) {
-        if sender.isOn {
-            print("UISwitch state is now ON")
-            emailSwitch.thumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
-        } else {
-            print("UISwitch state is now Off")
-            emailSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        emailSwitch.thumbTintColor = sender.isOn ? onThumbTintColor : offThumbTintColor
+
+        if sender == emailSwitch {
+            presenter?.updateSettings("email_notification", sender.isOn ? 1 : 0)
         }
     }
     
@@ -363,6 +357,7 @@ class EmailViewController: UIViewController {
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: false)
         monthButton.update(isSelected: false)
+        presenter?.updateSettings("periodicity", 1)
     }
     
     @objc func threeDaysButtonPressed() {
@@ -370,6 +365,7 @@ class EmailViewController: UIViewController {
         threeDaysButton.update(isSelected: !threeDaysButton.isSelected)
         weekButton.update(isSelected: false)
         monthButton.update(isSelected: false)
+        presenter?.updateSettings("periodicity", 3)
     }
     
     @objc func weekButtonPressed() {
@@ -377,6 +373,7 @@ class EmailViewController: UIViewController {
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: !weekButton.isSelected)
         monthButton.update(isSelected: false)
+        presenter?.updateSettings("periodicity", 7)
     }
     
     @objc func monthButtonPressed() {
@@ -384,14 +381,17 @@ class EmailViewController: UIViewController {
         threeDaysButton.update(isSelected: false)
         weekButton.update(isSelected: false)
         monthButton.update(isSelected: !monthButton.isSelected)
+        presenter?.updateSettings("periodicity", 30)
     }
     
     @objc private func companyCheckboxPressed() {
         companyCheckbox.isSelected = !companyCheckbox.isSelected
+        presenter?.updateSettings("invite_pharmcompany", companyCheckbox.isSelected ? 1 : 0)
     }
     
     @objc private func patientsCheckboxPressed() {
         patientsCheckbox.isSelected = !patientsCheckbox.isSelected
+        presenter?.updateSettings("consultation", patientsCheckbox.isSelected ? 1 : 0)
     }
     
 }

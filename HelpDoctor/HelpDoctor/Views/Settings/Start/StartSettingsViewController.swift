@@ -21,6 +21,7 @@ class StartSettingsViewController: UIViewController {
         [SettingsRow.callback, SettingsRow.help]
     ]
     private let tableView = UITableView()
+    private let deleteView = UIView()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -28,6 +29,8 @@ class StartSettingsViewController: UIViewController {
         view.backgroundColor = .backgroundColor
         setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupTableView()
+        setupDeleteView()
+        presenter?.loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -54,24 +57,35 @@ class StartSettingsViewController: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
+    
+    private func setupDeleteView() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(deleteButtonPressed))
+        deleteView.backgroundColor = .red
+        deleteView.addGestureRecognizer(tap)
+        view.addSubview(deleteView)
+        
+        deleteView.translatesAutoresizingMaskIntoConstraints = false
+        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        deleteView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        deleteView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
 
-//
-//    @objc private func deleteButtonPressed() {
-//        let unRegistration = Registration(email: nil, password: nil, token: nil)
-//        getData(typeOfContent: .deleteMail,
-//                returning: (Int?, String?).self,
-//                requestParams: [:])
-//        { [weak self] result in
-//            let dispathGroup = DispatchGroup()
-//            unRegistration.responce = result
-//
-//            dispathGroup.notify(queue: DispatchQueue.main) {
-//                DispatchQueue.main.async { [weak self] in
-//                    print("result= \(String(describing: unRegistration.responce))")
-//                }
-//            }
-//        }
-//    }
+    @objc private func deleteButtonPressed() {
+        let unRegistration = Registration(email: nil, password: nil, token: nil)
+        getData(typeOfContent: .deleteMail,
+                returning: (Int?, String?).self,
+                requestParams: [:]) { result in
+            let dispathGroup = DispatchGroup()
+            unRegistration.responce = result
+
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async {
+                    print("result= \(String(describing: unRegistration.responce))")
+                }
+            }
+        }
+    }
 
 }
 
@@ -79,6 +93,10 @@ class StartSettingsViewController: UIViewController {
 extension StartSettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
     
@@ -111,31 +129,6 @@ extension StartSettingsViewController: UITableViewDelegate {
             return headerView
         }
 
-    }
-}
-
-// MARK: - Table Data Source
-extension StartSettingsViewController: UITableViewDataSource {
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return settingsArray.count
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingsArray[section].count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
-                                                       for: indexPath) as? SettingsCell
-            else { return UITableViewCell() }
-        cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
-        cell.backgroundColor = .clear
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -171,6 +164,27 @@ extension StartSettingsViewController: UITableViewDataSource {
             print("smth \(indexPath.row)")
         }
         
+    }
+}
+
+// MARK: - Table Data Source
+extension StartSettingsViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return settingsArray.count
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return settingsArray[section].count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
+                                                       for: indexPath) as? SettingsCell
+            else { return UITableViewCell() }
+        cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        cell.backgroundColor = .clear
+        return cell
     }
     
 }

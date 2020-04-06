@@ -360,6 +360,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     /// Установка радиокнопки скрытия информации о занятости
     private func setupHideEmploymentButton() {
         let top = 14.f
+        let height = 20.f
         hideEmploymentButton.addTarget(self, action: #selector(hideEmploymentCheckboxPressed), for: .touchUpInside)
         hideEmploymentButton.contentHorizontalAlignment = .left
         hideEmploymentButton.setTitle(" Скрыть информацию о моей занятости", for: .normal)
@@ -373,7 +374,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                                   constant: top).isActive = true
         hideEmploymentButton.leadingAnchor.constraint(equalTo: medicalButton.leadingAnchor).isActive = true
         hideEmploymentButton.widthAnchor.constraint(equalTo: medicalButton.widthAnchor, multiplier: 1).isActive = true
-        hideEmploymentButton.heightAnchor.constraint(equalTo: medicalButton.heightAnchor, multiplier: 1).isActive = true
+        hideEmploymentButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки перехода к следующему экрану

@@ -10,6 +10,7 @@ import UIKit
 
 protocol StartSettingsPresenterProtocol: Presenter {
     init(view: StartSettingsViewController)
+    func loadSettings()
     func userRow()
     func securityRow()
     func feedbackRow()
@@ -28,6 +29,22 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     }
     
     // MARK: - Public methods
+    func loadSettings() {
+        let getSettings = SettingsResponse()
+        getData(typeOfContent: .getSetings,
+                returning: ([Settings], Int?, String?).self,
+                requestParams: [:]) { result in
+                    let dispathGroup = DispatchGroup()
+                    getSettings.settings = result?.0
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async {
+                            print("getSettings =\(String(describing: getSettings.settings))")
+                            Session.instance.userSettings = getSettings.settings?[0]
+                        }
+                    }
+        }
+    }
+    
     func userRow() {
         let viewController = ProfileViewController()
         let presenter = ProfilePresenter(view: viewController)

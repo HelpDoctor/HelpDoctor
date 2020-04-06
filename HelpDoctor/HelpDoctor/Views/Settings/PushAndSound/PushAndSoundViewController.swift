@@ -17,6 +17,8 @@ class PushAndSoundViewController: UIViewController {
     private let headerHeight = 40.f
     private let rowHeight = 40.f
     private let borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
+    private let onThumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
+    private let offThumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
     private let headerLabel = UILabel()
@@ -95,23 +97,19 @@ class PushAndSoundViewController: UIViewController {
         setupCounterLabel()
         setupCounterSwitch()
         setupMaskView()
-        presenter?.loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        presenter?.setSettingsOnView()
     }
     
     // MARK: - Public methods
     func setValueOnSwitch(_ value: Bool) {
         pushSwitch.isOn = value
-        if value {
-            pushSwitch.thumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
-        } else {
-            pushSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        }
+        pushSwitch.thumbTintColor = pushSwitch.isOn ? onThumbTintColor : offThumbTintColor
     }
     
     func setMessagesCheckbox(_ value: Bool) {
@@ -647,21 +645,21 @@ class PushAndSoundViewController: UIViewController {
     
     
     @objc func switchStateDidChange(_ sender: UISwitch) {
-        if sender.isOn {
-            print("UISwitch state is now ON")
-            sender.thumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
-        } else {
-            print("UISwitch state is now Off")
-            sender.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
+        sender.thumbTintColor = sender.isOn ? onThumbTintColor : offThumbTintColor
+        
+        if sender == pushSwitch {
+            presenter?.updateSettings("push_notification", sender.isOn ? 1 : 0)
         }
     }
     
     @objc private func messagesCheckboxPressed() {
         messagesCheckbox.isSelected = !messagesCheckbox.isSelected
+        presenter?.updateSettings("message_friend", messagesCheckbox.isSelected ? 1 : 0)
     }
     
     @objc private func contactsCheckboxPressed() {
         contactsCheckbox.isSelected = !contactsCheckbox.isSelected
+        presenter?.updateSettings("add_friend", contactsCheckbox.isSelected ? 1 : 0)
     }
     
     @objc private func eventsCheckboxPressed() {
