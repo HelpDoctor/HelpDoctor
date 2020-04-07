@@ -121,4 +121,11 @@ extension String {
         return ceil(textWidth)
     }
     
+    var htmlAttributedString: NSAttributedString? {
+        return try? NSAttributedString(data: Data(utf8),
+                                       options: [.documentType: NSAttributedString.DocumentType.html,
+                                                 .characterEncoding: String.Encoding.utf8.rawValue],
+                                       documentAttributes: nil)
+    }
+    
 }

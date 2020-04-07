@@ -63,22 +63,22 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Private methods
     private func getStatusUser() {
-        let userStatus = Registration(email: nil, password: nil, token: myToken)
+        let userStatus = VerificationResponse()
         
         getData(typeOfContent: .userStatus,
-                returning: (Int?, String?).self,
-                requestParams: userStatus.requestParams) { [weak self] result in
+                returning: ([Verification], Int?, String?).self,
+                requestParams: [:]) { [weak self] result in
                     let dispathGroup = DispatchGroup()
-                    userStatus.responce = result
+                    userStatus.verification = result?.0
                     
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self] in
-                            print("result=\(String(describing: userStatus.responce))")
-                            guard let status = userStatus.responce?.1 else { return }
+                            print("result=\(String(describing: userStatus.verification))")
+                            guard let status = userStatus.verification?[0].status else { return }
                             switch status {
                             case "denied":
                                 Session.instance.userStatus = .denied
-                                self?.toErrorVerification(.denied)
+                                self?.toErrorVerification(.error, userStatus.verification?[0].message)
                             case "not_verification":
                                 Session.instance.userStatus = .notVerification
                                 self?.toVerification()
@@ -164,10 +164,11 @@ class StartMainPresenter: StartMainPresenterProtocol {
         view.present(viewController, animated: true, completion: nil)
     }
     
-    func toErrorVerification(_ status: StatusVerification) {
+    func toErrorVerification(_ status: StatusVerification, _ message: String?) {
         let viewController = VerificationErrorViewController()
         viewController.statusVerification = status
         viewController.presenter = VerificationErrorPresenter(view: viewController)
+        viewController.messageFromServer = message
         view.present(viewController, animated: true, completion: nil)
     }
     

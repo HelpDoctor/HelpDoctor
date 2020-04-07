@@ -67,7 +67,7 @@ enum TypeOfRequest: String {
     case schedule_deleteForCurrentEvent = "/event/del/"
     case findUsers = "/seach/users"
     case userStatus = "/profile/user_status"
-    case getSetings = "/profile/settings"
+    case getSettings = "/profile/settings"
     case updateSettings = "/profile/settings/update"
 }
 
@@ -220,7 +220,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
-    case .userStatus, .getSetings:
+    case .userStatus, .getSettings:
         request.httpMethod = "GET"
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
@@ -263,7 +263,6 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .deleteMail,
                  .logout,
                  .checkProfile,
-                 .userStatus,
                  .updateProfile,
                  .schedule_CreateOrUpdateEvent,
                  .schedule_deleteForCurrentEvent,
@@ -354,7 +353,10 @@ func getData<T>(typeOfContent: TypeOfRequest,
             case .findUsers:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getFindedUsers(for: startPoint, response: response) as? T)
-            case .getSetings:
+            case .userStatus:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSON_getVerification(for: startPoint, response: response) as? T)
+            case .getSettings:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getSettings(for: startPoint, response: response) as? T)
             }

@@ -69,7 +69,7 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     
     private func loadSettings() {
         let getSettings = SettingsResponse()
-        getData(typeOfContent: .getSetings,
+        getData(typeOfContent: .getSettings,
                 returning: ([Settings], Int?, String?).self,
                 requestParams: [:]) { result in
                     let dispathGroup = DispatchGroup()

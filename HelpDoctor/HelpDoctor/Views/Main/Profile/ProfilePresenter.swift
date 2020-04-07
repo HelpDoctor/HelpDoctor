@@ -11,6 +11,7 @@ import UIKit
 protocol ProfilePresenterProtocol: Presenter {
     init(view: ProfileViewController)
     func getUser()
+    func toEditProfile()
     func logout()
     func back()
 }
@@ -58,6 +59,12 @@ class ProfilePresenter: ProfilePresenterProtocol {
                 }
             }
         }
+    }
+    
+    func toEditProfile() {
+        let viewController = CreateProfileNameViewController()
+        viewController.presenter = CreateProfileNamePresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func logout() {

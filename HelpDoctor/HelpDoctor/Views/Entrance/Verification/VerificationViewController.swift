@@ -18,6 +18,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private let label = UILabel()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
@@ -58,9 +59,10 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
-        sendButton.setTitle("Ok", for: .normal)
+        sendButton.setTitle("Ок", for: .normal)
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
+        setupSubtitleLabel()
     }
     
     // MARK: - Setup views
@@ -136,16 +138,35 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка подзаголовка
+    private func setupSubtitleLabel() {
+        let top = 5.f
+        let height = 17.f
+        subtitleLabel.font = .semiBoldSystemFontOfSize(size: 16)
+        subtitleLabel.textColor = .white
+        subtitleLabel.text = "На рассмотрении"
+        subtitleLabel.textAlignment = .center
+        scrollView.addSubview(subtitleLabel)
+        
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                        constant: top).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка описания
     private func setupLabel() {
-        let top = 16.f
+        let top = 38.f
         let width = Session.width - 22.f
-        let height = 85.f
+        let height = 102.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text =
         """
-        Чтобы завершить регистрацию, Вам необходимо предоставить копию документа,
+        Чтобы получить доступ к полному функционалу приложения, \
+        Вам необходимо предоставить копию документа, \
         подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании
         """
         label.textAlignment = .left

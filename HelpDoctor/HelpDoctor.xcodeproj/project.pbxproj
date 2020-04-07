@@ -46,6 +46,7 @@
 		46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */; };
 		46203F2F23CCC73E0072653A /* AddMembersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F2E23CCC73E0072653A /* AddMembersViewController.swift */; };
 		46203F3123CCC7520072653A /* AddMembersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203F3023CCC7520072653A /* AddMembersPresenter.swift */; };
+		463010B5243CD817008B9D50 /* UserStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 463010B4243CD817008B9D50 /* UserStatus.swift */; };
 		46395E102423EBD600BE4F70 /* CitiesSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46395E0F2423EBD500BE4F70 /* CitiesSearchTextField.swift */; };
 		46395E122423EBE000BE4F70 /* RegionsSearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46395E112423EBE000BE4F70 /* RegionsSearchTextField.swift */; };
 		4640B6B9240139420023C3A3 /* JobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6B8240139420023C3A3 /* JobCell.swift */; };
@@ -260,6 +261,7 @@
 		46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorView.swift; sourceTree = "<group>"; };
 		46203F2E23CCC73E0072653A /* AddMembersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersViewController.swift; sourceTree = "<group>"; };
 		46203F3023CCC7520072653A /* AddMembersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMembersPresenter.swift; sourceTree = "<group>"; };
+		463010B4243CD817008B9D50 /* UserStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserStatus.swift; sourceTree = "<group>"; };
 		46395E0F2423EBD500BE4F70 /* CitiesSearchTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CitiesSearchTextField.swift; sourceTree = "<group>"; };
 		46395E112423EBE000BE4F70 /* RegionsSearchTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionsSearchTextField.swift; sourceTree = "<group>"; };
 		4640B6B8240139420023C3A3 /* JobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JobCell.swift; sourceTree = "<group>"; };
@@ -938,6 +940,7 @@
 				46203EEA23C443E20072653A /* Schedule */,
 				46203EE823C443C40072653A /* ScheduleEvents.swift */,
 				46787A74243906D9005C0258 /* Settings.swift */,
+				463010B4243CD817008B9D50 /* UserStatus.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1374,6 +1377,7 @@
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
 				46072E0C23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift in Sources */,
+				463010B5243CD817008B9D50 /* UserStatus.swift in Sources */,
 				4640B6E02413F0580023C3A3 /* BackButton.swift in Sources */,
 				46EFF4E024359EF3004B9558 /* VerificationErrorViewController.swift in Sources */,
 				46F87F4823BE33A60095264E /* EditTextField.swift in Sources */,

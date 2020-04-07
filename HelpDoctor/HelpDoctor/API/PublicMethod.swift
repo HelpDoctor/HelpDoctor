@@ -16,3 +16,14 @@ func parseJSONPublicMethod(for startPoint: [String: AnyObject]?, response: URLRe
     
     return (httpResponse.statusCode, status)
 }
+
+func parseJSONStatusMethod(for startPoint: [String: AnyObject]?, response: URLResponse?) -> (Int?, String?, String?)? {
+    
+    guard let status = startPoint?["status"] as? String,
+        let message = startPoint?["message"] as? String,
+        let httpResponse = response as? HTTPURLResponse
+        
+        else { return (nil, nil, nil) }
+    
+    return (httpResponse.statusCode, status, message)
+}

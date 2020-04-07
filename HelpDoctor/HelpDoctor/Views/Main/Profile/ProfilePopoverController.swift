@@ -9,6 +9,7 @@
 import UIKit
 
 protocol ProfilePopoverDelegate: class {
+    func toEditProfile()
     func logout()
 }
 
@@ -63,7 +64,7 @@ class ProfilePopoverController: UIViewController {
     }
     
     @objc private func editProfilePressed(tap: UITapGestureRecognizer) {
-        print("Редактирование профиля")
+        delegate?.toEditProfile()
         dismiss(animated: true, completion: nil)
     }
     

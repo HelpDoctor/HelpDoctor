@@ -18,6 +18,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Dependency
     var presenter: VerificationErrorPresenterProtocol?
     var statusVerification: StatusVerification?
+    var messageFromServer: String?
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
@@ -48,10 +49,10 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         setupTitleLabel()
         setupSubtitleLabel()
         setupLabel()
+        setupCommentTextView()
         setupAddFileTextField()
         setupSubscriptLabel()
         setupSendButton()
-        setupCommentTextView()
         if #available(iOS 13.0, *) {} else {
             setupBackButton()
         }
@@ -72,7 +73,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
-        sendButton.setTitle("Ok", for: .normal)
+        sendButton.setTitle("Ок", for: .normal)
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
         commentTextView.isHidden = true
@@ -215,8 +216,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         case .error:
             label.text =
             """
-            Возможно, это произошло из-за некачественной копии документов.
-            Попробуйте сделать более четкую фотографию или скан, и отправьте еще раз
+            Пожалуйста, учтите рекомендации Администрации HelpDoсtor, \
+            указанные в поле ниже, и направьте свои документы на повторную проверку в этом окне
             """
         default:
             break
@@ -233,11 +234,32 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         label.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    private func setupCommentTextView() {
+        let top = 15.f
+        let width = Session.width - 40
+        let height = 50.f
+        commentTextView.textAlignment = .left
+        commentTextView.font = .systemFontOfSize(size: 14)
+        commentTextView.textColor = .black
+        commentTextView.layer.cornerRadius = 5
+        commentTextView.delegate = self
+        commentTextView.text = messageFromServer?.htmlAttributedString?.string
+        commentTextView.textColor = .lightGray
+        scrollView.addSubview(commentTextView)
+        
+        commentTextView.translatesAutoresizingMaskIntoConstraints = false
+        commentTextView.topAnchor.constraint(equalTo: label.bottomAnchor,
+                                             constant: top).isActive = true
+        commentTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        commentTextView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        commentTextView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка поля ввода электронной почты
     private func setupAddFileTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(addFileTextFieldPressed))
-        let top = 10.f
+        let top = 20.f
         let width = Session.width - 114.f
         let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
@@ -258,7 +280,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(addFileTextField)
         
         addFileTextField.translatesAutoresizingMaskIntoConstraints = false
-        addFileTextField.topAnchor.constraint(equalTo: label.bottomAnchor,
+        addFileTextField.topAnchor.constraint(equalTo: commentTextView.bottomAnchor,
                                               constant: top).isActive = true
         addFileTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         addFileTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -298,27 +320,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    private func setupCommentTextView() {
-        let top = 15.f
-        let width = Session.width - 40
-        let height = 50.f
-        commentTextView.textAlignment = .left
-        commentTextView.font = .systemFontOfSize(size: 14)
-        commentTextView.textColor = .black
-        commentTextView.layer.cornerRadius = 5
-        commentTextView.delegate = self
-        commentTextView.text = "Поле для комментария"
-        commentTextView.textColor = .lightGray
-        scrollView.addSubview(commentTextView)
-        
-        commentTextView.translatesAutoresizingMaskIntoConstraints = false
-        commentTextView.topAnchor.constraint(equalTo: sendButton.bottomAnchor,
-                                             constant: top).isActive = true
-        commentTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        commentTextView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        commentTextView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки назад

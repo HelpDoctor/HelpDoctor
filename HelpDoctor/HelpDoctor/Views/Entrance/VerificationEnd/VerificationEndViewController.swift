@@ -17,6 +17,7 @@ class VerificationEndViewController: UIViewController {
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private let textLabel = UILabel()
     private let okButton = HDButton(title: "Ок")
     private let backButton = BackButton()
@@ -29,6 +30,7 @@ class VerificationEndViewController: UIViewController {
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
+        setupSubtitleLabel()
         setupTopLabel()
         setupOkButton()
         if #available(iOS 13.0, *) {} else {
@@ -86,13 +88,12 @@ class VerificationEndViewController: UIViewController {
     /// Установка заголовка
     private func setupTitleLabel() {
         let top = 5.f
-        let height = 44.f
+        let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
         titleLabel.text =
         """
         Верификация
-        На рассмотрении
         """
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
@@ -104,6 +105,28 @@ class VerificationEndViewController: UIViewController {
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка заголовка
+    private func setupSubtitleLabel() {
+        let top = 5.f
+        let height = 17.f
+        subtitleLabel.font = .semiBoldSystemFontOfSize(size: 16)
+        subtitleLabel.textColor = .white
+        subtitleLabel.text =
+        """
+        На рассмотрении
+        """
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 0
+        view.addSubview(subtitleLabel)
+        
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                        constant: top).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка надписи
@@ -123,7 +146,7 @@ class VerificationEndViewController: UIViewController {
         view.addSubview(textLabel)
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+        textLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor,
                                        constant: top).isActive = true
         textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true

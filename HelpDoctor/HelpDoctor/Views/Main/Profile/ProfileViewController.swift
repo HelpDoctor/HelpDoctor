@@ -526,6 +526,10 @@ extension ProfileViewController: UIPopoverPresentationControllerDelegate {
 // MARK: - ProfilePopoverDelegate
 extension ProfileViewController: ProfilePopoverDelegate {
     
+    func toEditProfile() {
+        presenter?.toEditProfile()
+    }
+    
     func logout() {
         presenter?.logout()
     }
