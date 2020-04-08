@@ -29,8 +29,11 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let step2TitleLabel = UILabel()
     private let step2Label = UILabel()
     private let maleButton = RadioButton()
+    private let maleButtonLabel = UILabel()
     private let femaleButton = RadioButton()
+    private let femaleButtonLabel = UILabel()
     private let nosexButton = RadioButton()
+    private let nosexButtonLabel = UILabel()
     private let birthDateTextField = PickerField()
     private let step3TitleLabel = UILabel()
     private let step3Label = UILabel()
@@ -54,8 +57,11 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupStep2TitleLabel()
         setupStep2Label()
         setupMaleButton()
+        setupMaleButtonLabel()
         setupFemaleButton()
+        setupFemaleButtonLabel()
         setupNosexButton()
+        setupNosexButtonLabel()
         setupStep3TitleLabel()
         setupStep3Label()
         setupBirthDateTextField()
@@ -298,11 +304,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         let top = 9.f
         let leading = 20.f
         let height = 15.f
-        let width = (Session.width / 2) - (leading * 2)
-        maleButton.contentHorizontalAlignment = .left
-        maleButton.setTitle(" Мужской", for: .normal)
-        maleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
-        maleButton.setTitleColor(.white, for: .normal)
         maleButton.isSelected = false
         maleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(maleButton)
@@ -312,8 +313,23 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
                                         constant: top).isActive = true
         maleButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
-        maleButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        maleButton.widthAnchor.constraint(equalToConstant: height).isActive = true
         maleButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupMaleButtonLabel() {
+        let leading = 5.f
+        let width = 80.f
+        maleButtonLabel.text = "Мужской"
+        maleButtonLabel.font = .systemFontOfSize(size: 12)
+        maleButtonLabel.textColor = .white
+        scrollView.addSubview(maleButtonLabel)
+        
+        maleButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        maleButtonLabel.topAnchor.constraint(equalTo: maleButton.topAnchor).isActive = true
+        maleButtonLabel.leadingAnchor.constraint(equalTo: maleButton.trailingAnchor, constant: leading).isActive = true
+        maleButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        maleButtonLabel.heightAnchor.constraint(equalTo: maleButton.heightAnchor).isActive = true
     }
     
     /// Установка радиокнопки выбора женского пола
@@ -321,10 +337,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         let top = 11.f
         let leading = 20.f
         let height = 15.f
-        femaleButton.contentHorizontalAlignment = .left
-        femaleButton.setTitle(" Женский", for: .normal)
-        femaleButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
-        femaleButton.setTitleColor(.white, for: .normal)
         femaleButton.isSelected = false
         femaleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(femaleButton)
@@ -334,9 +346,24 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
                                           constant: top).isActive = true
         femaleButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                               constant: leading).isActive = true
-        femaleButton.widthAnchor.constraint(equalTo: maleButton.widthAnchor,
-                                            multiplier: 1).isActive = true
+        femaleButton.widthAnchor.constraint(equalToConstant: height).isActive = true
         femaleButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupFemaleButtonLabel() {
+        let leading = 5.f
+        let width = 80.f
+        femaleButtonLabel.text = "Женский"
+        femaleButtonLabel.font = .systemFontOfSize(size: 12)
+        femaleButtonLabel.textColor = .white
+        scrollView.addSubview(femaleButtonLabel)
+        
+        femaleButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        femaleButtonLabel.topAnchor.constraint(equalTo: femaleButton.topAnchor).isActive = true
+        femaleButtonLabel.leadingAnchor.constraint(equalTo: femaleButton.trailingAnchor,
+                                                   constant: leading).isActive = true
+        femaleButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        femaleButtonLabel.heightAnchor.constraint(equalTo: femaleButton.heightAnchor).isActive = true
     }
     
     /// Установка радиокнопки
@@ -344,10 +371,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         let top = 9.f
         let leading = Session.width / 2 + 20.f
         let height = 15.f
-        nosexButton.contentHorizontalAlignment = .left
-        nosexButton.setTitle(" Не указывать", for: .normal)
-        nosexButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
-        nosexButton.setTitleColor(.white, for: .normal)
         nosexButton.isSelected = false
         nosexButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
         scrollView.addSubview(nosexButton)
@@ -357,9 +380,24 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
                                          constant: top).isActive = true
         nosexButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: leading).isActive = true
-        nosexButton.widthAnchor.constraint(equalTo: maleButton.widthAnchor,
-                                           multiplier: 1).isActive = true
+        nosexButton.widthAnchor.constraint(equalToConstant: height).isActive = true
         nosexButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupNosexButtonLabel() {
+        let leading = 5.f
+        let width = 80.f
+        nosexButtonLabel.text = "Не указывать"
+        nosexButtonLabel.font = .systemFontOfSize(size: 12)
+        nosexButtonLabel.textColor = .white
+        scrollView.addSubview(nosexButtonLabel)
+        
+        nosexButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        nosexButtonLabel.topAnchor.constraint(equalTo: nosexButton.topAnchor).isActive = true
+        nosexButtonLabel.leadingAnchor.constraint(equalTo: nosexButton.trailingAnchor,
+                                                  constant: leading).isActive = true
+        nosexButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        nosexButtonLabel.heightAnchor.constraint(equalTo: nosexButton.heightAnchor).isActive = true
     }
     
     /// Установка заголовка Шаг 3
