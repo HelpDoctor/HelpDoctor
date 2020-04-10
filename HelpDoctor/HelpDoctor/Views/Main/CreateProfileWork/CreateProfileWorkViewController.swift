@@ -49,6 +49,10 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupScrollView()
         setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep7TitleLabel()
+        setupStep7SpecLabel()
+        setupSpecTableView()
+        setupSpecPlusButton()
+        setupSpecPlusLabel()
         setupEmploymentLabel()
         setupMedicalButton()
         setupNotMedicalButton()
@@ -56,10 +60,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupJobTableView()
         setupWorkPlusButton()
         setupWorkPlusLabel()
-        setupStep7SpecLabel()
-        setupSpecTableView()
-        setupSpecPlusButton()
-        setupSpecPlusLabel()
         setupPositionTextField()
         setupHideEmploymentButton()
         setupNextButton()
@@ -117,6 +117,81 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         step7TitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка надписи указания медицинской специализации
+    private func setupStep7SpecLabel() {
+        let top = 10.f
+        let height = 15.f
+        heightScroll += top + height
+        step7SpecLabel.font = UIFont.systemFontOfSize(size: 14)
+        step7SpecLabel.textColor = .white
+        step7SpecLabel.text = "Укажите медицинскую специализацию"
+        step7SpecLabel.textAlignment = .left
+        scrollView.addSubview(step7SpecLabel)
+        
+        step7SpecLabel.translatesAutoresizingMaskIntoConstraints = false
+        step7SpecLabel.topAnchor.constraint(equalTo: step7TitleLabel.bottomAnchor,
+                                              constant: top).isActive = true
+        step7SpecLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        step7SpecLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        step7SpecLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupSpecTableView() {
+        let top = 5.f
+        let height = 70.f
+        heightScroll += top + height
+        scrollView.addSubview(specTableView)
+        specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
+        specTableView.backgroundColor = .clear
+        specTableView.dataSource = self
+        specTableView.delegate = self
+        specTableView.separatorStyle = .none
+        specTableView.showsVerticalScrollIndicator = false
+        specTableView.isScrollEnabled = false
+        
+        specTableView.translatesAutoresizingMaskIntoConstraints = false
+        specTableView.topAnchor.constraint(equalTo: step7SpecLabel.bottomAnchor,
+                                          constant: top).isActive = true
+        specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        specTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: height)
+        specTableViewHeight?.isActive = true
+    }
+    
+    /// Установка кнопки добавления медицинской специализации
+    private func setupSpecPlusButton() {
+        let leading = 30.f
+        let top = 5.f
+        let height = 20.f
+        specPlusButton.addTarget(self, action: #selector(specPlusButtonPressed), for: .touchUpInside)
+        view.addSubview(specPlusButton)
+        
+        specPlusButton.translatesAutoresizingMaskIntoConstraints = false
+        specPlusButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                            constant: top).isActive = true
+        specPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                constant: leading).isActive = true
+        specPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
+        specPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка поясняющей надписи у кнопки добавления специализации
+    private func setupSpecPlusLabel() {
+        let leading = 10.f
+        specPlusLabel.font = .systemFontOfSize(size: 14)
+        specPlusLabel.textColor = .white
+        specPlusLabel.text = "Добавить специализацию"
+        specPlusLabel.textAlignment = .left
+        scrollView.addSubview(specPlusLabel)
+        
+        specPlusLabel.translatesAutoresizingMaskIntoConstraints = false
+        specPlusLabel.topAnchor.constraint(equalTo: specPlusButton.topAnchor).isActive = true
+        specPlusLabel.leadingAnchor.constraint(equalTo: specPlusButton.trailingAnchor,
+                                               constant: leading).isActive = true
+        specPlusLabel.trailingAnchor.constraint(equalTo: specTableView.trailingAnchor).isActive = true
+        specPlusLabel.heightAnchor.constraint(equalTo: specPlusButton.heightAnchor).isActive = true
+    }
+    
     /// Установка надписи занятость
     private func setupEmploymentLabel() {
         let top = 6.f
@@ -128,7 +203,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(employmentLabel)
         
         employmentLabel.translatesAutoresizingMaskIntoConstraints = false
-        employmentLabel.topAnchor.constraint(equalTo: step7TitleLabel.bottomAnchor,
+        employmentLabel.topAnchor.constraint(equalTo: specPlusButton.bottomAnchor,
                                              constant: top).isActive = true
         employmentLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         employmentLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
@@ -257,84 +332,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         workPlusLabel.heightAnchor.constraint(equalTo: workPlusButton.heightAnchor).isActive = true
     }
     
-    /// Установка надписи указания медицинской специализации
-    private func setupStep7SpecLabel() {
-        let top = 40.f
-        let height = 15.f
-        heightScroll += top + height
-        step7SpecLabel.font = UIFont.systemFontOfSize(size: 14)
-        step7SpecLabel.textColor = .white
-        step7SpecLabel.text = "Укажите медицинскую специализацию"
-        step7SpecLabel.textAlignment = .left
-        scrollView.addSubview(step7SpecLabel)
-        
-        step7SpecLabel.translatesAutoresizingMaskIntoConstraints = false
-        step7SpecLabel.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
-                                              constant: top).isActive = true
-        step7SpecLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step7SpecLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step7SpecLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    private func setupSpecTableView() {
-        let top = 5.f
-        let height = 70.f
-        heightScroll += top + height
-        scrollView.addSubview(specTableView)
-        specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
-        specTableView.backgroundColor = .clear
-        specTableView.dataSource = self
-        specTableView.delegate = self
-        specTableView.separatorStyle = .none
-        specTableView.showsVerticalScrollIndicator = false
-        specTableView.isScrollEnabled = false
-        
-        specTableView.translatesAutoresizingMaskIntoConstraints = false
-        specTableView.topAnchor.constraint(equalTo: step7SpecLabel.bottomAnchor,
-                                          constant: top).isActive = true
-        specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        specTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: height)
-        specTableViewHeight?.isActive = true
-    }
-    
-    /// Установка кнопки добавления медицинской специализации
-    private func setupSpecPlusButton() {
-        let leading = 30.f
-        let top = 5.f
-        let height = 20.f
-        specPlusButton.addTarget(self, action: #selector(specPlusButtonPressed), for: .touchUpInside)
-        view.addSubview(specPlusButton)
-        
-        specPlusButton.translatesAutoresizingMaskIntoConstraints = false
-        specPlusButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
-                                            constant: top).isActive = true
-        specPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                constant: leading).isActive = true
-        specPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
-        specPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    /// Установка поясняющей надписи у кнопки добавления специализации
-    private func setupSpecPlusLabel() {
-        let leading = 10.f
-        specPlusLabel.font = .systemFontOfSize(size: 14)
-        specPlusLabel.textColor = .white
-        specPlusLabel.text = "Добавить специализацию"
-        specPlusLabel.textAlignment = .left
-        scrollView.addSubview(specPlusLabel)
-        
-        specPlusLabel.translatesAutoresizingMaskIntoConstraints = false
-        specPlusLabel.topAnchor.constraint(equalTo: specPlusButton.topAnchor).isActive = true
-        specPlusLabel.leadingAnchor.constraint(equalTo: specPlusButton.trailingAnchor,
-                                               constant: leading).isActive = true
-        specPlusLabel.trailingAnchor.constraint(equalTo: specTableView.trailingAnchor).isActive = true
-        specPlusLabel.heightAnchor.constraint(equalTo: specPlusButton.heightAnchor).isActive = true
-    }
-    
     /// Установка поля ввода должности
     private func setupPositionTextField() {
-        let top = 40.f
+        let top = 10.f
         heightScroll += top + textFieldHeight
         positionTextField.font = UIFont.systemFontOfSize(size: 14)
         positionTextField.textColor = .textFieldTextColor
@@ -350,7 +350,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(positionTextField)
         
         positionTextField.translatesAutoresizingMaskIntoConstraints = false
-        positionTextField.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+        positionTextField.topAnchor.constraint(equalTo: workPlusButton.bottomAnchor,
                                                constant: top).isActive = true
         positionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         positionTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
