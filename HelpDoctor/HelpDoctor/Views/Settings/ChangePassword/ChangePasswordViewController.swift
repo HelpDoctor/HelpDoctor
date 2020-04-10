@@ -14,7 +14,13 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ChangePasswordPresenterProtocol?
     
     // MARK: - Constants and variables
+    private var verticalInset = 0.f
     private let headerHeight = 40.f
+    private let heightTopStackView = 40.f
+    private let heightArt = 180.f
+    private let heightLabel = 116.f
+    private let heightTextField = 30.f
+    private let heightSendButton = 35.f
     private let scrollView = UIScrollView()
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
@@ -23,22 +29,22 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     private let textLabel = UILabel()
     private let emailTextField = UITextField()
     private let sendButton = HDButton(title: "Отправить")
-//    private var heightScroll = Session.height
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        verticalInset = calculateInset()
         view.backgroundColor = .backgroundColor
         setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupScrollView()
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()
-        setupArt()
         setupTextLabel()
         setupEmailTextField()
         setupSendButton()
+        setupArt()
         addTapGestureToHideKeyboard()
     }
     
@@ -46,6 +52,14 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+    }
+    
+    private func calculateInset() -> CGFloat {
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
+        let contentHeight = statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
+            + heightArt + heightLabel + heightTextField + heightSendButton
+        return (Session.height - contentHeight) / 5
     }
     
     // MARK: - Setup views
@@ -63,7 +77,6 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupTopStackView() {
-        let height = 40.f
         topStackView.backgroundColor = .searchBarTintColor
         scrollView.addSubview(topStackView)
         
@@ -71,7 +84,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         topStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         topStackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         topStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        topStackView.heightAnchor.constraint(equalToConstant: heightTopStackView).isActive = true
     }
     
     private func setupHeaderIcon() {
@@ -106,25 +119,8 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         headerLabel.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
     }
     
-    private func setupArt() {
-        let width = 145.f
-        let height = 149.f
-        let bottom = 23.f
-        art.image = UIImage(named: "SecurityArt")
-        view.addSubview(art)
-        
-        art.translatesAutoresizingMaskIntoConstraints = false
-        art.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        art.widthAnchor.constraint(equalToConstant: width).isActive = true
-        art.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                    constant: -bottom).isActive = true
-        art.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
     private func setupTextLabel() {
         let leading = 20.f
-        let top = 30.f
-        let height = 116.f
         let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
@@ -141,14 +137,12 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         textLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                            constant: leading).isActive = true
         textLabel.topAnchor.constraint(equalTo: topStackView.bottomAnchor,
-                                       constant: top).isActive = true
+                                       constant: verticalInset).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        textLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
     private func setupEmailTextField() {
-        let top = 15.f
-        let height = 30.f
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
@@ -165,28 +159,36 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
-                                            constant: top).isActive = true
+                                            constant: verticalInset).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: Session.width - 114).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     private func setupSendButton() {
-        let top = 15.f
         let width = 150.f
-        let height = 35.f
-//        heightScroll += height + top
-//        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
-                                        constant: top).isActive = true
+                                        constant: verticalInset).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
-        sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: heightSendButton).isActive = true
+    }
+    
+    private func setupArt() {
+        let width = 190.f
+        art.image = UIImage(named: "SecurityArt")
+        view.addSubview(art)
+        
+        art.translatesAutoresizingMaskIntoConstraints = false
+        art.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        art.widthAnchor.constraint(equalToConstant: width).isActive = true
+        art.topAnchor.constraint(equalTo: sendButton.bottomAnchor, constant: verticalInset).isActive = true
+        art.heightAnchor.constraint(equalToConstant: heightArt).isActive = true
     }
     
     private func addTapGestureToHideKeyboard() {
