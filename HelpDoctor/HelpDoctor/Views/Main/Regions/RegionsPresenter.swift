@@ -30,6 +30,9 @@ class RegionsPresenter: RegionsPresenterProtocol {
     }
     
     func getRegions() {
+        if sender != nil {
+            view.setTitleButton()
+        }
         view.startActivityIndicator()
         let getRegions = Profile()
         
@@ -44,7 +47,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
                 DispatchQueue.main.async { [weak self]  in
                     self?.arrayRegions = getRegions.regions
                     self?.filteredArray = getRegions.regions ?? []
-                    self?.view.tableView.reloadData()
+                    self?.view.reloadTableView()
                     self?.view.stopActivityIndicator()
                 }
             }
@@ -77,7 +80,8 @@ class RegionsPresenter: RegionsPresenterProtocol {
         if sender == nil {
             guard let index = index else {
                 view.showAlert(message: "Выберите один регион")
-                return }
+                return
+            }
             let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
@@ -86,18 +90,18 @@ class RegionsPresenter: RegionsPresenterProtocol {
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
         } else if sender == "Work" {
-            guard let index = index/*,
-                let regionId = arrayRegions?[index].regionId*/ else {
+            guard let index = index else {
                     view.showAlert(message: "Выберите один регион")
-                    return }
+                    return
+            }
             let region = filteredArray[index]
             let regionId = filteredArray[index].regionId
             let viewController = CitiesViewController()
             let presenter = CitiesPresenter(view: viewController, region: region)
             viewController.presenter = presenter
-            presenter.getCities(regionId: regionId)
             presenter.sender = sender
             presenter.regionId = regionId
+            presenter.getCities(regionId: regionId)
             view.navigationController?.pushViewController(viewController, animated: true)
         }
     }

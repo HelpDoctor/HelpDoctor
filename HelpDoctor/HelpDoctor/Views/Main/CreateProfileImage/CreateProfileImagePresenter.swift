@@ -51,52 +51,56 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            updateProfile.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateProfile = \(String(describing: updateProfile.responce))")
-                    guard let code = updateProfile.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.updateJob()
-                    } else {
-                        self?.view.showAlert(message: updateProfile.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfile = \(String(describing: updateProfile.responce))")
+                            guard let code = updateProfile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                self?.updateJob()
+                            } else {
+                                self?.view.showAlert(message: updateProfile.responce?.1)
+                            }
+                        }
                     }
-                }
-            }
         }
     }
     
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
-        guard let oid = jobArray[0]?.oid else { return }
-        var updateJob: [[String: Any]] = []
-        let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
-        updateJob.append(job)
-        for i in 1 ..< jobArray.count {
-            updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
-        }
-        print("Update job: \(updateJob)")
-        let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            updateProfileJob.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateJobProfile = \(String(describing: updateProfileJob.responce))")
-                    guard let code = updateProfileJob.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.updateSpec()
-                    } else {
-                        self?.view.showAlert(message: updateProfileJob.responce?.1)
-                    }
-                }
+        if jobArray.count == 0 {
+            updateSpec()
+        } else {
+            guard let oid = jobArray[0]?.oid else { return }
+            var updateJob: [[String: Any]] = []
+            let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
+            updateJob.append(job)
+            for i in 1 ..< jobArray.count {
+                updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+            }
+            print("Update job: \(updateJob)")
+            let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
+            getData(typeOfContent: .updateProfile,
+                    returning: (Int?, String?).self,
+                    requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
+                        let dispathGroup = DispatchGroup()
+                        
+                        updateProfileJob.responce = result
+                        
+                        dispathGroup.notify(queue: DispatchQueue.main) {
+                            DispatchQueue.main.async { [weak self]  in
+                                print("updateJobProfile = \(String(describing: updateProfileJob.responce))")
+                                guard let code = updateProfileJob.responce?.0 else { return }
+                                if responceCode(code: code) {
+                                    self?.updateSpec()
+                                } else {
+                                    self?.view.showAlert(message: updateProfileJob.responce?.1)
+                                }
+                            }
+                        }
             }
         }
     }
@@ -115,21 +119,21 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            updateProfileSpec.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateProfileSpec = \(String(describing: updateProfileSpec.responce))")
-                    guard let code = updateProfileSpec.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.updateInterests()
-                    } else {
-                        self?.view.showAlert(message: updateProfileSpec.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfileSpec.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfileSpec = \(String(describing: updateProfileSpec.responce))")
+                            guard let code = updateProfileSpec.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                self?.updateInterests()
+                            } else {
+                                self?.view.showAlert(message: updateProfileSpec.responce?.1)
+                            }
+                        }
                     }
-                }
-            }
         }
     }
     
@@ -145,24 +149,24 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            updateProfile.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateInterests = \(String(describing: updateProfile.responce))")
-                    guard let code = updateProfile.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.next()
-                    } else {
-                        self?.view.showAlert(message: updateProfile.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateInterests = \(String(describing: updateProfile.responce))")
+                            guard let code = updateProfile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                self?.next()
+                            } else {
+                                self?.view.showAlert(message: updateProfile.responce?.1)
+                            }
+                        }
                     }
-                }
-            }
         }
     }
-
+    
     // MARK: - Coordinator
     /// Переход к предыдущему экрану
     func back() {

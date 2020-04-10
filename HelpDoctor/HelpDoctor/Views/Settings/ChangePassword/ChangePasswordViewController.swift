@@ -14,6 +14,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ChangePasswordPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let headerHeight = 40.f
     private let scrollView = UIScrollView()
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
@@ -22,18 +23,15 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     private let textLabel = UILabel()
     private let emailTextField = UITextField()
     private let sendButton = HDButton(title: "Отправить")
-    private var heightScroll = Session.height
+//    private var heightScroll = Session.height
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupScrollView()
-        setupHeaderViewWithAvatar(title: "Настройки",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()
@@ -52,23 +50,21 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Setup views
     private func setupScrollView() {
-        let top: CGFloat = 50
         scrollView.delegate = self
-        heightScroll = Session.statusBarHeight + top
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height - headerHeight)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
+                                        constant: headerHeight).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
+        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
     private func setupTopStackView() {
-        let height: CGFloat = 40
-        heightScroll += height
-        topStackView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
+        let height = 40.f
+        topStackView.backgroundColor = .searchBarTintColor
         scrollView.addSubview(topStackView)
         
         topStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -79,8 +75,8 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupHeaderIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 20
+        let width = 30.f
+        let leading = 20.f
         headerIcon.image = UIImage(named: "securitySettings")
         topStackView.addSubview(headerIcon)
         
@@ -93,11 +89,10 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupHeaderLabel() {
-        let leading: CGFloat = 20
-        
+        let leading = 20.f
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
-        headerLabel.font = .systemFontOfSize(size: 14)
+        headerLabel.font = .boldSystemFontOfSize(size: 14)
         headerLabel.textColor = .white
         headerLabel.text = "Настройки безопасности"
         topStackView.addSubview(headerLabel)
@@ -112,40 +107,39 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupArt() {
-        let width: CGFloat = 202
-        let height: CGFloat = 223
-        let trailing: CGFloat = 8
+        let width = 145.f
+        let height = 149.f
+        let bottom = 23.f
         art.image = UIImage(named: "SecurityArt")
         view.addSubview(art)
         
         art.translatesAutoresizingMaskIntoConstraints = false
-        art.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                               constant: -trailing).isActive = true
+        art.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         art.widthAnchor.constraint(equalToConstant: width).isActive = true
         art.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                    constant: 0).isActive = true
+                                    constant: -bottom).isActive = true
         art.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupTextLabel() {
-        let leading: CGFloat = 20
-        let top: CGFloat = 50
-        let height: CGFloat = 80
-        let width: CGFloat = Session.width - (leading * 2)
-        heightScroll += height + top
+        let leading = 20.f
+        let top = 30.f
+        let height = 116.f
+        let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
         textLabel.font = .systemFontOfSize(size: 16)
         textLabel.textColor = .white
         textLabel.text =
         """
-        "Чтобы изменить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа
+        Чтобы изменить пароль введите, пожалуйста, E-mail, который Вы указывали при регистрации.\n
+        Именно на него будет выслан новый пароль для входа в HelpDoctor
         """
         scrollView.addSubview(textLabel)
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                           constant: leading).isActive = true
         textLabel.topAnchor.constraint(equalTo: topStackView.bottomAnchor,
                                        constant: top).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -153,13 +147,12 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupEmailTextField() {
-        let top: CGFloat = 35
-        let height: CGFloat = 30
-        heightScroll += height + top
+        let top = 15.f
+        let height = 30.f
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
-        emailTextField.attributedPlaceholder = redStar(text: "E-mail*")
+        emailTextField.placeholder = "E-mail*"
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
@@ -179,11 +172,11 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSendButton() {
-        let top: CGFloat = 20
-        let width: CGFloat = 150
-        let height: CGFloat = 35
-        heightScroll += height + top
-        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
+        let top = 15.f
+        let width = 150.f
+        let height = 35.f
+//        heightScroll += height + top
+//        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)

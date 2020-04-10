@@ -40,6 +40,7 @@ class CheckBox: UIButton {
         case .square:
             setImage(UIImage(named: "Checkbox_Y.pdf"), for: .selected)
             setImage(UIImage(named: "Checkbox_N.pdf"), for: .normal)
+            imageView?.contentMode = .scaleAspectFit
         }
     }
     

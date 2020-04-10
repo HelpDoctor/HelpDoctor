@@ -29,6 +29,19 @@ class PlusButton: UIButton {
         super.init(coder: coder)
     }
     
+    convenience init(type: TypeCheckbox = .square) {
+        self.init()
+        switch type {
+        case .circle:
+            let icon = UIImage(named: "Plus_Button.pdf")
+            setImage(icon, for: .normal)
+            updateLayerProperties()
+        case .square:
+            let icon = UIImage(named: "PlusButtonSquare.pdf")
+            setImage(icon, for: .normal)
+        }
+    }
+    
     func updateLayerProperties() {
         layer.cornerRadius = 20
         clipsToBounds = true

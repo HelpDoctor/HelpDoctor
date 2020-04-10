@@ -16,8 +16,8 @@ class RegionsViewController: UIViewController {
     // MARK: - Constants
     private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 60.f
-    var tableView = UITableView()
-    private var okButton = HDButton()
+    private var tableView = UITableView()
+    private var okButton = HDButton(title: "Готово")
     private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
@@ -41,6 +41,10 @@ class RegionsViewController: UIViewController {
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
+    }
+    
+    func setTitleButton() {
+        okButton.setTitle("Далее", for: .normal)
     }
     
     // MARK: - Setup views
@@ -82,7 +86,6 @@ class RegionsViewController: UIViewController {
     }
     
     private func setupOkButton() {
-        okButton = HDButton(title: "Готово")
         okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         okButton.isEnabled = true
         view.addSubview(okButton)
@@ -117,7 +120,23 @@ extension RegionsViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension RegionsViewController: UITableViewDelegate { }
+extension RegionsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = true
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        guard let cell = tableView.cellForRow(at: indexPath) else { return }
+        cell.isSelected = false
+    }
+    
+}
 
 // MARK: - UITableViewDataSource
 extension RegionsViewController: UITableViewDataSource {
@@ -133,20 +152,6 @@ extension RegionsViewController: UITableViewDataSource {
 
         cell.configure(presenter?.getRegionTitle(index: indexPath.row) ?? "Region not found")
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = true
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        guard let cell = tableView.cellForRow(at: indexPath) else { return }
-        cell.isSelected = false
     }
 
 }

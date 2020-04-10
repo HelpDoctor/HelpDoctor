@@ -43,7 +43,6 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         setupAddTextField()
         setupTableView()
         selectRows()
-//        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,10 +105,9 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         searchBar.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: heightSearchBar).isActive = true
     }
-
+    
     /// Установка группы добавления интереса
     private func setupStackView() {
-//        let top = Session.height - 150 - 56 - 18
         let bottom = 10.f
         stackView.backgroundColor = .white
         scrollView.addSubview(stackView)
@@ -117,8 +115,6 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         stackView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-//        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor,
-//                                       constant: top).isActive = true
         stackView.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -bottom).isActive = true
         stackView.heightAnchor.constraint(equalToConstant: heightSearchBar).isActive = true
     }
@@ -210,7 +206,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     @objc private func nextButtonPressed() {
         presenter?.next()
     }
-
+    
 }
 
 // MARK: - UISearchBarDelegate
@@ -234,7 +230,6 @@ extension InterestsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("tap")
         tableView.cellForRow(at: indexPath)?.isSelected = true
         presenter?.appendIndexArray(index: indexPath.item)
     }
@@ -257,9 +252,9 @@ extension InterestsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "InterestTableViewCell",
                                                        for: indexPath) as? InterestTableViewCell
             else { return UITableViewCell() }
-
+        
         cell.configure(presenter?.getInterestsTitle(index: indexPath.row) ?? "Not found")
         return cell
     }
-
+    
 }

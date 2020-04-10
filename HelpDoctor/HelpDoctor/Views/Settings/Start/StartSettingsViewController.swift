@@ -182,7 +182,11 @@ extension StartSettingsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
                                                        for: indexPath) as? SettingsCell
             else { return UITableViewCell() }
-        cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        if indexPath.section == 0 && indexPath.row == 1 {
+            cell.configureDisabled(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        } else {
+            cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
     }

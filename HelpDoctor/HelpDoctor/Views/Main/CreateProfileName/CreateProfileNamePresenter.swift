@@ -29,10 +29,16 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
         self.view = view
     }
     
+    // MARK: - Public methods
+    /// Установка пола пользователя
+    /// - Parameter gender: пол пользователя
     func setGender(_ gender: String) {
         self.gender = gender
     }
     
+    /// Конвертация даты из формата yyy-MM-dd в формат dd.MM.yyyy
+    /// - Parameter birthDate: дата в формте yyy-MM-dd
+    /// - Returns: дата в формате dd.MM.yyyy
     func convertDate(_ birthDate: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -44,6 +50,12 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     }
     
     // MARK: - Coordinator
+    /// Проверка заполнения полей и переход к следующему экрану
+    /// - Parameters:
+    ///   - name: имя
+    ///   - lastname: фамилия
+    ///   - middleName: отчество
+    ///   - birthDate: дата рождения
     func next(name: String, lastname: String, middleName: String, birthDate: String) {
         if lastname == "" {
             view.showAlert(message: "Не заполнена фамилия")
@@ -84,6 +96,7 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Переход к предыдущему экрану
     func back() {
         view.navigationController?.popViewController(animated: true)
     }

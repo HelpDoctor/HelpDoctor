@@ -22,11 +22,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private let step7TitleLabel = UILabel()
     private let step7JobLabel = UILabel()
     private let jobTableView = UITableView()
-    private let workPlusButton = PlusButton()
+    private let workPlusButton = PlusButton(type: .square)
     private let workPlusLabel = UILabel()
     private let step7SpecLabel = UILabel()
     private let specTableView = UITableView()
-    private let specPlusButton = PlusButton()
+    private let specPlusButton = PlusButton(type: .square)
     private let specPlusLabel = UILabel()
     private let positionTextField = UITextField()
     private let employmentLabel = UILabel()
@@ -360,7 +360,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     /// Установка радиокнопки скрытия информации о занятости
     private func setupHideEmploymentButton() {
         let top = 14.f
-        let height = 20.f
+        let height = 15.f
         hideEmploymentButton.addTarget(self, action: #selector(hideEmploymentCheckboxPressed), for: .touchUpInside)
         hideEmploymentButton.contentHorizontalAlignment = .left
         hideEmploymentButton.setTitle(" Скрыть информацию о моей занятости", for: .normal)
@@ -459,6 +459,16 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
             presenter?.setEmployment(true)
         } else {
             presenter?.setEmployment(false)
+        }
+        step7JobLabel.isHidden = !medicalButton.isSelected
+        jobTableView.isHidden = !medicalButton.isSelected
+        workPlusButton.isHidden = !medicalButton.isSelected
+        workPlusLabel.isHidden = !medicalButton.isSelected
+        hideEmploymentButton.isHidden = !medicalButton.isSelected
+        positionTextField.isHidden = !medicalButton.isSelected
+        if jobRowCount > 4 {
+            workPlusButton.isHidden = true
+            workPlusLabel.isHidden = true
         }
     }
     

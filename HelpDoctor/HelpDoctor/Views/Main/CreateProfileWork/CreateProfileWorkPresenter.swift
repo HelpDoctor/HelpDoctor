@@ -102,6 +102,16 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             view.showAlert(message: "Поле занятость не заполнено")
             return
         }
+        guard specArray[0] != nil else {
+            view.showAlert(message: "Не заполнена основная специализация")
+            return
+        }
+        if user?.is_medic_worker == 1 {
+            guard jobArray[0] != nil else {
+                view.showAlert(message: "Не заполнено основное место работы")
+                return
+            }
+        }
         let viewController = CreateProfileSpecViewController()
         let presenter = CreateProfileSpecPresenter(view: viewController)
         viewController.presenter = presenter

@@ -47,12 +47,18 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
+        presenter?.selectRows()
     }
     
     // MARK: - Public methods
     /// Обновление отображения коллекции
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    func setSelected(index: Int) {
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
     }
     
     // MARK: - Setup views

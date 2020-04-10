@@ -16,8 +16,8 @@ class CitiesViewController: UIViewController {
     // MARK: - Constants
     private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 60.f
-    var tableView = UITableView()
-    private var okButton = HDButton()
+    private var tableView = UITableView()
+    private var okButton = HDButton(title: "Готово")
     private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
@@ -40,6 +40,10 @@ class CitiesViewController: UIViewController {
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
+    }
+    
+    func setTitleButton() {
+        okButton.setTitle("Далее", for: .normal)
     }
     
     // MARK: - Setup views
@@ -81,7 +85,6 @@ class CitiesViewController: UIViewController {
     }
     
     private func setupOkButton() {
-        okButton = HDButton(title: "Готово")
         okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         okButton.isEnabled = true
         view.addSubview(okButton)

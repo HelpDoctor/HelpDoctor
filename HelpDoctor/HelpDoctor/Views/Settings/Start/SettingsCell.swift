@@ -46,7 +46,7 @@ class SettingsCell: UITableViewCell {
     private func setupSettingsLabel() {
         settingsLabel.numberOfLines = 0
         settingsLabel.textAlignment = .left
-        settingsLabel.font = .systemFontOfSize(size: 14)
+        settingsLabel.font = .mediumSystemFontOfSize(size: 14)
         settingsLabel.textColor = .white
         contentView.addSubview(settingsLabel)
         
@@ -62,6 +62,13 @@ class SettingsCell: UITableViewCell {
         let imageName = String(describing: settingsRow)
         settingsImage.image = UIImage(named: imageName)
         settingsLabel.text = settingsRow.rawValue
+    }
+    
+    func configureDisabled(settingsRow: SettingsRow) {
+        let imageName = String(describing: settingsRow)
+        settingsImage.image = UIImage(named: imageName)
+        settingsLabel.text = settingsRow.rawValue
+        settingsLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     }
     
 }

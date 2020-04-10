@@ -39,6 +39,9 @@ class CitiesPresenter: CitiesPresenterProtocol {
     }
     
     func getCities(regionId: Int) {
+        if sender != nil {
+            view.setTitleButton()
+        }
         view.startActivityIndicator()
         let getCities = Profile()
         
@@ -54,7 +57,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
                     self?.view.stopActivityIndicator()
                     self?.arrayCities = getCities.cities
                     self?.filteredArray = getCities.cities ?? []
-                    self?.view.tableView.reloadData()
+                    self?.view.reloadTableView()
                 }
             }
         }
