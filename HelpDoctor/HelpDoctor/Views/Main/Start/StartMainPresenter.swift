@@ -38,26 +38,26 @@ class StartMainPresenter: StartMainPresenterProtocol {
         getData(typeOfContent: .checkProfile,
                 returning: (Int?, String?).self,
                 requestParams: checkProfile.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            checkProfile.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    self?.view.stopActivityIndicator()
-                    print("result=\(String(describing: checkProfile.responce))")
-                    guard let code = checkProfile.responce?.0,
-                        let status = checkProfile.responce?.1 else { return }
-                    if responceCode(code: code) && status == "True" {
-//                        self?.view.hideFillProfileButton()
-                        self?.view.showFillProfileButton()
-                        if Session.instance.userStatus != .verified {
-                            self?.getStatusUser()
+                    let dispathGroup = DispatchGroup()
+                    checkProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.view.stopActivityIndicator()
+                            print("result=\(String(describing: checkProfile.responce))")
+                            guard let code = checkProfile.responce?.0,
+                                let status = checkProfile.responce?.1 else { return }
+                            if responceCode(code: code) && status == "True" {
+                                //                        self?.view.hideFillProfileButton()
+                                self?.view.showFillProfileButton()
+                                if Session.instance.userStatus != .verified {
+                                    self?.getStatusUser()
+                                }
+                            } else {
+                                self?.view.showFillProfileButton()
+                            }
                         }
-                    } else {
-                        self?.view.showFillProfileButton()
                     }
-                }
-            }
         }
     }
     
@@ -84,8 +84,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                 self?.toVerification()
                             case "processing":
                                 Session.instance.userStatus = .processing
-//                                self?.toEndVerification()
-                                self?.toErrorVerification(userStatus.verification?[0].message)
+                                self?.toEndVerification()
                             case "verified":
                                 Session.instance.userStatus = .verified
                             default:
@@ -104,19 +103,19 @@ class StartMainPresenter: StartMainPresenterProtocol {
         getData(typeOfContent: .getDataFromProfile,
                 returning: ([String: [AnyObject]], Int?, String?).self,
                 requestParams: [:]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getDataProfile.dataFromProfile = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                    //swiftlint:disable line_length
-                    guard let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] else { return }
-                    //swiftlint:enable line_length
-                    self?.setUser(userData: userData)
-                }
-            }
+                    let dispathGroup = DispatchGroup()
+                    
+                    getDataProfile.dataFromProfile = result?.0
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
+                            //swiftlint:disable line_length
+                            guard let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] else { return }
+                            //swiftlint:enable line_length
+                            self?.setUser(userData: userData)
+                        }
+                    }
         }
     }
     
@@ -124,18 +123,18 @@ class StartMainPresenter: StartMainPresenterProtocol {
     /// - Parameter userData: информация с сервера
     private func setUser(userData: [ProfileKeyUser]) {
         Session.instance.user = ProfileKeyUser(id: userData[0].id,
-                                   first_name: userData[0].first_name,
-                                   last_name: userData[0].last_name,
-                                   middle_name: userData[0].middle_name,
-                                   email: userData[0].email,
-                                   phone_number: userData[0].phone_number,
-                                   birthday: userData[0].birthday,
-                                   city_id: userData[0].city_id,
-                                   cityName: userData[0].cityName,
-                                   regionId: userData[0].regionId,
-                                   regionName: userData[0].regionName,
-                                   foto: userData[0].foto,
-                                   gender: userData[0].gender)
+                                               first_name: userData[0].first_name,
+                                               last_name: userData[0].last_name,
+                                               middle_name: userData[0].middle_name,
+                                               email: userData[0].email,
+                                               phone_number: userData[0].phone_number,
+                                               birthday: userData[0].birthday,
+                                               city_id: userData[0].city_id,
+                                               cityName: userData[0].cityName,
+                                               regionId: userData[0].regionId,
+                                               regionName: userData[0].regionName,
+                                               foto: userData[0].foto,
+                                               gender: userData[0].gender)
         view.setImage(image: Session.instance.user?.foto?.toImage())
     }
     

@@ -9,7 +9,7 @@
 import UIKit
 
 class StartMainViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: StartMainPresenterProtocol?
     
@@ -80,7 +80,7 @@ class StartMainViewController: UIViewController {
         
         enterProfileButton.translatesAutoresizingMaskIntoConstraints = false
         enterProfileButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                            constant: 10).isActive = true
+                                                constant: 10).isActive = true
         enterProfileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         enterProfileButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         enterProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -193,7 +193,7 @@ class StartMainViewController: UIViewController {
         fillProfileButton.isEnabled = true
         fillProfileButton.isHidden = true
         view.addSubview(fillProfileButton)
-
+        
         fillProfileButton.translatesAutoresizingMaskIntoConstraints = false
         fillProfileButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 10).isActive = true
         fillProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -211,5 +211,5 @@ class StartMainViewController: UIViewController {
     @objc private func profileButtonPressed() {
         presenter?.toProfile()
     }
-
+    
 }

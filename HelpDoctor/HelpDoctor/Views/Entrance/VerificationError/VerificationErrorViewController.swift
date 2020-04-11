@@ -35,6 +35,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private var topConstraintImage: NSLayoutConstraint?
     private var widthConstraintImage: NSLayoutConstraint?
     private var heightConstraintImage: NSLayoutConstraint?
+    private var heightConstraintLabel: NSLayoutConstraint?
+    private var topConstraintSendButton: NSLayoutConstraint?
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -65,6 +67,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func authorized() {
+        titleLabel.textColor = .white
+        subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text = "На рассмотрении"
         label.text =
         """
@@ -73,6 +77,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
         sendButton.setTitle("Ок", for: .normal)
+        cloudImage.isHidden = true
+        topLabel.isHidden = true
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
         commentTextView.isHidden = true
@@ -130,7 +136,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         
         doctorsImage.translatesAutoresizingMaskIntoConstraints = false
         topConstraintImage = doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                          constant: top)
+                                                               constant: top)
         topConstraintImage?.isActive = true
         doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         widthConstraintImage = doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width)
@@ -190,7 +196,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.bottomAnchor.constraint(equalTo: cloudImage.bottomAnchor,
-                                        constant: -bottom).isActive = true
+                                              constant: -bottom).isActive = true
         subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
@@ -207,7 +213,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.topAnchor.constraint(equalTo: cloudImage.bottomAnchor,
-                                        constant: top).isActive = true
+                                      constant: top).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         topLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         topLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
@@ -234,7 +240,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
                                    constant: top).isActive = true
         label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        label.heightAnchor.constraint(equalToConstant: height).isActive = true
+        heightConstraintLabel = label.heightAnchor.constraint(equalToConstant: height)
+        heightConstraintLabel?.isActive = true
     }
     
     private func setupCommentTextView() {
@@ -262,7 +269,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private func setupAddFileTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(addFileTextFieldPressed))
-        let top = 20.f
+        let top = 15.f
         let width = Session.width - 114.f
         let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
@@ -310,7 +317,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка кнопки "Отправить"
     private func setupSendButton() {
-        let top = 31.f
+        let top = 20.f
         let width = 150.f
         let height = 35.f
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
@@ -318,11 +325,12 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
-                                        constant: top).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        topConstraintSendButton = sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
+                                                                  constant: top)
+        topConstraintSendButton?.isActive = true
     }
     
     /// Установка кнопки назад
@@ -339,13 +347,15 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     /// Установка картинки
     private func setupVerificationEndImage() {
+        let topSendButton = 26.f
+        let heightLabel = 101.f
         let width = Session.width - 30
         let imageName = "VerificationImage.pdf"
         guard let image = UIImage(named: imageName) else {
@@ -359,9 +369,13 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         topConstraintImage?.isActive = false
         widthConstraintImage?.isActive = false
         heightConstraintImage?.isActive = false
+        heightConstraintLabel?.isActive = false
+        topConstraintSendButton?.isActive = false
         doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
         doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+        label.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+        sendButton.topAnchor.constraint(equalTo: label.bottomAnchor, constant: topSendButton).isActive = true
     }
     
     /// Добавление распознавания касания экрана
@@ -448,7 +462,7 @@ extension VerificationErrorViewController: UIDocumentPickerDelegate {
         addFileTextField.text = url.lastPathComponent
         sourceFile = url
     }
-
+    
 }
 
 // MARK: - UITextViewDelegate
@@ -462,7 +476,7 @@ extension VerificationErrorViewController: UITextViewDelegate {
         }
         textView.becomeFirstResponder()
     }
-
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text == "" {
             textView.text = "Поле для комментария"
