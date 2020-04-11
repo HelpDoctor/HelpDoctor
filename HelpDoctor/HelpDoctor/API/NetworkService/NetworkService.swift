@@ -107,14 +107,12 @@ func uploadImage<T>(source: URL,
     var urlRequest = URLRequest(url: url)
     urlRequest.httpMethod = "POST"
 
-    // Set Content-Type Header to multipart/form-data, this is equivalent to submitting form data with file upload in a web browser
-    // And the boundary is also set here
     urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
     urlRequest.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
 
     var body = Data()
     let encoding: UInt = String.Encoding.utf8.rawValue
-    guard let fileType = mimeType else { return }
+    guard let fileType = mimeType?.rawValue else { return }
     if let boundaryStartData = "--\(boundary)\r\n".data(using: String.Encoding(rawValue: encoding)),
         let fileNameData = "Content-Disposition:form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding(rawValue: encoding)),
         let contentTypeData = "Content-Type: \(fileType)\r\n\r\n".data(using: String.Encoding(rawValue: encoding)),
