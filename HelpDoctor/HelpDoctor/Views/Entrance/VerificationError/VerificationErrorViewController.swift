@@ -8,32 +8,29 @@
 
 import UIKit
 
-enum StatusVerification {
-    case error
-    case denied
-}
-
 class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
     var presenter: VerificationErrorPresenterProtocol?
-    var statusVerification: StatusVerification?
     var messageFromServer: String?
     
     // MARK: - Constants and variables
     private let scrollView = UIScrollView()
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
+    private let cloudImage = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
+    private let topLabel = UILabel()
     private let label = UILabel()
+    private let commentTextView = UITextView()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить")
-    private let commentTextView = UITextView()
     private let backButton = BackButton()
     private var sourceFile: URL?
-    private var keyboardHeight: CGFloat = 0
+    private var keyboardHeight = 0.f
+    private var heightCloudImage = 0.f
     
     private var topConstraintImage: NSLayoutConstraint?
     private var widthConstraintImage: NSLayoutConstraint?
@@ -46,8 +43,10 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         setupScrollView()
         setupLogoImage()
         setupDoctorsImage()
+        setupCloudImage()
         setupTitleLabel()
         setupSubtitleLabel()
+        setupTopLabel()
         setupLabel()
         setupCommentTextView()
         setupAddFileTextField()
@@ -120,15 +119,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private func setupDoctorsImage() {
         let top = 25.f
         let width = Session.width - 140
-        var imageName = "VerificationError.pdf"
-        switch statusVerification {
-        case .denied:
-            imageName = "VerificationDenied.pdf"
-        case .error:
-            imageName = "VerificationError.pdf"
-        default:
-            break
-        }
+        let imageName = "VerificationError.pdf"
         guard let image = UIImage(named: imageName) else {
             assertionFailure("Missing ​​\(imageName) asset")
             return
@@ -148,18 +139,39 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         heightConstraintImage?.isActive = true
     }
     
+    private func setupCloudImage() {
+        let top = 10.f
+        let width = Session.width - 70
+        let imageName = "Cloud"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        let resizedImage = image.resizeImage(width, opaque: false)
+        cloudImage.image = resizedImage
+        heightCloudImage = resizedImage.size.height
+        scrollView.addSubview(cloudImage)
+        
+        cloudImage.translatesAutoresizingMaskIntoConstraints = false
+        cloudImage.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
+                                        constant: -top).isActive = true
+        cloudImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        cloudImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
+        cloudImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
+    }
+    
     /// Установка заголовка
     private func setupTitleLabel() {
-        let top = 5.f
+        let top = heightCloudImage * (26 / 70)
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
-        titleLabel.textColor = .white
+        titleLabel.textColor = .hdRedColor
         titleLabel.text = "Верификация"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
+        titleLabel.topAnchor.constraint(equalTo: cloudImage.topAnchor,
                                         constant: top).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
@@ -168,66 +180,57 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка подзаголовка
     private func setupSubtitleLabel() {
-        let top = 14.f
-        let height = 40.f
+        let bottom = heightCloudImage * (6 / 70)
+        let height = 17.f
         subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
-        subtitleLabel.textColor = .white
-        switch statusVerification {
-        case .denied:
-            subtitleLabel.text =
-            """
-            Отказ
-            В верификации данного аккаунта отказано
-            """
-        case .error:
-            subtitleLabel.text =
-            """
-            Ошибка
-            При верификации произошла ошибка
-            """
-        default:
-            break
-        }
+        subtitleLabel.textColor = .hdRedColor
+        subtitleLabel.text = "Не пройдена"
         subtitleLabel.textAlignment = .center
-        subtitleLabel.numberOfLines = 0
         scrollView.addSubview(subtitleLabel)
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                        constant: top).isActive = true
+        subtitleLabel.bottomAnchor.constraint(equalTo: cloudImage.bottomAnchor,
+                                        constant: -bottom).isActive = true
         subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    private func setupTopLabel() {
+        let top = 5.f
+        let height = 17.f
+        topLabel.font = .mediumSystemFontOfSize(size: 14)
+        topLabel.textColor = .white
+        topLabel.text = "При верификации возникли сложности"
+        topLabel.textAlignment = .center
+        scrollView.addSubview(topLabel)
+        
+        topLabel.translatesAutoresizingMaskIntoConstraints = false
+        topLabel.topAnchor.constraint(equalTo: cloudImage.bottomAnchor,
+                                        constant: top).isActive = true
+        topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        topLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка описания
     private func setupLabel() {
-        let top = 5.f
+        let top = 4.f
         let width = Session.width - 22.f
-        let height = 85.f
+        let height = 70.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
-        switch statusVerification {
-        case .denied:
-            label.text =
-            """
-            Мы не можем верифицировать этот аккаунт
-            """
-        case .error:
-            label.text =
-            """
-            Пожалуйста, учтите рекомендации Администрации HelpDoсtor, \
-            указанные в поле ниже, и направьте свои документы на повторную проверку в этом окне
-            """
-        default:
-            break
-        }
+        label.text =
+        """
+        Пожалуйста, учтите рекомендации администраторов приложения, \
+        указанные в поле ниже, и направьте свои документы на повторную проверку в этом же окне
+        """
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor,
+        label.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
                                    constant: top).isActive = true
         label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: width).isActive = true

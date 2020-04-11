@@ -78,13 +78,14 @@ class StartMainPresenter: StartMainPresenterProtocol {
                             switch status {
                             case "denied":
                                 Session.instance.userStatus = .denied
-                                self?.toErrorVerification(.error, userStatus.verification?[0].message)
+                                self?.toErrorVerification(userStatus.verification?[0].message)
                             case "not_verification":
                                 Session.instance.userStatus = .notVerification
                                 self?.toVerification()
                             case "processing":
                                 Session.instance.userStatus = .processing
-                                self?.toEndVerification()
+//                                self?.toEndVerification()
+                                self?.toErrorVerification(userStatus.verification?[0].message)
                             case "verified":
                                 Session.instance.userStatus = .verified
                             default:
@@ -164,9 +165,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
         view.present(viewController, animated: true, completion: nil)
     }
     
-    func toErrorVerification(_ status: StatusVerification, _ message: String?) {
+    func toErrorVerification(_ message: String?) {
         let viewController = VerificationErrorViewController()
-        viewController.statusVerification = status
         viewController.presenter = VerificationErrorPresenter(view: viewController)
         viewController.messageFromServer = message
         view.present(viewController, animated: true, completion: nil)

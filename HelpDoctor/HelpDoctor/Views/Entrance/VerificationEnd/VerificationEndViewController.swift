@@ -111,8 +111,8 @@ class VerificationEndViewController: UIViewController {
     private func setupSubtitleLabel() {
         let top = 5.f
         let height = 17.f
-        subtitleLabel.font = .semiBoldSystemFontOfSize(size: 16)
-        subtitleLabel.textColor = .white
+        subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
+        subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text =
         """
         На рассмотрении
