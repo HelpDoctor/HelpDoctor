@@ -50,7 +50,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
                             if responceCode(code: code) && status == "True" {
                                 //                        self?.view.hideFillProfileButton()
                                 self?.view.showFillProfileButton()
-                                if Session.instance.userStatus != .verified {
+                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
                                     self?.getStatusUser()
                                 }
                             } else {
@@ -77,20 +77,22 @@ class StartMainPresenter: StartMainPresenterProtocol {
                             guard let status = userStatus.verification?[0].status else { return }
                             switch status {
                             case "denied":
-                                Session.instance.userStatus = .denied
+                                UserDefaults.standard.set("denied", forKey: "userStatus")
                                 self?.toErrorVerification(userStatus.verification?[0].message)
                             case "not_verification":
-                                Session.instance.userStatus = .notVerification
+                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
                                 self?.toVerification()
                             case "processing":
-                                Session.instance.userStatus = .processing
+                                UserDefaults.standard.set("processing", forKey: "userStatus")
                                 self?.toEndVerification()
                             case "verified":
-                                Session.instance.userStatus = .verified
+                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
+                                    self?.toOkVerification()
+                                }
+                                UserDefaults.standard.set("verified", forKey: "userStatus")
                             default:
                                 break
                             }
-                            print(Session.instance.userStatus.debugDescription)
                         }
                     }
         }
