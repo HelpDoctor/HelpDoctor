@@ -107,7 +107,7 @@ class RegisterEndViewController: UIViewController {
         """
         Регистрация пройдена! \n
         Пароль для входа в приложение был выслан на указанный Вами E-mail \n
-        Теперь Вы можете войти, используя вашу почту и пароль
+        Теперь Вы можете войти, используя адрес почтового ящика и пароль
         """
         textLabel.textAlignment = .left
         textLabel.numberOfLines = 0

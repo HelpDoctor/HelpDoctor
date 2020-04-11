@@ -144,7 +144,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let height = 34.f
         topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
-        topLabel.text = "Чтобы воспользоваться функциями нашей программы, пожалуйста, зарегистрируйтесь."
+        topLabel.text = "Чтобы воспользоваться функциями приложения, необходимо пройти регистрацию."
         topLabel.textAlignment = .left
         topLabel.numberOfLines = 0
         scrollView.addSubview(topLabel)

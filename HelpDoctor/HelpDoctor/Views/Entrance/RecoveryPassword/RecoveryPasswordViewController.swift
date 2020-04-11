@@ -21,6 +21,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     private let label = UILabel()
     private let emailTextField = UITextField()
     private let sendButton = HDButton(title: "Отправить")
+    private let bottonLabel = UILabel()
     private let backButton = BackButton()
     private var imageViewEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
@@ -36,6 +37,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         setupLabel()
         setupEmailTextField()
         setupSendButton()
+        setupBottomLabel()
         setupBackButton()
         addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
@@ -198,6 +200,29 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    /// Установка нижней надписи
+    private func setupBottomLabel() {
+        let top = 32.f
+        let width = Session.width - 22.f
+        let height = 51.f
+        bottonLabel.font = .systemFontOfSize(size: 14)
+        bottonLabel.textColor = .white
+        bottonLabel.text =
+        """
+        Или напишите письмо Администраторам приложения на helptodoctor@yandex.ru
+        """
+        bottonLabel.textAlignment = .left
+        bottonLabel.numberOfLines = 0
+        scrollView.addSubview(bottonLabel)
+        
+        bottonLabel.translatesAutoresizingMaskIntoConstraints = false
+        bottonLabel.topAnchor.constraint(equalTo: sendButton.bottomAnchor,
+                                         constant: top).isActive = true
+        bottonLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        bottonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        bottonLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
     /// Установка кнопки назад
     private func setupBackButton() {
         let leading = 8.f
@@ -212,7 +237,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }

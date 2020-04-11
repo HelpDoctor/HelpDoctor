@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         let height = 34.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
-        label.text = "Для авторизации введите свой e-mail и ранее полученный пароль"
+        label.text = "Для авторизации введите свой e-mail и пароль, полученный при регистрации"
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
