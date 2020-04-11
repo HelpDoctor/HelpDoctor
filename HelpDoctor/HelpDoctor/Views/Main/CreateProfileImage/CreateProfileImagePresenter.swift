@@ -11,6 +11,7 @@ import UIKit
 protocol CreateProfileImagePresenterProtocol: Presenter {
     init(view: CreateProfileImageViewController)
     func save()
+    func setPhoto(photoString: String?)
 }
 
 class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
@@ -33,6 +34,12 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     /// Сохранение всей введенной информации и переход к следующему экрану
     func save() {
         updateUser()
+    }
+    
+    /// Установка фотографии в классе UpdateProfileKeyUser
+    /// - Parameter photoString: фотография пользователя в строковом виде
+    func setPhoto(photoString: String?) {
+        user?.foto = photoString
     }
     
     // MARK: - Private methods

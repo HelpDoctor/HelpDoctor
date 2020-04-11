@@ -181,15 +181,13 @@ class CreateProfileImageViewController: UIViewController {
         self.present(alertVC, animated: true, completion: nil)
     }
     
-    // MARK: - Navigation
-    
 }
 
 extension CreateProfileImageViewController: ImagePickerDelegate {
     
     func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
         userPhoto.image = image
-//        presenter?.save(source: .user)
+        presenter?.setPhoto(photoString: image.toString())
         imagePicker.dismiss()
     }
     

@@ -73,8 +73,7 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index/*,
-            let medicalSpecialization = arrayMedicalSpecialization?[index]*/ else {
+        guard let index = index else {
                 view.showAlert(message: "Выберите одну специализацию")
                 return
         }

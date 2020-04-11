@@ -130,12 +130,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Установка информации о специализации пользователя в форму
     /// - Parameter specData: информация с сервера
     private func setSpec(specData: [ProfileKeySpec]) {
-        let indexMainSpec = specData.firstIndex(where: { $0.is_main == true })
-        
-        if indexMainSpec != nil {
-            view.setSpec(spec: specData[indexMainSpec!].name ?? "")
-        }
-        
+        guard let indexMainSpec = specData.firstIndex(where: { $0.is_main == true }) else { return }
+        view.setSpec(spec: specData[indexMainSpec].name ?? "")
     }
     
     /// Установка интересов в поле ввода, загрузка интересов в массив интересов по специализации пользователя

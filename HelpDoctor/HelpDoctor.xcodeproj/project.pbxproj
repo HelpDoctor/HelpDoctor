@@ -21,6 +21,7 @@
 		46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46072E2423C3446D0070F2F6 /* RadioButton.swift */; };
 		4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */; };
 		4609F4392441AD9000F17E45 /* VerificationOkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */; };
+		4609F43B24422DB400F17E45 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F43A24422DB400F17E45 /* UIView+Extensions.swift */; };
 		46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EE823C443C40072653A /* ScheduleEvents.swift */; };
 		46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */; };
 		46203EEE23C443E20072653A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEC23C443E20072653A /* Schedule.swift */; };
@@ -71,7 +72,6 @@
 		4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E424166D480023C3A3 /* VerificationPresenter.swift */; };
 		4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */; };
 		4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */; };
-		4640B6EC24169F4E0023C3A3 /* UILabel+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6EB24169F4E0023C3A3 /* UILabel+Extensions.swift */; };
 		4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */; };
 		4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */; };
 		4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */; };
@@ -238,6 +238,7 @@
 		46072E2423C3446D0070F2F6 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkViewController.swift; sourceTree = "<group>"; };
 		4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkPresenter.swift; sourceTree = "<group>"; };
+		4609F43A24422DB400F17E45 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		46203EE823C443C40072653A /* ScheduleEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEvents.swift; sourceTree = "<group>"; };
 		46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateEvent.swift; sourceTree = "<group>"; };
 		46203EEC23C443E20072653A /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -288,7 +289,6 @@
 		4640B6E424166D480023C3A3 /* VerificationPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationPresenter.swift; sourceTree = "<group>"; };
 		4640B6E72416713E0023C3A3 /* VerificationEndViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndViewController.swift; sourceTree = "<group>"; };
 		4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndPresenter.swift; sourceTree = "<group>"; };
-		4640B6EB24169F4E0023C3A3 /* UILabel+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extensions.swift"; sourceTree = "<group>"; };
 		4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2ViewController.swift; sourceTree = "<group>"; };
 		4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2Presenter.swift; sourceTree = "<group>"; };
@@ -1016,8 +1016,8 @@
 				C4CBC3EF23E2AAC600434BFB /* MKMapView+Extensions.swift */,
 				C4CBC3F123E2AAE200434BFB /* CLPlacemark+Extensions.swift */,
 				4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */,
-				4640B6EB24169F4E0023C3A3 /* UILabel+Extensions.swift */,
 				4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */,
+				4609F43A24422DB400F17E45 /* UIView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1399,12 +1399,12 @@
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
-				4640B6EC24169F4E0023C3A3 /* UILabel+Extensions.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
 				4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */,
 				46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */,
+				4609F43B24422DB400F17E45 /* UIView+Extensions.swift in Sources */,
 				4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */,
 				46F87EFD23B8C6120095264E /* ValidateProtocol.swift in Sources */,
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,

@@ -14,6 +14,7 @@ class FAQViewController: UIViewController {
     var presenter: FAQPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let headerHeight = 40.f
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
     private let headerLabel = UILabel()
@@ -26,17 +27,16 @@ class FAQViewController: UIViewController {
     private let licenseView = UIView()
     private let licenseIcon = UIImageView()
     private let licenseLabel = UILabel()
-    private let versionTitle = UILabel()
+    private let rulesView = UIView()
+    private let rulesIcon = UIImageView()
+    private let rulesLabel = UILabel()
     private let versionLabel = UILabel()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
-        setupHeaderViewWithAvatar(title: "Настройки",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()
@@ -49,7 +49,9 @@ class FAQViewController: UIViewController {
         setupLicenseView()
         setupLicenseIcon()
         setupLicenseLabel()
-        setupVersionTitle()
+        setupRulesView()
+        setupRulesIcon()
+        setupRulesLabel()
         setupVersionLabel()
     }
     
@@ -61,22 +63,21 @@ class FAQViewController: UIViewController {
     
     // MARK: - Setup views
     private func setupTopStackView() {
-        let height: CGFloat = 40
-        
-        topStackView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
+        let height = 40.f
+        topStackView.backgroundColor = .searchBarTintColor
         view.addSubview(topStackView)
         
         topStackView.translatesAutoresizingMaskIntoConstraints = false
         topStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                          constant: 50).isActive = true
+                                          constant: headerHeight).isActive = true
         topStackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupHeaderIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 20
+        let width = 30.f
+        let leading = 20.f
         headerIcon.image = UIImage(named: "help")
         topStackView.addSubview(headerIcon)
         
@@ -89,11 +90,11 @@ class FAQViewController: UIViewController {
     }
     
     private func setupHeaderLabel() {
-        let leading: CGFloat = 20
+        let leading = 20.f
         
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
-        headerLabel.font = .systemFontOfSize(size: 14)
+        headerLabel.font = .mediumSystemFontOfSize(size: 14)
         headerLabel.textColor = .white
         headerLabel.text = "Помощь HelpDoctor"
         topStackView.addSubview(headerLabel)
@@ -108,8 +109,10 @@ class FAQViewController: UIViewController {
     }
     
     private func setupFaqView() {
-        let height: CGFloat = 50
-//        faqView.addBorder(toSide: .bottom, withColor: UIColor.red.cgColor, andThickness: 2)
+        let height = 50.f
+        faqView.addViewBackedBorder(side: .bottom,
+                                    thickness: 1,
+                                    color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
         view.addSubview(faqView)
         faqView.translatesAutoresizingMaskIntoConstraints = false
         faqView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
@@ -119,8 +122,8 @@ class FAQViewController: UIViewController {
     }
     
     private func setupFaqIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 30
+        let width = 30.f
+        let leading = 30.f
         faqIcon.image = UIImage(named: "help")
         faqView.addSubview(faqIcon)
         
@@ -133,12 +136,12 @@ class FAQViewController: UIViewController {
     }
     
     private func setupFaqLabel() {
-        let leading: CGFloat = 25
-        
+        let leading = 25.f
         faqLabel.textAlignment = .left
-        faqLabel.font = .systemFontOfSize(size: 14)
+        faqLabel.font = .mediumSystemFontOfSize(size: 14)
         faqLabel.textColor = .white
         faqLabel.text = "F.A.Q. HelpDoctor"
+        faqLabel.numberOfLines = 0
         faqView.addSubview(faqLabel)
         
         faqLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -151,8 +154,10 @@ class FAQViewController: UIViewController {
     }
     
     private func setupPolicyView() {
-        let height: CGFloat = 50
-//        policyView.addBorder(toSide: .bottom, withColor: UIColor.red.cgColor, andThickness: 2)
+        let height = 50.f
+        policyView.addViewBackedBorder(side: .bottom,
+                                       thickness: 1,
+                                       color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
         view.addSubview(policyView)
         
         policyView.translatesAutoresizingMaskIntoConstraints = false
@@ -163,8 +168,8 @@ class FAQViewController: UIViewController {
     }
     
     private func setupPolicyIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 30
+        let width = 30.f
+        let leading = 30.f
         policyIcon.image = UIImage(named: "PolicyIcon")
         policyView.addSubview(policyIcon)
         
@@ -177,12 +182,12 @@ class FAQViewController: UIViewController {
     }
     
     private func setupPolicyLabel() {
-        let leading: CGFloat = 25
-        
+        let leading = 25.f
         policyLabel.textAlignment = .left
-        policyLabel.font = .systemFontOfSize(size: 14)
+        policyLabel.font = .mediumSystemFontOfSize(size: 14)
         policyLabel.textColor = .white
-        policyLabel.text = "Условия и политика конфиденциальности"
+        policyLabel.text = "Политика обработки персональных данных"
+        policyLabel.numberOfLines = 0
         policyView.addSubview(policyLabel)
         
         policyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -195,8 +200,10 @@ class FAQViewController: UIViewController {
     }
     
     private func setupLicenseView() {
-        let height: CGFloat = 50
-//        licenseView.addBorder(toSide: .bottom, withColor: UIColor.red.cgColor, andThickness: 2)
+        let height = 50.f
+        licenseView.addViewBackedBorder(side: .bottom,
+                                        thickness: 1,
+                                        color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
         view.addSubview(licenseView)
         
         licenseView.translatesAutoresizingMaskIntoConstraints = false
@@ -207,8 +214,8 @@ class FAQViewController: UIViewController {
     }
     
     private func setupLicenseIcon() {
-        let width: CGFloat = 30
-        let leading: CGFloat = 30
+        let width = 30.f
+        let leading = 30.f
         licenseIcon.image = UIImage(named: "LicenseIcon")
         licenseView.addSubview(licenseIcon)
         
@@ -221,12 +228,12 @@ class FAQViewController: UIViewController {
     }
     
     private func setupLicenseLabel() {
-        let leading: CGFloat = 25
-        
+        let leading = 25.f
         licenseLabel.textAlignment = .left
-        licenseLabel.font = .systemFontOfSize(size: 14)
+        licenseLabel.font = .mediumSystemFontOfSize(size: 14)
         licenseLabel.textColor = .white
-        licenseLabel.text = "Лицензии"
+        licenseLabel.text = "Лицензионный договор"
+        licenseLabel.numberOfLines = 0
         licenseView.addSubview(licenseLabel)
         
         licenseLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -238,275 +245,74 @@ class FAQViewController: UIViewController {
         licenseLabel.heightAnchor.constraint(equalTo: licenseView.heightAnchor).isActive = true
     }
     
-    private func setupVersionTitle() {
-        let leading: CGFloat = 30
-        let width: CGFloat = 130
-        let height: CGFloat = 17
-        let top: CGFloat = 20
+    private func setupRulesView() {
+        let height = 50.f
+        rulesView.addViewBackedBorder(side: .bottom,
+                                        thickness: 1,
+                                        color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
+        view.addSubview(rulesView)
         
-        versionTitle.textAlignment = .left
-        versionTitle.font = .systemFontOfSize(size: 14)
-        versionTitle.textColor = .white
-        versionTitle.text = "Версия программы"
-        view.addSubview(versionTitle)
+        rulesView.translatesAutoresizingMaskIntoConstraints = false
+        rulesView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        rulesView.topAnchor.constraint(equalTo: licenseView.bottomAnchor).isActive = true
+        rulesView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        rulesView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupRulesIcon() {
+        let width = 30.f
+        let leading = 30.f
+        rulesIcon.image = UIImage(named: "RulesIcon")
+        rulesView.addSubview(rulesIcon)
         
-        versionTitle.translatesAutoresizingMaskIntoConstraints = false
-        versionTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+        rulesIcon.translatesAutoresizingMaskIntoConstraints = false
+        rulesIcon.leadingAnchor.constraint(equalTo: rulesView.leadingAnchor,
+                                             constant: leading).isActive = true
+        rulesIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
+        rulesIcon.centerYAnchor.constraint(equalTo: rulesView.centerYAnchor).isActive = true
+        rulesIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    private func setupRulesLabel() {
+        let leading = 25.f
+        rulesLabel.textAlignment = .left
+        rulesLabel.font = .mediumSystemFontOfSize(size: 14)
+        rulesLabel.textColor = .white
+        rulesLabel.text = "Правила использования мобильного приложения"
+        rulesLabel.numberOfLines = 0
+        rulesView.addSubview(rulesLabel)
+        
+        rulesLabel.translatesAutoresizingMaskIntoConstraints = false
+        rulesLabel.leadingAnchor.constraint(equalTo: rulesIcon.trailingAnchor,
                                               constant: leading).isActive = true
-        versionTitle.topAnchor.constraint(equalTo: licenseView.bottomAnchor,
-                                          constant: top).isActive = true
-        versionTitle.widthAnchor.constraint(equalToConstant: width).isActive = true
-        versionTitle.heightAnchor.constraint(equalToConstant: height).isActive = true
+        rulesLabel.trailingAnchor.constraint(equalTo: rulesView.trailingAnchor,
+                                               constant: -leading).isActive = true
+        rulesLabel.centerYAnchor.constraint(equalTo: rulesView.centerYAnchor).isActive = true
+        rulesLabel.heightAnchor.constraint(equalTo: rulesView.heightAnchor).isActive = true
     }
     
     private func setupVersionLabel() {
-        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-        let leading: CGFloat = 30
-        let width: CGFloat = 130
-        let height: CGFloat = 17
-        let top: CGFloat = 20
-        
-        versionLabel.textAlignment = .left
+        guard let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else { return }
+        let height = 17.f
+        let trailing = 8.f
+        let bottom = 10 + (tabBarController?.tabBar.frame.height ?? 0)
+        versionLabel.textAlignment = .right
         versionLabel.font = .systemFontOfSize(size: 14)
         versionLabel.textColor = .white
-        versionLabel.text = appVersion
+        versionLabel.text = "Версия приложения \(appVersion)"
         view.addSubview(versionLabel)
         
         versionLabel.translatesAutoresizingMaskIntoConstraints = false
-        versionLabel.leadingAnchor.constraint(equalTo: versionTitle.trailingAnchor,
-                                              constant: leading).isActive = true
-        versionLabel.topAnchor.constraint(equalTo: licenseView.bottomAnchor,
-                                          constant: top).isActive = true
-        versionLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        versionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                              constant: -trailing).isActive = true
+        versionLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor,
+                                          constant: -bottom).isActive = true
+        versionLabel.widthAnchor.constraint(equalToConstant: Session.width - (trailing * 2)).isActive = true
         versionLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     @objc private func sendButtonPressed() {
         print("In develop")
-    }
-    
-}
-
-extension UIView {
-    
-    enum ViewSide {
-        case left, right, top, bottom
-    }
-    
-    func createBorder(side: ViewSide,
-                      thickness: CGFloat,
-                      color: UIColor,
-                      leftOffset: CGFloat = 0,
-                      rightOffset: CGFloat = 0,
-                      topOffset: CGFloat = 0,
-                      bottomOffset: CGFloat = 0) -> CALayer {
-        
-        switch side {
-        case .top:
-            // Bottom Offset Has No Effect
-            // Subtract the bottomOffset from the height and the thickness to get our final y position.
-            // Add a left offset to our x to get our x position.
-            // Minus our rightOffset and negate the leftOffset from the width to get our endpoint for the border.
-            return _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                    y: 0 + topOffset,
-                                                    width: self.frame.size.width - leftOffset - rightOffset,
-                                                    height: thickness), color: color)
-        case .right:
-            // Left Has No Effect
-            // Subtract bottomOffset from the height to get our end.
-            return _getOneSidedBorder(frame: CGRect(x: self.frame.size.width - thickness - rightOffset,
-                                                    y: 0 + topOffset,
-                                                    width: thickness,
-                                                    height: self.frame.size.height), color: color)
-        case .bottom:
-            // Top has No Effect
-            // Subtract the bottomOffset from the height and the thickness to get our final y position.
-            // Add a left offset to our x to get our x position.
-            // Minus our rightOffset and negate the leftOffset from the width to get our endpoint for the border.
-            return _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                    y: self.frame.size.height - thickness - bottomOffset,
-                                                    width: self.frame.size.width - leftOffset - rightOffset,
-                                                    height: thickness),
-                                      color: color)
-        case .left:
-            // Right Has No Effect
-            return _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                    y: 0 + topOffset,
-                                                    width: thickness,
-                                                    height: self.frame.size.height - topOffset - bottomOffset),
-                                      color: color)
-        }
-    }
-    
-    func addBorder(side: ViewSide,
-                   thickness: CGFloat,
-                   color: UIColor,
-                   leftOffset: CGFloat = 0,
-                   rightOffset: CGFloat = 0,
-                   topOffset: CGFloat = 0,
-                   bottomOffset: CGFloat = 0) {
-        
-        switch side {
-        case .top:
-            // Add leftOffset to our X to get start X position.
-            // Add topOffset to Y to get start Y position
-            // Subtract left offset from width to negate shifting from leftOffset.
-            // Subtract rightoffset from width to set end X and Width.
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: CALayer = _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                   y: 0 + topOffset,
-                                                                   width: width,
-                                                                   height: thickness), color: color)
-            self.layer.addSublayer(border)
-        case .right:
-            // Subtract the rightOffset from our width + thickness to get our final x position.
-            // Add topOffset to our y to get our start y position.
-            // Subtract topOffset from our height, so our border doesn't extend past teh view.
-            // Subtract bottomOffset from the height to get our end.
-            let height = self.frame.size.height - topOffset - bottomOffset
-            let border: CALayer = _getOneSidedBorder(frame: CGRect(x: self.frame.size.width - thickness - rightOffset,
-                                                                   y: 0 + topOffset,
-                                                                   width: thickness,
-                                                                   height: height),
-                                                     color: color)
-            self.layer.addSublayer(border)
-        case .bottom:
-            // Subtract the bottomOffset from the height and the thickness to get our final y position.
-            // Add a left offset to our x to get our x position.
-            // Minus our rightOffset and negate the leftOffset from the width to get our endpoint for the border.
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: CALayer = _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                   y: self.frame.size.height - thickness - bottomOffset,
-                                                                   width: width,
-                                                                   height: thickness),
-                                                     color: color)
-            self.layer.addSublayer(border)
-        case .left:
-            let height = self.frame.size.height - topOffset - bottomOffset
-            let border: CALayer = _getOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                   y: 0 + topOffset,
-                                                                   width: thickness,
-                                                                   height: height),
-                                                     color: color)
-            self.layer.addSublayer(border)
-        }
-    }
-    
-    func createViewBackedBorder(side: ViewSide,
-                                thickness: CGFloat,
-                                color: UIColor,
-                                leftOffset: CGFloat = 0,
-                                rightOffset: CGFloat = 0,
-                                topOffset: CGFloat = 0,
-                                bottomOffset: CGFloat = 0) -> UIView {
-        
-        switch side {
-        case .top:
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: 0 + topOffset,
-                                                                            width: width,
-                                                                            height: thickness),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-            return border
-            
-        case .right:
-            let x = self.frame.size.width - thickness - rightOffset
-            let height = self.frame.size.height - topOffset - bottomOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: x,
-                                                                            y: 0 + topOffset, width: thickness,
-                                                                            height: height),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
-            return border
-            
-        case .bottom:
-            let y = self.frame.size.height - thickness - bottomOffset
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: y,
-                                                                            width: width,
-                                                                            height: thickness),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-            return border
-            
-        case .left:
-            let height = self.frame.size.height - topOffset - bottomOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: 0 + topOffset,
-                                                                            width: thickness,
-                                                                            height: height),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-            return border
-        }
-    }
-    
-    func addViewBackedBorder(side: ViewSide,
-                             thickness: CGFloat,
-                             color: UIColor,
-                             leftOffset: CGFloat = 0,
-                             rightOffset: CGFloat = 0,
-                             topOffset: CGFloat = 0,
-                             bottomOffset: CGFloat = 0) {
-        
-        switch side {
-        case .top:
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: 0 + topOffset,
-                                                                            width: width,
-                                                                            height: thickness),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleWidth, .flexibleBottomMargin]
-            self.addSubview(border)
-            
-        case .right:
-            let x = self.frame.size.width - thickness - rightOffset
-            let height = self.frame.size.height - topOffset - bottomOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: x,
-                                                                            y: 0 + topOffset,
-                                                                            width: thickness,
-                                                                            height: height),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleHeight, .flexibleLeftMargin]
-            self.addSubview(border)
-            
-        case .bottom:
-            let y = self.frame.size.height - thickness - bottomOffset
-            let width = self.frame.size.width - leftOffset - rightOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: y,
-                                                                            width: width,
-                                                                            height: thickness),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
-            self.addSubview(border)
-        case .left:
-            let height = self.frame.size.width - leftOffset - rightOffset
-            let border: UIView = _getViewBackedOneSidedBorder(frame: CGRect(x: 0 + leftOffset,
-                                                                            y: 0 + topOffset,
-                                                                            width: thickness,
-                                                                            height: height),
-                                                              color: color)
-            border.autoresizingMask = [.flexibleHeight, .flexibleRightMargin]
-            self.addSubview(border)
-        }
-    }
-    
-    fileprivate func _getOneSidedBorder(frame: CGRect, color: UIColor) -> CALayer {
-        let border: CALayer = CALayer()
-        border.frame = frame
-        border.backgroundColor = color.cgColor
-        return border
-    }
-    
-    fileprivate func _getViewBackedOneSidedBorder(frame: CGRect, color: UIColor) -> UIView {
-        let border: UIView = UIView(frame: frame)
-        border.backgroundColor = color
-        return border
     }
     
 }
