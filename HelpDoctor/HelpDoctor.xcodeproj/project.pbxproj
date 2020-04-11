@@ -19,6 +19,8 @@
 		46072E2123C267670070F2F6 /* AppointmentAddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46072E2023C267670070F2F6 /* AppointmentAddViewController.swift */; };
 		46072E2323C267710070F2F6 /* AppointmentAdd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46072E2223C267710070F2F6 /* AppointmentAdd.swift */; };
 		46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46072E2423C3446D0070F2F6 /* RadioButton.swift */; };
+		4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */; };
+		4609F4392441AD9000F17E45 /* VerificationOkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */; };
 		46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EE823C443C40072653A /* ScheduleEvents.swift */; };
 		46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */; };
 		46203EEE23C443E20072653A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEC23C443E20072653A /* Schedule.swift */; };
@@ -234,6 +236,8 @@
 		46072E2023C267670070F2F6 /* AppointmentAddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentAddViewController.swift; sourceTree = "<group>"; };
 		46072E2223C267710070F2F6 /* AppointmentAdd.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppointmentAdd.swift; sourceTree = "<group>"; };
 		46072E2423C3446D0070F2F6 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
+		4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkViewController.swift; sourceTree = "<group>"; };
+		4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkPresenter.swift; sourceTree = "<group>"; };
 		46203EE823C443C40072653A /* ScheduleEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEvents.swift; sourceTree = "<group>"; };
 		46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateEvent.swift; sourceTree = "<group>"; };
 		46203EEC23C443E20072653A /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -487,6 +491,15 @@
 				46072E2223C267710070F2F6 /* AppointmentAdd.swift */,
 			);
 			path = AppointmentAddEvent;
+			sourceTree = "<group>";
+		};
+		4609F4352441AD5E00F17E45 /* VerificationOk */ = {
+			isa = PBXGroup;
+			children = (
+				4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */,
+				4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */,
+			);
+			path = VerificationOk;
 			sourceTree = "<group>";
 		};
 		46203EEA23C443E20072653A /* Schedule */ = {
@@ -1078,6 +1091,7 @@
 		C48F167D23BA0576002D04E3 /* Entrance */ = {
 			isa = PBXGroup;
 			children = (
+				4609F4352441AD5E00F17E45 /* VerificationOk */,
 				46EFF4DE24359ED4004B9558 /* VerificationError */,
 				4640B6E62416711E0023C3A3 /* VerificationEnd */,
 				4640B6E124166D190023C3A3 /* Verification */,
@@ -1394,6 +1408,7 @@
 				4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */,
 				46F87EFD23B8C6120095264E /* ValidateProtocol.swift in Sources */,
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,
+				4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */,
 				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
@@ -1448,6 +1463,7 @@
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
 				4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */,
 				46203F0023C46A670072653A /* CreateFindUsers.swift in Sources */,
+				4609F4392441AD9000F17E45 /* VerificationOkPresenter.swift in Sources */,
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
 				46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */,
 				C4CBC3AE23D026A900434BFB /* UpdateProfileInterest.swift in Sources */,

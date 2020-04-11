@@ -171,6 +171,12 @@ class StartMainPresenter: StartMainPresenterProtocol {
         view.present(viewController, animated: true, completion: nil)
     }
     
+    func toOkVerification() {
+        let viewController = VerificationOkViewController()
+        viewController.presenter = VerificationOkPresenter(view: viewController)
+        view.present(viewController, animated: true, completion: nil)
+    }
+    
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
