@@ -81,6 +81,7 @@
 		4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */; };
 		4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347C23DD705200AFAA91 /* SelectDateViewController.swift */; };
 		4670347F23DD706800AFAA91 /* SelectDatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */; };
+		46718CA0244B2E97006E17AC /* ColorAssets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 46718C9F244B2E97006E17AC /* ColorAssets.xcassets */; };
 		46787A75243906D9005C0258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A74243906D9005C0258 /* Settings.swift */; };
 		46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */; };
 		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
@@ -298,6 +299,7 @@
 		4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsTableViewCell.swift; sourceTree = "<group>"; };
 		4670347C23DD705200AFAA91 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
 		4670347E23DD706800AFAA91 /* SelectDatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDatePresenter.swift; sourceTree = "<group>"; };
+		46718C9F244B2E97006E17AC /* ColorAssets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = ColorAssets.xcassets; sourceTree = "<group>"; };
 		46787A74243906D9005C0258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundViewController.swift; sourceTree = "<group>"; };
 		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
@@ -963,6 +965,7 @@
 			children = (
 				C48F163A23B61759002D04E3 /* Fonts */,
 				C48F15EA23B5FD5A002D04E3 /* Assets.xcassets */,
+				46718C9F244B2E97006E17AC /* ColorAssets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -1296,6 +1299,7 @@
 				C48F165423B6188B002D04E3 /* FiraSans-Italic.ttf in Resources */,
 				C48F165123B6188B002D04E3 /* FiraSans-SemiBold.ttf in Resources */,
 				C48F165523B6188B002D04E3 /* FiraSans-ExtraLightItalic.ttf in Resources */,
+				46718CA0244B2E97006E17AC /* ColorAssets.xcassets in Resources */,
 				C48F165023B6188B002D04E3 /* FiraSans-Bold.ttf in Resources */,
 				C48F165323B6188B002D04E3 /* FiraSans-ExtraBold.ttf in Resources */,
 				C48F165F23B6188B002D04E3 /* FiraSans-Medium.ttf in Resources */,
