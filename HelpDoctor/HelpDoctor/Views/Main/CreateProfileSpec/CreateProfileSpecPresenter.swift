@@ -50,7 +50,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtOne,
-                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -59,8 +59,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                            let sliceArray = interestMainSpec?.prefix(10)
-                            self?.popularInterests = Array(sliceArray ?? [])
+                            let idRelevantInterests = result?.1 ?? []
+                            var sliceArray: [ListOfInterests] = []
+                            for id in idRelevantInterests {
+                                sliceArray += interestMainSpec?.filter { $0.id == id } ?? []
+                            }
+                            self?.popularInterests = Array(sliceArray)
                             self?.view.reloadCollectionView()
                         }
                     }
@@ -130,7 +134,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtOne,
-                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -155,7 +159,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtTwo,
-                returning: ([String: [ListOfInterests]], Int?, String?).self,
+                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] ) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     

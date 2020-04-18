@@ -186,6 +186,8 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         emailButton.titleLabel?.font = .systemFontOfSize(size: 14)
         emailButton.setTitleColor(.white, for: .normal)
         emailButton.addTarget(self, action: #selector(emailCheckBoxPressed), for: .touchUpInside)
+        emailButton.isUserInteractionEnabled = false
+        emailButton.isSelected = true
         scrollView.addSubview(emailButton)
         
         emailButton.translatesAutoresizingMaskIntoConstraints = false
@@ -204,6 +206,8 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         messageButton.titleLabel?.font = .systemFontOfSize(size: 14)
         messageButton.setTitleColor(.white, for: .normal)
         messageButton.addTarget(self, action: #selector(messageCheckBoxPressed), for: .touchUpInside)
+        messageButton.isUserInteractionEnabled = false
+        messageButton.alpha = 0.5
         scrollView.addSubview(messageButton)
         
         messageButton.translatesAutoresizingMaskIntoConstraints = false
