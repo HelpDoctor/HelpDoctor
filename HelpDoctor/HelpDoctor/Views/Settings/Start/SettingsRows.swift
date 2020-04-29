@@ -11,7 +11,7 @@ import Foundation
 enum SettingsRow: String {
     case user = "Редактировать профиль"
     case generalSettings = "Общие настройки"
-    case securitySettings = "Настройки безопасности"
+    case securitySettings = "Изменение пароля"
     case addFriends = "Пригласить коллег в приложение"
     case notificationSettings = "Настройки уведомлений и звука"
     case emailSettings = "Настройка почтовой рыссылки и приглашений"

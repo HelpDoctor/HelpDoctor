@@ -17,18 +17,22 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     private var verticalInset = 0.f
     private let headerHeight = 40.f
     private let heightTopStackView = 40.f
-    private let heightArt = 180.f
-    private let heightLabel = 116.f
+    private let heightArt = 157.f
+    private let heightLabel = 51.f
     private let heightTextField = 30.f
-    private let heightSendButton = 35.f
+    private let heightSendButton = 44.f
+    private let widthContent = Session.width - 40
     private let scrollView = UIScrollView()
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
     private let headerLabel = UILabel()
     private let art = UIImageView()
     private let textLabel = UILabel()
-    private let emailTextField = UITextField()
-    private let sendButton = HDButton(title: "Отправить")
+    private let oldPasswordTextField = UITextField()
+    private let passwordTextField = UITextField()
+    private let confirmPasswordTextField = UITextField()
+    private let bottomLabel = UILabel()
+    private let sendButton = HDButton(title: "Изменить", fontSize: 18)
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
@@ -42,7 +46,10 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         setupHeaderIcon()
         setupHeaderLabel()
         setupTextLabel()
-        setupEmailTextField()
+        setupOldPasswordTextField()
+        setupPasswordTextField()
+        setupConfirmPasswordTextField()
+        setupBottomLabel()
         setupSendButton()
         setupArt()
         addTapGestureToHideKeyboard()
@@ -54,12 +61,20 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
+    // MARK: - Public methods
+    /// Обновление состояния кнопки "Отправить"
+    /// - Parameter isEnabled: состояние
+    func updateSendButton(isEnabled: Bool) {
+        self.sendButton.update(isEnabled: isEnabled)
+    }
+    
+    // MARK: - Private methods
     private func calculateInset() -> CGFloat {
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         let contentHeight = statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
-            + heightArt + heightLabel + heightTextField + heightSendButton
-        return (Session.height - contentHeight) / 5
+            + heightArt + (heightLabel * 2) + (heightTextField * 3) + heightSendButton
+        return (Session.height - contentHeight) / 8
     }
     
     // MARK: - Setup views
@@ -107,7 +122,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         headerLabel.textAlignment = .left
         headerLabel.font = .boldSystemFontOfSize(size: 14)
         headerLabel.textColor = .white
-        headerLabel.text = "Настройки безопасности"
+        headerLabel.text = "Изменение пароля"
         topStackView.addSubview(headerLabel)
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -121,15 +136,13 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupTextLabel() {
         let leading = 20.f
-        let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
-        textLabel.font = .systemFontOfSize(size: 16)
+        textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
         """
-        Чтобы изменить пароль введите, пожалуйста, E-mail, который Вы указывали при регистрации.\n
-        Именно на него будет выслан новый пароль для входа в HelpDoctor
+        Чтобы сменить пароль, укажите сначала текущий, затем введите новый и нажмите кнопку “Изменить”
         """
         scrollView.addSubview(textLabel)
         
@@ -138,41 +151,117 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
                                            constant: leading).isActive = true
         textLabel.topAnchor.constraint(equalTo: topStackView.bottomAnchor,
                                        constant: verticalInset).isActive = true
-        textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        textLabel.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
-    private func setupEmailTextField() {
-        emailTextField.font = UIFont.systemFontOfSize(size: 14)
-        emailTextField.keyboardType = .emailAddress
-        emailTextField.textColor = .textFieldTextColor
-        emailTextField.placeholder = "E-mail*"
-        emailTextField.textAlignment = .left
-        emailTextField.backgroundColor = .white
-        emailTextField.layer.cornerRadius = 5
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
-        emailTextField.leftViewMode = .always
-        scrollView.addSubview(emailTextField)
+    private func setupOldPasswordTextField() {
+        oldPasswordTextField.addTarget(self,
+                                    action: #selector(self.oldPasswordChanged(_:)),
+                                    for: UIControl.Event.editingChanged)
+        oldPasswordTextField.font = .systemFontOfSize(size: 14)
+        oldPasswordTextField.isSecureTextEntry = true
+        oldPasswordTextField.textColor = .textFieldTextColor
+        oldPasswordTextField.placeholder = "Старый пароль"
+        oldPasswordTextField.textAlignment = .left
+        oldPasswordTextField.backgroundColor = .white
+        oldPasswordTextField.layer.cornerRadius = 5
+        oldPasswordTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                             y: 0,
+                                                             width: 8,
+                                                             height: oldPasswordTextField.frame.height))
+        oldPasswordTextField.leftViewMode = .always
+        scrollView.addSubview(oldPasswordTextField)
         
-        emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
-                                            constant: verticalInset).isActive = true
-        emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: Session.width - 114).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        oldPasswordTextField.translatesAutoresizingMaskIntoConstraints = false
+        oldPasswordTextField.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
+                                                  constant: verticalInset).isActive = true
+        oldPasswordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        oldPasswordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
+        oldPasswordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+    }
+    
+    private func setupPasswordTextField() {
+        passwordTextField.addTarget(self,
+                                    action: #selector(self.passwordChanged(_:)),
+                                    for: UIControl.Event.editingChanged)
+        passwordTextField.font = .systemFontOfSize(size: 14)
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.textColor = .textFieldTextColor
+        passwordTextField.placeholder = "Новый пароль"
+        passwordTextField.textAlignment = .left
+        passwordTextField.backgroundColor = .white
+        passwordTextField.layer.cornerRadius = 5
+        passwordTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                          y: 0,
+                                                          width: 8,
+                                                          height: passwordTextField.frame.height))
+        passwordTextField.leftViewMode = .always
+        scrollView.addSubview(passwordTextField)
+        
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.topAnchor.constraint(equalTo: oldPasswordTextField.bottomAnchor,
+                                               constant: verticalInset).isActive = true
+        passwordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        passwordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+    }
+    
+    private func setupConfirmPasswordTextField() {
+        confirmPasswordTextField.addTarget(self,
+                                           action: #selector(self.confirmPasswordChanged(_:)),
+                                           for: UIControl.Event.editingChanged)
+        confirmPasswordTextField.font = .systemFontOfSize(size: 14)
+        confirmPasswordTextField.isSecureTextEntry = true
+        confirmPasswordTextField.textColor = .textFieldTextColor
+        confirmPasswordTextField.placeholder = "Повторите новый пароль"
+        confirmPasswordTextField.textAlignment = .left
+        confirmPasswordTextField.backgroundColor = .white
+        confirmPasswordTextField.layer.cornerRadius = 5
+        confirmPasswordTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                                 y: 0,
+                                                                 width: 8,
+                                                                 height: confirmPasswordTextField.frame.height))
+        confirmPasswordTextField.leftViewMode = .always
+        scrollView.addSubview(confirmPasswordTextField)
+        
+        confirmPasswordTextField.translatesAutoresizingMaskIntoConstraints = false
+        confirmPasswordTextField.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor,
+                                                      constant: verticalInset).isActive = true
+        confirmPasswordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        confirmPasswordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
+        confirmPasswordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+    }
+    
+    private func setupBottomLabel() {
+        let leading = 20.f
+        bottomLabel.numberOfLines = 0
+        bottomLabel.textAlignment = .left
+        bottomLabel.font = .systemFontOfSize(size: 14)
+        bottomLabel.textColor = .white
+        bottomLabel.text =
+        """
+        Новый пароль должен состоят минимум из 8 символов, содержать цифры, строчные и заглавные буквы
+        """
+        scrollView.addSubview(bottomLabel)
+        
+        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
+        bottomLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: leading).isActive = true
+        bottomLabel.topAnchor.constraint(equalTo: confirmPasswordTextField.bottomAnchor,
+                                         constant: verticalInset).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
+        bottomLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
     private func setupSendButton() {
-        let width = 150.f
+        let width = 148.f
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
-        sendButton.update(isEnabled: true)
+        sendButton.update(isEnabled: false)
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.topAnchor.constraint(equalTo: emailTextField.bottomAnchor,
+        sendButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
                                         constant: verticalInset).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -180,7 +269,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupArt() {
-        let width = 190.f
+        let width = 165.f
         art.image = UIImage(named: "SecurityArt")
         view.addSubview(art)
         
@@ -213,6 +302,18 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
+    @objc func oldPasswordChanged(_ textField: UITextField) {
+        presenter?.oldPasswordChanged(password: oldPasswordTextField.text)
+    }
+    
+    @objc func passwordChanged(_ textField: UITextField) {
+        presenter?.passwordChanged(password: passwordTextField.text)
+    }
+    
+    @objc func confirmPasswordChanged(_ textField: UITextField) {
+        presenter?.confirmPasswordChanged(password: confirmPasswordTextField.text)
+    }
+    
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
     }

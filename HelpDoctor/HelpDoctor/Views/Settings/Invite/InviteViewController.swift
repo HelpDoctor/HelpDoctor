@@ -19,7 +19,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     private let heightTopStackView = 40.f
     private let heightLabel = 80.f
     private let heightTextField = 30.f
-    private let heightSendButton = 35.f
+    private let heightSendButton = 44.f
     private var heightArt = 0.f
     private let image = UIImage(named: "InviteFriend")?.resizeImage(Session.width, opaque: false)
     private let scrollView = UIScrollView()
@@ -31,7 +31,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     private let surnameTextField = UITextField()
     private let emailTextField = UITextField()
     private let art = UIImageView()
-    private let sendButton = HDButton(title: "Отправить")
+    private let sendButton = HDButton(title: "Отправить", fontSize: 18)
     private var keyboardHeight = 0.f
     
     // MARK: - Lifecycle ViewController
@@ -134,7 +134,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
-        textLabel.font = .systemFontOfSize(size: 16)
+        textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text = "Чтобы отправить ссылку-приглашение другу, заполните нижеследующие поля и нажмите “Отправить”"
         scrollView.addSubview(textLabel)
@@ -222,7 +222,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSendButton() {
-        let width = 150.f
+        let width = 148.f
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)

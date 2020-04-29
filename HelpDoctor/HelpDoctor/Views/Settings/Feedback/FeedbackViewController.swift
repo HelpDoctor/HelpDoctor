@@ -14,7 +14,15 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     var presenter: FeedbackPresenterProtocol?
     
     // MARK: - Constants and variables
+    private var verticalInset = 0.f
     private let headerHeight = 40.f
+    private let heightTopStackView = 40.f
+    private let heightTopLabel = 101.f
+    private let heightTextView = 100.f
+    private let heightBottomLabel = 15.f
+    private let heightCheckbox = 20.f
+    private let heightSendButton = 44.f
+    private let widthContent = Session.width - 40
     private let scrollView = UIScrollView()
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
@@ -24,12 +32,13 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     private let questionLabel = UILabel()
     private let emailButton = CheckBox(type: .square)
     private let messageButton = CheckBox(type: .square)
-    private var sendButton = HDButton(title: "Отправить")
+    private var sendButton = HDButton(title: "Отправить", fontSize: 18)
     private var keyboardHeight = 0.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        verticalInset = calculateInset()
         view.backgroundColor = .backgroundColor
         setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
         setupScrollView()
@@ -51,6 +60,15 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
+    // MARK: - Private methods
+    private func calculateInset() -> CGFloat {
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
+        let contentHeight = statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
+            + heightTextView + heightTopLabel + heightBottomLabel + (heightCheckbox * 2) + heightSendButton
+        return (Session.height - contentHeight) / 7
+    }
+    
     // MARK: - Setup views
     private func setupScrollView() {
         scrollView.delegate = self
@@ -66,7 +84,6 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupTopStackView() {
-        let height = 40.f
         topStackView.backgroundColor = .searchBarTintColor
         scrollView.addSubview(topStackView)
         
@@ -74,7 +91,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         topStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         topStackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         topStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
-        topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        topStackView.heightAnchor.constraint(equalToConstant: heightTopStackView).isActive = true
     }
     
     private func setupHeaderIcon() {
@@ -111,16 +128,14 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupTextLabel() {
         let leading = 20.f
-        let top = 10.f
-        let height = 140.f
         let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
-        textLabel.font = .systemFontOfSize(size: 16)
+        textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
         """
-        Расскажите о своей проблеме, и мы приложим все усилия, чтобы решить ее оперативно.\n
+        Расскажите нам о своей проблеме, и мы приложим все усилия, чтобы ее решить.\n
         Если у Вас есть пожелания к улучшению работы приложения HelpDoctor, мы будем Вам благодарны
         """
         scrollView.addSubview(textLabel)
@@ -129,15 +144,13 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         textLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                            constant: leading).isActive = true
         textLabel.topAnchor.constraint(equalTo: topStackView.bottomAnchor,
-                                       constant: top).isActive = true
+                                       constant: verticalInset).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        textLabel.heightAnchor.constraint(equalToConstant: heightTopLabel).isActive = true
     }
     
     private func setupTextView() {
         let leading = 20.f
-        let top = 10.f
-        let height = 100.f
         let width = Session.width - (leading * 2)
         textView.textAlignment = .left
         textView.font = .systemFontOfSize(size: 14)
@@ -152,15 +165,13 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         textView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                           constant: leading).isActive = true
         textView.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
-                                      constant: top).isActive = true
+                                      constant: verticalInset).isActive = true
         textView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        textView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        textView.heightAnchor.constraint(equalToConstant: heightTextView).isActive = true
     }
     
     private func setupQuestionLabel() {
         let leading = 20.f
-        let top = 20.f
-        let height = 15.f
         let width = Session.width - (leading * 2)
         questionLabel.numberOfLines = 1
         questionLabel.textAlignment = .left
@@ -173,15 +184,13 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         questionLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: leading).isActive = true
         questionLabel.topAnchor.constraint(equalTo: textView.bottomAnchor,
-                                           constant: top).isActive = true
+                                           constant: verticalInset).isActive = true
         questionLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        questionLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        questionLabel.heightAnchor.constraint(equalToConstant: heightBottomLabel).isActive = true
     }
     
     private func setupEmailButton() {
-        let top = 10.f
         let leading = 20.f
-        let height = 20.f
         emailButton.setTitle("   По e-mail", for: .normal)
         emailButton.titleLabel?.font = .systemFontOfSize(size: 14)
         emailButton.setTitleColor(.white, for: .normal)
@@ -192,16 +201,14 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         
         emailButton.translatesAutoresizingMaskIntoConstraints = false
         emailButton.topAnchor.constraint(equalTo: questionLabel.bottomAnchor,
-                                         constant: top).isActive = true
+                                         constant: verticalInset).isActive = true
         emailButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: leading).isActive = true
-        emailButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        emailButton.heightAnchor.constraint(equalToConstant: heightCheckbox).isActive = true
     }
     
     private func setupMessageButton() {
-        let top = 10.f
         let leading = 20.f
-        let height = 20.f
         messageButton.setTitle("   Через сообщения HelpDoctor", for: .normal)
         messageButton.titleLabel?.font = .systemFontOfSize(size: 14)
         messageButton.setTitleColor(.white, for: .normal)
@@ -212,25 +219,24 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         
         messageButton.translatesAutoresizingMaskIntoConstraints = false
         messageButton.topAnchor.constraint(equalTo: emailButton.bottomAnchor,
-                                           constant: top).isActive = true
+                                           constant: verticalInset).isActive = true
         messageButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: leading).isActive = true
-        messageButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        messageButton.heightAnchor.constraint(equalToConstant: heightCheckbox).isActive = true
     }
     
     private func setupSendButton() {
-        let top = 15.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        sendButton.layer.cornerRadius = heightSendButton / 2
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.topAnchor.constraint(equalTo: messageButton.bottomAnchor,
-                                        constant: top).isActive = true
+                                        constant: verticalInset).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
-        sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        sendButton.heightAnchor.constraint(equalToConstant: heightSendButton).isActive = true
     }
     
     private func addTapGestureToHideKeyboard() {
