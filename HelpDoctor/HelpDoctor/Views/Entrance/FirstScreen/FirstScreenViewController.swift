@@ -20,12 +20,12 @@ class FirstScreenViewController: UIViewController {
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
-    private var loginButton = HDButton()
-    private var registerButton = HDButton()
+    private var loginButton = HDButton(title: "Войти", fontSize: 18)
+    private var registerButton = HDButton(title: "Регистрация", fontSize: 18)
     
     private let widthLabel = Session.width - 22.f
-    private let widthButton = 150.f
-    private let heightButton = 35.f
+    private let widthButton = 148.f
+    private let heightButton = 44.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -168,7 +168,7 @@ class FirstScreenViewController: UIViewController {
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
         let top = 24.f
-        loginButton = HDButton(title: "Войти")
+        loginButton.layer.cornerRadius = heightButton / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         
@@ -183,7 +183,7 @@ class FirstScreenViewController: UIViewController {
     /// Установка кнопки "Регистрация"
     private func setupRegisterButton() {
         let top = 16.f
-        registerButton = HDButton(title: "Регистрация")
+        registerButton.layer.cornerRadius = heightButton / 2
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         view.addSubview(registerButton)
         

@@ -31,7 +31,7 @@ class InterestCollectionViewCell: UICollectionViewCell {
     private func setupCellLabel() {
         cellLabel.numberOfLines = 2
         cellLabel.textAlignment = .center
-        cellLabel.font = .systemFontOfSize(size: 10)
+        cellLabel.font = .systemFontOfSize(size: 12)
         cellLabel.textColor = .white
         contentView.addSubview(cellLabel)
         

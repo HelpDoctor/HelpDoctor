@@ -30,7 +30,8 @@ func parseJSON_getListOfInterests(for startPoint: [String: AnyObject]?,
             if key == "relevant" {
                 idRelevantInterests.append(obj["interest_id"] as! Int)
             } else {
-                arrListOfInterests.append(ListOfInterests(id: obj["id"] as! Int,
+                guard let id = obj["id"] as? Int else { continue }
+                arrListOfInterests.append(ListOfInterests(id: id,
                                                           specializationCode: obj["specialization_code"] as? String,
                                                           name: obj["name"] as? String))
             }

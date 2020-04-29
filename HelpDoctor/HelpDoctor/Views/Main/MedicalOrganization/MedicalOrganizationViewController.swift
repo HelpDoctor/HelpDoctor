@@ -17,7 +17,7 @@ class MedicalOrganizationViewController: UIViewController {
     private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 60.f
     var tableView = UITableView()
-    private var okButton = HDButton()
+    private var okButton = HDButton(title: "Готово")
     private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
@@ -81,7 +81,6 @@ class MedicalOrganizationViewController: UIViewController {
     }
     
     private func setupOkButton() {
-        okButton = HDButton(title: "Готово")
         okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         okButton.isEnabled = true
         view.addSubview(okButton)
@@ -89,8 +88,8 @@ class MedicalOrganizationViewController: UIViewController {
         okButton.translatesAutoresizingMaskIntoConstraints = false
         okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
-        okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
     
     // MARK: - Navigation

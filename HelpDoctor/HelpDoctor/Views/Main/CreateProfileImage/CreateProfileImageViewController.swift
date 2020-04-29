@@ -125,8 +125,8 @@ class CreateProfileImageViewController: UIViewController {
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let width = 90.f
-        let height = 30.f
+        let width = 110.f
+        let height = 40.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.update(isEnabled: true)
         view.addSubview(nextButton)

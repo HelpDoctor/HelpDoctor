@@ -136,7 +136,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupCollectionView() {
         let top = 10.f
-        let height = 111.f
+        let height = 156.f
         let customSuperLayout = InterestCollectionViewLayout()
         customSuperLayout.delegate = self
         collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
@@ -156,14 +156,14 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupAddButton() {
-        let width = 92.f
-        let height = 29.f
+        let width = 110.f
+        let height = 44.f
         let top = 17.f
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.backgroundColor = UIColor(red: 0.4, green: 0.063, blue: 0.949, alpha: 1)
         addButton.setTitleColor(.white, for: .normal)
         addButton.setTitle("Добавить интересы", for: .normal)
-        addButton.titleLabel?.font = .systemFontOfSize(size: 10)
+        addButton.titleLabel?.font = .systemFontOfSize(size: 12)
         addButton.titleLabel?.numberOfLines = 2
         addButton.layer.cornerRadius = height / 2
         addButton.layer.borderWidth = 1
@@ -181,8 +181,8 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let width = 90.f
-        let height = 30.f
+        let width = 110.f
+        let height = 40.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)
@@ -254,12 +254,13 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
 extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
     
     func width(forItemAt indexPath: IndexPath) -> CGFloat {
-        let font = UIFont.systemFontOfSize(size: 12)
-        var constraintRect = CGSize(width: contentWidth / 3, height: 29)
+        let cellHeight = 44.f
+        let font = UIFont.systemFontOfSize(size: 14)
+        var constraintRect = CGSize(width: contentWidth / 3, height: cellHeight)
         let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
-        let newWidth = data.width(withConstrainedHeight: 29, font: font, minimumTextWrapWidth: 30)
+        let newWidth = data.width(withConstrainedHeight: cellHeight, font: font, minimumTextWrapWidth: 45)
         if newWidth > constraintRect.width {
-            constraintRect = CGSize(width: contentWidth / 2, height: 29)
+            constraintRect = CGSize(width: contentWidth / 2, height: cellHeight)
         }
         let box = data.boundingRect(with: constraintRect,
                                     options: NSStringDrawingOptions.usesLineFragmentOrigin,

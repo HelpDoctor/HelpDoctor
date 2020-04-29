@@ -23,7 +23,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private let topEmailTextField = UITextField()
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
-    private var registerButton = HDButton()
+    private var registerButton = HDButton(title: "Отправить", fontSize: 18)
     private let backButton = BackButton()
     private let checkButton = CheckBox(type: .square)
     private let policyLabel = UILabel()
@@ -264,9 +264,9 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки "Отправить"
     private func setupRegisterButton() {
         let top = 10.f
-        let width = 150.f
-        let height = 35.f
-        registerButton = HDButton(title: "Отправить")
+        let width = 148.f
+        let height = 44.f
+        registerButton.layer.cornerRadius = height / 2
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         registerButton.update(isEnabled: false)
         scrollView.addSubview(registerButton)

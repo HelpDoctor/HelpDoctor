@@ -39,7 +39,7 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
             return
         }
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
-        let cellHeight = 29.f
+        let cellHeight = 44.f
         
         var firstRowWidth = 0.f
         var secondRowWidth = 0.f

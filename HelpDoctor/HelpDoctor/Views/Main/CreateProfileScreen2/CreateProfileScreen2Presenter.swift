@@ -15,7 +15,8 @@ protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     func setRegion(region: Regions)
     func setRegionFromDevice(_ idRegion: Int)
     func setCity(city: Cities)
-    func next(phone: String)
+    func convertDate(_ birthDate: String) -> String?
+    func next(phone: String, birthdate: String)
 }
 
 class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
@@ -84,6 +85,19 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         user?.city_id = city.id
     }
     
+    /// Конвертация даты из формата yyy-MM-dd в формат dd.MM.yyyy
+    /// - Parameter birthDate: дата в формте yyy-MM-dd
+    /// - Returns: дата в формате dd.MM.yyyy
+    func convertDate(_ birthDate: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        guard let birthday = dateFormatter.date(from: birthDate) else { return nil }
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: birthday)
+    }
+    
     private func setCityFromDevice(_ idCity: Int) {
         let getCities = Profile()
         guard let regionId = region?.regionId else { return }
@@ -91,21 +105,24 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         getData(typeOfContent: .getListCities,
                 returning: ([Cities], Int?, String?).self,
                 requestParams: ["region": "\(regionId)"]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getCities.cities = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    self?.city = getCities.cities?.first(where: { $0.id == idCity })
-                }
-            }
+                    let dispathGroup = DispatchGroup()
+                    
+                    getCities.cities = result?.0
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self] in
+                            self?.city = getCities.cities?.first(where: { $0.id == idCity })
+                        }
+                    }
         }
     }
     
     // MARK: - Coordinator
-    func next(phone: String) {
-        if phone == "" {
+    func next(phone: String, birthdate: String) {
+        if birthdate == "" {
+            view.showAlert(message: "Не заполнена дата рождения")
+            return
+        } else if phone == "" {
             view.showAlert(message: "Не заполнен номер телефона")
             return
         }
@@ -117,10 +134,23 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
             view.showAlert(message: "Не указан город места жительства")
             return
         }
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        guard let birthday = dateFormatter.date(from: birthdate) else {
+            view.showAlert(message: "Не правильно указана дата рождения")
+            return
+        }
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let strBirthday = dateFormatter.string(from: birthday)
+        
+        user?.birthday = strBirthday
         user?.phone_number = phone
         user?.city_id = city?.id
-        let viewController = CreateProfileWorkViewController()
-        let presenter = CreateProfileWorkPresenter(view: viewController)
+        let viewController = CreateProfileStep6ViewController()
+        let presenter = CreateProfileStep6Presenter(view: viewController)
         viewController.presenter = presenter
         presenter.user = user
         view.navigationController?.pushViewController(viewController, animated: true)
@@ -143,7 +173,7 @@ extension CreateProfileScreen2Presenter {
             let date = dateFormatter.string(from: datePicker.date)
             pickerField.text =  "\(date)"
         }
-
+        
     }
     
 }

@@ -22,7 +22,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     private let stackView = UIView()
     private let addTextField = UITextField()
     private let nextButton = HDButton(title: "Далее")
-    private let addButton = HDButton(title: "Добавить", fontSize: 12)
+    private let addButton = HDButton(title: "Добавить", fontSize: 14)
     
     private var keyboardHeight = 0.f
     private let heightSearchBar = 56.f
@@ -122,8 +122,8 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки добавления интереса
     private func setupAddButton() {
         let trailing = 14.f
-        let height = 35.f
-        let width = 85.f
+        let height = 40.f
+        let width = 98.f
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.isEnabled = true
         stackView.addSubview(addButton)
@@ -181,8 +181,8 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let width = 90.f
-        let height = 30.f
+        let width = 110.f
+        let height = 40.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)

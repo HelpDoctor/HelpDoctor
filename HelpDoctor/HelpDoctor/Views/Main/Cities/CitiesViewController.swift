@@ -92,8 +92,8 @@ class CitiesViewController: UIViewController {
         okButton.translatesAutoresizingMaskIntoConstraints = false
         okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
-        okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 90).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
     
     // MARK: - Navigation

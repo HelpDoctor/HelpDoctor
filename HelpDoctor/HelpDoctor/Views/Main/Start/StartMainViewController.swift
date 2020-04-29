@@ -198,7 +198,7 @@ class StartMainViewController: UIViewController {
         fillProfileButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 10).isActive = true
         fillProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         fillProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        fillProfileButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        fillProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
     // MARK: - Buttons methods

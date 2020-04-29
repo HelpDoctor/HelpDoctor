@@ -82,6 +82,8 @@ class StartSettingsViewController: UIViewController {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async {
                     print("result= \(String(describing: unRegistration.responce))")
+                    UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                    AppDelegate.shared.rootViewController.switchToLogout() 
                 }
             }
         }

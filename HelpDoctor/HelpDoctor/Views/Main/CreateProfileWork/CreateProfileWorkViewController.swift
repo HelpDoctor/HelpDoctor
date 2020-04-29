@@ -15,9 +15,16 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Constants
     private let backgroundColor = UIColor.backgroundColor
+    private var verticalInset = 0.f
     private let headerHeight = 60.f
     private let textFieldWidth = Session.width - 40
-    private let textFieldHeight = 30.f
+    private let heightTextField = 30.f
+    private let heightTitleLabel = 20.f
+    private let heightLabel = 15.f
+    private let heightTableView = 70.f
+    private let heightRadioButton = 20.f
+    private let heightPlusButton = 25.f
+    private let heightNextButton = 40.f
     private let scrollView = UIScrollView()
     private let step7TitleLabel = UILabel()
     private let step7JobLabel = UILabel()
@@ -31,9 +38,13 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private let positionTextField = UITextField()
     private let employmentLabel = UILabel()
     private let medicalButton = RadioButton()
+    private let medicalButtonLabel = UILabel()
     private let notMedicalButton = RadioButton()
+    private let notMedicalButtonLabel = UILabel()
     private let hideEmploymentButton = CheckBox(type: .square)
     private let nextButton = HDButton(title: "Далее")
+    private var employmentLabelTop: NSLayoutConstraint?
+    private var positionTextFieldTop: NSLayoutConstraint?
     private var jobTableViewHeight: NSLayoutConstraint?
     private var specTableViewHeight: NSLayoutConstraint?
     private var nextButtonTopAnchor: NSLayoutConstraint?
@@ -46,6 +57,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         self.tabBarController?.tabBar.isHidden = true
         view.backgroundColor = backgroundColor
+        let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 3) + (heightTableView * 2)
+            + heightTextField + (heightRadioButton * 2) + (heightPlusButton * 2) + heightNextButton
+        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 12
         setupScrollView()
         setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep7TitleLabel()
@@ -55,7 +69,9 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupSpecPlusLabel()
         setupEmploymentLabel()
         setupMedicalButton()
+        setupMedicalButtonLabel()
         setupNotMedicalButton()
+        setupNotMedicalButtonLabel()
         setupStep7JobLabel()
         setupJobTableView()
         setupWorkPlusButton()
@@ -101,8 +117,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи
     private func setupStep7TitleLabel() {
-        let height = 20.f
-        heightScroll += height
+        heightScroll += heightTitleLabel
         step7TitleLabel.backgroundColor = .searchBarTintColor
         step7TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
         step7TitleLabel.textColor = .white
@@ -114,15 +129,13 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         step7TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         step7TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step7TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        step7TitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        step7TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
     }
     
     /// Установка надписи указания медицинской специализации
     private func setupStep7SpecLabel() {
-        let top = 10.f
-        let height = 15.f
-        heightScroll += top + height
-        step7SpecLabel.font = UIFont.systemFontOfSize(size: 14)
+        heightScroll += verticalInset + heightLabel
+        step7SpecLabel.font = .boldSystemFontOfSize(size: 14)
         step7SpecLabel.textColor = .white
         step7SpecLabel.text = "Укажите медицинскую специализацию"
         step7SpecLabel.textAlignment = .left
@@ -130,16 +143,14 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         step7SpecLabel.translatesAutoresizingMaskIntoConstraints = false
         step7SpecLabel.topAnchor.constraint(equalTo: step7TitleLabel.bottomAnchor,
-                                              constant: top).isActive = true
+                                            constant: verticalInset).isActive = true
         step7SpecLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step7SpecLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step7SpecLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        step7SpecLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
     private func setupSpecTableView() {
-        let top = 5.f
-        let height = 70.f
-        heightScroll += top + height
+        heightScroll += verticalInset + heightTableView
         scrollView.addSubview(specTableView)
         specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
         specTableView.backgroundColor = .clear
@@ -151,28 +162,27 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         specTableView.translatesAutoresizingMaskIntoConstraints = false
         specTableView.topAnchor.constraint(equalTo: step7SpecLabel.bottomAnchor,
-                                          constant: top).isActive = true
+                                           constant: verticalInset).isActive = true
         specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         specTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: height)
+        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: heightTableView)
         specTableViewHeight?.isActive = true
     }
     
     /// Установка кнопки добавления медицинской специализации
     private func setupSpecPlusButton() {
-        let leading = 30.f
-        let top = 5.f
-        let height = 20.f
+        let leading = 20.f
+        heightScroll += verticalInset + heightPlusButton
         specPlusButton.addTarget(self, action: #selector(specPlusButtonPressed), for: .touchUpInside)
         view.addSubview(specPlusButton)
         
         specPlusButton.translatesAutoresizingMaskIntoConstraints = false
         specPlusButton.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
-                                            constant: top).isActive = true
+                                            constant: verticalInset).isActive = true
         specPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                 constant: leading).isActive = true
-        specPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
-        specPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        specPlusButton.widthAnchor.constraint(equalToConstant: heightPlusButton).isActive = true
+        specPlusButton.heightAnchor.constraint(equalToConstant: heightPlusButton).isActive = true
     }
     
     /// Установка поясняющей надписи у кнопки добавления специализации
@@ -194,8 +204,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка надписи занятость
     private func setupEmploymentLabel() {
-        let top = 6.f
-        let height = 15.f
+        heightScroll += verticalInset + heightLabel
         employmentLabel.font = .boldSystemFontOfSize(size: 14)
         employmentLabel.textColor = .white
         employmentLabel.text = "Занятость"
@@ -203,83 +212,105 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(employmentLabel)
         
         employmentLabel.translatesAutoresizingMaskIntoConstraints = false
-        employmentLabel.topAnchor.constraint(equalTo: specPlusButton.bottomAnchor,
-                                             constant: top).isActive = true
         employmentLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         employmentLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        employmentLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        employmentLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+        employmentLabelTop = employmentLabel.topAnchor.constraint(equalTo: specPlusButton.bottomAnchor,
+                                                                  constant: verticalInset)
+        employmentLabelTop?.isActive = true
     }
     
     /// Установка радиокнопки выбора работы медицинским работником
     private func setupMedicalButton() {
-        let top = 4.f
         let leading = 20.f
-        let width = Session.width - (leading * 2)
-        let height = 15.f
+        heightScroll += verticalInset + heightRadioButton
         medicalButton.contentHorizontalAlignment = .left
-        medicalButton.setTitle(" Я работаю в сфере медицины", for: .normal)
-        medicalButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        medicalButton.setTitleColor(.white, for: .normal)
         medicalButton.isSelected = false
         medicalButton.addTarget(self, action: #selector(employmentButtonPressed), for: .touchUpInside)
         scrollView.addSubview(medicalButton)
         
         medicalButton.translatesAutoresizingMaskIntoConstraints = false
         medicalButton.topAnchor.constraint(equalTo: employmentLabel.bottomAnchor,
-                                          constant: top).isActive = true
+                                           constant: verticalInset).isActive = true
         medicalButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: leading).isActive = true
-        medicalButton.widthAnchor.constraint(equalToConstant: width).isActive = true
-        medicalButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+                                               constant: leading).isActive = true
+        medicalButton.widthAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+        medicalButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+    }
+    
+    private func setupMedicalButtonLabel() {
+        let leading = 10.f
+        let width = (Session.width / 2) - leading - 40
+        medicalButtonLabel.font = .systemFontOfSize(size: 12)
+        medicalButtonLabel.textColor = .white
+        medicalButtonLabel.text = "Я работаю в сфере медицины"
+        medicalButtonLabel.textAlignment = .left
+        medicalButtonLabel.numberOfLines = 2
+        scrollView.addSubview(medicalButtonLabel)
+        
+        medicalButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        medicalButtonLabel.centerYAnchor.constraint(equalTo: medicalButton.centerYAnchor).isActive = true
+        medicalButtonLabel.leadingAnchor.constraint(equalTo: medicalButton.trailingAnchor,
+                                                    constant: leading).isActive = true
+        medicalButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     /// Установка радиокнопки выбора работы не медицинским работником
     private func setupNotMedicalButton() {
-        let top = 8.f
+        let leading = Session.width / 2
         notMedicalButton.contentHorizontalAlignment = .left
-        notMedicalButton.setTitle(" Я работаю не по медицинской специализации",
-                                  for: .normal)
-        notMedicalButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        notMedicalButton.setTitleColor(.white, for: .normal)
         notMedicalButton.isSelected = false
         notMedicalButton.addTarget(self, action: #selector(employmentButtonPressed), for: .touchUpInside)
         scrollView.addSubview(notMedicalButton)
         
         notMedicalButton.translatesAutoresizingMaskIntoConstraints = false
-        notMedicalButton.topAnchor.constraint(equalTo: medicalButton.bottomAnchor,
-                                              constant: top).isActive = true
-        notMedicalButton.leadingAnchor.constraint(equalTo: medicalButton.leadingAnchor).isActive = true
+        notMedicalButton.topAnchor.constraint(equalTo: medicalButton.topAnchor).isActive = true
+        notMedicalButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: leading).isActive = true
         notMedicalButton.widthAnchor.constraint(equalTo: medicalButton.widthAnchor,
                                                 multiplier: 1).isActive = true
         notMedicalButton.heightAnchor.constraint(equalTo: medicalButton.heightAnchor,
                                                  multiplier: 1).isActive = true
     }
     
+    private func setupNotMedicalButtonLabel() {
+        let leading = 10.f
+        let width = (Session.width / 2) - leading - 40
+        notMedicalButtonLabel.font = .systemFontOfSize(size: 12)
+        notMedicalButtonLabel.textColor = .white
+        notMedicalButtonLabel.text = "Я не работаю в сфере медицины"
+        notMedicalButtonLabel.textAlignment = .left
+        notMedicalButtonLabel.numberOfLines = 2
+        scrollView.addSubview(notMedicalButtonLabel)
+        
+        notMedicalButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        notMedicalButtonLabel.centerYAnchor.constraint(equalTo: notMedicalButton.centerYAnchor).isActive = true
+        notMedicalButtonLabel.leadingAnchor.constraint(equalTo: notMedicalButton.trailingAnchor,
+                                                       constant: leading).isActive = true
+        notMedicalButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
     /// Установка надписи указания места жительства
     private func setupStep7JobLabel() {
-        let top = 16.f
-        let height = 34.f
-        heightScroll += top + height
+        heightScroll += verticalInset + heightLabel
         step7JobLabel.numberOfLines = 0
-        step7JobLabel.font = UIFont.systemFontOfSize(size: 14)
+        step7JobLabel.font = .boldSystemFontOfSize(size: 14)
         step7JobLabel.textColor = .white
-        step7JobLabel.text = "Заполните данные о своей профессиональной деятельности"
+        step7JobLabel.text = "Укажите место работы"
         step7JobLabel.textAlignment = .left
         scrollView.addSubview(step7JobLabel)
         
         step7JobLabel.translatesAutoresizingMaskIntoConstraints = false
-        step7JobLabel.topAnchor.constraint(equalTo: notMedicalButton.bottomAnchor,
-                                        constant: top).isActive = true
+        step7JobLabel.topAnchor.constraint(equalTo: medicalButton.bottomAnchor,
+                                           constant: verticalInset).isActive = true
         step7JobLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step7JobLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step7JobLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        step7JobLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
     /// Установка таблицы с местами работы
     private func setupJobTableView() {
-        let top = 5.f
-        let height = 70.f
-        heightScroll += top + height
+        heightScroll += verticalInset + heightTableView
         scrollView.addSubview(jobTableView)
         jobTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
         jobTableView.backgroundColor = .clear
@@ -291,28 +322,27 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         jobTableView.translatesAutoresizingMaskIntoConstraints = false
         jobTableView.topAnchor.constraint(equalTo: step7JobLabel.bottomAnchor,
-                                          constant: top).isActive = true
+                                          constant: verticalInset).isActive = true
         jobTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         jobTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: height)
+        jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: heightTableView)
         jobTableViewHeight?.isActive = true
     }
     
     /// Установка кнопки добавления места работы
     private func setupWorkPlusButton() {
-        let leading = 30.f
-        let top = 5.f
-        let height = 20.f
+        let leading = 20.f
+        heightScroll += verticalInset + heightPlusButton
         workPlusButton.addTarget(self, action: #selector(workPlusButtonPressed), for: .touchUpInside)
         view.addSubview(workPlusButton)
         
         workPlusButton.translatesAutoresizingMaskIntoConstraints = false
         workPlusButton.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
-                                            constant: top).isActive = true
+                                            constant: verticalInset).isActive = true
         workPlusButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                 constant: leading).isActive = true
-        workPlusButton.widthAnchor.constraint(equalToConstant: height).isActive = true
-        workPlusButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        workPlusButton.widthAnchor.constraint(equalToConstant: heightPlusButton).isActive = true
+        workPlusButton.heightAnchor.constraint(equalToConstant: heightPlusButton).isActive = true
     }
     
     /// Установка поясняющей надписи у кнопки добавления места работы
@@ -334,8 +364,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода должности
     private func setupPositionTextField() {
-        let top = 10.f
-        heightScroll += top + textFieldHeight
+        heightScroll += verticalInset + heightTextField
         positionTextField.font = UIFont.systemFontOfSize(size: 14)
         positionTextField.textColor = .textFieldTextColor
         positionTextField.placeholder = "Должность"
@@ -350,19 +379,22 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(positionTextField)
         
         positionTextField.translatesAutoresizingMaskIntoConstraints = false
-        positionTextField.topAnchor.constraint(equalTo: workPlusButton.bottomAnchor,
-                                               constant: top).isActive = true
+        //        positionTextField.topAnchor.constraint(equalTo: workPlusButton.bottomAnchor,
+        //                                               constant: verticalInset).isActive = true
         positionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         positionTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        positionTextField.heightAnchor.constraint(equalToConstant: textFieldHeight).isActive = true
+        positionTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        positionTextFieldTop = positionTextField.topAnchor.constraint(equalTo: workPlusButton.bottomAnchor,
+                                                                      constant: verticalInset)
+        positionTextFieldTop?.isActive = true
     }
     
     /// Установка радиокнопки скрытия информации о занятости
     private func setupHideEmploymentButton() {
-        let top = 14.f
-        let height = 15.f
+        heightScroll += verticalInset + heightRadioButton
         hideEmploymentButton.addTarget(self, action: #selector(hideEmploymentCheckboxPressed), for: .touchUpInside)
         hideEmploymentButton.contentHorizontalAlignment = .left
+        hideEmploymentButton.contentVerticalAlignment = .center
         hideEmploymentButton.setTitle(" Скрыть информацию о моей занятости", for: .normal)
         hideEmploymentButton.titleLabel?.font = .systemFontOfSize(size: 12)
         hideEmploymentButton.setTitleColor(.white, for: .normal)
@@ -371,18 +403,16 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         hideEmploymentButton.translatesAutoresizingMaskIntoConstraints = false
         hideEmploymentButton.topAnchor.constraint(equalTo: positionTextField.bottomAnchor,
-                                                  constant: top).isActive = true
+                                                  constant: verticalInset).isActive = true
         hideEmploymentButton.leadingAnchor.constraint(equalTo: medicalButton.leadingAnchor).isActive = true
-        hideEmploymentButton.widthAnchor.constraint(equalTo: medicalButton.widthAnchor, multiplier: 1).isActive = true
-        hideEmploymentButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        hideEmploymentButton.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        hideEmploymentButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let top = 110.f
-        let width = 90.f
-        let height = 30.f
-        heightScroll += top + height + 34
+        let width = 110.f
+        heightScroll += verticalInset + heightNextButton + 34
         let bottom = heightScroll < Session.height ? Session.height : heightScroll
         scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
@@ -392,7 +422,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: Session.width - 10).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: heightNextButton).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         nextButtonTopAnchor = nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
                                                                  constant: bottom - Session.bottomPadding - 98)
@@ -432,6 +462,10 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         if jobRowCount > 4 {
             workPlusButton.isHidden = true
             workPlusLabel.isHidden = true
+            positionTextFieldTop?.isActive = false
+            positionTextFieldTop = positionTextField.topAnchor.constraint(equalTo: jobTableView.bottomAnchor,
+                                                                          constant: verticalInset)
+            positionTextFieldTop?.isActive = true
         }
     }
     
@@ -451,6 +485,10 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         if specRowCount > 4 {
             specPlusButton.isHidden = true
             specPlusLabel.isHidden = true
+            employmentLabelTop?.isActive = false
+            employmentLabelTop = employmentLabel.topAnchor.constraint(equalTo: specTableView.bottomAnchor,
+                                                                      constant: verticalInset)
+            employmentLabelTop?.isActive = true
         }
     }
     
@@ -491,7 +529,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
 extension CreateProfileWorkViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return textFieldHeight + 5
+        return heightTextField + 5
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

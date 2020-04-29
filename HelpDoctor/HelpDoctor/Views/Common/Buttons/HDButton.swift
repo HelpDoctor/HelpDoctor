@@ -37,11 +37,11 @@ class HDButton: UIButton {
         
         if let title = title {
             setTitle(title, for: .normal)
-            titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
+            titleLabel?.font = UIFont.boldSystemFontOfSize(size: 16)
             setTitleColor(.white, for: .normal)
         }
         
-        layer.cornerRadius = 15
+        layer.cornerRadius = 20
         clipsToBounds = true
         updateLayerProperties()
         update(isEnabled: self.isEnabled)
@@ -56,7 +56,7 @@ class HDButton: UIButton {
             setTitleColor(.white, for: .normal)
         }
         
-        layer.cornerRadius = 15
+        layer.cornerRadius = 20
         clipsToBounds = true
         updateLayerProperties()
         update(isEnabled: self.isEnabled)

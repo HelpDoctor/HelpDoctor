@@ -314,7 +314,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки редактирования / выхода их профиля
     private func setupEditButton() {
         let trailing = 7.f
-        let width = 10.f
+        let width = 20.f
         let height = 20.f
         editButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
         editButton.setImage(UIImage(named: "EditDotsButton"), for: .normal)
@@ -441,7 +441,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @objc private func editButtonPressed() {
         let popoverContentController = ProfilePopoverController()
         popoverContentController.modalPresentationStyle = .popover
-        popoverContentController.preferredContentSize = CGSize(width: 180, height: 100)
+        popoverContentController.preferredContentSize = CGSize(width: 180, height: 150)
         popoverContentController.delegate = self
         if let ppc = popoverContentController.popoverPresentationController {
             ppc.delegate = self
@@ -528,6 +528,10 @@ extension ProfileViewController: ProfilePopoverDelegate {
     
     func toEditProfile() {
         presenter?.toEditProfile()
+    }
+    
+    func getStatusUser() {
+        presenter?.getStatusUser()
     }
     
     func logout() {

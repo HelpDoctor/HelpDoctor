@@ -21,27 +21,22 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private let heightTextField = 30.f
     private let heightTitleLabel = 20.f
     private let heightLabel = 15.f
-    private let heightRadioButton = 15.f
-    private let heightNextButton = 30.f
+    private let heightRadioButton = 20.f
+    private let heightNextButton = 40.f
     private let scrollView = UIScrollView()
+    private let birthDateTextField = PickerField()
+    private let step3TitleLabel = UILabel()
+    private let step3Label = UILabel()
+    private let hideBirthdayCheckbox = CheckBox(type: .square)
     private let step4TitleLabel = UILabel()
     private let step4Label = UILabel()
     private let phoneTextField = UITextField()
+    private let hidePhoneCheckbox = CheckBox(type: .square)
     private let step5TitleLabel = UILabel()
     private let step5Label = UILabel()
     private let regionTextField = UITextField()
     private let cityTextField = UITextField()
-    private let step6TitleLabel = UILabel()
-    private let step6Label = UILabel()
-    private let universityTextField = UITextField()
-    private let dateOfGraduateTextField = PickerField()
-    private let graduateLabel = UILabel()
-    private let academicButton = RadioButton()
-    private let doctorButton = RadioButton()
-    private let candidateButton = RadioButton()
-    private let professorButton = RadioButton()
-    private let docentButton = RadioButton()
-    private let nodegreeButton = RadioButton()
+    private let liveNotRussiaCheckbox = CheckBox(type: .square)
     private let nextButton = HDButton(title: "Далее")
     private var keyboardHeight = 0.f
     
@@ -49,32 +44,26 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = backgroundColor
-        let contentHeight = headerHeight + (heightTitleLabel * 3) + (heightLabel * 4)
-            + (heightTextField * 5) + (heightRadioButton * 3) + heightNextButton
-        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 16
+        let contentHeight = headerHeight + (heightTitleLabel * 3) + (heightLabel * 3)
+            + (heightTextField * 4) + (heightRadioButton * 3) + heightNextButton
+        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 14
         setupScrollView()
         setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        setupStep3TitleLabel()
+        setupStep3Label()
+        setupBirthDateTextField()
+        setupHideBirthdayCheckbox()
         setupStep4TitleLabel()
         setupStep4Label()
         setupPhoneTextField()
+        setupHidePhoneCheckbox()
         setupStep5TitleLabel()
         setupStep5Label()
         setupRegionTextField()
         setupCityTextField()
-        setupStep6TitleLabel()
-        setupStep6Label()
-        setupUniversityTextFiled()
-        setupDateOfGraduateTextField()
-        setupGraduateLabel()
-        setupAcademicButton()
-        setupDoctorButton()
-        setupCandidateButton()
-        setupProfessorButton()
-        setupDocentButton()
-        setupNodegreeButton()
+        setupLiveNotRussiaCheckbox()
         setupNextButton()
         addTapGestureToHideKeyboard()
-        configureRadioButtons()
         setUser()
     }
     
@@ -105,6 +94,8 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         cityTextField.text = Session.instance.user?.cityName
         guard let regionId = Session.instance.user?.regionId else { return }
         presenter?.setRegionFromDevice(regionId)
+        guard let birthday = Session.instance.user?.birthday else { return }
+        birthDateTextField.text = presenter?.convertDate(birthday)
     }
     
     // MARK: - Setup views
@@ -122,25 +113,106 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
+    private func setupStep3TitleLabel() {
+        step3TitleLabel.backgroundColor = .searchBarTintColor
+        step3TitleLabel.font = .boldSystemFontOfSize(size: 14)
+        step3TitleLabel.textColor = .white
+        step3TitleLabel.text = "Шаг 3"
+        step3TitleLabel.textAlignment = .center
+        scrollView.addSubview(step3TitleLabel)
+        
+        step3TitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        step3TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        step3TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        step3TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        step3TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
+    }
+    
+    /// Установка поясняющей надписи перед вводом телефона
+    private func setupStep3Label() {
+        step3Label.font = .boldSystemFontOfSize(size: 14)
+        step3Label.textColor = .white
+        step3Label.text = "Укажите дату рождения"
+        step3Label.textAlignment = .left
+        scrollView.addSubview(step3Label)
+        
+        step3Label.translatesAutoresizingMaskIntoConstraints = false
+        step3Label.topAnchor.constraint(equalTo: step3TitleLabel.bottomAnchor,
+                                        constant: verticalInset).isActive = true
+        step3Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        step3Label.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        step3Label.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+    }
+    
+    /// Установка поля ввода даты рождения
+    private func setupBirthDateTextField() {
+        birthDateTextField.titleLabel?.text = "Укажите дату рождения"
+        birthDateTextField.backgroundColor = .white
+        birthDateTextField.layer.cornerRadius = 5
+        birthDateTextField.font = .systemFontOfSize(size: 14)
+        birthDateTextField.textColor = .textFieldTextColor
+        birthDateTextField.type = .datePicker
+        birthDateTextField.placeholder = "__.__.____*"
+        birthDateTextField.pickerFieldDelegate = presenter
+        birthDateTextField.datePicker?.datePickerMode = .date
+        birthDateTextField.datePicker?.maximumDate = Date()
+        birthDateTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                           y: 0,
+                                                           width: 8,
+                                                           height: birthDateTextField.frame.height))
+        birthDateTextField.leftViewMode = .always
+        birthDateTextField.rightImageView.image = UIImage(named: "calendar")
+        scrollView.addSubview(birthDateTextField)
+        
+        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
+        birthDateTextField.topAnchor.constraint(equalTo: step3Label.bottomAnchor,
+                                                constant: verticalInset).isActive = true
+        birthDateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        birthDateTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        birthDateTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+    }
+    
+    /// Установка чекбокса скрытия даты рождения в профиле
+    private func setupHideBirthdayCheckbox() {
+        let leading = 0.f
+        hideBirthdayCheckbox.contentHorizontalAlignment = .left
+        hideBirthdayCheckbox.contentVerticalAlignment = .center
+        hideBirthdayCheckbox.setTitle(" Не указывать в профиле", for: .normal)
+        hideBirthdayCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
+        hideBirthdayCheckbox.setTitleColor(.white, for: .normal)
+        hideBirthdayCheckbox.addTarget(self, action: #selector(hideBirthdayCheckboxPressed), for: .touchUpInside)
+        scrollView.addSubview(hideBirthdayCheckbox)
+        
+        hideBirthdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        hideBirthdayCheckbox.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor,
+                                                  constant: verticalInset).isActive = true
+        hideBirthdayCheckbox.leadingAnchor.constraint(equalTo: birthDateTextField.leadingAnchor,
+                                                      constant: leading).isActive = true
+        hideBirthdayCheckbox.trailingAnchor.constraint(equalTo: birthDateTextField.trailingAnchor,
+                                                       constant: -leading).isActive = true
+        hideBirthdayCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+    }
+    
     /// Установка заголовка Шаг 4
     private func setupStep4TitleLabel() {
         step4TitleLabel.backgroundColor = .searchBarTintColor
-        step4TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
+        step4TitleLabel.font = .boldSystemFontOfSize(size: 14)
         step4TitleLabel.textColor = .white
         step4TitleLabel.text = "Шаг 4"
         step4TitleLabel.textAlignment = .center
         scrollView.addSubview(step4TitleLabel)
         
         step4TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step4TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        step4TitleLabel.topAnchor.constraint(equalTo: hideBirthdayCheckbox.bottomAnchor,
+                                             constant: verticalInset).isActive = true
         step4TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step4TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         step4TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
     }
     
-    /// Установка поясняющей надписи перед заполнением данных шага 1
+    /// Установка поясняющей надписи перед заполнением данных шага 4
     private func setupStep4Label() {
-        step4Label.font = UIFont.systemFontOfSize(size: 14)
+        step4Label.font = .boldSystemFontOfSize(size: 14)
         step4Label.textColor = .white
         step4Label.text = "Укажите, пожалуйста, номер телефона"
         step4Label.textAlignment = .left
@@ -179,17 +251,37 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         phoneTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
+    private func setupHidePhoneCheckbox() {
+        let leading = 0.f
+        hidePhoneCheckbox.contentHorizontalAlignment = .left
+        hidePhoneCheckbox.contentVerticalAlignment = .center
+        hidePhoneCheckbox.setTitle(" Не указывать в профиле", for: .normal)
+        hidePhoneCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
+        hidePhoneCheckbox.setTitleColor(.white, for: .normal)
+        hidePhoneCheckbox.addTarget(self, action: #selector(hidePhoneCheckboxPressed), for: .touchUpInside)
+        scrollView.addSubview(hidePhoneCheckbox)
+        
+        hidePhoneCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        hidePhoneCheckbox.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor,
+                                               constant: verticalInset).isActive = true
+        hidePhoneCheckbox.leadingAnchor.constraint(equalTo: phoneTextField.leadingAnchor,
+                                                   constant: leading).isActive = true
+        hidePhoneCheckbox.trailingAnchor.constraint(equalTo: phoneTextField.trailingAnchor,
+                                                    constant: -leading).isActive = true
+        hidePhoneCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+    }
+    
     /// Установка заголовка Шаг 5
     private func setupStep5TitleLabel() {
         step5TitleLabel.backgroundColor = .searchBarTintColor
-        step5TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
+        step5TitleLabel.font = .boldSystemFontOfSize(size: 14)
         step5TitleLabel.textColor = .white
         step5TitleLabel.text = "Шаг 5"
         step5TitleLabel.textAlignment = .center
         scrollView.addSubview(step5TitleLabel)
         
         step5TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step5TitleLabel.topAnchor.constraint(equalTo: phoneTextField.bottomAnchor,
+        step5TitleLabel.topAnchor.constraint(equalTo: hidePhoneCheckbox.bottomAnchor,
                                              constant: verticalInset).isActive = true
         step5TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step5TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
@@ -198,7 +290,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     /// Установка поясняющей надписи перед вводом даты рождения
     private func setupStep5Label() {
-        step5Label.font = UIFont.systemFontOfSize(size: 14)
+        step5Label.font = .boldSystemFontOfSize(size: 14)
         step5Label.textColor = .white
         step5Label.text = "Укажите свое место жительства"
         step5Label.textAlignment = .left
@@ -216,7 +308,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private func setupRegionTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(regionSearchButtonPressed))
-        regionTextField.font = UIFont.systemFontOfSize(size: 14)
+        regionTextField.font = .systemFontOfSize(size: 14)
         regionTextField.textColor = .textFieldTextColor
         regionTextField.textAlignment = .left
         regionTextField.backgroundColor = .white
@@ -226,7 +318,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
                                                         width: 8,
                                                         height: regionTextField.frame.height))
         regionTextField.leftViewMode = .always
-        regionTextField.placeholder = "Субъект*"
+        regionTextField.placeholder = "Субъект РФ*"
         regionTextField.addGestureRecognizer(tap)
         scrollView.addSubview(regionTextField)
         
@@ -242,7 +334,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private func setupCityTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(citySearchButtonPressed))
-        cityTextField.font = UIFont.systemFontOfSize(size: 14)
+        cityTextField.font = .systemFontOfSize(size: 14)
         cityTextField.textColor = .textFieldTextColor
         cityTextField.textAlignment = .left
         cityTextField.backgroundColor = .white
@@ -264,231 +356,29 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         cityTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
-    /// Установка заголовка Шаг 6
-    private func setupStep6TitleLabel() {
-        step6TitleLabel.backgroundColor = .searchBarTintColor
-        step6TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
-        step6TitleLabel.textColor = .white
-        step6TitleLabel.text = "Шаг 6"
-        step6TitleLabel.textAlignment = .center
-        scrollView.addSubview(step6TitleLabel)
-        
-        step6TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step6TitleLabel.topAnchor.constraint(equalTo: cityTextField.bottomAnchor,
-                                             constant: verticalInset).isActive = true
-        step6TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step6TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        step6TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
-    }
-    
-    /// Установка поясняющей надписи перед вводом телефона
-    private func setupStep6Label() {
-        step6Label.font = UIFont.systemFontOfSize(size: 14)
-        step6Label.textColor = .white
-        step6Label.text = "Укажите информацию об образовании"
-        step6Label.textAlignment = .left
-        scrollView.addSubview(step6Label)
-        
-        step6Label.translatesAutoresizingMaskIntoConstraints = false
-        step6Label.topAnchor.constraint(equalTo: step6TitleLabel.bottomAnchor,
-                                        constant: verticalInset).isActive = true
-        step6Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step6Label.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step6Label.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
-    }
-    
-    /// Установка поля ввода университета
-    private func setupUniversityTextFiled() {
-        universityTextField.autocorrectionType = .no
-        universityTextField.font = UIFont.systemFontOfSize(size: 14)
-        universityTextField.textColor = .textFieldTextColor
-        universityTextField.textAlignment = .left
-        universityTextField.backgroundColor = .white
-        universityTextField.layer.cornerRadius = 5
-        universityTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                            y: 0,
-                                                            width: 8,
-                                                            height: universityTextField.frame.height))
-        universityTextField.leftViewMode = .always
-        universityTextField.placeholder = "Учебное заведение*"
-        scrollView.addSubview(universityTextField)
-        
-        universityTextField.translatesAutoresizingMaskIntoConstraints = false
-        universityTextField.topAnchor.constraint(equalTo: step6Label.bottomAnchor,
-                                                 constant: verticalInset).isActive = true
-        universityTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        universityTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        universityTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
-    }
-    
-    /// Установка поля ввода даты окончания учебы
-    private func setupDateOfGraduateTextField() {
-        dateOfGraduateTextField.titleLabel?.text = "Укажиет дату выпуска"
-        dateOfGraduateTextField.font = UIFont.systemFontOfSize(size: 14)
-        dateOfGraduateTextField.textColor = .textFieldTextColor
-        dateOfGraduateTextField.textAlignment = .left
-        dateOfGraduateTextField.backgroundColor = .white
-        dateOfGraduateTextField.layer.cornerRadius = 5
-        dateOfGraduateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                                y: 0,
-                                                                width: 8,
-                                                                height: dateOfGraduateTextField.frame.height))
-        dateOfGraduateTextField.leftViewMode = .always
-        dateOfGraduateTextField.placeholder = "__.__.____* (Дата выпуска)"
-        dateOfGraduateTextField.type = .datePicker
-        dateOfGraduateTextField.pickerFieldDelegate = presenter
-        dateOfGraduateTextField.datePicker?.datePickerMode = .date
-        dateOfGraduateTextField.datePicker?.maximumDate = Date()
-        dateOfGraduateTextField.rightImageView.image = UIImage(named: "calendar")
-        scrollView.addSubview(dateOfGraduateTextField)
-        
-        dateOfGraduateTextField.translatesAutoresizingMaskIntoConstraints = false
-        dateOfGraduateTextField.topAnchor.constraint(equalTo: universityTextField.bottomAnchor,
-                                                     constant: verticalInset).isActive = true
-        dateOfGraduateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        dateOfGraduateTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        dateOfGraduateTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
-    }
-    
-    /// Установка поясняющей надписи перед вводом даты окончания учебы
-    private func setupGraduateLabel() {
-        graduateLabel.font = UIFont.systemFontOfSize(size: 14)
-        graduateLabel.textColor = .white
-        graduateLabel.text = "Ученая степень"
-        graduateLabel.textAlignment = .left
-        scrollView.addSubview(graduateLabel)
-        
-        graduateLabel.translatesAutoresizingMaskIntoConstraints = false
-        graduateLabel.topAnchor.constraint(equalTo: dateOfGraduateTextField.bottomAnchor,
-                                           constant: verticalInset).isActive = true
-        graduateLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        graduateLabel.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        graduateLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора академика наук
-    private func setupAcademicButton() {
-        let leading = 20.f
-        let width = (Session.width / 2) - (leading * 2)
-        academicButton.contentHorizontalAlignment = .left
-        academicButton.setTitle(" Академик наук", for: .normal)
-        academicButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        academicButton.setTitleColor(.white, for: .normal)
-        academicButton.isSelected = false
-        scrollView.addSubview(academicButton)
-        
-        academicButton.translatesAutoresizingMaskIntoConstraints = false
-        academicButton.topAnchor.constraint(equalTo: graduateLabel.bottomAnchor,
-                                            constant: verticalInset).isActive = true
-        academicButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                constant: leading).isActive = true
-        academicButton.widthAnchor.constraint(equalToConstant: width).isActive = true
-        academicButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора доктора наук
-    private func setupDoctorButton() {
-        let leading = 20.f
-        doctorButton.contentHorizontalAlignment = .left
-        doctorButton.setTitle(" Доктор наук", for: .normal)
-        doctorButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        doctorButton.setTitleColor(.white, for: .normal)
-        doctorButton.isSelected = false
-        scrollView.addSubview(doctorButton)
-        
-        doctorButton.translatesAutoresizingMaskIntoConstraints = false
-        doctorButton.topAnchor.constraint(equalTo: academicButton.bottomAnchor,
-                                          constant: verticalInset).isActive = true
-        doctorButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: leading).isActive = true
-        doctorButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                            multiplier: 1).isActive = true
-        doctorButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора кандидата наук
-    private func setupCandidateButton() {
-        let leading = 20.f
-        candidateButton.contentHorizontalAlignment = .left
-        candidateButton.setTitle(" Кандидат наук", for: .normal)
-        candidateButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        candidateButton.setTitleColor(.white, for: .normal)
-        candidateButton.isSelected = false
-        scrollView.addSubview(candidateButton)
-        
-        candidateButton.translatesAutoresizingMaskIntoConstraints = false
-        candidateButton.topAnchor.constraint(equalTo: doctorButton.bottomAnchor,
-                                             constant: verticalInset).isActive = true
-        candidateButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                 constant: leading).isActive = true
-        candidateButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                               multiplier: 1).isActive = true
-        candidateButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора профессора
-    private func setupProfessorButton() {
-        let leading = Session.width / 2 + 20
-        professorButton.contentHorizontalAlignment = .left
-        professorButton.setTitle(" Профессор", for: .normal)
-        professorButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        professorButton.setTitleColor(.white, for: .normal)
-        professorButton.isSelected = false
-        scrollView.addSubview(professorButton)
-        
-        professorButton.translatesAutoresizingMaskIntoConstraints = false
-        professorButton.topAnchor.constraint(equalTo: graduateLabel.bottomAnchor,
-                                             constant: verticalInset).isActive = true
-        professorButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                 constant: leading).isActive = true
-        professorButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                               multiplier: 1).isActive = true
-        professorButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора доцента
-    private func setupDocentButton() {
-        let leading = Session.width / 2 + 20
-        docentButton.contentHorizontalAlignment = .left
-        docentButton.setTitle(" Доцент", for: .normal)
-        docentButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        docentButton.setTitleColor(.white, for: .normal)
-        docentButton.isSelected = false
-        scrollView.addSubview(docentButton)
-        
-        docentButton.translatesAutoresizingMaskIntoConstraints = false
-        docentButton.topAnchor.constraint(equalTo: professorButton.bottomAnchor,
-                                          constant: verticalInset).isActive = true
-        docentButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: leading).isActive = true
-        docentButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                            multiplier: 1).isActive = true
-        docentButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
-    
-    /// Установка радиокнопки выбора значения без степени
-    private func setupNodegreeButton() {
+    private func setupLiveNotRussiaCheckbox() {
         let leading = 0.f
-        nodegreeButton.contentHorizontalAlignment = .left
-        nodegreeButton.setTitle(" Нет степени", for: .normal)
-        nodegreeButton.titleLabel?.font = .systemFontOfSize(size: 12)
-        nodegreeButton.setTitleColor(.white, for: .normal)
-        nodegreeButton.isSelected = false
-        scrollView.addSubview(nodegreeButton)
+        liveNotRussiaCheckbox.contentHorizontalAlignment = .left
+        liveNotRussiaCheckbox.contentVerticalAlignment = .center
+        liveNotRussiaCheckbox.setTitle(" Проживаю не в России", for: .normal)
+        liveNotRussiaCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
+        liveNotRussiaCheckbox.setTitleColor(.white, for: .normal)
+        liveNotRussiaCheckbox.addTarget(self, action: #selector(liveNotRussiaCheckboxPressed), for: .touchUpInside)
+        scrollView.addSubview(liveNotRussiaCheckbox)
         
-        nodegreeButton.translatesAutoresizingMaskIntoConstraints = false
-        nodegreeButton.topAnchor.constraint(equalTo: docentButton.bottomAnchor,
-                                            constant: verticalInset).isActive = true
-        nodegreeButton.leadingAnchor.constraint(equalTo: docentButton.leadingAnchor,
-                                                constant: leading).isActive = true
-        nodegreeButton.widthAnchor.constraint(equalTo: academicButton.widthAnchor,
-                                              multiplier: 1).isActive = true
-        nodegreeButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+        liveNotRussiaCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        liveNotRussiaCheckbox.topAnchor.constraint(equalTo: cityTextField.bottomAnchor,
+                                               constant: verticalInset).isActive = true
+        liveNotRussiaCheckbox.leadingAnchor.constraint(equalTo: cityTextField.leadingAnchor,
+                                                   constant: leading).isActive = true
+        liveNotRussiaCheckbox.trailingAnchor.constraint(equalTo: cityTextField.trailingAnchor,
+                                                    constant: -leading).isActive = true
+        liveNotRussiaCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let width = 90.f
+        let width = 110.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)
@@ -519,16 +409,6 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
                                                object: nil)
     }
     
-    /// Настройка выбора радиокнопки
-    private func configureRadioButtons() {
-        academicButton.alternateButton = [doctorButton, candidateButton, professorButton, docentButton, nodegreeButton]
-        doctorButton.alternateButton = [academicButton, candidateButton, professorButton, docentButton, nodegreeButton]
-        candidateButton.alternateButton = [academicButton, doctorButton, professorButton, docentButton, nodegreeButton]
-        professorButton.alternateButton = [academicButton, doctorButton, candidateButton, docentButton, nodegreeButton]
-        docentButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton, nodegreeButton]
-        nodegreeButton.alternateButton = [academicButton, doctorButton, candidateButton, professorButton, docentButton]
-    }
-    
     // MARK: - IBActions
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
@@ -557,6 +437,19 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     }
     
     // MARK: - Buttons methods
+    /// Действие при нажатии на чекбокс скрытия даты рождения
+    @objc private func hideBirthdayCheckboxPressed() {
+        hideBirthdayCheckbox.isSelected = !hideBirthdayCheckbox.isSelected
+    }
+    
+    @objc private func hidePhoneCheckboxPressed() {
+        hidePhoneCheckbox.isSelected = !hidePhoneCheckbox.isSelected
+    }
+    
+    @objc private func liveNotRussiaCheckboxPressed() {
+        liveNotRussiaCheckbox.isSelected = !liveNotRussiaCheckbox.isSelected
+    }
+    
     @objc private func regionSearchButtonPressed() {
         presenter?.regionSearch()
     }
@@ -567,8 +460,9 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
-        guard let phone = phoneTextField.text else { return }
-        presenter?.next(phone: phone)
+        guard let phone = phoneTextField.text,
+            let birthdate = birthDateTextField.text else { return }
+        presenter?.next(phone: phone, birthdate: birthdate)
     }
 }
 //swiftlint:disable force_unwrapping
