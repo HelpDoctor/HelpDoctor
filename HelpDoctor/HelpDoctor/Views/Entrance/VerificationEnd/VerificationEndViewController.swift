@@ -156,10 +156,11 @@ class VerificationEndViewController: UIViewController {
     /// Установка кнопки Ок
     private func setupOkButton() {
         let top = 20.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
         okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         okButton.update(isEnabled: true)
+        okButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
         view.addSubview(okButton)
         
         okButton.translatesAutoresizingMaskIntoConstraints = false

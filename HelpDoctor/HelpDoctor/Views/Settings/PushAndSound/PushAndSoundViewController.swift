@@ -17,7 +17,7 @@ class PushAndSoundViewController: UIViewController {
     private let headerHeight = 40.f
     private let rowHeight = 40.f
     private let borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
-    private let onThumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
+    private let onThumbTintColor = UIColor.hdButtonColor
     private let offThumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     private let topStackView = UIView()
     private let headerIcon = UIImageView()

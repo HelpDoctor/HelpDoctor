@@ -198,10 +198,11 @@ class VerificationOkViewController: UIViewController {
     /// Установка кнопки "Ок"
     private func setupSendButton() {
         let top = 20.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
+        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
         view.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false

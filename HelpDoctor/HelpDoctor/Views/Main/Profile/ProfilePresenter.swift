@@ -82,6 +82,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
                     guard let code = logout.responce?.0 else { return }
                     if responceCode(code: code) {
                         print("Logout")
+                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
                         AppDelegate.shared.rootViewController.switchToLogout()
                     } else {
                         self?.view.showAlert(message: logout.responce?.1)

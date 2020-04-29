@@ -22,7 +22,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     private let label = UILabel()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
-    private let sendButton = HDButton(title: "Отправить")
+    private let sendButton = HDButton(title: "Отправить на проверку")
     private let backButton = BackButton()
     private var sourceFile: URL?
     private var keyboardHeight: CGFloat = 0
@@ -60,6 +60,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
         sendButton.setTitle("Ок", for: .normal)
+        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
         setupSubtitleLabel()
@@ -234,10 +235,13 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки "Отправить"
     private func setupSendButton() {
         let top = 31.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
+        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 14)
+        sendButton.titleLabel?.numberOfLines = 2
+        sendButton.titleLabel?.textAlignment = .center
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
