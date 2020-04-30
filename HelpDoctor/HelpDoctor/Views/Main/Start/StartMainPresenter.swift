@@ -84,14 +84,12 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                 self?.toVerification()
                             case "processing":
                                 UserDefaults.standard.set("processing", forKey: "userStatus")
-//                                self?.toEndVerification()
-                                self?.toErrorVerification(userStatus.verification?[0].message)
+                                self?.toEndVerification()
                             case "verified":
                                 if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
                                     self?.toOkVerification()
                                 }
                                 UserDefaults.standard.set("verified", forKey: "userStatus")
-                                self?.toErrorVerification(userStatus.verification?[0].message)
                             default:
                                 break
                             }
