@@ -19,13 +19,15 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private let label = UILabel()
+    private let label = UITextView()//UILabel()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
-    private let sendButton = HDButton(title: "Отправить на проверку")
+    private let sendButton = HDButton(title: "Отправить на \nпроверку")
     private let backButton = BackButton()
     private var sourceFile: URL?
     private var keyboardHeight: CGFloat = 0
+    private var sendButtonTop: NSLayoutConstraint?
+    private var sendButtonWidth: NSLayoutConstraint?
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -53,17 +55,33 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func authorized() {
-        label.text =
+        let top = 26.f
+        let width = 110.f
+        let font = UIFont.systemFontOfSize(size: 14)
+        let text =
         """
         Спасибо за предоставленную информацию!\n
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
         """
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.white
+        ]
+        let myString = NSMutableAttributedString(string: text, attributes: attributes)
+        label.attributedText = myString
         sendButton.setTitle("Ок", for: .normal)
         sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
         addFileTextField.isHidden = true
         subscriptLabel.isHidden = true
         setupSubtitleLabel()
+        sendButtonTop?.isActive = false
+        sendButtonWidth?.isActive = false
+        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: width)
+        sendButtonTop = sendButton.topAnchor.constraint(equalTo: label.bottomAnchor,
+                                                        constant: top)
+        sendButtonTop?.isActive = true
+        sendButtonWidth?.isActive = true
     }
     
     // MARK: - Setup views
@@ -151,7 +169,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                        constant: top).isActive = true
+                                           constant: top).isActive = true
         subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
@@ -160,18 +178,38 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     /// Установка описания
     private func setupLabel() {
         let top = 38.f
-        let width = Session.width - 22.f
-        let height = 102.f
-        label.font = .systemFontOfSize(size: 14)
-        label.textColor = .white
-        label.text =
+        let width = Session.width - 20.f
+        guard let iconImage = UIImage(named: "Info") else { return }
+        let font = UIFont.systemFontOfSize(size: 14)
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0,
+                                   y: (font.capHeight - iconImage.size.height).rounded() / 2,
+                                   width: iconImage.size.width,
+                                   height: iconImage.size.height)
+        attachment.image = iconImage
+        let attachmentString = NSAttributedString(attachment: attachment)
+        let text =
         """
         Чтобы получить доступ к полному функционалу приложения, \
         Вам необходимо предоставить копию документа, \
         подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании
         """
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.white
+        ]
+        let myString = NSMutableAttributedString(string: text, attributes: attributes)
+        myString.append(attachmentString)
+        let recognizer = AttachmentTapGestureRecognizer(target: self, action: #selector(handleAttachmentTap(_:)))
+        label.add(recognizer)
+        label.sizeToFit()
+        label.isUserInteractionEnabled = true
+        label.isSelectable = false
+        label.isEditable = false
+        label.isScrollEnabled = false
+        label.backgroundColor = .clear
+        label.attributedText = myString
         label.textAlignment = .left
-        label.numberOfLines = 0
         scrollView.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -179,15 +217,14 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
                                    constant: top).isActive = true
         label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        label.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка поля ввода электронной почты
     private func setupAddFileTextField() {
         let tap = UITapGestureRecognizer(target: self,
                                          action: #selector(addFileTextFieldPressed))
-        let top = 60.f
-        let width = Session.width - 114.f
+        let top = 40.f
+        let width = Session.width - 110.f
         let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
         addFileTextField.keyboardType = .emailAddress
@@ -234,22 +271,25 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка кнопки "Отправить"
     private func setupSendButton() {
-        let top = 31.f
+        let top = 20.f
         let width = 148.f
         let height = 44.f
+        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
-        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 14)
+        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
         sendButton.titleLabel?.numberOfLines = 2
         sendButton.titleLabel?.textAlignment = .center
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
-                                        constant: top).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: width)
+        sendButtonWidth?.isActive = true
+        sendButtonTop = sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
+                                                        constant: top)
+        sendButtonTop?.isActive = true
     }
     
     /// Установка кнопки назад
@@ -266,7 +306,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -294,6 +334,15 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         swipeLeft.addTarget(self, action: #selector(backButtonPressed))
         swipeLeft.direction = .right
         view.addGestureRecognizer(swipeLeft)
+    }
+    
+    @objc func handleAttachmentTap(_ sender: AttachmentTapGestureRecognizer) {
+        let message = """
+        Приложение HelpDoctor разработано специально для медицинских работников.\
+        Кроме того, законодательство РФ запрещает обсуждение клинических тем\
+        и рецептурных препаратов вне закрытых врачебных сообществ.
+        """
+        self.showInfo(message: message)
     }
     
     // MARK: - IBActions
@@ -363,5 +412,5 @@ extension VerificationViewController: UIDocumentPickerDelegate {
         addFileTextField.text = url.lastPathComponent
         sourceFile = url
     }
-
+    
 }

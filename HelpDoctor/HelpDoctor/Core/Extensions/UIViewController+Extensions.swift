@@ -112,6 +112,16 @@ extension UIViewController {
         savedView.heightAnchor.constraint(equalToConstant: 26).isActive = true
     }
     
+    func showInfo(message: String?) {
+        let infoView = InfoView(message: message ?? "Ошибка")
+        view.addSubview(infoView)
+        infoView.translatesAutoresizingMaskIntoConstraints = false
+        infoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        infoView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        infoView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        infoView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
     func redStar(text: String) -> NSMutableAttributedString {
         let text = text
         let range = (text as NSString).range(of: "*")

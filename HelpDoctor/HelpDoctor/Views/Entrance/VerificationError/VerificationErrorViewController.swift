@@ -26,7 +26,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private let commentTextView = UITextView()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
-    private let sendButton = HDButton(title: "Отправить на проверку")
+    private let sendButton = HDButton(title: "Отправить на \nпроверку")
     private let backButton = BackButton()
     private var sourceFile: URL?
     private var keyboardHeight = 0.f
@@ -37,6 +37,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private var heightConstraintImage: NSLayoutConstraint?
     private var heightConstraintLabel: NSLayoutConstraint?
     private var topConstraintSendButton: NSLayoutConstraint?
+    private var sendButtonWidth: NSLayoutConstraint?
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -67,6 +68,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func authorized() {
+        let width = 110.f
         titleLabel.textColor = .white
         subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text = "На рассмотрении"
@@ -84,6 +86,10 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         subscriptLabel.isHidden = true
         commentTextView.isHidden = true
         setupVerificationEndImage()
+        
+        sendButtonWidth?.isActive = false
+        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: width)
+        sendButtonWidth?.isActive = true
     }
     
     // MARK: - Setup views
@@ -246,7 +252,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupCommentTextView() {
-        let top = 15.f
+        let top = 13.f
         let width = Session.width - 40
         let height = 50.f
         commentTextView.textAlignment = .left
@@ -321,9 +327,10 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         let top = 20.f
         let width = 148.f
         let height = 44.f
+        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
-        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 14)
+        sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
         sendButton.titleLabel?.numberOfLines = 2
         sendButton.titleLabel?.textAlignment = .center
         scrollView.addSubview(sendButton)

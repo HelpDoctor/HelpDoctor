@@ -142,7 +142,7 @@ class VerificationOkViewController: UIViewController {
         let height = 17.f
         subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
         subtitleLabel.textColor = .hdGreenColor
-        subtitleLabel.text = "пройдена"
+        subtitleLabel.text = "Пройдена"
         subtitleLabel.textAlignment = .center
         view.addSubview(subtitleLabel)
         
@@ -198,8 +198,9 @@ class VerificationOkViewController: UIViewController {
     /// Установка кнопки "Ок"
     private func setupSendButton() {
         let top = 20.f
-        let width = 148.f
+        let width = 110.f
         let height = 44.f
+        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)

@@ -87,6 +87,9 @@
 		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
 		469DD6562459463F006DBD30 /* CreateProfileStep6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */; };
 		469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */; };
+		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
+		469DD65C245ADEF0006DBD30 /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */; };
+		469DD65E245AEBFF006DBD30 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65D245AEBFF006DBD30 /* InfoView.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
 		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
@@ -307,6 +310,9 @@
 		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
 		469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6ViewController.swift; sourceTree = "<group>"; };
 		469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6Presenter.swift; sourceTree = "<group>"; };
+		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
+		469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extensions.swift"; sourceTree = "<group>"; };
+		469DD65D245AEBFF006DBD30 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
@@ -898,6 +904,7 @@
 				46F87F6623C063AD0095264E /* EditTextView.swift */,
 				46F87F6C23C0EB880095264E /* SavedView.swift */,
 				46072E0B23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift */,
+				469DD65D245AEBFF006DBD30 /* InfoView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1016,6 +1023,7 @@
 				46203F0123C4DB740072653A /* Session.swift */,
 				4670346623D4178A00AFAA91 /* NotificationDelegate.swift */,
 				C4CBC3F323E2AB1300434BFB /* LocationManager.swift */,
+				469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -1034,6 +1042,7 @@
 				4640B6DD240A90D80023C3A3 /* Int+Extensions.swift */,
 				4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */,
 				4609F43A24422DB400F17E45 /* UIView+Extensions.swift */,
+				469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1369,6 +1378,7 @@
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
 				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
+				469DD65E245AEBFF006DBD30 /* InfoView.swift in Sources */,
 				4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
@@ -1437,6 +1447,7 @@
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
+				469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */,
 				46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
@@ -1528,6 +1539,7 @@
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
 				C48F162C23B5FE87002D04E3 /* ProfileKeyUser.swift in Sources */,
 				46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */,
+				469DD65C245ADEF0006DBD30 /* UITextView+Extensions.swift in Sources */,
 				4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */,
 				C4CBC3F723E2AB9500434BFB /* LocationSearchViewController.swift in Sources */,
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
