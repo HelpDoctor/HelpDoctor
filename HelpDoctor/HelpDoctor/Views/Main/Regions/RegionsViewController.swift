@@ -25,7 +25,11 @@ class RegionsViewController: UIViewController {
         super.viewDidLoad()
         presenter?.getRegions()
         view.backgroundColor = backgroundColor
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        setupHeaderView(color: backgroundColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Выбор субъекта",
+                        font: .boldSystemFontOfSize(size: 18))
         setupSearchBar()
         setupTableView()
         setupOkButton()

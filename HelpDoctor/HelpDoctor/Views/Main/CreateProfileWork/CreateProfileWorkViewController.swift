@@ -61,7 +61,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
             + heightTextField + (heightRadioButton * 2) + (heightPlusButton * 2) + heightNextButton
         verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 12
         setupScrollView()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep7TitleLabel()
         setupStep7SpecLabel()
         setupSpecTableView()
@@ -81,6 +80,15 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         setupNextButton()
         addSwipeGestureToBack()
         configureRadioButtons()
+        disableJobArea(isMedical: false)
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+            presenter?.setUser()
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -444,6 +452,21 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
+    private func disableJobArea(isMedical: Bool) {
+        let alpha: CGFloat = isMedical ? 1.0 : 0.5
+        step7JobLabel.alpha = alpha
+        jobTableView.alpha = alpha
+        workPlusButton.alpha = alpha
+        workPlusLabel.alpha = alpha
+        positionTextField.alpha = alpha
+        hideEmploymentButton.alpha = alpha
+        step7JobLabel.isEnabled = isMedical
+        jobTableView.isUserInteractionEnabled = isMedical
+        workPlusButton.isEnabled = isMedical
+        workPlusLabel.isEnabled = isMedical
+        positionTextField.isEnabled = isMedical
+        hideEmploymentButton.isEnabled = isMedical
+    }
     
     // MARK: - Buttons methods 
     @objc private func workPlusButtonPressed() {
@@ -498,12 +521,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         } else {
             presenter?.setEmployment(false)
         }
-        step7JobLabel.isHidden = !medicalButton.isSelected
-        jobTableView.isHidden = !medicalButton.isSelected
-        workPlusButton.isHidden = !medicalButton.isSelected
-        workPlusLabel.isHidden = !medicalButton.isSelected
-        hideEmploymentButton.isHidden = !medicalButton.isSelected
-        positionTextField.isHidden = !medicalButton.isSelected
+        disableJobArea(isMedical: medicalButton.isSelected)
         if jobRowCount > 4 {
             workPlusButton.isHidden = true
             workPlusLabel.isHidden = true
@@ -516,7 +534,11 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
-        presenter?.next()
+        if !medicalButton.isSelected && !notMedicalButton.isSelected {
+            showAlert(message: "Поле занятость не заполнено")
+        } else {
+            presenter?.next()
+        }
     }
     
     @objc private func backButtonPressed() {

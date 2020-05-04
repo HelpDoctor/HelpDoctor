@@ -29,9 +29,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = backgroundColor
-        presenter?.loadPopularInterests()
         setupScrollView()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep8TitleLabel()
         setupStep8Label()
         setupSubscriptLabel()
@@ -39,7 +37,16 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         setupAddButton()
         setupNextButton()
         addSwipeGestureToBack()
-        presenter?.getInterestFromView()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            presenter?.getUser()
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            presenter?.loadPopularInterests(nil)
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+            presenter?.getInterestFromView()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -260,7 +267,7 @@ extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate 
         let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
         let newWidth = data.width(withConstrainedHeight: cellHeight, font: font, minimumTextWrapWidth: 45)
         if newWidth > constraintRect.width {
-            constraintRect = CGSize(width: contentWidth / 2, height: cellHeight)
+            constraintRect = CGSize(width: contentWidth / 1, height: cellHeight)
         }
         let box = data.boundingRect(with: constraintRect,
                                     options: NSStringDrawingOptions.usesLineFragmentOrigin,

@@ -76,16 +76,24 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: Int?) {
-        guard let index = index/*,
-            let medicalOrganization = arrayMedicalOrganizations?[index]*/ else {
-                view.showAlert(message: "Выберите одну организацию")
-                return
+        guard let index = index else {
+            view.showAlert(message: "Выберите одну организацию")
+            return
         }
         let medicalOrganization = filteredArray[index]
-        let previous = view.navigationController?.viewControllers[4] as! CreateProfileWorkViewController
-        let presenter = previous.presenter
-        presenter?.setJob(job: medicalOrganization)
-        view.navigationController?.popToViewController(previous, animated: true)
+        
+        guard let controllers = view.navigationController?.viewControllers else { return }
+        for viewControllers in controllers where viewControllers is CreateProfileWorkViewController {
+            let previous = viewControllers as! CreateProfileWorkViewController
+            let presenter = previous.presenter
+            presenter?.setJob(job: medicalOrganization)
+            view.navigationController?.popToViewController(viewControllers, animated: true)
+        }
+        
+//        let previous = view.navigationController?.viewControllers[4] as! CreateProfileWorkViewController
+//        let presenter = previous.presenter
+//        presenter?.setJob(job: medicalOrganization)
+//        view.navigationController?.popToViewController(previous, animated: true)
     }
     
     func back() {

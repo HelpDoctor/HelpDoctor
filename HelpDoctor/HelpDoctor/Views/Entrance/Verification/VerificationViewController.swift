@@ -192,7 +192,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         """
         Чтобы получить доступ к полному функционалу приложения, \
         Вам необходимо предоставить копию документа, \
-        подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании
+        подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании 
         """
         let attributes: [NSAttributedString.Key: Any] = [
             .font: font,
@@ -342,7 +342,7 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         Кроме того, законодательство РФ запрещает обсуждение клинических тем\
         и рецептурных препаратов вне закрытых врачебных сообществ.
         """
-        self.showInfo(message: message)
+        self.showInfo(message: message, buttonTitle: "Закрыть", iconName: nil)
     }
     
     // MARK: - IBActions

@@ -90,6 +90,8 @@
 		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
 		469DD65C245ADEF0006DBD30 /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */; };
 		469DD65E245AEBFF006DBD30 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65D245AEBFF006DBD30 /* InfoView.swift */; };
+		469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD660245EB921006DBD30 /* EditProfileViewController.swift */; };
+		469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD662245EB934006DBD30 /* EditProfilePresenter.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
 		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
@@ -313,6 +315,8 @@
 		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
 		469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+Extensions.swift"; sourceTree = "<group>"; };
 		469DD65D245AEBFF006DBD30 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
+		469DD660245EB921006DBD30 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		469DD662245EB934006DBD30 /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
@@ -686,6 +690,15 @@
 				469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */,
 			);
 			path = CreateProfileStep6;
+			sourceTree = "<group>";
+		};
+		469DD65F245EB8FA006DBD30 /* EditProfile */ = {
+			isa = PBXGroup;
+			children = (
+				469DD660245EB921006DBD30 /* EditProfileViewController.swift */,
+				469DD662245EB934006DBD30 /* EditProfilePresenter.swift */,
+			);
+			path = EditProfile;
 			sourceTree = "<group>";
 		};
 		46EFF4DE24359ED4004B9558 /* VerificationError */ = {
@@ -1177,6 +1190,7 @@
 		C48F168123BA05DC002D04E3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				469DD65F245EB8FA006DBD30 /* EditProfile */,
 				46787A762439A6BC005C0258 /* PushAndSound */,
 				4640B6D32402B02A0023C3A3 /* Email */,
 				4640B6CE24028EF30023C3A3 /* FAQ */,
@@ -1416,6 +1430,7 @@
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
+				469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */,
 				46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
 				46203F1E23C9CC910072653A /* ViewEventPresenter.swift in Sources */,
@@ -1545,6 +1560,7 @@
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
 				46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */,
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,
+				469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */,
 				46F87F4023BDEDA60095264E /* Presenter.swift in Sources */,
 				C48F162823B5FE87002D04E3 /* PublicMethod.swift in Sources */,
 				4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */,

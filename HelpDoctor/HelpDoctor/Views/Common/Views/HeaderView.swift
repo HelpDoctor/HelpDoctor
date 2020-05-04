@@ -13,6 +13,7 @@ class HeaderView: UIView {
     private let logoImage = UIImageView()
     private let titleLabel = UILabel()
     private var presenter: Presenter?
+    private var font = UIFont.titleFont(size: 24)
     private var heightHeader = 0.f
     
     convenience init(title: String, color: UIColor, height: CGFloat, presenter: Presenter?) {
@@ -25,6 +26,33 @@ class HeaderView: UIView {
         setupBackButton()
         setupTitle()
         setupLogo()
+    }
+    
+    convenience init(title: String, color: UIColor, height: CGFloat, presenter: Presenter?, font: UIFont) {
+        self.init()
+        self.titleLabel.text = title
+        self.presenter = presenter
+        self.heightHeader = height
+        self.font = font
+        backgroundColor = color
+        UIApplication.shared.setStatusBarBackgroundColor(color: color)
+        setupBackButton()
+        setupTitle()
+        setupLogo()
+    }
+    
+    convenience init(height: CGFloat, presenter: Presenter?) {
+        self.init()
+        self.titleLabel.text = "HelpDoctor"
+        self.presenter = presenter
+        self.heightHeader = height
+        self.font = .titleFont(size: 24)
+        backgroundColor = UIColor.backgroundColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: UIColor.backgroundColor)
+        setupBackButton()
+        setupTitle()
+        setupLogo()
+        backButton.setImage(UIImage(named: "Cross"), for: .normal)
     }
     
     private func setupBackButton() {
@@ -43,7 +71,7 @@ class HeaderView: UIView {
     }
     
     private func setupTitle() {
-        titleLabel.font = UIFont.titleFont(size: 24)
+        titleLabel.font = font
         titleLabel.textColor = .white
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 1

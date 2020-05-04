@@ -10,7 +10,8 @@ import UIKit
 
 protocol CreateProfileSpecPresenterProtocol: Presenter {
     init(view: CreateProfileSpecViewController)
-    func loadPopularInterests()
+    var isEdit: Bool { get }
+    func loadPopularInterests(_ spec: String?)
     func selectRows()
     func getInterestTitle(index: Int) -> String?
     func getInterestsCount() -> Int?
@@ -20,6 +21,7 @@ protocol CreateProfileSpecPresenterProtocol: Presenter {
     func setInterests(interests: [ListOfInterests])
     func next()
     func toAddInterest()
+    func getUser()
 }
 
 class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
@@ -29,6 +31,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var isEdit = false
     var jobArray: [MedicalOrganization?] = []
     var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
@@ -42,10 +45,13 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Public methods
     /// Загрузка с сервера первых 10 интересов по основной специализации
-    func loadPopularInterests() {
+    func loadPopularInterests(_ spec: String?) {
         var mainSpec = "general"
         if specArray.count != 0 {
             mainSpec = specArray[0]?.code ?? "general"
+        }
+        if spec != nil {
+            mainSpec = spec ?? "general"
         }
         let getListOfInterest = Profile()
         
@@ -177,6 +183,73 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         }
     }
     
+    /// Загрузка информации о пользователе с сервера
+    func getUser() {
+        let getDataProfile = Profile()
+        
+        getData(typeOfContent: .getDataFromProfile,
+                returning: ([String: [AnyObject]], Int?, String?).self,
+                requestParams: [:] ) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    
+                    getDataProfile.dataFromProfile = result?.0
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
+                            let specArr: [ProfileKeySpec] = getDataProfile.dataFromProfile?["spec"] as! [ProfileKeySpec]
+                            self?.loadPopularInterests(specArr[0].code)
+                            switch specArr.count {
+                            case 0:
+                                self?.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
+                            case 1:
+                                self?.getInterestsOneSpec(mainSpec: specArr[0].code ?? "general")
+                            default:
+                                self?.getInterestsTwoSpec(mainSpec: specArr[0].code ?? "general",
+                                                          addSpec: specArr[1].code ?? "040100")
+                            }
+                        }
+                    }
+        }
+    }
+    
+    /// Обновление информации о интересах пользователя на сервере
+    private func updateInterests() {
+        var intArray: [Int] = []
+        for i in 0 ..< userInterests.count {
+            intArray.append(userInterests[i].id)
+        }
+        
+        let updateProfile = UpdateProfileKeyInterest(arrayInterest: intArray)
+        
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateInterests = \(String(describing: updateProfile.responce))")
+                            guard let code = updateProfile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                guard let controllers = self?.view.navigationController?.viewControllers else {
+                                    self?.back()
+                                    return
+                                }
+                                for viewControllers in controllers where viewControllers is ProfileViewController {
+                                    self?.view.navigationController?.popToViewController(viewControllers,
+                                                                                         animated: true)
+                                }
+                            } else {
+                                self?.view.showAlert(message: updateProfile.responce?.1)
+                            }
+                        }
+                    }
+        }
+    }
+    
     // MARK: - Coordinator
     /// Переход к предыдущему экрану
     func back() {
@@ -185,14 +258,20 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Переход к следующему экрану
     func next() {
-        let viewController = CreateProfileImageViewController()
-        let presenter = CreateProfileImagePresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        presenter.jobArray = jobArray
-        presenter.specArray = specArray
-        presenter.userInterests = userInterests
-        view.navigationController?.pushViewController(viewController, animated: true)
+        
+        if isEdit {
+            updateInterests()
+        } else {
+            let viewController = CreateProfileImageViewController()
+            let presenter = CreateProfileImagePresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            presenter.jobArray = jobArray
+            presenter.specArray = specArray
+            presenter.userInterests = userInterests
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
     }
     
     /// Переход к экрану всех интересов

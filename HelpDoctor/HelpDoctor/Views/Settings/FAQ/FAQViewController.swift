@@ -36,7 +36,11 @@ class FAQViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
-        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Настройки",
+                        font: .boldSystemFontOfSize(size: 14))
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()

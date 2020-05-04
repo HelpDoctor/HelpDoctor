@@ -36,17 +36,31 @@ extension UIViewController {
         headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-//    func setupClearHeaderView(presenter: Presenter?) {
-//        let height: CGFloat = 60
-//        let headerView = HeaderView(title: "HelpDoctor", withAvatar: true)
-//        view.addSubview(headerView)
-//        
-//        headerView.translatesAutoresizingMaskIntoConstraints = false
-//        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-//        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-//        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-//        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
-//    }
+    func setupHeaderView(color: UIColor, height: CGFloat, presenter: Presenter?, title: String, font: UIFont) {
+        let headerView = HeaderView(title: title,
+                                    color: color,
+                                    height: height,
+                                    presenter: presenter,
+                                    font: font)
+        view.addSubview(headerView)
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    func setupHeaderView(height: CGFloat, presenter: Presenter?) {
+        let headerView = HeaderView(height: height, presenter: presenter)
+        view.addSubview(headerView)
+        
+        headerView.translatesAutoresizingMaskIntoConstraints = false
+        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
     
     func setupHeaderViewWithAvatar(title: String,
                                    text: String?,
@@ -112,8 +126,10 @@ extension UIViewController {
         savedView.heightAnchor.constraint(equalToConstant: 26).isActive = true
     }
     
-    func showInfo(message: String?) {
-        let infoView = InfoView(message: message ?? "Ошибка")
+    func showInfo(message: String?, buttonTitle: String?, iconName: String?) {
+        let infoView = InfoView(message: message ?? "Ошибка",
+                                buttonTitle: buttonTitle ?? "Закрыть",
+                                iconName: iconName ?? "Problem.pdf")
         view.addSubview(infoView)
         infoView.translatesAutoresizingMaskIntoConstraints = false
         infoView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true

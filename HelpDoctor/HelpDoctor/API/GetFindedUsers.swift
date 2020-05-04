@@ -77,7 +77,8 @@ func parseJSON_getFindedUsers(for startPoint: [String: AnyObject]?,
                                           regionId: nil,
                                           regionName: nil,
                                           foto: obj["foto"] as? String,
-                                          gender: nil)
+                                          gender: nil,
+                                          is_medic_worker: nil)
                 
                 dataProfile.append(ResultFindedUsers(user: user,
                                                      job_places: job_places,

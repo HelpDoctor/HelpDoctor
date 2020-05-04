@@ -51,7 +51,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
             + (heightTextField * 3) + (heightRadioButton * 2) + heightNextButton
         verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 13
         setupScrollView()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupTitleLabel()
         setupTopLabel()
         setupStep1TitleLabel()
@@ -71,6 +70,13 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         addTapGestureToHideKeyboard()
         configureRadioButtons()
         setUser()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -470,4 +476,5 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
             let middleName = patronymicTextField.text else { return }
         presenter?.next(name: name, lastname: lastname, middleName: middleName)
     }
+    
 }

@@ -22,4 +22,5 @@ struct ProfileKeyUser {
     let regionName: String?
     let foto: String?
     let gender: String?
+    let is_medic_worker: Int?
 }

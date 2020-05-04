@@ -36,13 +36,10 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     private var educationView = ProfileEducationView()
     private var careerView = ProfileCareerView()
     private var interestsView = ProfileInterestsView()
-    //    private lazy var imagePicker = ImagePicker()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.getUser()
-        //        imagePicker.delegate = self
         view.backgroundColor = backgroundColor
         setupScrollView()
         setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter, title: "Мой профиль")
@@ -63,6 +60,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presenter?.getUser()
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .searchBarTintColor)
         self.tabBarController?.tabBar.isHidden = false
@@ -221,20 +219,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         userPhoto.layer.cornerRadius = imageSize / 2
         userPhoto.contentMode = .scaleAspectFill
         userPhoto.layer.masksToBounds = true
-        /*
-         let button = UIButton()
-         button.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
-         scrollView.addSubview(button)
-         button.translatesAutoresizingMaskIntoConstraints = false
-         button.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
-         button.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
-         button.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
-         button.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
-         
-         button.layer.cornerRadius = imageSize / 2
-         button.contentMode = .scaleAspectFill
-         button.layer.masksToBounds = true
-         */
     }
     
     /// Установка иконки верифицированный пользователь
@@ -539,57 +523,3 @@ extension ProfileViewController: ProfilePopoverDelegate {
     }
     
 }
-/*
- // MARK: - ImagePickerDelegate
- extension ProfileViewController: ImagePickerDelegate {
- 
- func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
- userPhoto.image = image
- presenter?.save(source: .user)
- imagePicker.dismiss()
- }
- 
- func imagePickerDelegate(didCancel delegatedForm: ImagePicker) {
- imagePicker.dismiss()
- }
- 
- func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
- if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
- }
- 
- func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
- // works only on real device (crash on simulator)
- if accessIsAllowed { presentImagePicker(sourceType: .camera) }
- }
- 
- private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
- imagePicker.present(parent: self, sourceType: sourceType)
- }
- 
- /// Выбор фотографии при нажатии на аватар
- /// - Parameter sender:
- @objc func photoButtonTapped(_ sender: UIButton) {
- let alertVC = UIAlertController(title: "Установить аватар",
- message: nil,
- preferredStyle: .alert)
- let cancelAction = UIAlertAction(title: "Отменить",
- style: .cancel,
- handler: nil)
- let takePhotoAction = UIAlertAction(title: "Сделать снимок",
- style: .default,
- handler: { _ in self.imagePicker.cameraAsscessRequest() })
- let choosePhotoAction = UIAlertAction(title: "Выбрать фотографию",
- style: .default,
- handler: { _ in self.imagePicker.photoGalleryAsscessRequest() })
- alertVC.addAction(cancelAction)
- alertVC.addAction(takePhotoAction)
- alertVC.addAction(choosePhotoAction)
- self.present(alertVC, animated: true, completion: nil)
- }
- 
- func getUserPhoto() -> UIImage? {
- return userPhoto.image
- }
- 
- }
- */

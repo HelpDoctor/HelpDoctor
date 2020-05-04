@@ -24,7 +24,11 @@ class MedicalSpecializationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = backgroundColor
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        setupHeaderView(color: backgroundColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Выбор специализации",
+                        font: .boldSystemFontOfSize(size: 18))
         setupSearchBar()
         setupTableView()
         setupOkButton()

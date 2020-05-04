@@ -60,7 +60,37 @@ class PushAndSoundViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
-        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Настройки",
+                        font: .boldSystemFontOfSize(size: 14))
+        setupViews()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        presenter?.setSettingsOnView()
+    }
+    
+    // MARK: - Public methods
+    func setValueOnSwitch(_ value: Bool) {
+        pushSwitch.isOn = value
+        pushSwitch.thumbTintColor = pushSwitch.isOn ? onThumbTintColor : offThumbTintColor
+    }
+    
+    func setMessagesCheckbox(_ value: Bool) {
+        messagesCheckbox.isSelected = value
+    }
+    
+    func setContactsCheckbox(_ value: Bool) {
+        contactsCheckbox.isSelected = value
+    }
+    
+    // MARK: - Setup views
+    private func setupViews() {
         setupTopStackView()
         setupHeaderIcon()
         setupHeaderLabel()
@@ -99,28 +129,6 @@ class PushAndSoundViewController: UIViewController {
         setupMaskView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
-        presenter?.setSettingsOnView()
-    }
-    
-    // MARK: - Public methods
-    func setValueOnSwitch(_ value: Bool) {
-        pushSwitch.isOn = value
-        pushSwitch.thumbTintColor = pushSwitch.isOn ? onThumbTintColor : offThumbTintColor
-    }
-    
-    func setMessagesCheckbox(_ value: Bool) {
-        messagesCheckbox.isSelected = value
-    }
-    
-    func setContactsCheckbox(_ value: Bool) {
-        contactsCheckbox.isSelected = value
-    }
-    
-    // MARK: - Setup views
     private func setupTopStackView() {
         topStackView.backgroundColor = .searchBarTintColor
         view.addSubview(topStackView)
@@ -141,7 +149,7 @@ class PushAndSoundViewController: UIViewController {
         
         headerIcon.translatesAutoresizingMaskIntoConstraints = false
         headerIcon.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                            constant: leading).isActive = true
         headerIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         headerIcon.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
@@ -158,9 +166,9 @@ class PushAndSoundViewController: UIViewController {
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.leadingAnchor.constraint(equalTo: headerIcon.trailingAnchor,
-                                               constant: leading).isActive = true
+                                             constant: leading).isActive = true
         headerLabel.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor,
-                                                constant: -leading).isActive = true
+                                              constant: -leading).isActive = true
         headerLabel.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerLabel.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
     }
@@ -247,7 +255,7 @@ class PushAndSoundViewController: UIViewController {
         messagesCheckbox.translatesAutoresizingMaskIntoConstraints = false
         messagesCheckbox.centerYAnchor.constraint(equalTo: messagesView.centerYAnchor).isActive = true
         messagesCheckbox.leadingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: -leading).isActive = true
+                                                  constant: -leading).isActive = true
         messagesCheckbox.widthAnchor.constraint(equalToConstant: height).isActive = true
         messagesCheckbox.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -291,7 +299,7 @@ class PushAndSoundViewController: UIViewController {
         contactsCheckbox.translatesAutoresizingMaskIntoConstraints = false
         contactsCheckbox.centerYAnchor.constraint(equalTo: contactsView.centerYAnchor).isActive = true
         contactsCheckbox.leadingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: -leading).isActive = true
+                                                  constant: -leading).isActive = true
         contactsCheckbox.widthAnchor.constraint(equalToConstant: height).isActive = true
         contactsCheckbox.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -319,7 +327,7 @@ class PushAndSoundViewController: UIViewController {
         
         eventsLabel.translatesAutoresizingMaskIntoConstraints = false
         eventsLabel.leadingAnchor.constraint(equalTo: eventsView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                             constant: leading).isActive = true
         eventsLabel.centerYAnchor.constraint(equalTo: eventsView.centerYAnchor).isActive = true
         eventsLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -335,7 +343,7 @@ class PushAndSoundViewController: UIViewController {
         eventsCheckbox.translatesAutoresizingMaskIntoConstraints = false
         eventsCheckbox.centerYAnchor.constraint(equalTo: eventsView.centerYAnchor).isActive = true
         eventsCheckbox.leadingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                 constant: -leading).isActive = true
+                                                constant: -leading).isActive = true
         eventsCheckbox.widthAnchor.constraint(equalToConstant: height).isActive = true
         eventsCheckbox.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -363,7 +371,7 @@ class PushAndSoundViewController: UIViewController {
         
         chatLabel.translatesAutoresizingMaskIntoConstraints = false
         chatLabel.leadingAnchor.constraint(equalTo: chatView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                           constant: leading).isActive = true
         chatLabel.centerYAnchor.constraint(equalTo: chatView.centerYAnchor).isActive = true
         chatLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -430,7 +438,7 @@ class PushAndSoundViewController: UIViewController {
         
         bottomHeaderIcon.translatesAutoresizingMaskIntoConstraints = false
         bottomHeaderIcon.leadingAnchor.constraint(equalTo: bottomStackView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                                  constant: leading).isActive = true
         bottomHeaderIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         bottomHeaderIcon.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
         bottomHeaderIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
@@ -447,9 +455,9 @@ class PushAndSoundViewController: UIViewController {
         
         bottomHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomHeaderLabel.leadingAnchor.constraint(equalTo: bottomHeaderIcon.trailingAnchor,
-                                               constant: leading).isActive = true
+                                                   constant: leading).isActive = true
         bottomHeaderLabel.trailingAnchor.constraint(equalTo: bottomStackView.trailingAnchor,
-                                                constant: -leading).isActive = true
+                                                    constant: -leading).isActive = true
         bottomHeaderLabel.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
         bottomHeaderLabel.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor).isActive = true
     }
@@ -477,7 +485,7 @@ class PushAndSoundViewController: UIViewController {
         
         vibrationLabel.translatesAutoresizingMaskIntoConstraints = false
         vibrationLabel.leadingAnchor.constraint(equalTo: vibrationView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                                constant: leading).isActive = true
         vibrationLabel.centerYAnchor.constraint(equalTo: vibrationView.centerYAnchor).isActive = true
         vibrationLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -495,7 +503,7 @@ class PushAndSoundViewController: UIViewController {
         
         vibrationValueLabel.translatesAutoresizingMaskIntoConstraints = false
         vibrationValueLabel.trailingAnchor.constraint(equalTo: vibrationView.trailingAnchor,
-                                            constant: -trailing).isActive = true
+                                                      constant: -trailing).isActive = true
         vibrationValueLabel.centerYAnchor.constraint(equalTo: vibrationView.centerYAnchor).isActive = true
         vibrationValueLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -541,7 +549,7 @@ class PushAndSoundViewController: UIViewController {
         
         ringtoneValueLabel.translatesAutoresizingMaskIntoConstraints = false
         ringtoneValueLabel.trailingAnchor.constraint(equalTo: ringtoneView.trailingAnchor,
-                                            constant: -trailing).isActive = true
+                                                     constant: -trailing).isActive = true
         ringtoneValueLabel.centerYAnchor.constraint(equalTo: ringtoneView.centerYAnchor).isActive = true
         ringtoneValueLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -569,7 +577,7 @@ class PushAndSoundViewController: UIViewController {
         
         chatSoundLabel.translatesAutoresizingMaskIntoConstraints = false
         chatSoundLabel.leadingAnchor.constraint(equalTo: chatSoundView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                                constant: leading).isActive = true
         chatSoundLabel.centerYAnchor.constraint(equalTo: chatSoundView.centerYAnchor).isActive = true
         chatSoundLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -585,7 +593,7 @@ class PushAndSoundViewController: UIViewController {
         
         chatSoundSwitch.translatesAutoresizingMaskIntoConstraints = false
         chatSoundSwitch.leadingAnchor.constraint(equalTo: chatSoundView.trailingAnchor,
-                                            constant: -leading).isActive = true
+                                                 constant: -leading).isActive = true
         chatSoundSwitch.centerYAnchor.constraint(equalTo: chatSoundView.centerYAnchor).isActive = true
     }
     
@@ -612,7 +620,7 @@ class PushAndSoundViewController: UIViewController {
         
         counterLabel.translatesAutoresizingMaskIntoConstraints = false
         counterLabel.leadingAnchor.constraint(equalTo: counterView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                              constant: leading).isActive = true
         counterLabel.centerYAnchor.constraint(equalTo: counterView.centerYAnchor).isActive = true
         counterLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -628,7 +636,7 @@ class PushAndSoundViewController: UIViewController {
         
         counterSwitch.translatesAutoresizingMaskIntoConstraints = false
         counterSwitch.leadingAnchor.constraint(equalTo: counterView.trailingAnchor,
-                                            constant: -leading).isActive = true
+                                               constant: -leading).isActive = true
         counterSwitch.centerYAnchor.constraint(equalTo: counterView.centerYAnchor).isActive = true
     }
     

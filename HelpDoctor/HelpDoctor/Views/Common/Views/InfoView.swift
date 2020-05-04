@@ -21,16 +21,27 @@ class InfoView: UIView {
     private var contentViewHeight = 180.f
     private let buttonHeight = 44.f
     
-    convenience init(message: String) {
+//    convenience init(message: String) {
+//        self.init()
+//        self.message.text = message
+//        labelHeight = message.height(withConstrainedWidth: contentViewWidth, font: .systemFontOfSize(size: 12))
+//        contentViewHeight = topViewHeight + (inset * 3) + labelHeight + buttonHeight
+//        backgroundColor = .clear
+//        setupView()
+//        setupProblemIcon()
+//        setupLabel()
+//        setupButton()
+//    }
+    
+    convenience init(message: String, buttonTitle: String, iconName: String) {
         self.init()
         self.message.text = message
+        button.setTitle(buttonTitle, for: .normal)
         labelHeight = message.height(withConstrainedWidth: contentViewWidth, font: .systemFontOfSize(size: 12))
         contentViewHeight = topViewHeight + (inset * 3) + labelHeight + buttonHeight
-        print("labelHeight \(labelHeight)")
-        print("contentViewHeight \(contentViewHeight)")
         backgroundColor = .clear
         setupView()
-        setupProblemIcon()
+        setupProblemIcon(iconName)
         setupLabel()
         setupButton()
     }
@@ -64,10 +75,10 @@ class InfoView: UIView {
         topView.heightAnchor.constraint(equalToConstant: topViewHeight).isActive = true
     }
     
-    private func setupProblemIcon() {
-        let logoImageName = "Problem.pdf"
-        guard let image = UIImage(named: logoImageName) else {
-            assertionFailure("Missing ​​\(logoImageName) asset")
+    private func setupProblemIcon(_ iconName: String) {
+//        let logoImageName = "Problem.pdf"
+        guard let image = UIImage(named: iconName) else {
+            assertionFailure("Missing ​​\(iconName) asset")
             return
         }
         problemIcon.image = image

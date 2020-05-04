@@ -10,12 +10,13 @@ import UIKit
 
 protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileScreen2ViewController)
+    var isEdit: Bool { get }
     func citySearch()
     func regionSearch()
     func setRegion(region: Regions)
     func setRegionFromDevice(_ idRegion: Int)
     func setCity(city: Cities)
-    func convertDate(_ birthDate: String) -> String?
+    func convertDateFromServer(_ birthDate: String) -> String?
     func next(phone: String, birthdate: String)
 }
 
@@ -26,12 +27,45 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var isEdit = false
     private var region: Regions?
     private var city: Cities?
     
     // MARK: - Init
     required init(view: CreateProfileScreen2ViewController) {
         self.view = view
+    }
+    
+    // MARK: - Private methods
+    /// Обновление информации о пользователе на сервере
+    private func updateProfile(user: UpdateProfileKeyUser) {
+        view.startActivityIndicator()
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": user.jsonData as Any] ) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    user.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfile = \(String(describing: user.responce))")
+                            self?.view.stopActivityIndicator()
+                            guard let code = user.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                guard let controllers = self?.view.navigationController?.viewControllers else {
+                                    self?.back()
+                                    return
+                                }
+                                for viewControllers in controllers where viewControllers is ProfileViewController {
+                                    self?.view.navigationController?.popToViewController(viewControllers,
+                                                                                         animated: true)
+                                }
+                            } else {
+                                self?.view.showAlert(message: user.responce?.1)
+                            }
+                        }
+                    }
+        }
     }
     
     // MARK: - Public methods
@@ -85,16 +119,32 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         user?.city_id = city.id
     }
     
-    /// Конвертация даты из формата yyy-MM-dd в формат dd.MM.yyyy
-    /// - Parameter birthDate: дата в формте yyy-MM-dd
+    /// Конвертация даты из формата yyyy-MM-dd в формат dd.MM.yyyy
+    /// - Parameter birthDate: дата в формте yyyy-MM-dd
     /// - Returns: дата в формате dd.MM.yyyy
-    func convertDate(_ birthDate: String) -> String? {
+    func convertDateFromServer(_ birthDate: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
         dateFormatter.locale = Locale.current
         guard let birthday = dateFormatter.date(from: birthDate) else { return nil }
         dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: birthday)
+    }
+    
+    /// Конвертация даты из формата dd.MM.yyyy в формат yyyy-MM-dd
+    /// - Parameter birthdate: дата в формте dd.MM.yyyy
+    /// - Returns: дата в формате yyyy-MM-dd
+    func convertDateToServer(_ birthdate: String) -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        dateFormatter.locale = Locale.current
+        guard let birthday = dateFormatter.date(from: birthdate) else {
+            view.showAlert(message: "Не правильно указана дата рождения")
+            return nil
+        }
+        dateFormatter.dateFormat = "yyyy-MM-dd"
         return dateFormatter.string(from: birthday)
     }
     
@@ -135,25 +185,30 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
             return
         }
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale.current
-        guard let birthday = dateFormatter.date(from: birthdate) else {
-            view.showAlert(message: "Не правильно указана дата рождения")
-            return
-        }
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strBirthday = dateFormatter.string(from: birthday)
+        let strBirthday = convertDateToServer(birthdate)
         
         user?.birthday = strBirthday
         user?.phone_number = phone
         user?.city_id = city?.id
-        let viewController = CreateProfileStep6ViewController()
-        let presenter = CreateProfileStep6Presenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        view.navigationController?.pushViewController(viewController, animated: true)
+        if isEdit {
+            let user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+                                            last_name: Session.instance.user?.last_name,
+                                            middle_name: Session.instance.user?.middle_name,
+                                            phone_number: phone,
+                                            birthday: strBirthday,
+                                            city_id: city?.id,
+                                            foto: Session.instance.user?.foto,
+                                            gender: Session.instance.user?.gender,
+                                            is_medic_worker: Session.instance.user?.is_medic_worker)
+            updateProfile(user: user)
+        } else {
+            let viewController = CreateProfileStep6ViewController()
+            let presenter = CreateProfileStep6Presenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
     }
     
     func back() {

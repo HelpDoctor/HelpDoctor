@@ -49,7 +49,6 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
             + (heightTextField * 2) + (heightRadioButton * 3) + heightNextButton
         verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 12
         setupScrollView()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep6TitleLabel()
         setupStep6Label()
         setupUniversityLabel()
@@ -68,6 +67,13 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         addTapGestureToHideKeyboard()
         configureRadioButtons()
         setUser()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -171,7 +177,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     private func setupGraduateDateLabel() {
         graduateDateLabel.font = .systemFontOfSize(size: 14)
         graduateDateLabel.textColor = .white
-        graduateDateLabel.text = "Дата выпуска"
+        graduateDateLabel.text = "Год выпуска"
         graduateDateLabel.textAlignment = .left
         scrollView.addSubview(graduateDateLabel)
         
@@ -184,13 +190,13 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupGraduateDateTextField() {
-        graduateDateTextField.titleLabel?.text = "Укажите дату рождения"
+        graduateDateTextField.titleLabel?.text = "Укажите год выпуска"
         graduateDateTextField.backgroundColor = .white
         graduateDateTextField.layer.cornerRadius = 5
         graduateDateTextField.font = .systemFontOfSize(size: 14)
         graduateDateTextField.textColor = .textFieldTextColor
         graduateDateTextField.type = .datePicker
-        graduateDateTextField.placeholder = "__.__.____*"
+        graduateDateTextField.placeholder = "____*"
         graduateDateTextField.pickerFieldDelegate = presenter
         graduateDateTextField.datePicker?.datePickerMode = .date
         graduateDateTextField.datePicker?.maximumDate = Date()
@@ -212,7 +218,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     private func setupGraduateTitleLabel() {
         graduateTitleLabel.font = .boldSystemFontOfSize(size: 14)
         graduateTitleLabel.textColor = .white
-        graduateTitleLabel.text = "Укажите, есть ли у вас научная степень"
+        graduateTitleLabel.text = "Укажите, есть ли у вас ученая степень"
         graduateTitleLabel.textAlignment = .left
         scrollView.addSubview(graduateTitleLabel)
         
@@ -227,7 +233,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     private func setupGraduateLabel() {
         graduateLabel.font = .systemFontOfSize(size: 14)
         graduateLabel.textColor = .white
-        graduateLabel.text = "Научная степень"
+        graduateLabel.text = "Ученая степень или звание"
         graduateLabel.textAlignment = .left
         scrollView.addSubview(graduateLabel)
         
@@ -435,4 +441,5 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     @objc private func nextButtonPressed() {
         presenter?.next()
     }
+    
 }

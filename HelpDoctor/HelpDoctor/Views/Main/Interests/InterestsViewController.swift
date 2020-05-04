@@ -34,7 +34,8 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         setupHeaderView(color: .backgroundColor,
                         height: headerHeight,
                         presenter: presenter,
-                        title: "Выбор научных интересов")
+                        title: "Выбор научных интересов",
+                        font: .boldSystemFontOfSize(size: 16))
         setupScrollView()
         setupSearchBar()
         setupNextButton()

@@ -29,7 +29,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private let step3Label = UILabel()
     private let hideBirthdayCheckbox = CheckBox(type: .square)
     private let step4TitleLabel = UILabel()
-    private let step4Label = UILabel()
+    private let step4Label = UITextView()
     private let phoneTextField = UITextField()
     private let hidePhoneCheckbox = CheckBox(type: .square)
     private let step5TitleLabel = UILabel()
@@ -48,7 +48,6 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
             + (heightTextField * 4) + (heightRadioButton * 3) + heightNextButton
         verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 14
         setupScrollView()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep3TitleLabel()
         setupStep3Label()
         setupBirthDateTextField()
@@ -65,6 +64,13 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupNextButton()
         addTapGestureToHideKeyboard()
         setUser()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,7 +101,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         guard let regionId = Session.instance.user?.regionId else { return }
         presenter?.setRegionFromDevice(regionId)
         guard let birthday = Session.instance.user?.birthday else { return }
-        birthDateTextField.text = presenter?.convertDate(birthday)
+        birthDateTextField.text = presenter?.convertDateFromServer(birthday)
     }
     
     // MARK: - Setup views
@@ -212,9 +218,31 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     /// Установка поясняющей надписи перед заполнением данных шага 4
     private func setupStep4Label() {
-        step4Label.font = .boldSystemFontOfSize(size: 14)
-        step4Label.textColor = .white
-        step4Label.text = "Укажите, пожалуйста, номер телефона"
+        guard let iconImage = UIImage(named: "Info") else { return }
+        let font = UIFont.boldSystemFontOfSize(size: 14)
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0,
+                                   y: (font.capHeight - iconImage.size.height).rounded() / 2,
+                                   width: iconImage.size.width,
+                                   height: iconImage.size.height)
+        attachment.image = iconImage
+        let attachmentString = NSAttributedString(attachment: attachment)
+        let text = "Укажите номер телефона "
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .foregroundColor: UIColor.white
+        ]
+        let myString = NSMutableAttributedString(string: text, attributes: attributes)
+        myString.append(attachmentString)
+        let recognizer = AttachmentTapGestureRecognizer(target: self, action: #selector(handleAttachmentTap(_:)))
+        step4Label.add(recognizer)
+        step4Label.sizeToFit()
+        step4Label.isUserInteractionEnabled = true
+        step4Label.isSelectable = false
+        step4Label.isEditable = false
+        step4Label.isScrollEnabled = false
+        step4Label.backgroundColor = .clear
+        step4Label.attributedText = myString
         step4Label.textAlignment = .left
         scrollView.addSubview(step4Label)
         
@@ -223,7 +251,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
                                         constant: verticalInset).isActive = true
         step4Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         step4Label.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        step4Label.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+        step4Label.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка поля ввода телефона
@@ -368,11 +396,11 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         
         liveNotRussiaCheckbox.translatesAutoresizingMaskIntoConstraints = false
         liveNotRussiaCheckbox.topAnchor.constraint(equalTo: cityTextField.bottomAnchor,
-                                               constant: verticalInset).isActive = true
+                                                   constant: verticalInset).isActive = true
         liveNotRussiaCheckbox.leadingAnchor.constraint(equalTo: cityTextField.leadingAnchor,
-                                                   constant: leading).isActive = true
+                                                       constant: leading).isActive = true
         liveNotRussiaCheckbox.trailingAnchor.constraint(equalTo: cityTextField.trailingAnchor,
-                                                    constant: -leading).isActive = true
+                                                        constant: -leading).isActive = true
         liveNotRussiaCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
     
@@ -440,6 +468,13 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     /// Действие при нажатии на чекбокс скрытия даты рождения
     @objc private func hideBirthdayCheckboxPressed() {
         hideBirthdayCheckbox.isSelected = !hideBirthdayCheckbox.isSelected
+    }
+    
+    @objc func handleAttachmentTap(_ sender: AttachmentTapGestureRecognizer) {
+        let message = """
+        Номер телефона необходим для однозначной идентификации пользователей и в случае утери доступа к профилю
+        """
+        self.showInfo(message: message, buttonTitle: "Понятно", iconName: "InfoHeadIcon")
     }
     
     @objc private func hidePhoneCheckboxPressed() {

@@ -63,8 +63,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func toEditProfile() {
-        let viewController = CreateProfileNameViewController()
-        viewController.presenter = CreateProfileNamePresenter(view: viewController)
+        let viewController = EditProfileViewController()
+        viewController.presenter = EditProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -145,7 +145,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
                                    regionId: userData[0].regionId,
                                    regionName: userData[0].regionName,
                                    foto: userData[0].foto,
-                                   gender: userData[0].gender)
+                                   gender: userData[0].gender,
+                                   is_medic_worker: userData[0].is_medic_worker)
         let lastName: String = user?.last_name ?? ""
         let name: String = user?.first_name ?? ""
         let middleName: String = user?.middle_name ?? ""
@@ -230,46 +231,4 @@ class ProfilePresenter: ProfilePresenterProtocol {
         view.present(viewController, animated: true, completion: nil)
     }
     
-/* Обновление аватара
-    /// Обновление информации о пользователе на сервере
-    /// - Parameter source: тип изменений
-    func save(source: SourceEditTextField) {
-        let image = view.getUserPhoto()/*?.resizeImage(240, opaque: true)
-        view.setImage(image: image)
-        print(image?.jpegData(compressionQuality: 1)?.count)*/
-        let profile = UpdateProfileKeyUser(first_name: session.user?.first_name,
-                                           last_name: session.user?.last_name,
-                                           middle_name: session.user?.middle_name,
-                                           phone_number: session.user?.phone_number,
-                                           birthday: session.user?.birthday,
-                                           city_id: session.user?.city_id,
-                                           foto: image?.toString(),
-                                           gender: session.user?.gender,
-                                           is_medic_worker: nil)//Заполнить пол и is_medic_worker
-        updateProfile(profile: profile)
-    }
-    
-    /// Обновление информации о пользователе на сервере
-    /// - Parameter profile: информация для обновления
-    private func updateProfile(profile: UpdateProfileKeyUser) {
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": profile.jsonData as Any] ) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            profile.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateProfile = \(String(describing: profile.responce))")
-                    guard let code = profile.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.view.showSaved(message: "Сохранено")
-                    } else {
-                        self?.view.showAlert(message: profile.responce?.1)
-                    }
-                }
-            }
-        }
-    }
-*/
 }

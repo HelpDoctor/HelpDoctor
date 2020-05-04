@@ -40,7 +40,11 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         verticalInset = calculateInset()
         view.backgroundColor = .backgroundColor
-        setupHeaderView(color: .tabBarColor, height: headerHeight, presenter: presenter, title: "Настройки")
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Настройки",
+                        font: .boldSystemFontOfSize(size: 14))
         setupScrollView()
         setupTopStackView()
         setupHeaderIcon()

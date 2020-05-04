@@ -64,11 +64,6 @@ class InterestCollectionViewLayout: UICollectionViewLayout {
                 allAttributes[indexPath] = attributes
                 isForSecondRow ? (secondRowWidth += cellWidth + 9) : (thirdRowWidth += cellWidth + 9)
             }
-//            let x = isForFirstRow ? firstRowWidth : secondRowWidth
-//            let y = isForFirstRow ? 0.0 : cellHeight + 2
-//            attributes.frame = CGRect(x: x, y: y, width: cellWidth, height: cellHeight)
-//            allAttributes[indexPath] = attributes
-//            isForFirstRow ? (firstRowWidth += cellWidth + 2) : (secondRowWidth += cellWidth + 2)
         }
         self.cache = allAttributes
     }

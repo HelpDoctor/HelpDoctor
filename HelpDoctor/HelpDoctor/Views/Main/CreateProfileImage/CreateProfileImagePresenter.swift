@@ -10,7 +10,9 @@ import UIKit
 
 protocol CreateProfileImagePresenterProtocol: Presenter {
     init(view: CreateProfileImageViewController)
+    var isEdit: Bool { get }
     func save()
+    func setUser()
     func setPhoto(photoString: String?)
 }
 
@@ -21,6 +23,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var isEdit = false
     var jobArray: [MedicalOrganization?] = []
     var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
@@ -33,7 +36,25 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Public methods
     /// Сохранение всей введенной информации и переход к следующему экрану
     func save() {
-        updateUser()
+        
+        if isEdit {
+            updateProfile()
+        } else {
+            updateUser()
+        }
+        
+    }
+    
+    func setUser() {
+        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+                                    last_name: Session.instance.user?.last_name,
+                                    middle_name: Session.instance.user?.middle_name,
+                                    phone_number: Session.instance.user?.phone_number,
+                                    birthday: Session.instance.user?.birthday,
+                                    city_id: Session.instance.user?.city_id,
+                                    foto: Session.instance.user?.foto,
+                                    gender: Session.instance.user?.gender,
+                                    is_medic_worker: Session.instance.user?.is_medic_worker)
     }
     
     /// Установка фотографии в классе UpdateProfileKeyUser
@@ -174,6 +195,46 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         }
     }
     
+    /// Обновление информации о пользователе на сервере
+    /// - Parameter profile: информация для обновления
+    private func updateProfile() {
+        let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+                                           last_name: Session.instance.user?.last_name,
+                                           middle_name: Session.instance.user?.middle_name,
+                                           phone_number: Session.instance.user?.phone_number,
+                                           birthday: Session.instance.user?.birthday,
+                                           city_id: Session.instance.user?.city_id,
+                                           foto: user?.foto,
+                                           gender: Session.instance.user?.gender,
+                                           is_medic_worker: Session.instance.user?.is_medic_worker)
+        
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": profile.jsonData as Any] ) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    profile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfile = \(String(describing: profile.responce))")
+                            guard let code = profile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                guard let controllers = self?.view.navigationController?.viewControllers else {
+                                    self?.back()
+                                    return
+                                }
+                                for viewControllers in controllers where viewControllers is ProfileViewController {
+                                    self?.view.navigationController?.popToViewController(viewControllers,
+                                                                                         animated: true)
+                                }
+                            } else {
+                                self?.view.showAlert(message: profile.responce?.1)
+                            }
+                        }
+                    }
+        }
+    }
+    
     // MARK: - Coordinator
     /// Переход к предыдущему экрану
     func back() {
@@ -182,9 +243,11 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     
     /// Переход к следующему экрану
     private func next() {
+        
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
+        
     }
     
 }

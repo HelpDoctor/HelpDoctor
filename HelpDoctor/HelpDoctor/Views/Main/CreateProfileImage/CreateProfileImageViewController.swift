@@ -31,12 +31,18 @@ class CreateProfileImageViewController: UIViewController {
         super.viewDidLoad()
         imagePicker.delegate = self
         view.backgroundColor = backgroundColor
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupStep9TitleLabel()
         setupStep9Label()
         setupUserPhotoView()
         setupNextButton()
         addSwipeGestureToBack()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            presenter?.setUser()
+            setupHeaderView(height: headerHeight, presenter: presenter)
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

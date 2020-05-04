@@ -10,6 +10,7 @@ import UIKit
 
 protocol CreateProfileStep6PresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileStep6ViewController)
+    var isEdit: Bool { get }
     func convertDate(_ birthDate: String) -> String?
     func next()
 }
@@ -21,6 +22,7 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var isEdit = false
     private var region: Regions?
     private var city: Cities?
     
@@ -45,11 +47,24 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     
     // MARK: - Coordinator
     func next() {
-        let viewController = CreateProfileWorkViewController()
-        let presenter = CreateProfileWorkPresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        view.navigationController?.pushViewController(viewController, animated: true)
+        
+        if isEdit {
+            print("Пока нет методов обновления информации об образовании")
+            guard let controllers = self.view.navigationController?.viewControllers else {
+                self.back()
+                return
+            }
+            for viewControllers in controllers where viewControllers is ProfileViewController {
+                self.view.navigationController?.popToViewController(viewControllers, animated: true)
+            }
+        } else {
+            let viewController = CreateProfileWorkViewController()
+            let presenter = CreateProfileWorkPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
     }
     
     func back() {
@@ -64,7 +79,7 @@ extension CreateProfileStep6Presenter {
     func pickerField(didOKClick pickerField: PickerField) {
         if pickerField.type == .datePicker {
             let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.yyyy"
+            dateFormatter.dateFormat = "yyyy"
             guard let datePicker = pickerField.datePicker else { return }
             let date = dateFormatter.string(from: datePicker.date)
             pickerField.text =  "\(date)"

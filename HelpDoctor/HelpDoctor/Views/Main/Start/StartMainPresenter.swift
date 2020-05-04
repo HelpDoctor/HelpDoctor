@@ -50,9 +50,9 @@ class StartMainPresenter: StartMainPresenterProtocol {
                             if responceCode(code: code) && status == "True" {
                                 //                        self?.view.hideFillProfileButton()
                                 self?.view.showFillProfileButton()
-//                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
-                                    self?.getStatusUser()
-//                                }
+                                //                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
+                                self?.getStatusUser()
+                                //                                }
                             } else {
                                 self?.view.showFillProfileButton()
                             }
@@ -136,7 +136,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                                regionId: userData[0].regionId,
                                                regionName: userData[0].regionName,
                                                foto: userData[0].foto,
-                                               gender: userData[0].gender)
+                                               gender: userData[0].gender,
+                                               is_medic_worker: userData[0].is_medic_worker)
         view.setImage(image: Session.instance.user?.foto?.toImage())
     }
     
