@@ -72,6 +72,12 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         self.sendButton.update(isEnabled: isEnabled)
     }
     
+    func clearTextFields() {
+        oldPasswordTextField.text = ""
+        passwordTextField.text = ""
+        confirmPasswordTextField.text = ""
+    }
+    
     // MARK: - Private methods
     private func calculateInset() -> CGFloat {
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -302,7 +308,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Buttons methods
     @objc private func sendButtonPressed() {
-        print("In develop")
+        presenter?.changeButtonButtonPressed()
     }
     
     // MARK: - IBActions

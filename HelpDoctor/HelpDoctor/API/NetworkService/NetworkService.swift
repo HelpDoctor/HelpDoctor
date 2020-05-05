@@ -69,6 +69,7 @@ enum TypeOfRequest: String {
     case userStatus = "/profile/user_status"
     case getSettings = "/profile/settings"
     case updateSettings = "/profile/settings/update"
+    case changePassword = "/profile/change_password"
 }
 
 enum NetworkMimeType: String {
@@ -200,6 +201,14 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
             request.httpBody = jsonData
         }
         
+    case .changePassword:
+        let jsonData = serializationJSON(obj: requestParams as! [String: String])
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+        request.httpBody = jsonData
+        
     case .addProfileInterest:
         let jsonData = serializationJSON(obj: requestParams as! [String: String])
         request.httpMethod = "POST"
@@ -264,7 +273,8 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .updateProfile,
                  .schedule_CreateOrUpdateEvent,
                  .schedule_deleteForCurrentEvent,
-                 .updateSettings:
+                 .updateSettings,
+                 .changePassword:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
                 

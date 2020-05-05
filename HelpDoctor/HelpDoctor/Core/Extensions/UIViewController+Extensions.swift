@@ -122,7 +122,7 @@ extension UIViewController {
         savedView.translatesAutoresizingMaskIntoConstraints = false
         savedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
         savedView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        savedView.widthAnchor.constraint(equalToConstant: 123).isActive = true
+        savedView.widthAnchor.constraint(equalToConstant: 160).isActive = true
         savedView.heightAnchor.constraint(equalToConstant: 26).isActive = true
     }
     

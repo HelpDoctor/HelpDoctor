@@ -92,6 +92,7 @@
 		469DD65E245AEBFF006DBD30 /* InfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65D245AEBFF006DBD30 /* InfoView.swift */; };
 		469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD660245EB921006DBD30 /* EditProfileViewController.swift */; };
 		469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD662245EB934006DBD30 /* EditProfilePresenter.swift */; };
+		469DD6652461313D006DBD30 /* ChangePassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6642461313D006DBD30 /* ChangePassword.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
 		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
@@ -317,6 +318,7 @@
 		469DD65D245AEBFF006DBD30 /* InfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoView.swift; sourceTree = "<group>"; };
 		469DD660245EB921006DBD30 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		469DD662245EB934006DBD30 /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
+		469DD6642461313D006DBD30 /* ChangePassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePassword.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
@@ -1235,6 +1237,7 @@
 			isa = PBXGroup;
 			children = (
 				C4CBC3B223D026D600434BFB /* Registration.swift */,
+				469DD6642461313D006DBD30 /* ChangePassword.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -1443,6 +1446,7 @@
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
+				469DD6652461313D006DBD30 /* ChangePassword.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
 				469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */,
