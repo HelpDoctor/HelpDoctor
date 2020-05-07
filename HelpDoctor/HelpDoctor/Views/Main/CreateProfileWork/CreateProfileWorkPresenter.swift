@@ -204,6 +204,13 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
                                     foto: Session.instance.user?.foto,
                                     gender: Session.instance.user?.gender,
                                     is_medic_worker: Session.instance.user?.is_medic_worker)
+        guard let isMedic = user?.is_medic_worker else { return }
+        if isMedic == 0 {
+            view.setEmployment(isMedic: false)
+        } else if isMedic == 1 {
+            view.setEmployment(isMedic: true)
+        }
+        Session.instance.userJob
     }
     
     func setJob(job: MedicalOrganization) {

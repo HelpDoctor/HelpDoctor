@@ -108,6 +108,15 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         specTableView.reloadData()
     }
     
+    func setEmployment(isMedic: Bool) {
+        if isMedic {
+            medicalButton.isSelected = true
+        } else {
+            notMedicalButton.isSelected = true
+        }
+        employmentButtonPressed()
+    }
+    
     // MARK: - Setup views
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
