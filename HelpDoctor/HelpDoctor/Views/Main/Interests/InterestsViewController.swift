@@ -233,6 +233,12 @@ extension InterestsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.isSelected = true
         presenter?.appendIndexArray(index: indexPath.item)
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.resignFirstResponder()
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.resignFirstResponder()
+        }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

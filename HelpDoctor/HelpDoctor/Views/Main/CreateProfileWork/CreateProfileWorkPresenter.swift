@@ -210,7 +210,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         } else if isMedic == 1 {
             view.setEmployment(isMedic: true)
         }
-        Session.instance.userJob
     }
     
     func setJob(job: MedicalOrganization) {

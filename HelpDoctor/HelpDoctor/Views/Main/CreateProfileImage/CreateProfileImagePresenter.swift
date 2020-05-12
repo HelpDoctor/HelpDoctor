@@ -36,7 +36,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Public methods
     /// Сохранение всей введенной информации и переход к следующему экрану
     func save() {
-        
+        view.startActivityIndicator()
         if isEdit {
             updateProfile()
         } else {
@@ -90,6 +90,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                             if responceCode(code: code) {
                                 self?.updateJob()
                             } else {
+                                self?.view.stopActivityIndicator()
                                 self?.view.showAlert(message: updateProfile.responce?.1)
                             }
                         }
@@ -125,6 +126,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                                 if responceCode(code: code) {
                                     self?.updateSpec()
                                 } else {
+                                    self?.view.stopActivityIndicator()
                                     self?.view.showAlert(message: updateProfileJob.responce?.1)
                                 }
                             }
@@ -158,6 +160,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                             if responceCode(code: code) {
                                 self?.updateInterests()
                             } else {
+                                self?.view.stopActivityIndicator()
                                 self?.view.showAlert(message: updateProfileSpec.responce?.1)
                             }
                         }
@@ -184,6 +187,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             print("updateInterests = \(String(describing: updateProfile.responce))")
+                            self?.view.stopActivityIndicator()
                             guard let code = updateProfile.responce?.0 else { return }
                             if responceCode(code: code) {
                                 self?.next()
@@ -217,6 +221,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             print("updateProfile = \(String(describing: profile.responce))")
+                            self?.view.stopActivityIndicator()
                             guard let code = profile.responce?.0 else { return }
                             if responceCode(code: code) {
                                 guard let controllers = self?.view.navigationController?.viewControllers else {
