@@ -25,6 +25,4 @@ class FeedbackPresenter: FeedbackPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

@@ -14,35 +14,40 @@ class StartSettingsViewController: UIViewController {
     var presenter: StartSettingsPresenterProtocol?
     
     // MARK: - Constants
+    private let headerHeight = 40.f
     private let settingsArray = [
         [SettingsRow.user, SettingsRow.generalSettings, SettingsRow.securitySettings, SettingsRow.addFriends],
         [SettingsRow.notificationSettings, SettingsRow.emailSettings],
         [SettingsRow.callback, SettingsRow.help]
     ]
     private let tableView = UITableView()
+    private let deleteView = UIView()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
-        setupHeaderViewWithAvatar(title: "Настройки",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Настройки",
+                        font: .boldSystemFontOfSize(size: 14))
         setupTableView()
+        setupDeleteView()
+        presenter?.loadSettings()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
     // MARK: - Setup views
     private func setupTableView() {
         view.addSubview(tableView)
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
-        tableView.backgroundColor = UIColor(red: 0.494, green: 0.737, blue: 0.902, alpha: 1)
+        tableView.backgroundColor = .backgroundColor
         tableView.dataSource = self
         tableView.delegate = self
         tableView.isScrollEnabled = false
@@ -50,55 +55,43 @@ class StartSettingsViewController: UIViewController {
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                       constant: 50).isActive = true
+                                       constant: headerHeight).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
                                           constant: -48).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
+    private func setupDeleteView() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(deleteButtonPressed))
+        deleteView.backgroundColor = .red
+        deleteView.addGestureRecognizer(tap)
+        view.addSubview(deleteView)
+        
+        deleteView.translatesAutoresizingMaskIntoConstraints = false
+        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        deleteView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        deleteView.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
 
-    @objc private func logouButtonPressed() {
-        let logout = Registration(email: nil, password: nil, token: myToken)
-
-        getData(typeOfContent: .logout,
+    @objc private func deleteButtonPressed() {
+        let unRegistration = Registration(email: nil, password: nil, token: nil)
+        getData(typeOfContent: .deleteMail,
                 returning: (Int?, String?).self,
-                requestParams: logout.requestParams)
-        { [weak self] result in
+                requestParams: [:]) { result in
             let dispathGroup = DispatchGroup()
-            logout.responce = result
+            unRegistration.responce = result
 
             dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result=\(String(describing: logout.responce))")
-                    guard let code = logout.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        print("Logout")
-                        AppDelegate.shared.rootViewController.switchToLogout()
-                    } else {
-                        self?.showAlert(message: logout.responce?.1)
-                    }
+                DispatchQueue.main.async {
+                    print("result= \(String(describing: unRegistration.responce))")
+                    UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                    AppDelegate.shared.rootViewController.switchToLogout() 
                 }
             }
         }
     }
-//
-//    @objc private func deleteButtonPressed() {
-//        let unRegistration = Registration(email: nil, password: nil, token: nil)
-//        getData(typeOfContent: .deleteMail,
-//                returning: (Int?, String?).self,
-//                requestParams: [:])
-//        { [weak self] result in
-//            let dispathGroup = DispatchGroup()
-//            unRegistration.responce = result
-//
-//            dispathGroup.notify(queue: DispatchQueue.main) {
-//                DispatchQueue.main.async { [weak self] in
-//                    print("result= \(String(describing: unRegistration.responce))")
-//                }
-//            }
-//        }
-//    }
 
 }
 
@@ -106,6 +99,10 @@ class StartSettingsViewController: UIViewController {
 extension StartSettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 40
     }
     
@@ -139,6 +136,41 @@ extension StartSettingsViewController: UITableViewDelegate {
         }
 
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            switch indexPath.row {
+            case 0:
+                presenter?.userRow()
+            case 2:
+                presenter?.securityRow()
+            case 3:
+                presenter?.inviteRow()
+            default:
+                print("\(indexPath.section)")
+            }
+        case 1:
+            switch indexPath.row {
+            case 0:
+                presenter?.pushRow()
+            case 1:
+                presenter?.emailRow()
+            default:
+                print("\(indexPath.section)")
+            }
+        case 2:
+            switch indexPath.row {
+            case 0:
+                presenter?.feedbackRow()
+            default:
+                presenter?.helpRow()
+            }
+        default:
+            print("smth \(indexPath.row)")
+        }
+        
+    }
 }
 
 // MARK: - Table Data Source
@@ -156,49 +188,13 @@ extension StartSettingsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
                                                        for: indexPath) as? SettingsCell
             else { return UITableViewCell() }
-        cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        if indexPath.section == 0 && indexPath.row == 1 {
+            cell.configureDisabled(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        } else {
+            cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
+        }
         cell.backgroundColor = .clear
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.section {
-        case 0:
-            switch indexPath.row {
-            case 0:
-                print("\(indexPath.section)")
-            case 2:
-                presenter?.securityRow()
-            case 3:
-                presenter?.inviteRow()
-            default:
-                print("\(indexPath.section)")
-            }
-        case 1:
-            switch indexPath.row {
-            case 0:
-                logouButtonPressed()
-//                print("\(indexPath.section)")
-            case 1:
-                presenter?.emailRow()
-            default:
-                print("\(indexPath.section)")
-            }
-        case 2:
-            switch indexPath.row {
-            case 0:
-                presenter?.feedbackRow()
-            default:
-                presenter?.helpRow()
-            }
-        default:
-            print("smth \(indexPath.row)")
-        }
-        
     }
     
 }

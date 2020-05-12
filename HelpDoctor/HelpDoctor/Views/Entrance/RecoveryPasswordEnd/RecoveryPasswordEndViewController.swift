@@ -18,8 +18,7 @@ class RecoveryPasswordEndViewController: UIViewController {
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let textLabel = UILabel()
-    private let loginButton = HDButton(title: "Войти")
-    
+    private let loginButton = HDButton(title: "Войти", fontSize: 18)
     private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
@@ -124,8 +123,9 @@ class RecoveryPasswordEndViewController: UIViewController {
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
         let top = 35.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
+        loginButton.layer.cornerRadius = height / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         

@@ -22,7 +22,8 @@ class HeaderViewWithoutLogo: UIView {
         self.userImage.image = UIImage(named: userImage ?? "Avatar.pdf")
         self.presenter = presenter
         backgroundColor = .tabBarColor
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+//        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         setupBackButton()
         setupTitle()
         setupUserImage()
@@ -35,7 +36,7 @@ class HeaderViewWithoutLogo: UIView {
         self.userImage.image = UIImage(named: "Logo.pdf")
         self.presenter = presenter
         backgroundColor = .backgroundColor
-        UIApplication.statusBarBackgroundColor = .backgroundColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .backgroundColor)
         setupBackButton()
         setupTitle()
         setupUserImage()

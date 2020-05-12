@@ -17,9 +17,10 @@ class VerificationEndViewController: UIViewController {
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
+    private let subtitleLabel = UILabel()
     private let textLabel = UILabel()
+    private let okButton = HDButton(title: "Ок")
     private let backButton = BackButton()
-    
     private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
@@ -29,8 +30,12 @@ class VerificationEndViewController: UIViewController {
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
+        setupSubtitleLabel()
         setupTopLabel()
-        setupBackButton()
+        setupOkButton()
+        if #available(iOS 13.0, *) {} else {
+            setupBackButton()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,8 +91,12 @@ class VerificationEndViewController: UIViewController {
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Верификация"
+        titleLabel.text =
+        """
+        Верификация
+        """
         titleLabel.textAlignment = .center
+        titleLabel.numberOfLines = 0
         view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -96,6 +105,28 @@ class VerificationEndViewController: UIViewController {
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка заголовка
+    private func setupSubtitleLabel() {
+        let top = 5.f
+        let height = 17.f
+        subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
+        subtitleLabel.textColor = .hdButtonColor
+        subtitleLabel.text =
+        """
+        На рассмотрении
+        """
+        subtitleLabel.textAlignment = .center
+        subtitleLabel.numberOfLines = 0
+        view.addSubview(subtitleLabel)
+        
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+                                        constant: top).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка надписи
@@ -115,11 +146,29 @@ class VerificationEndViewController: UIViewController {
         view.addSubview(textLabel)
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
-        textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
+        textLabel.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor,
                                        constant: top).isActive = true
         textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка кнопки Ок
+    private func setupOkButton() {
+        let top = 20.f
+        let width = 148.f
+        let height = 44.f
+        okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
+        okButton.update(isEnabled: true)
+        okButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
+        view.addSubview(okButton)
+        
+        okButton.translatesAutoresizingMaskIntoConstraints = false
+        okButton.topAnchor.constraint(equalTo: textLabel.bottomAnchor,
+                                      constant: top).isActive = true
+        okButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки назад
@@ -136,12 +185,17 @@ class VerificationEndViewController: UIViewController {
         backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
+                                           constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Ок"
+    @objc private func okButtonPressed() {
+        presenter?.back()
+    }
+    
     /// Обработка нажатия кнопки "Назад"
     @objc private func backButtonPressed() {
         presenter?.back()

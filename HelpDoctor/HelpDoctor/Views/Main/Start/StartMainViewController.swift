@@ -9,11 +9,13 @@
 import UIKit
 
 class StartMainViewController: UIViewController {
-
+    
     // MARK: - Dependency
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
@@ -24,14 +26,11 @@ class StartMainViewController: UIViewController {
     private let bottomLabel = UILabel()
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupHeaderView()
+        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
         setupEnterProfileButton()
         setupNewUserLabel()
         setupTopLine()
@@ -47,8 +46,8 @@ class StartMainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
-        setImage(image: Session.instance.user?.foto?.toImage())
+        UIApplication.shared.setStatusBarBackgroundColor(color: .backgroundColor)
+        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
@@ -81,7 +80,7 @@ class StartMainViewController: UIViewController {
         
         enterProfileButton.translatesAutoresizingMaskIntoConstraints = false
         enterProfileButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                            constant: 10).isActive = true
+                                                constant: 10).isActive = true
         enterProfileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
         enterProfileButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
         enterProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -116,13 +115,14 @@ class StartMainViewController: UIViewController {
     
     /// Временная View
     private func setupUserView() {
+        let width = Session.width - 40
         userView.backgroundColor = .white
         view.addSubview(userView)
         
         userView.translatesAutoresizingMaskIntoConstraints = false
         userView.topAnchor.constraint(equalTo: topLine.bottomAnchor, constant: 10).isActive = true
         userView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        userView.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        userView.widthAnchor.constraint(equalToConstant: width).isActive = true
         userView.heightAnchor.constraint(equalToConstant: 170).isActive = true
     }
     
@@ -155,18 +155,20 @@ class StartMainViewController: UIViewController {
     
     /// Временная View
     private func setupEventView() {
+        let width = Session.width - 40
         eventView.backgroundColor = .white
         view.addSubview(eventView)
         
         eventView.translatesAutoresizingMaskIntoConstraints = false
         eventView.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 10).isActive = true
         eventView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        eventView.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
+        eventView.widthAnchor.constraint(equalToConstant: width).isActive = true
         eventView.heightAnchor.constraint(equalToConstant: 68).isActive = true
     }
     
     /// Установка подписи под формой с новыми событиями
     private func setupBottomLabel() {
+        let width = Session.width - 42
         bottomLabel.font = UIFont.systemFontOfSize(size: 12)
         bottomLabel.textColor = .white
         bottomLabel.text =
@@ -181,7 +183,7 @@ class StartMainViewController: UIViewController {
         bottomLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomLabel.topAnchor.constraint(equalTo: eventView.bottomAnchor, constant: 9).isActive = true
         bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width - 42).isActive = true
+        bottomLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         bottomLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
     }
     
@@ -191,12 +193,12 @@ class StartMainViewController: UIViewController {
         fillProfileButton.isEnabled = true
         fillProfileButton.isHidden = true
         view.addSubview(fillProfileButton)
-
+        
         fillProfileButton.translatesAutoresizingMaskIntoConstraints = false
         fillProfileButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 10).isActive = true
         fillProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         fillProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        fillProfileButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        fillProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
     // MARK: - Buttons methods
@@ -209,5 +211,5 @@ class StartMainViewController: UIViewController {
     @objc private func profileButtonPressed() {
         presenter?.toProfile()
     }
-
+    
 }

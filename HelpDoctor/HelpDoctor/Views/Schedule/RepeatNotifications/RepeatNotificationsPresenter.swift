@@ -78,6 +78,4 @@ class RepeatNotificationsPresenter: RepeatNotificationsPresenterProtocol {
         view.navigationController?.popToRootViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

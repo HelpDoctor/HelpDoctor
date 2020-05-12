@@ -14,15 +14,21 @@ class CitiesViewController: UIViewController {
     var presenter: CitiesPresenterProtocol?
     
     // MARK: - Constants
-    var tableView = UITableView()
-    private var okButton = HDButton()
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
+    private var tableView = UITableView()
+    private var okButton = HDButton(title: "Готово")
     private let searchBar = UISearchBar()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .backgroundColor
-        setupHeaderView()
+        view.backgroundColor = backgroundColor
+        setupHeaderView(color: backgroundColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Выбор города/ района",
+                        font: .boldSystemFontOfSize(size: 18))
         setupSearchBar()
         setupTableView()
         setupOkButton()
@@ -31,7 +37,7 @@ class CitiesViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -40,13 +46,22 @@ class CitiesViewController: UIViewController {
         tableView.reloadData()
     }
     
+    func setTitleButton() {
+        okButton.setTitle("Далее", for: .normal)
+    }
+    
     // MARK: - Setup views
     private func setupSearchBar() {
         let top: CGFloat = 60
         let height: CGFloat = 56
         searchBar.delegate = self
         searchBar.barTintColor = .searchBarTintColor
-        searchBar.searchTextField.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = .white
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.backgroundColor = .white
+        }
         searchBar.placeholder = "Поиск"
         view.addSubview(searchBar)
         
@@ -74,7 +89,6 @@ class CitiesViewController: UIViewController {
     }
     
     private func setupOkButton() {
-        okButton = HDButton(title: "Готово")
         okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         okButton.isEnabled = true
         view.addSubview(okButton)
@@ -82,8 +96,8 @@ class CitiesViewController: UIViewController {
         okButton.translatesAutoresizingMaskIntoConstraints = false
         okButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         okButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -18).isActive = true
-        okButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        okButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        okButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
     
     // MARK: - Navigation
@@ -158,6 +172,12 @@ extension CitiesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = true
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.resignFirstResponder()
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.resignFirstResponder()
+        }
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

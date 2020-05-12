@@ -51,8 +51,7 @@ class InterestTableViewCell: UITableViewCell {
         contentView.addSubview(interestTitle)
         
         interestTitle.translatesAutoresizingMaskIntoConstraints = false
-        interestTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive
-         = true
+        interestTitle.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
         interestTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
                                                constant: leading).isActive = true
         interestTitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,

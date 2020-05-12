@@ -145,6 +145,4 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
         view.navigationController?.popToRootViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

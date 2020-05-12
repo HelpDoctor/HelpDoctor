@@ -9,6 +9,7 @@
 import UIKit
 
 extension String {
+    
     var westernArabicNumeralsOnly: String {
         let pattern = UnicodeScalar("0")..."9"
         return String(unicodeScalars
@@ -26,7 +27,7 @@ extension String {
         guard let data = Data(base64Encoded: self) else { return nil }
         return String(data: data, encoding: .utf8)
     }
-
+    
     func toBase64() -> String {
         return Data(self.utf8).base64EncodedString()
     }
@@ -92,18 +93,39 @@ extension String {
                                             options: .usesLineFragmentOrigin,
                                             attributes: [NSAttributedString.Key.font: font],
                                             context: nil)
-
+        
         return ceil(boundingBox.height)
     }
-
+    
     func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
         let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
         let boundingBox = self.boundingRect(with: constraintRect,
                                             options: .usesLineFragmentOrigin,
                                             attributes: [NSAttributedString.Key.font: font],
                                             context: nil)
-
+        
         return ceil(boundingBox.width)
+    }
+    
+    func width(withConstrainedHeight height: CGFloat, font: UIFont, minimumTextWrapWidth: CGFloat) -> CGFloat {
+        
+        var textWidth: CGFloat = minimumTextWrapWidth
+        let incrementWidth: CGFloat = minimumTextWrapWidth * 0.1
+        var textHeight: CGFloat = self.height(withConstrainedWidth: textWidth, font: font)
+        
+        //Increase width by 10% of minimumTextWrapWidth until minimum width found that makes the text fit within the specified height
+        while textHeight > height {
+            textWidth += incrementWidth
+            textHeight = self.height(withConstrainedWidth: textWidth, font: font)
+        }
+        return ceil(textWidth)
+    }
+    
+    var htmlAttributedString: NSAttributedString? {
+        return try? NSAttributedString(data: Data(utf8),
+                                       options: [.documentType: NSAttributedString.DocumentType.html,
+                                                 .characterEncoding: String.Encoding.utf8.rawValue],
+                                       documentAttributes: nil)
     }
     
 }

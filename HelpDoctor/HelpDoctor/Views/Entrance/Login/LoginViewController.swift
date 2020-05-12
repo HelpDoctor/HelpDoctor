@@ -22,7 +22,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     private let emailTextField = UITextField()
     private let passwordTextField = UITextField()
     private let forgotButton = UIButton()
-    private let loginButton = HDButton(title: "Войти")
+    private let loginButton = HDButton(title: "Войти", fontSize: 18)
     private let backButton = BackButton()
     private var keyboardHeight = 0.f
     private var isKeyboardShown = false
@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         let height = 34.f
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
-        label.text = "Для авторизации введите свой e-mail и ранее полученный пароль"
+        label.text = "Для авторизации введите свой e-mail и пароль, полученный при регистрации"
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
@@ -233,8 +233,9 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     /// Установки кнопки "Войти"
     private func setupLoginButton() {
         let top = 41.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
+        loginButton.layer.cornerRadius = height / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         

@@ -25,6 +25,4 @@ class InvitePresenter: InvitePresenterProtocol {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

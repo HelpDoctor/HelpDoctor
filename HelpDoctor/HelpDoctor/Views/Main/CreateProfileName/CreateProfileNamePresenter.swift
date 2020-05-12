@@ -8,9 +8,11 @@
 
 import UIKit
 
-protocol CreateProfileNamePresenterProtocol {
+protocol CreateProfileNamePresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileNameViewController)
-    func next(name: String, lastname: String, middleName: String, birthDate: String, phone: String)
+    var isEdit: Bool { get }
+    func setGender(_ gender: String)
+    func next(name: String, lastname: String, middleName: String)
 }
 
 class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
@@ -20,49 +22,104 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var gender: String?
+    var isEdit = false
     
     // MARK: - Init
     required init(view: CreateProfileNameViewController) {
         self.view = view
     }
     
+    // MARK: - Private methods
+    /// Обновление информации о пользователе на сервере
+    private func updateProfile(user: UpdateProfileKeyUser) {
+        view.startActivityIndicator()
+        let updateProfile = UpdateProfileKeyUser(first_name: user.first_name,
+                                                 last_name: user.last_name,
+                                                 middle_name: user.middle_name,
+                                                 phone_number: Session.instance.user?.phone_number,
+                                                 birthday: Session.instance.user?.birthday,
+                                                 city_id: Session.instance.user?.city_id,
+                                                 foto: Session.instance.user?.foto,
+                                                 gender: user.gender,
+                                                 is_medic_worker: Session.instance.user?.is_medic_worker)
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    updateProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfile = \(String(describing: updateProfile.responce))")
+                            self?.view.stopActivityIndicator()
+                            guard let code = updateProfile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                guard let controllers = self?.view.navigationController?.viewControllers else {
+                                    self?.back()
+                                    return
+                                }
+                                for viewControllers in controllers where viewControllers is ProfileViewController {
+                                    self?.view.navigationController?.popToViewController(viewControllers,
+                                                                                         animated: true)
+                                }
+                            } else {
+                                self?.view.showAlert(message: updateProfile.responce?.1)
+                            }
+                        }
+                    }
+        }
+    }
+    
+    // MARK: - Public methods
+    /// Установка пола пользователя
+    /// - Parameter gender: пол пользователя
+    func setGender(_ gender: String) {
+        self.gender = gender
+    }
+    
     // MARK: - Coordinator
-    func next(name: String, lastname: String, middleName: String, birthDate: String, phone: String) {
+    /// Проверка заполнения полей и переход к следующему экрану
+    /// - Parameters:
+    ///   - name: имя
+    ///   - lastname: фамилия
+    ///   - middleName: отчество
+    func next(name: String, lastname: String, middleName: String) {
         if lastname == "" {
             view.showAlert(message: "Не заполнена фамилия")
             return
         } else if name == "" {
             view.showAlert(message: "Не заполнено имя")
             return
-        } else if birthDate == "" {
-            view.showAlert(message: "Не заполнена дата рождения")
-            return
-        } else if phone == "" {
-            view.showAlert(message: "Не указан номер телефона")
+        } else if gender == nil {
+            view.showAlert(message: "Не указан пол")
             return
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale.current
-        guard let birthday = dateFormatter.date(from: birthDate) else {
-            view.showAlert(message: "Не правильно указана дата рождения")
-            return
-        }
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let strBirthday = dateFormatter.string(from: birthday)
         user = UpdateProfileKeyUser(first_name: name,
                                     last_name: lastname,
                                     middle_name: middleName,
-                                    phone_number: phone.westernArabicNumeralsOnly,
-                                    birthday: strBirthday,
+                                    phone_number: nil,
+                                    birthday: nil,
                                     city_id: nil,
-                                    foto: nil)
-        let viewController = CreateProfileWorkViewController()
-        let presenter = CreateProfileWorkPresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        view.navigationController?.pushViewController(viewController, animated: true)
+                                    foto: nil,
+                                    gender: gender,
+                                    is_medic_worker: nil)
+        
+        if isEdit {
+            guard let user = user else { return }
+            updateProfile(user: user)
+        } else {
+            let viewController = CreateProfileScreen2ViewController()
+            let presenter = CreateProfileScreen2Presenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
+    /// Переход к предыдущему экрану
+    func back() {
+        view.navigationController?.popViewController(animated: true)
     }
     
 }

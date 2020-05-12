@@ -14,37 +14,42 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     var presenter: InterestsPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     private let scrollView = UIScrollView()
     private var tableView = UITableView()
     private let searchBar = UISearchBar()
-    private let descriptionLabel = UILabel()
     private let stackView = UIView()
     private let addTextField = UITextField()
-    private let addButton = HDButton(title: "Добавить", fontSize: 12)
+    private let nextButton = HDButton(title: "Далее")
+    private let addButton = HDButton(title: "Добавить", fontSize: 14)
     
-    private var keyboardHeight: CGFloat = 0
-    private let heightSearchBar: CGFloat = 56
+    private var keyboardHeight = 0.f
+    private let heightSearchBar = 56.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
-        setupHeaderViewWithBack(title: "Выбор научных интересов", presenter: presenter)
+        setupHeaderView(color: .backgroundColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Выбор научных интересов",
+                        font: .boldSystemFontOfSize(size: 16))
         setupScrollView()
         setupSearchBar()
-        setupDescriptionLabel()
+        setupNextButton()
         setupStackView()
         setupAddButton()
         setupAddTextField()
         setupTableView()
         selectRows()
-        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
     }
     
@@ -69,7 +74,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup views
     /// Установка ScrollView
     private func setupScrollView() {
-        let top: CGFloat = 50
+        let top = headerHeight
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
@@ -86,7 +91,12 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     private func setupSearchBar() {
         searchBar.delegate = self
         searchBar.barTintColor = .searchBarTintColor
-        searchBar.searchTextField.backgroundColor = .white
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.backgroundColor = .white
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.backgroundColor = .white
+        }
         searchBar.placeholder = "Поиск"
         scrollView.addSubview(searchBar)
         
@@ -97,46 +107,24 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         searchBar.heightAnchor.constraint(equalToConstant: heightSearchBar).isActive = true
     }
     
-    /// Установка надписи описания
-    private func setupDescriptionLabel() {
-        let text = "Здесь вы можете выбрать область научных интересов. Для этого выберите интересующую вас область:"
-        let leading: CGFloat = 10
-        let height: CGFloat = (text.height(withConstrainedWidth: Session.width - (2 * leading),
-                                           font: .systemFontOfSize(size: 12)))
-        descriptionLabel.font = .systemFontOfSize(size: 12)
-        descriptionLabel.textColor = .white
-        descriptionLabel.text = text
-        descriptionLabel.textAlignment = .left
-        descriptionLabel.numberOfLines = 0
-        scrollView.addSubview(descriptionLabel)
-        
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
-        descriptionLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: leading).isActive = true
-        descriptionLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        descriptionLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
     /// Установка группы добавления интереса
     private func setupStackView() {
-        let top: CGFloat = Session.height - 50 - 56 - 18
+        let bottom = 10.f
         stackView.backgroundColor = .white
         scrollView.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         stackView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                          constant: top).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: nextButton.topAnchor, constant: -bottom).isActive = true
         stackView.heightAnchor.constraint(equalToConstant: heightSearchBar).isActive = true
     }
     
     /// Установка кнопки добавления интереса
     private func setupAddButton() {
-        let trailing: CGFloat = 14
-        let height: CGFloat = 35
-        let width: CGFloat = 85
+        let trailing = 14.f
+        let height = 40.f
+        let width = 98.f
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.isEnabled = true
         stackView.addSubview(addButton)
@@ -151,8 +139,8 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода нового интереса
     private func setupAddTextField() {
-        let height: CGFloat = 36
-        let leading: CGFloat = 8
+        let height = 36.f
+        let leading = 8.f
         addTextField.layer.borderColor = UIColor(red: 0.18, green: 0.369, blue: 0.667, alpha: 1).cgColor
         addTextField.layer.borderWidth = 1
         addTextField.layer.cornerRadius = 5
@@ -186,58 +174,27 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         tableView.allowsMultipleSelection = true
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: stackView.topAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         tableView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
     }
     
-    /// Добавление распознавания касания экрана
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
+    /// Установка кнопки перехода к следующему экрану
+    private func setupNextButton() {
+        let width = 110.f
+        let height = 40.f
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        nextButton.update(isEnabled: true)
+        scrollView.addSubview(nextButton)
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-    
-    // MARK: - IBActions
-    /// Скрытие клавиатуры
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
-    }
-    
-    /// Изменение размера ScrollView при появлении клавиатуры
-    /// - Parameter notification: событие появления клавиатуры
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    /// Изменение размера ScrollView при скрытии клавиатуры
-    /// - Parameter notification: событие скрытия клавиатуры
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: Session.width - 10).isActive = true
+        nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
+                                           constant: Session.height - Session.bottomPadding - 98).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     // MARK: - Buttons methods
@@ -246,7 +203,11 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         presenter?.createInterest(interest: addTextField.text)
         addTextField.becomeFirstResponder()
     }
-
+    
+    @objc private func nextButtonPressed() {
+        presenter?.next()
+    }
+    
 }
 
 // MARK: - UISearchBarDelegate
@@ -263,7 +224,29 @@ extension InterestsViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension InterestsViewController: UITableViewDelegate {}
+extension InterestsViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = true
+        presenter?.appendIndexArray(index: indexPath.item)
+        if #available(iOS 13.0, *) {
+            searchBar.searchTextField.resignFirstResponder()
+        } else {
+            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
+            searchField.resignFirstResponder()
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+        presenter?.removeIndexArray(index: indexPath.item)
+    }
+    
+}
 
 // MARK: - UITableViewDataSource
 extension InterestsViewController: UITableViewDataSource {
@@ -276,23 +259,9 @@ extension InterestsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "InterestTableViewCell",
                                                        for: indexPath) as? InterestTableViewCell
             else { return UITableViewCell() }
-
+        
         cell.configure(presenter?.getInterestsTitle(index: indexPath.row) ?? "Not found")
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = true
-        presenter?.appendIndexArray(index: indexPath.item)
-    }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = false
-        presenter?.removeIndexArray(index: indexPath.item)
-    }
-
 }

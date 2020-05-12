@@ -11,8 +11,6 @@ import UIKit
 class Session {
     static let instance = Session()
     
-    private init() { }
-    
     static var width: CGFloat {
         return UIScreen.main.bounds.width
     }
@@ -25,5 +23,12 @@ class Session {
         return UIApplication.shared.statusBarFrame.size.height
     }
     
+    static var bottomPadding: CGFloat {
+        return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+    }
+    
     var user: ProfileKeyUser?
+    var userJob: [ProfileKeyJob?]?
+    var userInterests: [ProfileKeyInterests]?
+    var userSettings: Settings?
 }

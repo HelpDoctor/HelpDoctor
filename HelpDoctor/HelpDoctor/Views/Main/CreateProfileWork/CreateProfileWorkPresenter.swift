@@ -8,19 +8,19 @@
 
 import UIKit
 
-protocol CreateProfileWorkPresenterProtocol: CitiesSearchProtocol {
+protocol CreateProfileWorkPresenterProtocol: Presenter {
     init(view: CreateProfileWorkViewController)
+    var isEdit: Bool { get }
     func jobSearch(_ index: Int)
     func specSearch(_ index: Int)
-    func citySearch()
-    func regionSearch()
     func getCountJob() -> Int
     func getCountSpec() -> Int
     func getJob(_ index: Int) -> String
     func getSpec(_ index: Int) -> String
-    func setRegion(region: Regions)
+    func setUser()
     func setJob(job: MedicalOrganization)
     func setSpec(spec: MedicalSpecialization)
+    func setEmployment(_ employment: Bool)
     func next()
     func back()
 }
@@ -32,15 +32,123 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
+    var isEdit = false
     private var jobArray: [MedicalOrganization?] = [nil, nil, nil, nil, nil]
     private var specArray: [MedicalSpecialization?] = [nil, nil, nil, nil, nil]
     private var jobIndex = 0
     private var specIndex = 0
-    private var region: Regions?
-    private var city: Cities?
     
     required init(view: CreateProfileWorkViewController) {
         self.view = view
+    }
+    
+    // MARK: - Private methods
+    /// Обновление информации о пользователе на сервере
+    private func updateProfile() {
+        let updateProfile = UpdateProfileKeyUser(first_name: user?.first_name,
+                                                 last_name: user?.last_name,
+                                                 middle_name: user?.middle_name,
+                                                 phone_number: user?.phone_number,
+                                                 birthday: user?.birthday,
+                                                 city_id: user?.city_id,
+                                                 foto: user?.foto,
+                                                 gender: user?.gender,
+                                                 is_medic_worker: user?.is_medic_worker)
+        
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfile.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfile = \(String(describing: updateProfile.responce))")
+                            guard let code = updateProfile.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                self?.updateJob()
+                            } else {
+                                self?.view.showAlert(message: updateProfile.responce?.1)
+                            }
+                        }
+                    }
+        }
+    }
+    
+    /// Обновление информации о работе пользователя на сервере
+    private func updateJob() {
+        if jobArray.count == 0 {
+            updateSpec()
+        } else {
+            guard let oid = jobArray[0]?.oid else { return }
+            var updateJob: [[String: Any]] = []
+            let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
+            updateJob.append(job)
+            for i in 1 ..< jobArray.count {
+                updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+            }
+            print("Update job: \(updateJob)")
+            let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
+            getData(typeOfContent: .updateProfile,
+                    returning: (Int?, String?).self,
+                    requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
+                        let dispathGroup = DispatchGroup()
+                        
+                        updateProfileJob.responce = result
+                        
+                        dispathGroup.notify(queue: DispatchQueue.main) {
+                            DispatchQueue.main.async { [weak self]  in
+                                print("updateJobProfile = \(String(describing: updateProfileJob.responce))")
+                                guard let code = updateProfileJob.responce?.0 else { return }
+                                if responceCode(code: code) {
+                                    self?.updateSpec()
+                                } else {
+                                    self?.view.showAlert(message: updateProfileJob.responce?.1)
+                                }
+                            }
+                        }
+            }
+        }
+    }
+    
+    /// Обновление информации о специализации пользователя на сервере
+    private func updateSpec() {
+        guard let specId = specArray[0]?.id else { return }
+        var updateSpec: [[String: Any]] = []
+        let spec: [String: Any] = ["id": 0, "spec_id": specId as Any, "is_main": true]
+        updateSpec.append(spec)
+        for i in 1 ..< specArray.count {
+            updateSpec.append(["id": 0, "spec_id": specArray[i]?.id as Any, "is_main": false])
+        }
+        let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
+        
+        getData(typeOfContent: .updateProfile,
+                returning: (Int?, String?).self,
+                requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateProfileSpec.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateProfileSpec = \(String(describing: updateProfileSpec.responce))")
+                            guard let code = updateProfileSpec.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                guard let controllers = self?.view.navigationController?.viewControllers else {
+                                    self?.back()
+                                    return
+                                }
+                                for viewControllers in controllers where viewControllers is ProfileViewController {
+                                    self?.view.navigationController?.popToViewController(viewControllers,
+                                                                                         animated: true)
+                                }
+                            } else {
+                                self?.view.showAlert(message: updateProfileSpec.responce?.1)
+                            }
+                        }
+                    }
+        }
     }
     
     // MARK: - Public methods
@@ -59,25 +167,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         let presenter = MedicalSpecializationPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.getMedicalSpecialization()
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func citySearch() {
-        guard let regionId = region?.regionId,
-            let region = region else {
-                view.showAlert(message: "Сначала необходимо выбрать регион")
-                return }
-        let viewController = CitiesViewController()
-        let presenter = CitiesPresenter(view: viewController, region: region)
-        viewController.presenter = presenter
-        presenter.getCities(regionId: regionId)
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func regionSearch() {
-        let viewController = RegionsViewController()
-        let presenter = RegionsPresenter(view: viewController)
-        viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -105,9 +194,22 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         }
     }
     
-    func setRegion(region: Regions) {
-        self.region = region
-        view.setRegion(region: region.regionName ?? "")
+    func setUser() {
+        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+                                    last_name: Session.instance.user?.last_name,
+                                    middle_name: Session.instance.user?.middle_name,
+                                    phone_number: Session.instance.user?.phone_number,
+                                    birthday: Session.instance.user?.birthday,
+                                    city_id: Session.instance.user?.city_id,
+                                    foto: Session.instance.user?.foto,
+                                    gender: Session.instance.user?.gender,
+                                    is_medic_worker: Session.instance.user?.is_medic_worker)
+        guard let isMedic = user?.is_medic_worker else { return }
+        if isMedic == 0 {
+            view.setEmployment(isMedic: false)
+        } else if isMedic == 1 {
+            view.setEmployment(isMedic: true)
+        }
     }
     
     func setJob(job: MedicalOrganization) {
@@ -120,39 +222,39 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         view.reloadSpecTableView()
     }
     
-    // MARK: - CitiesSearchProtocol
-    func getRegionId() -> Int? {
-        return region?.regionId
-    }
-    
-    func setCity(city: Cities) {
-        self.city = city
-        view.setCity(city: city.cityName ?? "")
-        user?.city_id = city.id
+    func setEmployment(_ employment: Bool) {
+        user?.is_medic_worker = employment ? 1 : 0
     }
     
     // MARK: - Coordinator
     func next() {
-        guard region != nil else {
-            view.showAlert(message: "Не указан регион места жительства")
+        guard specArray[0] != nil else {
+            view.showAlert(message: "Не заполнена основная специализация")
             return
         }
-        guard city != nil else {
-            view.showAlert(message: "Не указан город места жительства")
-            return
+        if user?.is_medic_worker == 1 {
+            guard jobArray[0] != nil else {
+                view.showAlert(message: "Не заполнено основное место работы")
+                return
+            }
         }
         
-        let viewController = CreateProfileSpecViewController()
-        let presenter = CreateProfileSpecPresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        presenter.jobArray = jobArray.filter {
-            $0?.oid != nil
+        if isEdit {
+            updateProfile()
+        } else {
+            let viewController = CreateProfileSpecViewController()
+            let presenter = CreateProfileSpecPresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            presenter.jobArray = jobArray.filter {
+                $0?.oid != nil
+            }
+            presenter.specArray = specArray.filter {
+                $0?.id != nil
+            }
+            view.navigationController?.pushViewController(viewController, animated: true)
         }
-        presenter.specArray = specArray.filter {
-            $0?.id != nil
-        }
-        view.navigationController?.pushViewController(viewController, animated: true)
+        
     }
     
     func back() {

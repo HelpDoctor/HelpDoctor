@@ -228,8 +228,6 @@ class EventAddPresenter: EventAddPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }
 
 extension EventAddPresenter: OtherTimeControllerDelegate {

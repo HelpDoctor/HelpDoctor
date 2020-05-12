@@ -24,8 +24,6 @@ class AddMembersPresenter: AddMembersPresenterProtocol {
         self.view = view
     }
     
-    func save(source: SourceEditTextField) { }
-    
     // MARK: - Coordinator
     func friendsButtonPressed() {
 //        let viewController = AppointmentAddViewController()

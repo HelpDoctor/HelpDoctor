@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CitiesPresenterProtocol {
+protocol CitiesPresenterProtocol: Presenter {
     init(view: CitiesViewController)
     func getCities(regionId: Int)
     func getCountCities() -> Int?
@@ -39,6 +39,9 @@ class CitiesPresenter: CitiesPresenterProtocol {
     }
     
     func getCities(regionId: Int) {
+        if sender != nil {
+            view.setTitleButton()
+        }
         view.startActivityIndicator()
         let getCities = Profile()
         
@@ -54,7 +57,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
                     self?.view.stopActivityIndicator()
                     self?.arrayCities = getCities.cities
                     self?.filteredArray = getCities.cities ?? []
-                    self?.view.tableView.reloadData()
+                    self?.view.reloadTableView()
                 }
             }
         }
@@ -95,7 +98,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             let city = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             //swiftlint:disable force_cast
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+            let previous = view.navigationController?.viewControllers.last as! CreateProfileScreen2ViewController
             let presenter = previous.presenter
             presenter?.setCity(city: city)
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {

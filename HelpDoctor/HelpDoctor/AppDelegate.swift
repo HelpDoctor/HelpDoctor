@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            let names = UIFont.fontNames(forFamilyName: family)
 //            print("Family: \(family) Font names: \(names)")
 //        }
-        
+        print(myToken as Any)
         window?.rootViewController = RootViewController()
         window?.makeKeyAndVisible()
         

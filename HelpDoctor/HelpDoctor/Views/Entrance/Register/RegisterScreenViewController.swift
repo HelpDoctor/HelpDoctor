@@ -23,7 +23,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private let topEmailTextField = UITextField()
     private let textFieldLabel = UILabel()
     private let bottomEmailTextField = UITextField()
-    private var registerButton = HDButton()
+    private var registerButton = HDButton(title: "Отправить", fontSize: 18)
     private let backButton = BackButton()
     private let checkButton = CheckBox(type: .square)
     private let policyLabel = UILabel()
@@ -144,7 +144,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let height = 34.f
         topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
-        topLabel.text = "Чтобы воспользоваться функциями нашей программы, пожалуйста, зарегистрируйтесь."
+        topLabel.text = "Чтобы воспользоваться функциями приложения, необходимо пройти регистрацию."
         topLabel.textAlignment = .left
         topLabel.numberOfLines = 0
         scrollView.addSubview(topLabel)
@@ -264,9 +264,9 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки "Отправить"
     private func setupRegisterButton() {
         let top = 10.f
-        let width = 150.f
-        let height = 35.f
-        registerButton = HDButton(title: "Отправить")
+        let width = 148.f
+        let height = 44.f
+        registerButton.layer.cornerRadius = height / 2
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         registerButton.update(isEnabled: false)
         scrollView.addSubview(registerButton)
@@ -309,7 +309,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let attributedString = NSMutableAttributedString(string: text)
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed(tap:)))
         policyLabel.addGestureRecognizer(tap)
         policyLabel.isUserInteractionEnabled = true  
         policyLabel.font = .systemFontOfSize(size: 12)
@@ -429,8 +429,19 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         presenter?.checkPolicyChanged(isAgree: checkButton.isSelected)
     }
     
-    @objc private func labelPressed() {
-        print("Условия использования")
+    /// Обработка нажатия на гиперссылку
+    /// - Parameter tap: UITapGestureRecognizer
+    @objc private func labelPressed(tap: UITapGestureRecognizer) {
+        guard let range = rangeOfHost(text: policyLabel.text ?? "") else { return }
+        if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) {
+            print("Условия использования")
+        }
+    }
+    
+    private func rangeOfHost(text: String) -> NSRange? {
+        guard let range = text.range(of: "условия использования.") else { return nil }
+        return NSRange(location: range.lowerBound.utf16Offset(in: text),
+                       length: range.upperBound.utf16Offset(in: text) - range.lowerBound.utf16Offset(in: text))
     }
     
 }

@@ -66,6 +66,82 @@ enum TypeOfRequest: String {
     case schedule_getEventsForCurrentId = "/event/get/"
     case schedule_deleteForCurrentEvent = "/event/del/"
     case findUsers = "/seach/users"
+    case userStatus = "/profile/user_status"
+    case getSettings = "/profile/settings"
+    case updateSettings = "/profile/settings/update"
+    case changePassword = "/profile/change_password"
+}
+
+enum NetworkMimeType: String {
+    
+    case jpeg, jpg = "image/jpeg"
+    case png = "image/png"
+    case heic = "image/heic"
+    case pdf = "application/pdf"
+    
+}
+
+func uploadImage<T>(source: URL,
+                    returning: T.Type,
+                    completionBlock: @escaping (T?) -> Void) {
+    var replyReturn: T?
+    guard let url = URL(string: "http://demo22.tmweb.ru/public/api/profile/verification") else { return }
+    let fileName = source.path
+    var mimeType: NetworkMimeType?
+    switch source.pathExtension.lowercased() {
+    case "heic":
+        mimeType = .heic
+    case "jpeg":
+        mimeType = .jpeg
+    case "jpg":
+        mimeType = .jpg
+    case "png":
+        mimeType = .png
+    case "pdf":
+        mimeType = .pdf
+    default:
+        break
+    }
+
+    let boundary = "Boundary-\(UUID().uuidString)"
+    let session = URLSession.shared
+    var urlRequest = URLRequest(url: url)
+    urlRequest.httpMethod = "POST"
+
+    urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+    urlRequest.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+
+    var body = Data()
+    let encoding: UInt = String.Encoding.utf8.rawValue
+    guard let fileType = mimeType?.rawValue else { return }
+    if let boundaryStartData = "--\(boundary)\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let fileNameData = "Content-Disposition:form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let contentTypeData = "Content-Type: \(fileType)\r\n\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let endLineData = "\r\n".data(using: String.Encoding(rawValue: encoding)),
+        let boundaryEndData = "--\(boundary)--\r\n".data(using: String.Encoding(rawValue: encoding)) {
+        body.append(boundaryStartData)
+        body.append(fileNameData)
+        body.append(contentTypeData)
+        body.append(endLineData)
+        body.append(boundaryEndData)
+
+    }
+    
+    session.uploadTask(with: urlRequest, from: body) { (data: Data?, response: URLResponse?, error: Error?) in
+        guard let data = data, error == nil else { return }
+        
+        guard let json = try? JSONSerialization.jsonObject(with: data,
+                                                           options: .allowFragments)
+            else { return }
+        
+        print(json)
+        guard let startPoint = json as? [String: AnyObject] else { return }
+        replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
+        DispatchQueue.main.async {
+            completionBlock(replyReturn)
+        }
+    }.resume()
+    
 }
 
 func getCurrentSession (typeOfContent: TypeOfRequest,
@@ -125,6 +201,14 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
             request.httpBody = jsonData
         }
         
+    case .changePassword:
+        let jsonData = serializationJSON(obj: requestParams as! [String: String])
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+        request.httpBody = jsonData
+        
     case .addProfileInterest:
         let jsonData = serializationJSON(obj: requestParams as! [String: String])
         request.httpMethod = "POST"
@@ -132,7 +216,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         request.httpBody = jsonData
         
-    case .updateProfile, .schedule_CreateOrUpdateEvent, .findUsers:
+    case .updateProfile, .schedule_CreateOrUpdateEvent, .findUsers, .updateSettings:
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -141,6 +225,10 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
     case .schedule_getEventsForCurrentDate, .schedule_getEventsForCurrentId, .schedule_deleteForCurrentEvent:
         
+        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+        
+    case .userStatus, .getSettings:
+        request.httpMethod = "GET"
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
     default:
@@ -184,7 +272,9 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .checkProfile,
                  .updateProfile,
                  .schedule_CreateOrUpdateEvent,
-                 .schedule_deleteForCurrentEvent:
+                 .schedule_deleteForCurrentEvent,
+                 .updateSettings,
+                 .changePassword:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
                 
@@ -271,6 +361,12 @@ func getData<T>(typeOfContent: TypeOfRequest,
             case .findUsers:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getFindedUsers(for: startPoint, response: response) as? T)
+            case .userStatus:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSON_getVerification(for: startPoint, response: response) as? T)
+            case .getSettings:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSON_getSettings(for: startPoint, response: response) as? T)
             }
             DispatchQueue.main.async {
                 completionBlock(replyReturn)

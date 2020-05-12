@@ -16,6 +16,8 @@ class UpdateProfileKeyUser {
     var birthday: String?
     var city_id: Int?
     var foto: String?
+    var gender: String?
+    var is_medic_worker: Int?
     var jsonModel: [String: Any] = [:]
     var jsonData: Data?
     var responce: (Int?, String?)?
@@ -26,7 +28,9 @@ class UpdateProfileKeyUser {
           phone_number: String?,
           birthday: String?,
           city_id: Int?,
-          foto: String?) {
+          foto: String?,
+          gender: String?,
+          is_medic_worker: Int?) {
         
         self.first_name = first_name
         self.last_name = last_name
@@ -35,6 +39,8 @@ class UpdateProfileKeyUser {
         self.birthday = birthday
         self.city_id = city_id
         self.foto = foto
+        self.gender = gender
+        self.is_medic_worker = is_medic_worker
         
         jsonModel = [:]
         jsonData = nil
@@ -44,7 +50,9 @@ class UpdateProfileKeyUser {
                                         "phone_number": phone_number as Any,
                                         "birthday": birthday as Any,
                                         "city_id": city_id as Any,
-                                        "foto": foto as Any
+                                        "foto": foto as Any,
+                                        "gender": gender as Any,
+                                        "is_medic_worker": is_medic_worker as Any
                                        ]
         self.jsonModel = ["user": dataUser]
         self.jsonData = todoJSON(obj: jsonModel)

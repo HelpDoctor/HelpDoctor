@@ -43,6 +43,4 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
         view.navigationController?.popToRootViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

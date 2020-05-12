@@ -14,58 +14,58 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     var presenter: CreateProfileSpecPresenterProtocol?
     
     // MARK: - Constants
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 60.f
     private let scrollView = UIScrollView()
-    private let step6TitleLabel = UILabel()
-    private let step6Label = UILabel()
-    private let specTextField = UITextField()
-    private let specSearchButton = SearchButton()
+    private let step8TitleLabel = UILabel()
+    private let step8Label = UILabel()
+    private let subscriptLabel = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
-    private let step7TitleLabel = UILabel()
-    private let step7Label = UILabel()
-    private var userPhoto = UIImageView()
-    private lazy var imagePicker = ImagePicker()
-    private let backButton = UIButton()
-    private let saveButton = HDButton(title: "Готово", fontSize: 14)
-    private var keyboardHeight: CGFloat = 0
+    private let addButton = UIButton()
+    private let nextButton = HDButton(title: "Далее")
+    private let contentWidth = Session.width - 40
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        imagePicker.delegate = self
-        setupBackground()
+        view.backgroundColor = backgroundColor
         setupScrollView()
-        setupHeaderView()
-        setupStep6TitleLabel()
-        setupStep6Label()
-        setupSpecTextField()
+        setupStep8TitleLabel()
+        setupStep8Label()
+        setupSubscriptLabel()
         setupCollectionView()
-        setupStep7TitleLabel()
-        setupStep7Label()
-        setupUserPhotoView()
-        setupBackButton()
-        setupSaveButton()
-        addTapGestureToHideKeyboard()
+        setupAddButton()
+        setupNextButton()
         addSwipeGestureToBack()
-        presenter?.getInterestFromView()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            presenter?.getUser()
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            presenter?.loadPopularInterests(nil)
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+            presenter?.getInterestFromView()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
+        presenter?.selectRows()
     }
     
     // MARK: - Public methods
-    /// Заполнение поля ввода специализации
-    /// - Parameter text: Строка, которая отобразится в поле ввода
-    func setSpecTextField(text: String) {
-        specTextField.text = text
-    }
-    
     /// Обновление отображения коллекции
     func reloadCollectionView() {
         collectionView.reloadData()
+    }
+    
+    func setSelected(index: Int) {
+        let indexPath = IndexPath(item: index, section: 0)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .left)
     }
     
     // MARK: - Setup views
@@ -75,49 +75,75 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: headerHeight).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
+        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
-    private func setupStep6TitleLabel() {
-        step6TitleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
-        step6TitleLabel.textColor = .white
-        step6TitleLabel.text = "Шаг 6"
-        step6TitleLabel.textAlignment = .center
-        scrollView.addSubview(step6TitleLabel)
+    private func setupStep8TitleLabel() {
+        let height = 20.f
+        step8TitleLabel.backgroundColor = .searchBarTintColor
+        step8TitleLabel.font = .boldSystemFontOfSize(size: 14)
+        step8TitleLabel.textColor = .white
+        step8TitleLabel.text = "Шаг 8"
+        step8TitleLabel.textAlignment = .center
+        scrollView.addSubview(step8TitleLabel)
         
-        step6TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step6TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 16).isActive = true
-        step6TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step6TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        step6TitleLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        step8TitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        step8TitleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        step8TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        step8TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        step8TitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    private func setupStep6Label() {
-        let width: CGFloat = Session.width - 60
-        let height: CGFloat = 51
-        step6Label.font = UIFont.systemFontOfSize(size: 14)
-        step6Label.textColor = .white
-        step6Label.text =
+    private func setupStep8Label() {
+        let text =
         """
-        Укажите область своих научных интересов. Если Вы не нашли нужное ключевое слово, добавьте своё
+        Сообщите коллегам о своих научных интересах\n
+        Ниже представлены интересы, часто выбираемые в Вашей специализации\n
         """
-        step6Label.textAlignment = .left
-        step6Label.numberOfLines = 0
-        scrollView.addSubview(step6Label)
+        let top = 6.f
+        let height = text.height(withConstrainedWidth: contentWidth, font: .systemFontOfSize(size: 14))
+        step8Label.numberOfLines = 0
+        step8Label.font = .systemFontOfSize(size: 14)
+        step8Label.textColor = .white
+        step8Label.text = text
+        step8Label.textAlignment = .left
+        scrollView.addSubview(step8Label)
         
-        step6Label.translatesAutoresizingMaskIntoConstraints = false
-        step6Label.topAnchor.constraint(equalTo: step6TitleLabel.bottomAnchor,
-                                        constant: 8).isActive = true
-        step6Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step6Label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step6Label.heightAnchor.constraint(equalToConstant: height).isActive = true
+        step8Label.translatesAutoresizingMaskIntoConstraints = false
+        step8Label.topAnchor.constraint(equalTo: step8TitleLabel.bottomAnchor,
+                                        constant: top).isActive = true
+        step8Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        step8Label.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
+        step8Label.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    private func setupSubscriptLabel() {
+        let text =
+        """
+        (Чтобы выбрать нужный интерес, нажмите на него)
+        """
+        let height = text.height(withConstrainedWidth: contentWidth, font: .italicSystemFontOfSize(size: 14))
+        subscriptLabel.numberOfLines = 0
+        subscriptLabel.font = .italicSystemFontOfSize(size: 14)
+        subscriptLabel.textColor = .white
+        subscriptLabel.text = text
+        subscriptLabel.textAlignment = .left
+        scrollView.addSubview(subscriptLabel)
+        
+        subscriptLabel.translatesAutoresizingMaskIntoConstraints = false
+        subscriptLabel.topAnchor.constraint(equalTo: step8Label.bottomAnchor).isActive = true
+        subscriptLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subscriptLabel.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
+        subscriptLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupCollectionView() {
-        let width: CGFloat = Session.width - 60
+        let top = 10.f
+        let height = 156.f
         let customSuperLayout = InterestCollectionViewLayout()
         customSuperLayout.delegate = self
         collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
@@ -129,173 +155,55 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         collectionView.allowsMultipleSelection = true
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.topAnchor.constraint(equalTo: step6Label.bottomAnchor, constant: 10).isActive = true
+        collectionView.topAnchor.constraint(equalTo: subscriptLabel.bottomAnchor,
+                                            constant: top).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        collectionView.heightAnchor.constraint(equalToConstant: 64).isActive = true
+        collectionView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    private func setupSpecTextField() {
-        let top: CGFloat = 81
-        let width: CGFloat = Session.width - 60
-        let tap = UITapGestureRecognizer(target: self,
-                                         action: #selector(specSearchButtonPressed))
-        specTextField.backgroundColor = .white
-        specTextField.font = UIFont.systemFontOfSize(size: 14)
-        specTextField.textColor = .textFieldTextColor
-        specTextField.layer.cornerRadius = 5
-        specTextField.addGestureRecognizer(tap)
-        specTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: specTextField.frame.height))
-        specTextField.leftViewMode = .always
-        scrollView.addSubview(specTextField)
+    private func setupAddButton() {
+        let width = 110.f
+        let height = 44.f
+        let top = 17.f
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
+        addButton.backgroundColor = UIColor(red: 0.4, green: 0.063, blue: 0.949, alpha: 1)
+        addButton.setTitleColor(.white, for: .normal)
+        addButton.setTitle("Добавить интересы", for: .normal)
+        addButton.titleLabel?.font = .systemFontOfSize(size: 12)
+        addButton.titleLabel?.numberOfLines = 2
+        addButton.layer.cornerRadius = height / 2
+        addButton.layer.borderWidth = 1
+        addButton.layer.borderColor = UIColor.white.cgColor
+        addButton.clipsToBounds = true
+        scrollView.addSubview(addButton)
         
-        specTextField.translatesAutoresizingMaskIntoConstraints = false
-        specTextField.topAnchor.constraint(equalTo: step6Label.bottomAnchor,
-                                           constant: top).isActive = true
-        specTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        specTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        addButton.topAnchor.constraint(equalTo: collectionView.bottomAnchor,
+                                       constant: top).isActive = true
+        addButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        addButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    private func setupSpecSearchButton() {
-        specSearchButton.addTarget(self, action: #selector(specSearchButtonPressed), for: .touchUpInside)
-        view.addSubview(specSearchButton)
+    /// Установка кнопки перехода к следующему экрану
+    private func setupNextButton() {
+        let width = 110.f
+        let height = 40.f
+        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
+        nextButton.update(isEnabled: true)
+        scrollView.addSubview(nextButton)
         
-        specSearchButton.translatesAutoresizingMaskIntoConstraints = false
-        specSearchButton.topAnchor.constraint(equalTo: specTextField.topAnchor,
-                                              constant: 5).isActive = true
-        specSearchButton.trailingAnchor.constraint(equalTo: specTextField.trailingAnchor,
-                                                   constant: -5).isActive = true
-        specSearchButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        specSearchButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: Session.width - 10).isActive = true
+        nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
+                                           constant: Session.height - Session.bottomPadding - 98).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    private func setupStep7TitleLabel() {
-        step7TitleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
-        step7TitleLabel.textColor = .white
-        step7TitleLabel.text = "Шаг 7"
-        step7TitleLabel.textAlignment = .center
-        scrollView.addSubview(step7TitleLabel)
-        
-        step7TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step7TitleLabel.topAnchor.constraint(equalTo: specTextField.bottomAnchor, constant: 15).isActive = true
-        step7TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step7TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        step7TitleLabel.heightAnchor.constraint(equalToConstant: 16).isActive = true
-    }
-    
-    private func setupStep7Label() {
-        let width: CGFloat = Session.width - 60
-        step7Label.font = UIFont.systemFontOfSize(size: 14)
-        step7Label.textColor = .white
-        step7Label.text = "Добавьте свою фотографию"
-        step7Label.textAlignment = .left
-        step7Label.numberOfLines = 0
-        scrollView.addSubview(step7Label)
-        
-        step7Label.translatesAutoresizingMaskIntoConstraints = false
-        step7Label.topAnchor.constraint(equalTo: step7TitleLabel.bottomAnchor,
-                                        constant: 8).isActive = true
-        step7Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step7Label.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step7Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-    
-    private func setupUserPhotoView() {
-        let defaultImage = "Avatar.pdf"
-        guard let image = UIImage(named: defaultImage) else {
-            assertionFailure("Missing ​​\(defaultImage) asset")
-            return
-        }
-        let imageSize: CGFloat = 150
-        userPhoto.image = image
-        scrollView.addSubview(userPhoto)
-        
-        userPhoto.translatesAutoresizingMaskIntoConstraints = false
-        userPhoto.topAnchor.constraint(equalTo: step7Label.bottomAnchor,
-                                       constant: 21).isActive = true
-        userPhoto.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        userPhoto.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
-        userPhoto.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
-        
-        userPhoto.layer.cornerRadius = imageSize / 2
-        userPhoto.contentMode = .scaleAspectFill
-        userPhoto.layer.masksToBounds = true
-        
-        let button = UIButton()
-        button.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
-        scrollView.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: step7Label.bottomAnchor,
-                                    constant: 21).isActive = true
-        button.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        button.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        button.heightAnchor.constraint(equalToConstant: 150).isActive = true
-        
-        button.layer.cornerRadius = imageSize / 2
-        button.contentMode = .scaleAspectFill
-        button.layer.masksToBounds = true
-    }
-    
-    private func setupBackButton() {
-        let titleButton = "< Назад"
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
-        backButton.titleLabel?.textColor = .white
-        backButton.setTitle(titleButton, for: .normal)
-        scrollView.addSubview(backButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 36).isActive = true
-        backButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: Session.height - (bottomPadding ?? 0) - 98).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
-    }
-    
-    private func setupSaveButton() {
-        saveButton.addTarget(self, action: #selector(saveButtonPressed), for: .touchUpInside)
-        saveButton.isEnabled = true
-        view.addSubview(saveButton)
-        
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: Session.height - (bottomPadding ?? 0) - 92).isActive = true
-        saveButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: Session.width - 20).isActive = true
-        saveButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        saveButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
-    }
-    
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        imagePicker.present(parent: self, sourceType: sourceType)
-    }
-    
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-    
+    // MARK: - IBActions
     /// Добавляет свайп влево для перехода назад
     private func addSwipeGestureToBack() {
         let swipeLeft = UISwipeGestureRecognizer()
@@ -304,88 +212,35 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         view.addGestureRecognizer(swipeLeft)
     }
     
-    // MARK: - IBActions
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
-    }
-    
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
     // MARK: - Buttons methods
-    @objc private func specSearchButtonPressed() {
-        presenter?.interestsSearch()
+    @objc private func nextButtonPressed() {
+        presenter?.next()
     }
     
-    @objc private func saveButtonPressed() {
-        presenter?.save()
-    }
-    
-    @objc func photoButtonTapped(_ sender: UIButton) {
-        let alertVC = UIAlertController(title: "Установить аватар",
-                                        message: nil,
-                                        preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Отмена",
-                                         style: .cancel,
-                                         handler: nil)
-        let takePhotoAction = UIAlertAction(title: "Сделать снимок",
-                                            style: .default,
-                                            handler: { _ in self.imagePicker.cameraAsscessRequest() })
-        let choosePhotoAction = UIAlertAction(title: "Выбрать фотографию",
-                                              style: .default,
-                                              handler: { _ in self.imagePicker.photoGalleryAsscessRequest() })
-        alertVC.addAction(cancelAction)
-        alertVC.addAction(takePhotoAction)
-        alertVC.addAction(choosePhotoAction)
-        self.present(alertVC, animated: true, completion: nil)
-    }
-    
-    // MARK: - Navigation
     @objc private func backButtonPressed() {
         presenter?.back()
     }
-}
-
-extension CreateProfileSpecViewController: ImagePickerDelegate {
     
-    func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
-        userPhoto.image = image
-        presenter?.setPhoto(photoString: image.toString())
-        imagePicker.dismiss()
+    @objc private func addButtonPressed() {
+        presenter?.toAddInterest()
     }
     
-    func imagePickerDelegate(didCancel delegatedForm: ImagePicker) { imagePicker.dismiss() }
+    // MARK: - Navigation
     
-    func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
-        if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
-    }
-    
-    func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
-        // works only on real device (crash on simulator)
-        if accessIsAllowed { presentImagePicker(sourceType: .camera) }
-    }
 }
 
 // MARK: - Collection view
-extension CreateProfileSpecViewController: UICollectionViewDelegate { }
+extension CreateProfileSpecViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        presenter?.addInterest(index: indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        presenter?.deleteInterest(index: indexPath.item)
+    }
+    
+}
 
 extension CreateProfileSpecViewController: UICollectionViewDataSource {
     
@@ -401,20 +256,22 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        presenter?.deleteInterest(index: indexPath.item)
-    }
-    
 }
 
 extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
     
     func width(forItemAt indexPath: IndexPath) -> CGFloat {
-        let constraintRect = CGSize(width: (self.view.frame.size.width - 30) / 2, height: 27)
+        let cellHeight = 44.f
+        let font = UIFont.systemFontOfSize(size: 14)
+        var constraintRect = CGSize(width: contentWidth / 3, height: cellHeight)
         let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
+        let newWidth = data.width(withConstrainedHeight: cellHeight, font: font, minimumTextWrapWidth: 45)
+        if newWidth > constraintRect.width {
+            constraintRect = CGSize(width: contentWidth / 1, height: cellHeight)
+        }
         let box = data.boundingRect(with: constraintRect,
                                     options: NSStringDrawingOptions.usesLineFragmentOrigin,
-                                    attributes: [NSAttributedString.Key.font: UIFont.systemFontOfSize(size: 10)],
+                                    attributes: [NSAttributedString.Key.font: font],
                                     context: nil)
         return box.width
     }

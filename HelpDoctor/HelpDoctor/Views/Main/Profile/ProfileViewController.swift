@@ -14,78 +14,60 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ProfilePresenterProtocol?
     
     // MARK: - Constants and variables
+    private let backgroundColor = UIColor.backgroundColor
+    private let headerHeight = 40.f
     private let scrollView = UIScrollView()
-    private var headerView = ProfileHeaderView()
-    private var nameTextField = EditTextField()
+    private let topView = UIImageView()
     private var userPhoto = UIImageView()
-    private let birthDateLabel = UILabel()
-    private var birthDateTextField = EditTextField()
-    private let contactsLabel = UILabel()
-    private var emailTextField = EditTextField()
-    private var phoneTextField = EditTextField()
-    private let specLabel = UILabel()
-    private var specTextField = MedicalSpecializationSearchTextField()
-    private var editMainSpecButton = EditButton()
-    private let locationLabel = UILabel()
-    private var locationTextField = CitiesSearchTextField()
-    private var editLocationButton = EditButton()
-    private let workPlaceLabel = UILabel()
-    private var workPlace1TextField = MedicalOrganizationSearchTextField()
-    private var editMainJobButton = EditButton()
-    private var workPlace2TextField = MedicalOrganizationSearchTextField()
-    private var editAddJobButton = EditButton()
-    private var workPlace3TextField = MedicalOrganizationSearchTextField()
-    private var editThirdJobButton = EditButton()
-    private var addWorkPlaceButton = PlusButton()
-    private let interestsLabel = UILabel()
-    private var interestsTextView = UITextView()
-    private var editInterestsButton = EditButton()
-    private lazy var imagePicker = ImagePicker()
-    private var keyboardHeight: CGFloat = 0
+    private let verificationIcon = UIImageView()
+    private let topStackView = UIView()
+    private var nameLabel = UILabel()
+    private var specLabel = UILabel()
+    private let editButton = UIButton()
+    private let generalPageButton = UIButton()
+    private let educationPageButton = UIButton()
+    private let careerPageButton = UIButton()
+    private let interestsPageButton = UIButton()
+    private let generalLineView = UIView()
+    private let educationLineView = UIView()
+    private let careerLineView = UIView()
+    private let interestsLineView = UIView()
+    private var generalView = ProfileGeneralView()
+    private var educationView = ProfileEducationView()
+    private var careerView = ProfileCareerView()
+    private var interestsView = ProfileInterestsView()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.getUser()
-        imagePicker.delegate = self
-        setupBackground()
+        view.backgroundColor = backgroundColor
         setupScrollView()
-        setupProfileHeaderView()
-        setupNameTextField()
+        setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter, title: "Мой профиль")
+        setupTopView()
         setupUserPhotoView()
-        setupBirthDateLabel()
-        setupBirthDateTextField()
-        setupContactsLabel()
-        setupEmailTextField()
-        setupPhoneTextField()
+        setupVerificationIcon()
+        setupTopStackView()
+        setupNameLabel()
         setupSpecLabel()
-        setupSpecTextField()
-        setupEditMainSpecButton()
-        setupLocationLabel()
-        setupLocationTextField()
-        setupEditLocationButton()
-        setupWorkPlaceLabel()
-        setupWorkPlace1TextField()
-        setupEditMainJobButton()
-        setupWorkPlace2TextField()
-        setupEditAddJobButton()
-        setupAddWorkPlaceButton()
-        setupInterestsLabel()
-        setupInterestsTextView()
-        setupEditInterestsButton()
-        addTapGestureToHideKeyboard()
+        setupEditButton()
+        setupGeneralPageButton()
+        setupEducationPageButton()
+        setupCareerPageButton()
+        setupInterestsPageButton()
+        setupLines()
         addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        presenter?.getUser()
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        tabBarController?.tabBar.isHidden = false
-        UIApplication.statusBarBackgroundColor = .tabBarColor
+        UIApplication.shared.setStatusBarBackgroundColor(color: .searchBarTintColor)
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Public methods
-    /// Установка аватара в хидер и на форму
+    /// Установка аватара на форму
     /// - Parameter image: аватар
     func setImage(image: UIImage?) {
         let defaultImageName = "Avatar.pdf"
@@ -93,531 +75,340 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure("Missing ​​\(defaultImageName) asset")
             return
         }
-        headerView.userImage.image = image ?? defaultImage
         userPhoto.image = image ?? defaultImage
     }
     
-    func getUserPhoto() -> UIImage? {
-        return userPhoto.image
-    }
-    
+    /// Установка ФИО пользователя на форму
+    /// - Parameter name: ФИО пользователя
     func setName(name: String) {
-        nameTextField.textField.text = name
+        nameLabel.text = name
     }
     
-    func getName() -> String? {
-        return nameTextField.textField.text
-    }
-    
-    func setBirthday(birthday: String) {
-        birthDateTextField.textField.text = birthday
-    }
-    
-    func getBirthday() -> String? {
-        return birthDateTextField.textField.text
-    }
-    
-    func setEmail(email: String) {
-        emailTextField.textField.text = email
-    }
-    
-    func setPhone(phone: String) {
-        phoneTextField.textField.text = phone
-    }
-    
-    func getPhone() -> String? {
-        return phoneTextField.textField.text
-    }
-    
+    /// Установка специализации пользователя на форму
+    /// - Parameter spec: специализация пользователя
     func setSpec(spec: String) {
-        specTextField.text = spec
+        specLabel.text = spec
     }
     
-    func setLocation(location: String) {
-        locationTextField.text = location
+    /// Установка формы отображения общей информации
+    func setupGeneralView() {
+        guard let user = Session.instance.user else { return }
+        generalView = ProfileGeneralView(user: user)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(educationPageButtonPressed))
+        swipeRight.direction = .left
+        generalView.addGestureRecognizer(swipeRight)
+        scrollView.addSubview(generalView)
+        
+        generalView.translatesAutoresizingMaskIntoConstraints = false
+        generalView.topAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        generalView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        generalView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        generalView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
-    func setMainJob(job: String) {
-        workPlace1TextField.text = job
+    /// Установка формы отображения информации об образовании
+    func setupEducationView() {
+        guard let user = Session.instance.user else { return }
+        educationView = ProfileEducationView(user: user)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(careerPageButtonPressed))
+        swipeRight.direction = .left
+        educationView.addGestureRecognizer(swipeRight)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(generalPageButtonPressed))
+        swipeLeft.direction = .right
+        educationView.addGestureRecognizer(swipeLeft)
+        educationView.isHidden = true
+        scrollView.addSubview(educationView)
+        
+        educationView.translatesAutoresizingMaskIntoConstraints = false
+        educationView.topAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        educationView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        educationView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        educationView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
-    func setAddJob(job: String) {
-        workPlace2TextField.text = job
+    /// Установка формы отображения информации о карьере
+    func setupCareerView() {
+        guard let job = Session.instance.userJob else { return }
+        careerView = ProfileCareerView(job: job)
+        let swipeRight = UISwipeGestureRecognizer()
+        swipeRight.addTarget(self, action: #selector(interestsPageButtonPressed))
+        swipeRight.direction = .left
+        careerView.addGestureRecognizer(swipeRight)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(educationPageButtonPressed))
+        swipeLeft.direction = .right
+        careerView.addGestureRecognizer(swipeLeft)
+        careerView.isHidden = true
+        scrollView.addSubview(careerView)
+        
+        careerView.translatesAutoresizingMaskIntoConstraints = false
+        careerView.topAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        careerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        careerView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        careerView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
-    func setThirdJobView() {
-        addWorkPlusButtonPressed()
-    }
-    
-    func setThirdJob(job: String) {
-        workPlace3TextField.text = job
-    }
-    
-    func setInterests(interest: String) {
-        interestsTextView.text = interest
+    /// Установка формы отображения научных интересов
+    func setupInterestsView() {
+        guard let interests = Session.instance.userInterests else { return }
+        interestsView = ProfileInterestsView(interests: interests)
+        let swipeLeft = UISwipeGestureRecognizer()
+        swipeLeft.addTarget(self, action: #selector(careerPageButtonPressed))
+        swipeLeft.direction = .right
+        interestsView.addGestureRecognizer(swipeLeft)
+        interestsView.isHidden = true
+        scrollView.addSubview(interestsView)
+        
+        interestsView.translatesAutoresizingMaskIntoConstraints = false
+        interestsView.topAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        interestsView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        interestsView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        interestsView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
     }
     
     // MARK: - Setup views
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
+        let heightScroll = Session.height - headerHeight - (tabBarController?.tabBar.frame.height ?? 0)
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
+        scrollView.contentSize = CGSize(width: Session.width, height: heightScroll)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: headerHeight).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
     }
     
-    /// Установка хидера формы
-    private func setupProfileHeaderView() {
-        headerView = ProfileHeaderView(title: "Мой профиль",
-                                       text: nil,
-                                       userImage: nil,
-                                       presenter: presenter)
-        scrollView.addSubview(headerView)
+    /// Установка формы с бэкграундом под фото
+    private func setupTopView() {
+        topView.image = UIImage(named: "BackgroundProfile")
+        scrollView.addSubview(topView)
         
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    /// Установка поля ввода ФИО
-    private func setupNameTextField() {
-        nameTextField = EditTextField(placeholder: "Фамилия Имя Отчество",
-                                      source: .user,
-                                      presenter: presenter)
-        scrollView.addSubview(nameTextField)
-        
-        nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        nameTextField.topAnchor.constraint(equalTo: headerView.bottomAnchor, constant: 10).isActive = true
-        nameTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        nameTextField.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        topView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        topView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        topView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        topView.heightAnchor.constraint(equalToConstant: 180).isActive = true
     }
     
     /// Установка поля для аватара пользователя
     private func setupUserPhotoView() {
-        let defaultImage = "Avatar.pdf"
+        let defaultImage = "Avatar"
         guard let image = UIImage(named: defaultImage) else {
             assertionFailure("Missing ​​\(defaultImage) asset")
             return
         }
-        let imageSize: CGFloat = 110
+        let imageSize = 120.f
         userPhoto.image = image
         scrollView.addSubview(userPhoto)
         
         userPhoto.translatesAutoresizingMaskIntoConstraints = false
-        userPhoto.topAnchor.constraint(equalTo: nameTextField.bottomAnchor,
-                                       constant: 10).isActive = true
-        userPhoto.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
+        userPhoto.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
+        userPhoto.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
         userPhoto.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
         userPhoto.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
         
+        userPhoto.layer.borderWidth = 5
+        userPhoto.layer.borderColor = UIColor.white.cgColor
         userPhoto.layer.cornerRadius = imageSize / 2
         userPhoto.contentMode = .scaleAspectFill
         userPhoto.layer.masksToBounds = true
-        
-        let button = UIButton()
-        button.addTarget(self, action: #selector(photoButtonTapped), for: .touchUpInside)
-        scrollView.addSubview(button)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.topAnchor.constraint(equalTo: nameTextField.bottomAnchor,
-                                    constant: 10).isActive = true
-        button.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        button.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
-        button.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
-        
-        button.layer.cornerRadius = imageSize / 2
-        button.contentMode = .scaleAspectFill
-        button.layer.masksToBounds = true
     }
     
-    /// Установка надписи даты рождения
-    private func setupBirthDateLabel() {
-        birthDateLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        birthDateLabel.textColor = .black
-        birthDateLabel.text = "Дата рождения"
-        birthDateLabel.textAlignment = .left
-        scrollView.addSubview(birthDateLabel)
+    /// Установка иконки верифицированный пользователь
+    private func setupVerificationIcon() {
+        let width = 30.f
+        let trailing = 10.f
+        let bottom = 4.f
         
-        birthDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        birthDateLabel.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 5).isActive = true
-        birthDateLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateLabel.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
-        birthDateLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        if UserDefaults.standard.string(forKey: "userStatus") == "verified" {
+            verificationIcon.image = UIImage(named: "VerificationMark")
+        } else {
+            verificationIcon.image = UIImage(named: "NotVerificationMark")
+        }
+        
+        scrollView.addSubview(verificationIcon)
+        
+        verificationIcon.translatesAutoresizingMaskIntoConstraints = false
+        verificationIcon.bottomAnchor.constraint(equalTo: userPhoto.bottomAnchor,
+                                                 constant: bottom).isActive = true
+        verificationIcon.trailingAnchor.constraint(equalTo: userPhoto.trailingAnchor,
+                                                   constant: -trailing).isActive = true
+        verificationIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
+        verificationIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    /// Установка поля ввода даты рождения
-    private func setupBirthDateTextField() {
-        birthDateTextField = EditTextField(placeholder: "ДД.ММ.ГГГГ",
-                                           source: .user,
-                                           presenter: presenter)
-        birthDateTextField.textField.delegate = self
-        birthDateTextField.textField.keyboardType = .numberPad
-        scrollView.addSubview(birthDateTextField)
+    /// Установка формы под отображение ФИО, специализации и кнопки редактирования профиля
+    private func setupTopStackView() {
+        let height = 50.f
+        topStackView.backgroundColor = .searchBarTintColor
+        scrollView.addSubview(topStackView)
         
-        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
-        birthDateTextField.topAnchor.constraint(equalTo: birthDateLabel.bottomAnchor, constant: 3).isActive = true
-        birthDateTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        birthDateTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
-        birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        topStackView.translatesAutoresizingMaskIntoConstraints = false
+        topStackView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
+        topStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        topStackView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка надписи "Контакты"
-    private func setupContactsLabel() {
-        contactsLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        contactsLabel.textColor = .black
-        contactsLabel.text = "Контакты"
-        contactsLabel.textAlignment = .left
-        scrollView.addSubview(contactsLabel)
+    /// Установка надписи отображения ФИО
+    private func setupNameLabel() {
+        let top = 4.f
+        let leading = 20.f
+        let height = 19.f
+        nameLabel.textColor = .white
+        nameLabel.textAlignment = .center
+        nameLabel.font = .boldSystemFontOfSize(size: 14)
+        topStackView.addSubview(nameLabel)
         
-        contactsLabel.translatesAutoresizingMaskIntoConstraints = false
-        contactsLabel.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 5).isActive = true
-        contactsLabel.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        contactsLabel.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
-        contactsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.topAnchor.constraint(equalTo: topStackView.topAnchor,
+                                       constant: top).isActive = true
+        nameLabel.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor,
+                                           constant: leading).isActive = true
+        nameLabel.widthAnchor.constraint(equalToConstant: Session.width - (leading * 2)).isActive = true
+        nameLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка поля ввода электронной почты
-    private func setupEmailTextField() {
-        emailTextField = EditTextField(placeholder: "e-mail",
-                                       source: .user,
-                                       presenter: presenter)
-        emailTextField.editButton.isEnabled = false
-        emailTextField.editButton.isHidden = true
-        scrollView.addSubview(emailTextField)
-        
-        emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.topAnchor.constraint(equalTo: contactsLabel.bottomAnchor, constant: 3).isActive = true
-        emailTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        emailTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка поля ввода телефона
-    private func setupPhoneTextField() {
-        phoneTextField = EditTextField(placeholder: "+7 (999) 111-22-33",
-                                       source: .user,
-                                       presenter: presenter)
-        phoneTextField.textField.delegate = self
-        phoneTextField.textField.keyboardType = .numberPad
-        scrollView.addSubview(phoneTextField)
-        
-        phoneTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 3).isActive = true
-        phoneTextField.leadingAnchor.constraint(equalTo: userPhoto.trailingAnchor, constant: 30).isActive = true
-        phoneTextField.widthAnchor.constraint(equalToConstant: Session.width - 190).isActive = true
-        phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка надписи "Специализация"
+    /// Установка надписи специализации
     private func setupSpecLabel() {
-        specLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        specLabel.textColor = .black
-        specLabel.text = "Специализация"
-        specLabel.textAlignment = .left
-        scrollView.addSubview(specLabel)
+        let top = 4.f
+        let leading = 20.f
+        let height = 19.f
+        specLabel.textColor = .white
+        specLabel.textAlignment = .center
+        specLabel.font = .systemFontOfSize(size: 14)
+        topStackView.addSubview(specLabel)
         
         specLabel.translatesAutoresizingMaskIntoConstraints = false
-        specLabel.topAnchor.constraint(equalTo: userPhoto.bottomAnchor, constant: 9).isActive = true
-        specLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
-        specLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        specLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor,
+                                       constant: top).isActive = true
+        specLabel.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor,
+                                           constant: leading).isActive = true
+        specLabel.widthAnchor.constraint(equalToConstant: Session.width - (leading * 2)).isActive = true
+        specLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка поля ввода специализации
-    private func setupSpecTextField() {
-        specTextField.presenter = presenter
-        specTextField.mainSpec = true
-        specTextField.textColor = .black
-        specTextField.isEnabled = false
-        specTextField.layer.cornerRadius = 5
-        specTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        specTextField.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(specTextField)
+    /// Установка кнопки редактирования / выхода их профиля
+    private func setupEditButton() {
+        let trailing = 7.f
+        let width = 20.f
+        let height = 20.f
+        editButton.addTarget(self, action: #selector(editButtonPressed), for: .touchUpInside)
+        editButton.setImage(UIImage(named: "EditDotsButton"), for: .normal)
+        topStackView.addSubview(editButton)
         
-        specTextField.translatesAutoresizingMaskIntoConstraints = false
-        specTextField.topAnchor.constraint(equalTo: specLabel.bottomAnchor, constant: 3).isActive = true
-        specTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        specTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        specTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        editButton.translatesAutoresizingMaskIntoConstraints = false
+        editButton.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
+        editButton.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor,
+                                             constant: -trailing).isActive = true
+        editButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        editButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка кнопки редактирования специалиазации
-    private func setupEditMainSpecButton() {
-        editMainSpecButton = EditButton()
-        editMainSpecButton.addTarget(self, action: #selector(editMainSpecButtonPressed), for: .touchUpInside)
-        editMainSpecButton.backgroundColor = .white
-        editMainSpecButton.layer.cornerRadius = 5
-        editMainSpecButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editMainSpecButton)
+    /// Установка кнопки Общее
+    private func setupGeneralPageButton() {
+        let height = 40.f
+        generalPageButton.addTarget(self, action: #selector(generalPageButtonPressed), for: .touchUpInside)
+        generalPageButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        generalPageButton.setTitle("Общее", for: .normal)
+        scrollView.addSubview(generalPageButton)
         
-        editMainSpecButton.translatesAutoresizingMaskIntoConstraints = false
-        editMainSpecButton.topAnchor.constraint(equalTo: specLabel.bottomAnchor,
-                                                constant: 3).isActive = true
-        editMainSpecButton.leadingAnchor.constraint(equalTo: specTextField.trailingAnchor).isActive = true
-        editMainSpecButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editMainSpecButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        generalPageButton.translatesAutoresizingMaskIntoConstraints = false
+        generalPageButton.topAnchor.constraint(equalTo: topStackView.bottomAnchor).isActive = true
+        generalPageButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        generalPageButton.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        generalPageButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка надписи "Место жительства"
-    private func setupLocationLabel() {
-        locationLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        locationLabel.textColor = .black
-        locationLabel.text = "Место жительства"
-        locationLabel.textAlignment = .left
-        scrollView.addSubview(locationLabel)
+    /// Установка кнопки Образование
+    private func setupEducationPageButton() {
+        educationPageButton.addTarget(self, action: #selector(educationPageButtonPressed), for: .touchUpInside)
+        educationPageButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        educationPageButton.setTitle("Образование", for: .normal)
+        scrollView.addSubview(educationPageButton)
         
-        locationLabel.translatesAutoresizingMaskIntoConstraints = false
-        locationLabel.topAnchor.constraint(equalTo: specTextField.bottomAnchor, constant: 3).isActive = true
-        locationLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
-        locationLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
+        educationPageButton.translatesAutoresizingMaskIntoConstraints = false
+        educationPageButton.topAnchor.constraint(equalTo: topStackView.bottomAnchor).isActive = true
+        educationPageButton.leadingAnchor.constraint(equalTo: generalPageButton.trailingAnchor).isActive = true
+        educationPageButton.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        educationPageButton.heightAnchor.constraint(equalTo: generalPageButton.heightAnchor).isActive = true
     }
     
-    /// Установка поля ввода места жительства
-    private func setupLocationTextField() {
-        locationTextField.presenter = presenter
-        locationTextField.textColor = .black
-        locationTextField.isEnabled = false
-        locationTextField.layer.cornerRadius = 5
-        locationTextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        locationTextField.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(locationTextField)
+    /// Установка кнопки Карьера
+    private func setupCareerPageButton() {
+        careerPageButton.addTarget(self, action: #selector(careerPageButtonPressed), for: .touchUpInside)
+        careerPageButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        careerPageButton.setTitle("Карьера", for: .normal)
+        scrollView.addSubview(careerPageButton)
         
-        locationTextField.translatesAutoresizingMaskIntoConstraints = false
-        locationTextField.topAnchor.constraint(equalTo: locationLabel.bottomAnchor, constant: 3).isActive = true
-        locationTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        locationTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        locationTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        careerPageButton.translatesAutoresizingMaskIntoConstraints = false
+        careerPageButton.topAnchor.constraint(equalTo: topStackView.bottomAnchor).isActive = true
+        careerPageButton.leadingAnchor.constraint(equalTo: educationPageButton.trailingAnchor).isActive = true
+        careerPageButton.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        careerPageButton.heightAnchor.constraint(equalTo: generalPageButton.heightAnchor).isActive = true
     }
     
-    /// Установка кнопки редактирования места жительства
-    private func setupEditLocationButton() {
-        editLocationButton = EditButton()
-        editLocationButton.addTarget(self, action: #selector(editLocationButtonPressed), for: .touchUpInside)
-        editLocationButton.backgroundColor = .white
-        editLocationButton.layer.cornerRadius = 5
-        editLocationButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editLocationButton)
+    /// Установка кнопки научные интересы
+    private func setupInterestsPageButton() {
+        interestsPageButton.addTarget(self, action: #selector(interestsPageButtonPressed), for: .touchUpInside)
+        interestsPageButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
+        interestsPageButton.setTitle("Научные интересы", for: .normal)
+        interestsPageButton.titleLabel?.numberOfLines = 2
+        scrollView.addSubview(interestsPageButton)
         
-        editLocationButton.translatesAutoresizingMaskIntoConstraints = false
-        editLocationButton.topAnchor.constraint(equalTo: locationLabel.bottomAnchor,
-                                                constant: 3).isActive = true
-        editLocationButton.leadingAnchor.constraint(equalTo: locationTextField.trailingAnchor).isActive = true
-        editLocationButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editLocationButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        interestsPageButton.translatesAutoresizingMaskIntoConstraints = false
+        interestsPageButton.topAnchor.constraint(equalTo: topStackView.bottomAnchor).isActive = true
+        interestsPageButton.leadingAnchor.constraint(equalTo: careerPageButton.trailingAnchor).isActive = true
+        interestsPageButton.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        interestsPageButton.heightAnchor.constraint(equalTo: generalPageButton.heightAnchor).isActive = true
     }
     
-    /// Установка надписи "Место работы"
-    private func setupWorkPlaceLabel() {
-        workPlaceLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        workPlaceLabel.textColor = .black
-        workPlaceLabel.text = "Место работы"
-        workPlaceLabel.textAlignment = .left
-        scrollView.addSubview(workPlaceLabel)
+    /// Установка линий отображения выбранной группы
+    private func setupLines() {
+        let height = 2.f
+        generalLineView.backgroundColor = .hdButtonColor
+        educationLineView.backgroundColor = .hdButtonColor
+        careerLineView.backgroundColor = .hdButtonColor
+        interestsLineView.backgroundColor = .hdButtonColor
+        generalLineView.isHidden = false
+        educationLineView.isHidden = true
+        careerLineView.isHidden = true
+        interestsLineView.isHidden = true
+        scrollView.addSubview(generalLineView)
+        scrollView.addSubview(educationLineView)
+        scrollView.addSubview(careerLineView)
+        scrollView.addSubview(interestsLineView)
         
-        workPlaceLabel.translatesAutoresizingMaskIntoConstraints = false
-        workPlaceLabel.topAnchor.constraint(equalTo: locationTextField.bottomAnchor, constant: 3).isActive = true
-        workPlaceLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlaceLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
-        workPlaceLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
-    }
-    
-    /// Установка поля ввода основного места работы
-    private func setupWorkPlace1TextField() {
-        workPlace1TextField.presenter = presenter
-        workPlace1TextField.mainWork = "main"
-        workPlace1TextField.textColor = .black
-        workPlace1TextField.isEnabled = false
-        workPlace1TextField.layer.cornerRadius = 5
-        workPlace1TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        workPlace1TextField.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(workPlace1TextField)
+        generalLineView.translatesAutoresizingMaskIntoConstraints = false
+        generalLineView.bottomAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        generalLineView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        generalLineView.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        generalLineView.heightAnchor.constraint(equalToConstant: height).isActive = true
         
-        workPlace1TextField.translatesAutoresizingMaskIntoConstraints = false
-        workPlace1TextField.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor, constant: 3).isActive = true
-        workPlace1TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace1TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        workPlace1TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки редактирования основного места работы
-    private func setupEditMainJobButton() {
-        editMainJobButton = EditButton()
-        editMainJobButton.addTarget(self, action: #selector(editMainJobButtonPressed), for: .touchUpInside)
-        editMainJobButton.backgroundColor = .white
-        editMainJobButton.layer.cornerRadius = 5
-        editMainJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editMainJobButton)
+        educationLineView.translatesAutoresizingMaskIntoConstraints = false
+        educationLineView.bottomAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        educationLineView.leadingAnchor.constraint(equalTo: generalLineView.trailingAnchor).isActive = true
+        educationLineView.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        educationLineView.heightAnchor.constraint(equalToConstant: height).isActive = true
         
-        editMainJobButton.translatesAutoresizingMaskIntoConstraints = false
-        editMainJobButton.topAnchor.constraint(equalTo: workPlaceLabel.bottomAnchor,
-                                               constant: 3).isActive = true
-        editMainJobButton.leadingAnchor.constraint(equalTo: workPlace1TextField.trailingAnchor).isActive = true
-        editMainJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editMainJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка поля ввода дополнительного места работы
-    private func setupWorkPlace2TextField() {
-        workPlace2TextField.presenter = presenter
-        workPlace2TextField.mainWork = "add"
-        workPlace2TextField.textColor = .black
-        workPlace2TextField.isEnabled = false
-        workPlace2TextField.layer.cornerRadius = 5
-        workPlace2TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        workPlace2TextField.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(workPlace2TextField)
+        careerLineView.translatesAutoresizingMaskIntoConstraints = false
+        careerLineView.bottomAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        careerLineView.leadingAnchor.constraint(equalTo: educationLineView.trailingAnchor).isActive = true
+        careerLineView.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        careerLineView.heightAnchor.constraint(equalToConstant: height).isActive = true
         
-        workPlace2TextField.translatesAutoresizingMaskIntoConstraints = false
-        workPlace2TextField.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor, constant: 5).isActive = true
-        workPlace2TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace2TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        workPlace2TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки редактирования дополнительного места работы
-    private func setupEditAddJobButton() {
-        editAddJobButton = EditButton()
-        editAddJobButton.addTarget(self, action: #selector(editAddJobButtonPressed), for: .touchUpInside)
-        editAddJobButton.backgroundColor = .white
-        editAddJobButton.layer.cornerRadius = 5
-        editAddJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editAddJobButton)
-        
-        editAddJobButton.translatesAutoresizingMaskIntoConstraints = false
-        editAddJobButton.topAnchor.constraint(equalTo: workPlace1TextField.bottomAnchor,
-                                              constant: 5).isActive = true
-        editAddJobButton.leadingAnchor.constraint(equalTo: workPlace2TextField.trailingAnchor).isActive = true
-        editAddJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editAddJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка поля ввода третьего места работы
-    private func setupWorkPlace3TextField() {
-        workPlace3TextField.presenter = presenter
-        workPlace3TextField.mainWork = "third"
-        workPlace3TextField.textColor = .black
-        workPlace3TextField.isEnabled = false
-        workPlace3TextField.layer.cornerRadius = 5
-        workPlace3TextField.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        workPlace3TextField.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(workPlace3TextField)
-        
-        workPlace3TextField.translatesAutoresizingMaskIntoConstraints = false
-        workPlace3TextField.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 5).isActive = true
-        workPlace3TextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        workPlace3TextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        workPlace3TextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки редактирования третьего места работы
-    private func setupEditThirdJobButton() {
-        editThirdJobButton = EditButton()
-        editThirdJobButton.addTarget(self, action: #selector(editThirdJobButtonPressed), for: .touchUpInside)
-        editThirdJobButton.backgroundColor = .white
-        editThirdJobButton.layer.cornerRadius = 5
-        editThirdJobButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editThirdJobButton)
-        
-        editThirdJobButton.translatesAutoresizingMaskIntoConstraints = false
-        editThirdJobButton.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor,
-                                                constant: 5).isActive = true
-        editThirdJobButton.leadingAnchor.constraint(equalTo: workPlace3TextField.trailingAnchor).isActive = true
-        editThirdJobButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editThirdJobButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
-    }
-    
-    /// Установка кнопки добавления места работы
-    private func setupAddWorkPlaceButton() {
-        addWorkPlaceButton = PlusButton()
-        addWorkPlaceButton.addTarget(self, action: #selector(addWorkPlusButtonPressed), for: .touchUpInside)
-        view.addSubview(addWorkPlaceButton)
-        
-        addWorkPlaceButton.translatesAutoresizingMaskIntoConstraints = false
-        addWorkPlaceButton.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor,
-                                                constant: 3).isActive = true
-        addWorkPlaceButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                    constant: 30).isActive = true
-        addWorkPlaceButton.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        addWorkPlaceButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-    }
-    
-    /// Установка надписи "Область научных интересов"
-    private func setupInterestsLabel() {
-        interestsLabel.font = UIFont.boldSystemFontOfSize(size: 12)
-        interestsLabel.textColor = .black
-        interestsLabel.text = "Область научных интересов"
-        interestsLabel.textAlignment = .left
-        scrollView.addSubview(interestsLabel)
-        
-        interestsLabel.translatesAutoresizingMaskIntoConstraints = false
-        interestsLabel.topAnchor.constraint(greaterThanOrEqualTo: workPlace2TextField.bottomAnchor,
-                                            constant: 26).isActive = true
-        interestsLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsLabel.widthAnchor.constraint(equalToConstant: Session.width - 50).isActive = true
-        interestsLabel.heightAnchor.constraint(equalToConstant: 13).isActive = true
-    }
-    
-    /// Установка поля ввода интересов
-    private func setupInterestsTextView() {
-        interestsTextView.backgroundColor = .white
-        interestsTextView.textColor = .black
-        interestsTextView.isEditable = false
-        interestsTextView.layer.cornerRadius = 5
-        interestsTextView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMinXMinYCorner]
-        interestsTextView.font = .systemFontOfSize(size: 12)
-        scrollView.addSubview(interestsTextView)
-        
-        interestsTextView.translatesAutoresizingMaskIntoConstraints = false
-        interestsTextView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor, constant: 3).isActive = true
-        interestsTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 30).isActive = true
-        interestsTextView.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
-        interestsTextView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    /// Установка кнопки редактирования интересов
-    private func setupEditInterestsButton() {
-        editInterestsButton = EditButton()
-        editInterestsButton.addTarget(self, action: #selector(editInterestsButtonPressed), for: .touchUpInside)
-        editInterestsButton.backgroundColor = .white
-        editInterestsButton.layer.cornerRadius = 5
-        editInterestsButton.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
-        scrollView.addSubview(editInterestsButton)
-        
-        editInterestsButton.translatesAutoresizingMaskIntoConstraints = false
-        editInterestsButton.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor,
-                                                 constant: 3).isActive = true
-        editInterestsButton.leadingAnchor.constraint(equalTo: interestsTextView.trailingAnchor).isActive = true
-        editInterestsButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
-        editInterestsButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    private func presentImagePicker(sourceType: UIImagePickerController.SourceType) {
-        imagePicker.present(parent: self, sourceType: sourceType)
-    }
-    
-    /// Добавление распознавания касания экрана
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
+        interestsLineView.translatesAutoresizingMaskIntoConstraints = false
+        interestsLineView.bottomAnchor.constraint(equalTo: generalPageButton.bottomAnchor).isActive = true
+        interestsLineView.leadingAnchor.constraint(equalTo: careerLineView.trailingAnchor).isActive = true
+        interestsLineView.widthAnchor.constraint(equalTo: topView.widthAnchor, multiplier: 0.25).isActive = true
+        interestsLineView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Добавляет свайп влево для перехода назад
@@ -629,151 +420,69 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
-    /// Скрытие уведомления с экрана
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
-    }
-    
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
     
     // MARK: - Buttons methods
-    /// Выбор фотографии при нажатии на аватар
-    /// - Parameter sender:
-    @objc func photoButtonTapped(_ sender: UIButton) {
-        let alertVC = UIAlertController(title: "Установить аватар",
-                                        message: nil,
-                                        preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: "Отменить",
-                                         style: .cancel,
-                                         handler: nil)
-        let takePhotoAction = UIAlertAction(title: "Сделать снимок",
-                                            style: .default,
-                                            handler: { _ in self.imagePicker.cameraAsscessRequest() })
-        let choosePhotoAction = UIAlertAction(title: "Выбрать фотографию",
-                                              style: .default,
-                                              handler: { _ in self.imagePicker.photoGalleryAsscessRequest() })
-        alertVC.addAction(cancelAction)
-        alertVC.addAction(takePhotoAction)
-        alertVC.addAction(choosePhotoAction)
-        self.present(alertVC, animated: true, completion: nil)
-    }
-    
-    /// Показ поля ввода третьего места работы после нажатия на кнопку добавления места работы
-    @objc func addWorkPlusButtonPressed() {
-        addWorkPlaceButton.isHidden = true
-        setupWorkPlace3TextField()
-        setupEditThirdJobButton()
-        interestsLabel.topAnchor.constraint(equalTo: workPlace2TextField.bottomAnchor, constant: 36).isActive = true
-    }
-    
-    /// Редактирование и сохранение основного места работы
-    @objc func editMainJobButtonPressed() {
-        if workPlace1TextField.isEnabled {
-            workPlace1TextField.isEnabled = false
-            editMainJobButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
-            presenter?.save(source: .job)
-        } else {
-            workPlace1TextField.isEnabled = true
-            if #available(iOS 13.0, *) {
-                editMainJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor), for: .normal)
-            } else {
-                editMainJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
+    @objc private func editButtonPressed() {
+        let popoverContentController = ProfilePopoverController()
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.preferredContentSize = CGSize(width: 180, height: 150)
+        popoverContentController.delegate = self
+        if let ppc = popoverContentController.popoverPresentationController {
+            ppc.delegate = self
         }
+        self.present(popoverContentController, animated: true, completion: nil)
     }
     
-    /// Редактирование и сохранение дополнительного места работы
-    @objc func editAddJobButtonPressed() {
-        if workPlace2TextField.isEnabled {
-            workPlace2TextField.isEnabled = false
-            editAddJobButton.setImage(UIImage(named: "Edit_Button.pdf"),
-                                      for: .normal)
-            presenter?.save(source: .job)
-        } else {
-            workPlace2TextField.isEnabled = true
-            if #available(iOS 13.0, *) {
-                editAddJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
-                                          for: .normal)
-            } else {
-                editAddJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
-        }
+    /// Изменение отображения информации о пользователе при нажатии на кнопку Общее
+    @objc private func generalPageButtonPressed() {
+        generalLineView.isHidden = false
+        educationLineView.isHidden = true
+        careerLineView.isHidden = true
+        interestsLineView.isHidden = true
+        
+        generalView.isHidden = false
+        educationView.isHidden = true
+        careerView.isHidden = true
+        interestsView.isHidden = true
     }
     
-    /// Редактирование и сохранение третьего места работы
-    @objc func editThirdJobButtonPressed() {
-        if workPlace3TextField.isEnabled {
-            workPlace3TextField.isEnabled = false
-            editThirdJobButton.setImage(UIImage(named: "Edit_Button.pdf"),
-                                        for: .normal)
-            presenter?.save(source: .job)
-        } else {
-            workPlace3TextField.isEnabled = true
-            if #available(iOS 13.0, *) {
-                editThirdJobButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
-                                            for: .normal)
-            } else {
-                editThirdJobButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
-        }
+    /// Изменение отображения информации о пользователе при нажатии на кнопку Образование
+    @objc private func educationPageButtonPressed() {
+        generalLineView.isHidden = true
+        educationLineView.isHidden = false
+        careerLineView.isHidden = true
+        interestsLineView.isHidden = true
+        
+        generalView.isHidden = true
+        educationView.isHidden = false
+        careerView.isHidden = true
+        interestsView.isHidden = true
     }
     
-    /// Редактирование и сохранение основной специализации
-    @objc func editMainSpecButtonPressed() {
-        if specTextField.isEnabled {
-            specTextField.isEnabled = false
-            editMainSpecButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
-            presenter?.save(source: .spec)
-        } else {
-            specTextField.isEnabled = true
-            if #available(iOS 13.0, *) {
-                editMainSpecButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
-                                            for: .normal)
-            } else {
-                editMainSpecButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
-        }
+    /// Изменение отображения информации о пользователе при нажатии на кнопку Карьера
+    @objc private func careerPageButtonPressed() {
+        generalLineView.isHidden = true
+        educationLineView.isHidden = true
+        careerLineView.isHidden = false
+        interestsLineView.isHidden = true
+        
+        generalView.isHidden = true
+        educationView.isHidden = true
+        careerView.isHidden = false
+        interestsView.isHidden = true
     }
     
-    /// Редактирование и сохранение места жительства
-    @objc func editLocationButtonPressed() {
-        if locationTextField.isEnabled {
-            locationTextField.isEnabled = false
-            editLocationButton.setImage(UIImage(named: "Edit_Button.pdf"), for: .normal)
-            presenter?.save(source: .user)
-        } else {
-            locationTextField.isEnabled = true
-            if #available(iOS 13.0, *) {
-                editLocationButton.setImage(UIImage(named: "Save.pdf")?.withTintColor(.textFieldTextColor),
-                                            for: .normal)
-            } else {
-                editLocationButton.setImage(UIImage(named: "Save.pdf"), for: .normal)
-            }
-        }
-    }
-    
-    /// Открытие формы выбора интересов
-    @objc func editInterestsButtonPressed() {
-        presenter?.editInterests()
+    /// Изменение отображения информации о пользователе при нажатии на кнопку Научные интересы
+    @objc private func interestsPageButtonPressed() {
+        generalLineView.isHidden = true
+        educationLineView.isHidden = true
+        careerLineView.isHidden = true
+        interestsLineView.isHidden = false
+        
+        generalView.isHidden = true
+        educationView.isHidden = true
+        careerView.isHidden = true
+        interestsView.isHidden = false
     }
     
     // MARK: - Navigation
@@ -781,70 +490,36 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     @objc private func backButtonPressed() {
         presenter?.back()
     }
+    
 }
 
-// MARK: - ImagePickerDelegate
-extension ProfileViewController: ImagePickerDelegate {
+// MARK: - UIPopoverPresentationControllerDelegate
+extension ProfileViewController: UIPopoverPresentationControllerDelegate {
     
-    func imagePickerDelegate(didSelect image: UIImage, delegatedForm: ImagePicker) {
-        userPhoto.image = image
-        headerView.userImage.image = image
-        presenter?.save(source: .user)
-        imagePicker.dismiss()
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        popoverPresentationController.permittedArrowDirections = .any
+        popoverPresentationController.sourceView = editButton
     }
     
-    func imagePickerDelegate(didCancel delegatedForm: ImagePicker) {
-        imagePicker.dismiss()
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
     
-    func imagePickerDelegate(canUseGallery accessIsAllowed: Bool, delegatedForm: ImagePicker) {
-        if accessIsAllowed { presentImagePicker(sourceType: .photoLibrary) }
-    }
-    
-    func imagePickerDelegate(canUseCamera accessIsAllowed: Bool, delegatedForm: ImagePicker) {
-        // works only on real device (crash on simulator)
-        if accessIsAllowed { presentImagePicker(sourceType: .camera) }
-    }
 }
 
-// MARK: - UITextFieldDelegate
-//swiftlint:disable force_unwrapping
-extension ProfileViewController: UITextFieldDelegate {
-    // MARK: - text field masking
-    internal func textField(_ textField: UITextField,
-                            shouldChangeCharactersIn range: NSRange,
-                            replacementString string: String) -> Bool {
-        
-        // MARK: - If Delete button click
-        let char = string.cString(using: String.Encoding.utf8)!
-        let isBackSpace = strcmp(char, "\\b")
-        
-        if isBackSpace == -92 {
-            textField.text!.removeLast()
-            return false
-        }
-        
-        if textField == birthDateTextField.textField {
-            if (textField.text?.count)! == 2 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! == 5 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! > 9 {
-                return false
-            }
-        } else if textField == phoneTextField.textField {
-            if (textField.text?.count)! == 1 {
-                textField.text = "+\(textField.text!) ("
-            } else if (textField.text?.count)! == 7 {
-                textField.text = "\(textField.text!)) "
-            } else if (textField.text?.count)! == 12 {
-                textField.text = "\(textField.text!)-"
-            } else if (textField.text?.count)! == 15 {
-                textField.text = "\(textField.text!)-"
-            } else if (textField.text?.count)! > 17 {
-                return false
-            }
-        }
-        return true
+// MARK: - ProfilePopoverDelegate
+extension ProfileViewController: ProfilePopoverDelegate {
+    
+    func toEditProfile() {
+        presenter?.toEditProfile()
     }
+    
+    func getStatusUser() {
+        presenter?.getStatusUser()
+    }
+    
+    func logout() {
+        presenter?.logout()
+    }
+    
 }

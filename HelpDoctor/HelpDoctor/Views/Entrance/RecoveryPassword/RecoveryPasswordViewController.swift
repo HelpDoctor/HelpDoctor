@@ -20,7 +20,8 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     private let titleLabel = UILabel()
     private let label = UILabel()
     private let emailTextField = UITextField()
-    private let sendButton = HDButton(title: "Отправить")
+    private let sendButton = HDButton(title: "Отправить", fontSize: 18)
+    private let mailButton = UIButton()
     private let backButton = BackButton()
     private var imageViewEmailSuccess = UIImageView()
     private var keyboardHeight: CGFloat = 0
@@ -36,6 +37,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         setupLabel()
         setupEmailTextField()
         setupSendButton()
+        setupMailButton()
         setupBackButton()
         addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
@@ -184,8 +186,9 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки "Отправить"
     private func setupSendButton() {
         let top = 31.f
-        let width = 150.f
-        let height = 35.f
+        let width = 148.f
+        let height = 44.f
+        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)
@@ -196,6 +199,36 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+    }
+    
+    /// Установка нижней надписи
+    private func setupMailButton() {
+        let top = 32.f
+        let width = Session.width - 22.f
+        let height = 51.f
+        mailButton.addTarget(self, action: #selector(forgotButtonPressed), for: .touchUpInside)
+        
+        let attributedString = NSMutableAttributedString(string: "Или напишите письмо Администраторам приложения на helptodoctor@yandex.ru")
+        attributedString.addAttribute(.foregroundColor,
+                                      value: UIColor.white,
+                                      range: NSRange(location: 0, length: 50))
+        attributedString.addAttribute(.font,
+                                      value: UIFont.systemFontOfSize(size: 14),
+                                      range: NSRange(location: 0, length: 72))
+        attributedString.addAttribute(.link,
+                                      value: "mailto:helptodoctor@yandex.ru",
+                                      range: NSRange(location: 50, length: 22))
+        
+        mailButton.setAttributedTitle(attributedString, for: .normal)
+        mailButton.titleLabel?.numberOfLines = 0
+        scrollView.addSubview(mailButton)
+        
+        mailButton.translatesAutoresizingMaskIntoConstraints = false
+        mailButton.topAnchor.constraint(equalTo: sendButton.bottomAnchor,
+                                         constant: top).isActive = true
+        mailButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        mailButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        mailButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка кнопки назад
@@ -212,7 +245,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -274,6 +307,12 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    /// Обработка нажатия кнопки "Забыли пароль?"
+    @objc private func forgotButtonPressed() {
+        guard let url = URL(string: "mailto:helptodoctor@yandex.ru") else { return }
+        UIApplication.shared.open(url)
+    }
+    
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
         guard let email = emailTextField.text, let presenter = presenter else { return }

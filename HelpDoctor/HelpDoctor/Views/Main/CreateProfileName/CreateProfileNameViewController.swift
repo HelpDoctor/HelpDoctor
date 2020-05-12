@@ -14,6 +14,16 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     var presenter: CreateProfileNamePresenterProtocol?
     
     // MARK: - Constants and variables
+    private let backgroundColor = UIColor.backgroundColor
+    private var verticalInset = 0.f
+    private let headerHeight = 60.f
+    private let textFieldWidth = Session.width - 40
+    private let heightTextField = 30.f
+    private let heightTitleLabel = 20.f
+    private let heightTopLabel = 68.f
+    private let heightStep1Label = 15.f
+    private let heightRadioButton = 20.f
+    private let heightNextButton = 40.f
     private let scrollView = UIScrollView()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
@@ -24,22 +34,23 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let patronymicTextField = UITextField()
     private let step2TitleLabel = UILabel()
     private let step2Label = UILabel()
-    private let birthDateTextField = UITextField()
-    private let step3TitleLabel = UILabel()
-    private let step3Label = UILabel()
-    private let phoneTextField = UITextField()
-    private let nextButton = UIButton()
-    private var keyboardHeight: CGFloat = 0
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let maleButton = RadioButton()
+    private let maleButtonLabel = UILabel()
+    private let femaleButton = RadioButton()
+    private let femaleButtonLabel = UILabel()
+    private let nosexButton = RadioButton()
+    private let nosexButtonLabel = UILabel()
+    private let nextButton = HDButton(title: "Далее")
+    private var keyboardHeight = 0.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = backgroundColor
+        let contentHeight = headerHeight + (heightTitleLabel * 3) + heightTopLabel + (heightStep1Label * 2)
+            + (heightTextField * 3) + (heightRadioButton * 2) + heightNextButton
+        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 13
         setupScrollView()
-        setupHeaderView()
         setupTitleLabel()
         setupTopLabel()
         setupStep1TitleLabel()
@@ -49,103 +60,139 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupPatronymicTextField()
         setupStep2TitleLabel()
         setupStep2Label()
-        setupBirthDateTextField()
-        setupStep3TitleLabel()
-        setupStep3Label()
-        setupPhoneTextField()
+        setupMaleButton()
+        setupMaleButtonLabel()
+        setupFemaleButton()
+        setupFemaleButtonLabel()
+        setupNosexButton()
+        setupNosexButtonLabel()
         setupNextButton()
         addTapGestureToHideKeyboard()
+        configureRadioButtons()
+        setUser()
+        guard let isEdit = presenter?.isEdit else { return }
+        if isEdit {
+            setupHeaderView(height: headerHeight, presenter: presenter)
+            nextButton.setTitle("Готово", for: .normal)
+        } else {
+            setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.statusBarBackgroundColor = .clear
+        UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
         self.tabBarController?.tabBar.isHidden = true
+    }
+    
+    // MARK: - Private methods
+    /// Установка значений из памяти устройства
+    private func setUser() {
+        surnameTextField.text = Session.instance.user?.last_name
+        nameTextField.text = Session.instance.user?.first_name
+        patronymicTextField.text = Session.instance.user?.middle_name
+        switch Session.instance.user?.gender {
+        case "male":
+            maleButton.isSelected = true
+            presenter?.setGender("male")
+        case "female":
+            femaleButton.isSelected = true
+            presenter?.setGender("female")
+        default:
+            break
+        }
     }
     
     // MARK: - Setup views
     /// Установка UIScrollView для сдвига экрана при появлении клавиатуры
     private func setupScrollView() {
         scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: width, height: height)
+        scrollView.contentSize = CGSize(width: Session.width, height: Session.height - headerHeight)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 60).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: headerHeight).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: view.frame.size.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: view.frame.size.height).isActive = true
+        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
     /// Установка заголовка
     private func setupTitleLabel() {
-        titleLabel.font = UIFont.boldSystemFontOfSize(size: 18)
+        titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Профиль"
+        titleLabel.text = "Заполнение профиля"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 12).isActive = true
+        titleLabel.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        titleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        titleLabel.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        titleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
     }
     
     /// Установка поясняющей надписи под заголовком
     private func setupTopLabel() {
-        let text = "Для создания профиля нужно внести данные о себе. Поля, отмеченные *, обязательны для заполнения"
-        topLabel.font = UIFont.systemFontOfSize(size: 14)
+        let width = Session.width - 40
+        topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
-        topLabel.attributedText = redStar(text: text)
+        topLabel.text =
+        """
+        Для создания профиля нужно внести данные о себе. Поля, отмеченные звездочкой (*), обязательны для заполнения
+        """
         topLabel.textAlignment = .left
         topLabel.numberOfLines = 0
         scrollView.addSubview(topLabel)
         
         topLabel.translatesAutoresizingMaskIntoConstraints = false
         topLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                      constant: 6).isActive = true
+                                      constant: verticalInset).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        topLabel.heightAnchor.constraint(equalToConstant: 51).isActive = true
+        topLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        topLabel.heightAnchor.constraint(equalToConstant: heightTopLabel).isActive = true
     }
     
     /// Установка заголовка Шаг 1
     private func setupStep1TitleLabel() {
-        step1TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
+        step1TitleLabel.backgroundColor = .searchBarTintColor
+        step1TitleLabel.font = .boldSystemFontOfSize(size: 14)
         step1TitleLabel.textColor = .white
         step1TitleLabel.text = "Шаг 1"
         step1TitleLabel.textAlignment = .center
         scrollView.addSubview(step1TitleLabel)
         
         step1TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step1TitleLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 25).isActive = true
+        step1TitleLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
+                                             constant: verticalInset).isActive = true
         step1TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step1TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step1TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        step1TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        step1TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
     }
     
     /// Установка поясняющей надписи перед заполнением данных шага 1
     private func setupStep1Label() {
-        step1Label.font = UIFont.systemFontOfSize(size: 14)
+        step1Label.font = .boldSystemFontOfSize(size: 14)
         step1Label.textColor = .white
         step1Label.text = "Представьтесь, пожалуйста"
         step1Label.textAlignment = .left
         scrollView.addSubview(step1Label)
         
         step1Label.translatesAutoresizingMaskIntoConstraints = false
-        step1Label.topAnchor.constraint(equalTo: step1TitleLabel.bottomAnchor, constant: 5).isActive = true
+        step1Label.topAnchor.constraint(equalTo: step1TitleLabel.bottomAnchor,
+                                        constant: verticalInset).isActive = true
         step1Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step1Label.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        step1Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        step1Label.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        step1Label.heightAnchor.constraint(equalToConstant: heightStep1Label).isActive = true
     }
     
     /// Установка поля ввода фамилии
     private func setupSurnameTextField() {
-        surnameTextField.font = UIFont.systemFontOfSize(size: 14)
+        surnameTextField.font = .systemFontOfSize(size: 14)
         surnameTextField.textColor = .textFieldTextColor
-        surnameTextField.attributedPlaceholder = redStar(text: "Фамилия*")
+        surnameTextField.placeholder = "Фамилия*"
         surnameTextField.textAlignment = .left
         surnameTextField.autocorrectionType = .no
         surnameTextField.backgroundColor = .white
@@ -158,17 +205,18 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(surnameTextField)
         
         surnameTextField.translatesAutoresizingMaskIntoConstraints = false
-        surnameTextField.topAnchor.constraint(equalTo: step1Label.bottomAnchor, constant: 5).isActive = true
+        surnameTextField.topAnchor.constraint(equalTo: step1Label.bottomAnchor,
+                                              constant: verticalInset).isActive = true
         surnameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        surnameTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        surnameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        surnameTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        surnameTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка поля ввода имени
     private func setupNameTextField() {
-        nameTextField.font = UIFont.systemFontOfSize(size: 14)
+        nameTextField.font = .systemFontOfSize(size: 14)
         nameTextField.textColor = .textFieldTextColor
-        nameTextField.attributedPlaceholder = redStar(text: "Имя*")
+        nameTextField.placeholder = "Имя*"
         nameTextField.textAlignment = .left
         nameTextField.autocorrectionType = .no
         nameTextField.backgroundColor = .white
@@ -181,15 +229,16 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(nameTextField)
         
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
-        nameTextField.topAnchor.constraint(equalTo: surnameTextField.bottomAnchor, constant: 10).isActive = true
+        nameTextField.topAnchor.constraint(equalTo: surnameTextField.bottomAnchor,
+                                           constant: verticalInset).isActive = true
         nameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        nameTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        nameTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        nameTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка поля ввода отчества
     private func setupPatronymicTextField() {
-        patronymicTextField.font = UIFont.systemFontOfSize(size: 14)
+        patronymicTextField.font = .systemFontOfSize(size: 14)
         patronymicTextField.textColor = .textFieldTextColor
         patronymicTextField.placeholder = "Отчество"
         patronymicTextField.textAlignment = .left
@@ -204,138 +253,164 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(patronymicTextField)
         
         patronymicTextField.translatesAutoresizingMaskIntoConstraints = false
-        patronymicTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10).isActive = true
+        patronymicTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor,
+                                                 constant: verticalInset).isActive = true
         patronymicTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        patronymicTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        patronymicTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        patronymicTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        patronymicTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка заголовка Шаг 2
     private func setupStep2TitleLabel() {
-        step2TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
+        step2TitleLabel.backgroundColor = .searchBarTintColor
+        step2TitleLabel.font = .boldSystemFontOfSize(size: 14)
         step2TitleLabel.textColor = .white
         step2TitleLabel.text = "Шаг 2"
         step2TitleLabel.textAlignment = .center
         scrollView.addSubview(step2TitleLabel)
         
         step2TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step2TitleLabel.topAnchor.constraint(equalTo: patronymicTextField.bottomAnchor, constant: 12).isActive = true
+        step2TitleLabel.topAnchor.constraint(equalTo: patronymicTextField.bottomAnchor,
+                                             constant: verticalInset).isActive = true
         step2TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step2TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step2TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        step2TitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        step2TitleLabel.heightAnchor.constraint(equalToConstant: heightTitleLabel).isActive = true
     }
     
     /// Установка поясняющей надписи перед вводом даты рождения
     private func setupStep2Label() {
-        step2Label.font = UIFont.systemFontOfSize(size: 14)
+        step2Label.font = .boldSystemFontOfSize(size: 14)
         step2Label.textColor = .white
-        step2Label.text = "Укажите дату рождения"
+        step2Label.text = "Укажите, свой пол, пожалуйста"
         step2Label.textAlignment = .left
         scrollView.addSubview(step2Label)
         
         step2Label.translatesAutoresizingMaskIntoConstraints = false
-        step2Label.topAnchor.constraint(equalTo: step2TitleLabel.bottomAnchor, constant: 5).isActive = true
+        step2Label.topAnchor.constraint(equalTo: step2TitleLabel.bottomAnchor,
+                                        constant: verticalInset).isActive = true
         step2Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step2Label.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        step2Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        step2Label.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        step2Label.heightAnchor.constraint(equalToConstant: heightStep1Label).isActive = true
     }
     
-    /// Установка поля ввода даты рождения
-    private func setupBirthDateTextField() {
-        birthDateTextField.delegate = self
-        birthDateTextField.font = UIFont.systemFontOfSize(size: 14)
-        birthDateTextField.textColor = .textFieldTextColor
-        birthDateTextField.keyboardType = .numberPad
-        birthDateTextField.attributedPlaceholder = redStar(text: "__.__.____*")
-        birthDateTextField.textAlignment = .left
-        birthDateTextField.backgroundColor = .white
-        birthDateTextField.layer.cornerRadius = 5
-        birthDateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                           y: 0,
-                                                           width: 8,
-                                                           height: birthDateTextField.frame.height))
-        birthDateTextField.leftViewMode = .always
-        scrollView.addSubview(birthDateTextField)
+    /// Установка радиокнопки выбора мужского пола
+    private func setupMaleButton() {
+        let leading = 20.f
+        maleButton.isSelected = false
+        maleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(maleButton)
         
-        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
-        birthDateTextField.topAnchor.constraint(equalTo: step2Label.bottomAnchor, constant: 5).isActive = true
-        birthDateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        birthDateTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        birthDateTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        maleButton.translatesAutoresizingMaskIntoConstraints = false
+        maleButton.topAnchor.constraint(equalTo: step2Label.bottomAnchor,
+                                        constant: verticalInset).isActive = true
+        maleButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                            constant: leading).isActive = true
+        maleButton.widthAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+        maleButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
     
-    /// Установка заголовка Шаг 3
-    private func setupStep3TitleLabel() {
-        step3TitleLabel.font = UIFont.boldSystemFontOfSize(size: 14)
-        step3TitleLabel.textColor = .white
-        step3TitleLabel.text = "Шаг 3"
-        step3TitleLabel.textAlignment = .center
-        scrollView.addSubview(step3TitleLabel)
+    /// Установка поясняющей надписи к радиокнопке
+    private func setupMaleButtonLabel() {
+        let leading = 5.f
+        let width = 80.f
+        maleButtonLabel.text = "Мужской"
+        maleButtonLabel.font = .systemFontOfSize(size: 12)
+        maleButtonLabel.textColor = .white
+        scrollView.addSubview(maleButtonLabel)
         
-        step3TitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        step3TitleLabel.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor, constant: 12).isActive = true
-        step3TitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step3TitleLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        step3TitleLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        maleButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        maleButtonLabel.topAnchor.constraint(equalTo: maleButton.topAnchor).isActive = true
+        maleButtonLabel.leadingAnchor.constraint(equalTo: maleButton.trailingAnchor, constant: leading).isActive = true
+        maleButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        maleButtonLabel.heightAnchor.constraint(equalTo: maleButton.heightAnchor).isActive = true
     }
     
-    /// Установка поясняющей надписи перед вводом телефона
-    private func setupStep3Label() {
-        step3Label.font = UIFont.systemFontOfSize(size: 14)
-        step3Label.textColor = .white
-        step3Label.text = "Укажите, пожалуйста, номер телефона"
-        step3Label.textAlignment = .left
-        scrollView.addSubview(step3Label)
+    /// Установка радиокнопки выбора женского пола
+    private func setupFemaleButton() {
+        let leading = Session.width / 2 + 20.f
+        femaleButton.isSelected = false
+        femaleButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(femaleButton)
         
-        step3Label.translatesAutoresizingMaskIntoConstraints = false
-        step3Label.topAnchor.constraint(equalTo: step3TitleLabel.bottomAnchor, constant: 5).isActive = true
-        step3Label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        step3Label.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        step3Label.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        femaleButton.translatesAutoresizingMaskIntoConstraints = false
+        femaleButton.topAnchor.constraint(equalTo: maleButton.topAnchor).isActive = true
+        femaleButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                              constant: leading).isActive = true
+        femaleButton.widthAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+        femaleButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
     
-    /// Установка поля ввода телефона
-    private func setupPhoneTextField() {
-        phoneTextField.delegate = self
-        phoneTextField.font = UIFont.systemFontOfSize(size: 14)
-        phoneTextField.textColor = .textFieldTextColor
-        phoneTextField.keyboardType = .numberPad
-        phoneTextField.attributedPlaceholder = redStar(text: "+7 (xxx) xxx-xx-xx*")
-        phoneTextField.textAlignment = .left
-        phoneTextField.backgroundColor = .white
-        phoneTextField.layer.cornerRadius = 5
-        phoneTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: phoneTextField.frame.height))
-        phoneTextField.leftViewMode = .always
-        scrollView.addSubview(phoneTextField)
+    /// Установка поясняющей надписи к радиокнопке
+    private func setupFemaleButtonLabel() {
+        let leading = 5.f
+        let width = 80.f
+        femaleButtonLabel.text = "Женский"
+        femaleButtonLabel.font = .systemFontOfSize(size: 12)
+        femaleButtonLabel.textColor = .white
+        scrollView.addSubview(femaleButtonLabel)
         
-        phoneTextField.translatesAutoresizingMaskIntoConstraints = false
-        phoneTextField.topAnchor.constraint(equalTo: step3Label.bottomAnchor, constant: 5).isActive = true
-        phoneTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        phoneTextField.widthAnchor.constraint(equalToConstant: width - 60).isActive = true
-        phoneTextField.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        femaleButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        femaleButtonLabel.topAnchor.constraint(equalTo: femaleButton.topAnchor).isActive = true
+        femaleButtonLabel.leadingAnchor.constraint(equalTo: femaleButton.trailingAnchor,
+                                                   constant: leading).isActive = true
+        femaleButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        femaleButtonLabel.heightAnchor.constraint(equalTo: femaleButton.heightAnchor).isActive = true
+    }
+    
+    /// Установка радиокнопки
+    private func setupNosexButton() {
+        let leading = 20.f
+        nosexButton.isSelected = false
+        nosexButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(nosexButton)
+        
+        nosexButton.translatesAutoresizingMaskIntoConstraints = false
+        nosexButton.topAnchor.constraint(equalTo: maleButton.bottomAnchor,
+                                         constant: verticalInset).isActive = true
+        nosexButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: leading).isActive = true
+        nosexButton.widthAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+        nosexButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+    }
+    
+    /// Установка поясняющей надписи к радиокнопке
+    private func setupNosexButtonLabel() {
+        let leading = 5.f
+        let width = Session.width - 20 - 20 - leading - heightRadioButton //20 это leading и trailing у кнопок
+        nosexButtonLabel.text = "Не указывать в профиле"
+        nosexButtonLabel.font = .systemFontOfSize(size: 12)
+        nosexButtonLabel.textColor = .white
+        scrollView.addSubview(nosexButtonLabel)
+        
+        nosexButtonLabel.translatesAutoresizingMaskIntoConstraints = false
+        nosexButtonLabel.topAnchor.constraint(equalTo: nosexButton.topAnchor).isActive = true
+        nosexButtonLabel.leadingAnchor.constraint(equalTo: nosexButton.trailingAnchor,
+                                                  constant: leading).isActive = true
+        nosexButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        nosexButtonLabel.heightAnchor.constraint(equalTo: nosexButton.heightAnchor).isActive = true
     }
     
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
-        let titleButton = "Далее >"
+        let width = 110.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
-        nextButton.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 18)
-        nextButton.titleLabel?.textColor = .white
-        nextButton.setTitle(titleButton, for: .normal)
+        nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)
         
-        let window = UIApplication.shared.keyWindow
-        let bottomPadding = window?.safeAreaInsets.bottom
-        
         nextButton.translatesAutoresizingMaskIntoConstraints = false
-        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: width - 36).isActive = true
+        nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                             constant: Session.width - 10).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: height - (bottomPadding ?? 0) - 98).isActive = true
-        nextButton.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        nextButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+                                           constant: Session.height - Session.bottomPadding - 98).isActive = true
+        nextButton.heightAnchor.constraint(equalToConstant: heightNextButton).isActive = true
+        nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    /// Настройка выбора радиокнопки
+    private func configureRadioButtons() {
+        maleButton.alternateButton = [femaleButton, nosexButton]
+        femaleButton.alternateButton = [maleButton, nosexButton]
+        nosexButton.alternateButton = [maleButton, femaleButton]
     }
     
     /// Добавление распознавания касания экрана
@@ -383,54 +458,23 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    ///  Действие при нажатии на радиокнопку выбора пола
+    @objc private func genderButtonPressed() {
+        if maleButton.isSelected {
+            presenter?.setGender("male")
+        } else if femaleButton.isSelected {
+            presenter?.setGender("female")
+        } else {
+            presenter?.setGender("null")
+        }
+    }
     
-    // MARK: - Navigation
+    /// Действие при нажатии кнопки далее
     @objc private func nextButtonPressed() {
         guard let name = nameTextField.text,
             let lastname = surnameTextField.text,
-            let middleName = patronymicTextField.text,
-            let birthDate = birthDateTextField.text,
-            let phone = phoneTextField.text else { return }
-        presenter?.next(name: name, lastname: lastname, middleName: middleName, birthDate: birthDate, phone: phone)
+            let middleName = patronymicTextField.text else { return }
+        presenter?.next(name: name, lastname: lastname, middleName: middleName)
     }
-}
-//swiftlint:disable force_unwrapping
-extension CreateProfileNameViewController: UITextFieldDelegate {
-    // MARK: - text field masking
-    internal func textField(_ textField: UITextField,
-                            shouldChangeCharactersIn range: NSRange,
-                            replacementString string: String) -> Bool {
-        
-        // MARK: - If Delete button click
-        let char = string.cString(using: String.Encoding.utf8)!
-        let isBackSpace = strcmp(char, "\\b")
-        
-        if isBackSpace == -92 {
-            textField.text!.removeLast()
-            return false
-        }
-        
-        if textField == birthDateTextField {
-            if (textField.text?.count)! == 2 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! == 5 {
-                textField.text = "\(textField.text!)."
-            } else if (textField.text?.count)! > 9 {
-                return false
-            }
-        } else if textField == phoneTextField {
-            if (textField.text?.count)! == 1 {
-                textField.text = "+\(textField.text!) ("
-            } else if (textField.text?.count)! == 7 {
-                textField.text = "\(textField.text!)) "
-            } else if (textField.text?.count)! == 12 {
-                textField.text = "\(textField.text!)-"
-            } else if (textField.text?.count)! == 15 {
-                textField.text = "\(textField.text!)-"
-            } else if (textField.text?.count)! > 17 {
-                return false
-            }
-        }
-        return true
-    }
+    
 }

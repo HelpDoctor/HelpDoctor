@@ -40,6 +40,4 @@ class LocationSearchPresenter: LocationSearchPresenterProtocol {
         view.navigationController?.popToRootViewController(animated: true)
     }
     
-    func save(source: SourceEditTextField) { }
-    
 }

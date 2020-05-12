@@ -10,9 +10,6 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .backgroundColor
@@ -37,6 +34,8 @@ class TabBarController: UITabBarController {
         secondVc.tabBarItem = UITabBarItem(title: "Расписание", image: UIImage(named: "Schedule.pdf"), tag: 1)
         
         let thirdVc = StartMessagesViewController()
+//        let thirdVc = ProfileViewController()
+//        thirdVc.presenter = ProfilePresenter(view: thirdVc)
         thirdVc.tabBarItem = UITabBarItem(title: "Сообщения", image: UIImage(named: "Messages.pdf"), tag: 2)
         
         let fourthVc = StartSettingsViewController()
