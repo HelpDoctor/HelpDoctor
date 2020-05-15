@@ -413,7 +413,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: Session.width - 10).isActive = true
+                                             constant: Session.width - 20).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
                                            constant: Session.height - Session.bottomPadding - 98).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: heightNextButton).isActive = true
@@ -483,6 +483,13 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     @objc private func liveNotRussiaCheckboxPressed() {
         liveNotRussiaCheckbox.isSelected = !liveNotRussiaCheckbox.isSelected
+        regionTextField.alpha = liveNotRussiaCheckbox.isSelected ? 0.5 : 1.0
+        cityTextField.alpha = liveNotRussiaCheckbox.isSelected ? 0.5 : 1.0
+        regionTextField.isEnabled = !liveNotRussiaCheckbox.isSelected
+        cityTextField.isEnabled = !liveNotRussiaCheckbox.isSelected
+        regionTextField.text = ""
+        cityTextField.text = ""
+        presenter?.setLiveInNotRussia()
     }
     
     @objc private func regionSearchButtonPressed() {

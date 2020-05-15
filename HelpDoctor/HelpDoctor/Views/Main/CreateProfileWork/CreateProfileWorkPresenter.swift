@@ -33,6 +33,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
     var isEdit = false
+    var region: Regions?
     private var jobArray: [MedicalOrganization?] = [nil, nil, nil, nil, nil]
     private var specArray: [MedicalSpecialization?] = [nil, nil, nil, nil, nil]
     private var jobIndex = 0
@@ -154,9 +155,22 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     // MARK: - Public methods
     func jobSearch(_ index: Int) {
         jobIndex = index
-        let viewController = RegionsViewController()
-        let presenter = RegionsPresenter(view: viewController)
+        var idRegion: Int?
+//        let viewController = RegionsViewController()
+//        let presenter = RegionsPresenter(view: viewController)
+//        viewController.presenter = presenter
+//        presenter.sender = "Work"
+//        view.navigationController?.pushViewController(viewController, animated: true)
+        if isEdit {
+            idRegion = Session.instance.user?.regionId
+        } else {
+            idRegion = region?.regionId
+        }
+        guard let regionId = idRegion else { return }
+        let viewController = MedicalOrganizationViewController()
+        let presenter = MedicalOrganizationPresenter(view: viewController)
         viewController.presenter = presenter
+        presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
         presenter.sender = "Work"
         view.navigationController?.pushViewController(viewController, animated: true)
     }

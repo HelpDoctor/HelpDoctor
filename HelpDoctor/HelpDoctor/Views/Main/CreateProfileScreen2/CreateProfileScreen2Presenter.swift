@@ -16,6 +16,7 @@ protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     func setRegion(region: Regions)
     func setRegionFromDevice(_ idRegion: Int)
     func setCity(city: Cities)
+    func setLiveInNotRussia()
     func convertDateFromServer(_ birthDate: String) -> String?
     func next(phone: String, birthdate: String)
 }
@@ -119,6 +120,11 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         user?.city_id = city.id
     }
     
+    func setLiveInNotRussia() {
+        region = nil
+        city = nil
+    }
+    
     /// Конвертация даты из формата yyyy-MM-dd в формат dd.MM.yyyy
     /// - Parameter birthDate: дата в формте yyyy-MM-dd
     /// - Returns: дата в формате dd.MM.yyyy
@@ -206,6 +212,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
             let presenter = CreateProfileStep6Presenter(view: viewController)
             viewController.presenter = presenter
             presenter.user = user
+            presenter.region = region
             view.navigationController?.pushViewController(viewController, animated: true)
         }
         

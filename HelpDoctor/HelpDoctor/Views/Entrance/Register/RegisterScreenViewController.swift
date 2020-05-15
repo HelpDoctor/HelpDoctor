@@ -299,20 +299,26 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupPolicyLabel() {
+        let font = UIFont.systemFontOfSize(size: 12)
         let leading = 50.f
         let top = 15.f
-        let height = 40.f
         let width = Session.width - 70
         
-        let text = "Нажимая «Отправить», вы принимаете следующие условия использования."
-        let range = (text as NSString).range(of: "условия использования")
+        let text = """
+        Нажимая «Отправить», Вы соглашаетесь с условиями Лицензионного договора \
+        и Политикой обработки персональных данных
+        """
+        let height = text.height(withConstrainedWidth: width, font: font)
+        let range1 = (text as NSString).range(of: "Лицензионного договора")
+        let range2 = (text as NSString).range(of: "Политикой обработки персональных данных")
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range1)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range2)
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed(tap:)))
         policyLabel.addGestureRecognizer(tap)
         policyLabel.isUserInteractionEnabled = true  
-        policyLabel.font = .systemFontOfSize(size: 12)
+        policyLabel.font = font
         policyLabel.textColor = .black
         policyLabel.attributedText = attributedString
         policyLabel.textAlignment = .left
@@ -433,13 +439,14 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     /// - Parameter tap: UITapGestureRecognizer
     @objc private func labelPressed(tap: UITapGestureRecognizer) {
         guard let range = rangeOfHost(text: policyLabel.text ?? "") else { return }
-        if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) {
-            print("Условия использования")
+        print(range)
+        if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) { //TODO: - не работает
+            print("Лицензионного договора")
         }
     }
     
     private func rangeOfHost(text: String) -> NSRange? {
-        guard let range = text.range(of: "условия использования.") else { return nil }
+        guard let range = text.range(of: "Лицензионного договора") else { return nil }
         return NSRange(location: range.lowerBound.utf16Offset(in: text),
                        length: range.upperBound.utf16Offset(in: text) - range.lowerBound.utf16Offset(in: text))
     }

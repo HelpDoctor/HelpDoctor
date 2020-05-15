@@ -23,8 +23,8 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
     var isEdit = false
-    private var region: Regions?
-    private var city: Cities?
+    var region: Regions?
+//    private var city: Cities?
     
     // MARK: - Init
     required init(view: CreateProfileStep6ViewController) {
@@ -62,6 +62,7 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
             let presenter = CreateProfileWorkPresenter(view: viewController)
             viewController.presenter = presenter
             presenter.user = user
+            presenter.region = region
             view.navigationController?.pushViewController(viewController, animated: true)
         }
         

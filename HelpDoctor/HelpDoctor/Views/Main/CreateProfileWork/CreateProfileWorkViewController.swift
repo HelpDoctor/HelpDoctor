@@ -438,7 +438,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: Session.width - 10).isActive = true
+                                             constant: Session.width - 20).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: heightNextButton).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         nextButtonTopAnchor = nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
