@@ -439,7 +439,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     /// - Parameter tap: UITapGestureRecognizer
     @objc private func labelPressed(tap: UITapGestureRecognizer) {
         guard let range = rangeOfHost(text: policyLabel.text ?? "") else { return }
-        print(range)
         if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) { //TODO: - не работает
             print("Лицензионного договора")
         }

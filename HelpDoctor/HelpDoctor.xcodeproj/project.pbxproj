@@ -75,6 +75,8 @@
 		4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */; };
 		4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */; };
 		4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */; };
+		4667C64C246FDE0A0032B6C2 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64B246FDE0A0032B6C2 /* Feedback.swift */; };
+		4667C64E246FE1F90032B6C2 /* InviteUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64D246FE1F90032B6C2 /* InviteUserRequest.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */; };
 		4670347323D4811F00AFAA91 /* RepeatNotificationsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */; };
@@ -301,6 +303,8 @@
 		4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2ViewController.swift; sourceTree = "<group>"; };
 		4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2Presenter.swift; sourceTree = "<group>"; };
+		4667C64B246FDE0A0032B6C2 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
+		4667C64D246FE1F90032B6C2 /* InviteUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteUserRequest.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsViewController.swift; sourceTree = "<group>"; };
 		4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepeatNotificationsPresenter.swift; sourceTree = "<group>"; };
@@ -1238,6 +1242,8 @@
 			children = (
 				C4CBC3B223D026D600434BFB /* Registration.swift */,
 				469DD6642461313D006DBD30 /* ChangePassword.swift */,
+				4667C64B246FDE0A0032B6C2 /* Feedback.swift */,
+				4667C64D246FE1F90032B6C2 /* InviteUserRequest.swift */,
 			);
 			path = Registration;
 			sourceTree = "<group>";
@@ -1446,6 +1452,7 @@
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
+				4667C64E246FE1F90032B6C2 /* InviteUserRequest.swift in Sources */,
 				469DD6652461313D006DBD30 /* ChangePassword.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
@@ -1545,6 +1552,7 @@
 				C48F162323B5FE87002D04E3 /* GetAuthToken.swift in Sources */,
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
+				4667C64C246FDE0A0032B6C2 /* Feedback.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
 				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,

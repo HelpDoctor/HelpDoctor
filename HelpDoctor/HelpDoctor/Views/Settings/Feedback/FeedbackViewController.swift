@@ -64,6 +64,11 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
+    // MARK: - Public methods
+    func clearTextFields() {
+        textView.text = ""
+    }
+    
     // MARK: - Private methods
     private func calculateInset() -> CGFloat {
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
@@ -269,7 +274,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func sendButtonPressed() {
-        print("In develop")
+        presenter?.sendFeedback(feedback: textView.text)
     }
     
     // MARK: - IBActions

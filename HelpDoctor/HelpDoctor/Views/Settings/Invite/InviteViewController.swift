@@ -64,6 +64,14 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
     }
     
+    // MARK: - Public methods
+    func clearTextFields() {
+        nameTextField.text = ""
+        surnameTextField.text = ""
+        emailTextField.text = ""
+    }
+    
+    // MARK: - Private methods
     private func calculateInset() -> CGFloat {
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
@@ -210,6 +218,8 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
+        emailTextField.autocorrectionType = .no
+        emailTextField.autocapitalizationType = .none
         emailTextField.leftView = UIView(frame: CGRect(x: 0,
                                                        y: 0,
                                                        width: 8,
@@ -269,7 +279,11 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Buttons methods
     @objc private func sendButtonPressed() {
-        print("In develop")
+        guard let email = emailTextField.text,
+            let name = nameTextField.text else {
+                return
+        }
+        presenter?.inviteUser(email: email, name: name, lastname: surnameTextField.text)
     }
     
     // MARK: - IBActions

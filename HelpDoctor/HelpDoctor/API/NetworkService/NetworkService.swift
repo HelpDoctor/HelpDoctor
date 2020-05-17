@@ -70,6 +70,8 @@ enum TypeOfRequest: String {
     case getSettings = "/profile/settings"
     case updateSettings = "/profile/settings/update"
     case changePassword = "/profile/change_password"
+    case feedback = "/support/feedback"
+    case invite = "/registration/invite"
 }
 
 enum NetworkMimeType: String {
@@ -201,7 +203,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
             request.httpBody = jsonData
         }
         
-    case .changePassword:
+    case .changePassword, .invite:
         let jsonData = serializationJSON(obj: requestParams as! [String: String])
         
         request.httpMethod = "POST"
@@ -230,6 +232,13 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     case .userStatus, .getSettings:
         request.httpMethod = "GET"
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+        
+    case .feedback:
+        let jsonData = serializationJSON(obj: requestParams as! [String: String])
+        
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
         
     default:
         break
@@ -274,7 +283,8 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .schedule_CreateOrUpdateEvent,
                  .schedule_deleteForCurrentEvent,
                  .updateSettings,
-                 .changePassword:
+                 .changePassword,
+                 .feedback:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
                 
@@ -367,6 +377,9 @@ func getData<T>(typeOfContent: TypeOfRequest,
             case .getSettings:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getSettings(for: startPoint, response: response) as? T)
+            case .invite:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
             }
             DispatchQueue.main.async {
                 completionBlock(replyReturn)
