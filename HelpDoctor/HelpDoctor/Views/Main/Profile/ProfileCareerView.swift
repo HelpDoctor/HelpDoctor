@@ -41,7 +41,7 @@ class ProfileCareerView: UIView {
         jobLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
                                           constant: leading).isActive = true
         jobLabel.topAnchor.constraint(equalTo: self.topAnchor,
-                                      constant: verticalSpacing).isActive = true
+                                      constant: 16).isActive = true
         jobLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                            constant: -leading).isActive = true
     }
@@ -49,7 +49,7 @@ class ProfileCareerView: UIView {
     private func setupTableView() {
         let height = (heightLabel + verticalSpacing) * jobArray.count.f
         self.addSubview(tableView)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProfileJobCell")
+        tableView.register(ProfileJobCell.self, forCellReuseIdentifier: "ProfileJobCell")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -60,7 +60,7 @@ class ProfileCareerView: UIView {
         tableView.heightAnchor.constraint(equalToConstant: height).isActive = true
         tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor,
                                            constant: leading).isActive = true
-        tableView.topAnchor.constraint(equalTo: jobLabel.bottomAnchor).isActive = true
+        tableView.topAnchor.constraint(equalTo: jobLabel.bottomAnchor, constant: 9).isActive = true
         tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                             constant: -leading).isActive = true
     }
@@ -77,7 +77,7 @@ class ProfileCareerView: UIView {
         employmentLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
                                                  constant: leading).isActive = true
         employmentLabel.topAnchor.constraint(equalTo: tableView.bottomAnchor,
-                                             constant: verticalSpacing).isActive = true
+                                             constant: 16).isActive = true
         employmentLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                                   constant: -leading).isActive = true
     }
@@ -93,7 +93,7 @@ class ProfileCareerView: UIView {
         employmentDataLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
                                                      constant: leading).isActive = true
         employmentDataLabel.topAnchor.constraint(equalTo: employmentLabel.bottomAnchor,
-                                                 constant: verticalSpacing).isActive = true
+                                                 constant: 9).isActive = true
         employmentDataLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                                       constant: -leading).isActive = true
     }
@@ -131,10 +131,11 @@ extension ProfileCareerView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileJobCell", for: indexPath)
-        cell.backgroundColor = UIColor.white
-        cell.textLabel?.text = jobArray[indexPath.section]?.nameShort
-        cell.textLabel?.font = .systemFontOfSize(size: 14)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileJobCell",
+                                                       for: indexPath) as? ProfileJobCell
+            else { return UITableViewCell() }
+        
+        cell.configure(jobArray[indexPath.section]?.nameShort ?? "")
         return cell
     }
     

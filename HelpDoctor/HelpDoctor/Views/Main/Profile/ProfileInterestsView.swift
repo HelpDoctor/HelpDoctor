@@ -36,7 +36,7 @@ class ProfileInterestsView: UIView {
         interestsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
                                           constant: leading).isActive = true
         interestsLabel.topAnchor.constraint(equalTo: self.topAnchor,
-                                      constant: verticalSpacing).isActive = true
+                                      constant: 16).isActive = true
         interestsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                            constant: -leading).isActive = true
     }
@@ -44,7 +44,7 @@ class ProfileInterestsView: UIView {
     private func setupTableView() {
         let height = (heightLabel + verticalSpacing) * (interestsArray?.count.f ?? 0)
         self.addSubview(tableView)
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProfileInterestsCell")
+        tableView.register(ProfileJobCell.self, forCellReuseIdentifier: "ProfileInterestsCell")
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -93,10 +93,11 @@ extension ProfileInterestsView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileInterestsCell", for: indexPath)
-        cell.backgroundColor = UIColor.white
-        cell.textLabel?.text = interestsArray?[indexPath.section].name
-        cell.textLabel?.font = .systemFontOfSize(size: 14)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileInterestsCell",
+                                                       for: indexPath) as? ProfileJobCell
+            else { return UITableViewCell() }
+        
+        cell.configure(interestsArray?[indexPath.section].name ?? "")
         return cell
     }
     
