@@ -33,7 +33,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-        view.startActivityIndicator()
+//        view.startActivityIndicator()
         let getRegions = Profile()
         
         getData(typeOfContent: .getRegions,

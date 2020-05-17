@@ -86,6 +86,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         let viewController = RegionsViewController()
         let presenter = RegionsPresenter(view: viewController)
         viewController.presenter = presenter
+        viewController.startActivityIndicator()
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

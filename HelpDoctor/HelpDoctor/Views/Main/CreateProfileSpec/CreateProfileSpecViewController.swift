@@ -20,10 +20,11 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     private let step8TitleLabel = UILabel()
     private let step8Label = UILabel()
     private let subscriptLabel = UILabel()
-    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: .init())
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let addButton = UIButton()
     private let nextButton = HDButton(title: "Далее")
     private let contentWidth = Session.width - 40
+    private var size = 18.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -143,10 +144,10 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupCollectionView() {
         let top = 10.f
-        let height = 156.f
-        let customSuperLayout = InterestCollectionViewLayout()
-        customSuperLayout.delegate = self
-        collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
+        let height = 227.f
+//        let customSuperLayout = InterestCollectionViewLayout()
+//        customSuperLayout.delegate = self
+//        collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
         view.addSubview(collectionView)
         collectionView.register(InterestCollectionViewCell.self, forCellWithReuseIdentifier: "InterestCell")
         collectionView.backgroundColor = .clear
@@ -158,7 +159,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
         collectionView.topAnchor.constraint(equalTo: subscriptLabel.bottomAnchor,
                                             constant: top).isActive = true
         collectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        collectionView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
+        collectionView.widthAnchor.constraint(equalToConstant: contentWidth + 16).isActive = true
         collectionView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
@@ -189,7 +190,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let width = 110.f
-        let height = 40.f
+        let height = 44.f
         nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
         nextButton.update(isEnabled: true)
         scrollView.addSubview(nextButton)
@@ -226,7 +227,6 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Navigation
-    
 }
 
 // MARK: - Collection view
@@ -252,12 +252,14 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
                                                       for: indexPath) as! InterestCollectionViewCell
+        size = 18
+        cell.delegate = self
         cell.configure(presenter?.getInterestTitle(index: indexPath.row) ?? "")
         return cell
     }
     
 }
-
+/*
 extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
     
     func width(forItemAt indexPath: IndexPath) -> CGFloat {
@@ -274,6 +276,52 @@ extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate 
                                     attributes: [NSAttributedString.Key.font: font],
                                     context: nil)
         return box.width
+    }
+    
+}
+*/
+extension CreateProfileSpecViewController: InterestCollectionViewCellDelegate {
+    
+    func fontSize(interest: String) -> CGFloat {
+        let width = ((collectionView.bounds.size.width - 32) / 3) - 24
+        let height = 42.f
+        
+        let font = UIFont.systemFontOfSize(size: size)
+        if interest.width(withConstrainedHeight: height, font: font, minimumTextWrapWidth: 10) > width {
+            size -= 1
+            return fontSize(interest: interest)
+        } else {
+            return size
+        }
+    }
+    
+}
+
+extension CreateProfileSpecViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+    
+        return CGSize(width: (collectionView.bounds.size.width - 32) / 3, height: 44)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
     
 }

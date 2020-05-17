@@ -10,18 +10,19 @@ import UIKit
 
 class ProfileInterestsView: UIView {
     private let interestsLabel = UILabel()
-    private let tableView = UITableView()
+    private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var interestsArray: [ProfileKeyInterests]?
     private let leading = 20.f
     private let heightLabel = 15.f
     private let verticalSpacing = 5.f
+    private var size = 18.f
     
     convenience init(interests: [ProfileKeyInterests]) {
         self.init()
         self.interestsArray = interests
         backgroundColor = .white
         setupJobLabel()
-        setupTableView()
+        setupCollectionView()
     }
     
     private func setupJobLabel() {
@@ -34,71 +35,104 @@ class ProfileInterestsView: UIView {
         interestsLabel.translatesAutoresizingMaskIntoConstraints = false
         interestsLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
         interestsLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor,
-                                          constant: leading).isActive = true
+                                                constant: leading).isActive = true
         interestsLabel.topAnchor.constraint(equalTo: self.topAnchor,
-                                      constant: 16).isActive = true
+                                            constant: 16).isActive = true
         interestsLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-                                           constant: -leading).isActive = true
+                                                 constant: -leading).isActive = true
     }
     
-    private func setupTableView() {
-        let height = (heightLabel + verticalSpacing) * (interestsArray?.count.f ?? 0)
-        self.addSubview(tableView)
-        tableView.register(ProfileJobCell.self, forCellReuseIdentifier: "ProfileInterestsCell")
-        tableView.dataSource = self
-        tableView.delegate = self
-        tableView.separatorStyle = .none
-        tableView.isScrollEnabled = false
-        tableView.isUserInteractionEnabled = false
+    private func setupCollectionView() {
+        let top = 10.f
+        self.addSubview(collectionView)
+        collectionView.register(InterestCollectionViewCell.self, forCellWithReuseIdentifier: "InterestCell")
+        collectionView.backgroundColor = .clear
+        collectionView.dataSource = self
+        collectionView.delegate = self
         
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor,
-                                           constant: leading).isActive = true
-        tableView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-                                            constant: -leading).isActive = true
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.topAnchor.constraint(equalTo: interestsLabel.bottomAnchor,
+                                            constant: top).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: leading - 8).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -(leading - 8)).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -top).isActive = true
     }
     
 }
 
-// MARK: - UITableViewDelegate
-extension ProfileInterestsView: UITableViewDelegate {
+// MARK: - Collection view
+extension ProfileInterestsView: UICollectionViewDelegate {
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return heightLabel
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //        presenter?.addInterest(index: indexPath.item)
     }
     
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return verticalSpacing
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = UIView()
-        headerView.backgroundColor = .clear
-        return headerView
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        //        presenter?.deleteInterest(index: indexPath.item)
     }
     
 }
 
-// MARK: - UITableViewDataSource
-extension ProfileInterestsView: UITableViewDataSource {
+extension ProfileInterestsView: UICollectionViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return interestsArray?.count ?? 0
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
+                                                      for: indexPath) as! InterestCollectionViewCell
+        size = 18
+        cell.delegate = self
+        cell.configure(interestsArray?[indexPath.item].name ?? "", icon: "Search")
+        return cell
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileInterestsCell",
-                                                       for: indexPath) as? ProfileJobCell
-            else { return UITableViewCell() }
+}
+
+extension ProfileInterestsView: InterestCollectionViewCellDelegate {
+    
+    func fontSize(interest: String) -> CGFloat {
+        let width = ((collectionView.bounds.size.width - 32) / 3) - 24
+        let height = 42.f
         
-        cell.configure(interestsArray?[indexPath.section].name ?? "")
-        return cell
+        let font = UIFont.systemFontOfSize(size: size)
+        if interest.width(withConstrainedHeight: height, font: font, minimumTextWrapWidth: 10) > width {
+            size -= 1
+            return fontSize(interest: interest)
+        } else {
+            return size
+        }
+    }
+    
+}
+
+extension ProfileInterestsView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        return CGSize(width: (collectionView.bounds.size.width - 32) / 3, height: 44)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 16
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 8
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
     }
     
 }
