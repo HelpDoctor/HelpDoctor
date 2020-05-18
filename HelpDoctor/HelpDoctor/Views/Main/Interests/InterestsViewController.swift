@@ -22,10 +22,11 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     private let stackView = UIView()
     private let addTextField = UITextField()
     private let nextButton = HDButton(title: "Далее")
-    private let addButton = HDButton(title: "Добавить", fontSize: 14)
+    private let addButton = HDButton(title: "Отправить", fontSize: 14)
+    private let button = UIButton()
     
     private var keyboardHeight = 0.f
-    private let heightSearchBar = 56.f
+    private let heightSearchBar = 50.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -40,10 +41,12 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         setupSearchBar()
         setupNextButton()
         setupStackView()
+        setupButton()
         setupAddButton()
         setupAddTextField()
         setupTableView()
         selectRows()
+        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -109,7 +112,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка группы добавления интереса
     private func setupStackView() {
-        let bottom = 10.f
+        let bottom = 20.f
         stackView.backgroundColor = .white
         scrollView.addSubview(stackView)
         
@@ -120,13 +123,31 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         stackView.heightAnchor.constraint(equalToConstant: heightSearchBar).isActive = true
     }
     
+    private func setupButton() {
+        button.backgroundColor = .hdButtonColor
+        button.addTarget(self, action: #selector(buttonPressed), for: .touchUpInside)
+        button.setTitle("Не нашли, то что искали?", for: .normal)
+        button.titleLabel?.font = UIFont.boldSystemFontOfSize(size: 12)
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 5
+        button.clipsToBounds = true
+        stackView.addSubview(button)
+        
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.centerYAnchor.constraint(equalTo: stackView.centerYAnchor).isActive = true
+        button.centerXAnchor.constraint(equalTo: stackView.centerXAnchor).isActive = true
+        button.widthAnchor.constraint(equalToConstant: 170).isActive = true
+        button.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
     /// Установка кнопки добавления интереса
     private func setupAddButton() {
-        let trailing = 14.f
+        let trailing = 10.f
         let height = 40.f
         let width = 98.f
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.isEnabled = true
+        addButton.isHidden = true
         stackView.addSubview(addButton)
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
@@ -139,12 +160,12 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода нового интереса
     private func setupAddTextField() {
-        let height = 36.f
-        let leading = 8.f
+        let height = 30.f
+        let leading = 20.f
         addTextField.layer.borderColor = UIColor(red: 0.18, green: 0.369, blue: 0.667, alpha: 1).cgColor
-        addTextField.layer.borderWidth = 1
+        addTextField.layer.borderWidth = 2
         addTextField.layer.cornerRadius = 5
-        addTextField.placeholder = "Добавить научный интерес"
+        addTextField.placeholder = "Введите научный интерес"
         addTextField.font = UIFont.systemFontOfSize(size: 14)
         addTextField.textColor = .textFieldTextColor
         addTextField.leftView = UIView(frame: CGRect(x: 0,
@@ -152,6 +173,7 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
                                                      width: 8,
                                                      height: addTextField.frame.height))
         addTextField.leftViewMode = .always
+        addTextField.isHidden = true
         stackView.addSubview(addTextField)
         
         addTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -190,14 +212,64 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: Session.width - 10).isActive = true
+                                             constant: Session.width - 20).isActive = true
         nextButton.bottomAnchor.constraint(equalTo: scrollView.topAnchor,
                                            constant: Session.height - Session.bottomPadding - 98).isActive = true
         nextButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
+    /// Добавление распознавания касания экрана
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    // MARK: - IBActions
+    /// Скрытие клавиатуры
+    @objc func hideKeyboard() {
+        scrollView.endEditing(true)
+        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(999)?.removeFromSuperview()
+    }
+    
+    @objc func keyboardWasShown​(notification: Notification) {
+        guard let info = notification.userInfo else {
+            assertionFailure()
+            return
+        }
+        //swiftlint:disable force_cast
+        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
+        keyboardHeight = kbSize.height
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc func keyboardWillBeHidden(notification: Notification) {
+        let contentInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
     // MARK: - Buttons methods
+    @objc private func buttonPressed() {
+        button.isHidden = true
+        addButton.isHidden = false
+        addTextField.isHidden = false
+    }
+    
     /// Обработка нажатия кнопки добавления интереса
     @objc private func addButtonPressed() {
         presenter?.createInterest(interest: addTextField.text)
