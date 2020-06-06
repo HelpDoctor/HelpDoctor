@@ -35,7 +35,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     var jobArray: [MedicalOrganization?] = []
     var specArray: [MedicalSpecialization?] = []
     var userInterests: [ListOfInterests] = []
-    var arrayOfAllInterests: [ListOfInterests]?
+    var arrayOfAllInterests: [ListOfInterests] = []
     var popularInterests: [ListOfInterests]?
     
     // MARK: - Init
@@ -105,10 +105,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         switch specArray.count {
         case 0:
             view.showAlert(message: "Необходимо заполнить основную специализацию на предыдущем экране")
-        case 1:
-            getInterestsOneSpec(mainSpec: specArray[0]?.code ?? "general")
         default:
-            getInterestsTwoSpec(mainSpec: specArray[0]?.code ?? "general", addSpec: specArray[1]?.code ?? "040100")
+            var isFirst = true
+            specArray.forEach { medicalSpecialization in
+                getInterests(mainSpec: medicalSpecialization?.code ?? "general", isFirst: isFirst)
+                isFirst = false
+            }
         }
     }
     
@@ -138,9 +140,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Загрузка массива всех интересов по одной специализации пользователя с сервера
     /// - Parameters:
     ///   - mainSpec: основная специализация пользователя
-    private func getInterestsOneSpec(mainSpec: String) {
+    private func getInterests(mainSpec: String, isFirst: Bool) {
         let getListOfInterest = Profile()
-        
         getData(typeOfContent: .getListOfInterestsExtOne,
                 returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
@@ -150,35 +151,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                     
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
-                            let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
+                            if isFirst {
+                                let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
+                                self?.arrayOfAllInterests += generalSpec ?? []
+                            }
                             let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                            self?.arrayOfAllInterests = (interestMainSpec ?? []) + (generalSpec ?? [])
-                            self?.view.reloadCollectionView()
-                        }
-                    }
-        }
-    }
-    
-    /// Загрузка массива всех интересов по двум специализациям пользователя с сервера
-    /// - Parameters:
-    ///   - mainSpec: основная специализация пользователя
-    ///   - addSpec: дополнительная специализация пользователя
-    private func getInterestsTwoSpec(mainSpec: String, addSpec: String) {
-        let getListOfInterest = Profile()
-        
-        getData(typeOfContent: .getListOfInterestsExtTwo,
-                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
-                requestParams: ["spec_code": "\(mainSpec)/\(addSpec)"] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getListOfInterest.listOfInterests = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
-                            let mainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                            let addSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(addSpec)"]
-                            self?.arrayOfAllInterests = (mainSpec ?? []) + (addSpec ?? []) + (generalSpec ?? [])
+                            self?.arrayOfAllInterests += interestMainSpec ?? []
                             self?.view.reloadCollectionView()
                         }
                     }
@@ -204,11 +182,13 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                             switch specArr.count {
                             case 0:
                                 self?.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
-                            case 1:
-                                self?.getInterestsOneSpec(mainSpec: specArr[0].code ?? "general")
                             default:
-                                self?.getInterestsTwoSpec(mainSpec: specArr[0].code ?? "general",
-                                                          addSpec: specArr[1].code ?? "040100")
+                                var isFirst = true
+                                specArr.forEach { medicalSpecialization in
+                                    self?.getInterests(mainSpec: medicalSpecialization.code ?? "general",
+                                                       isFirst: isFirst)
+                                    isFirst = false
+                                }
                             }
                         }
                     }
@@ -286,7 +266,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         presenter.specArray = specArray
         presenter.arrayInterests = arrayOfAllInterests
         presenter.userInterests = userInterests
-        presenter.filteredArray = arrayOfAllInterests ?? []
+        presenter.filteredArray = arrayOfAllInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

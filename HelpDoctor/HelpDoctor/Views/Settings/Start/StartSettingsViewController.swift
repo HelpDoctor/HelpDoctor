@@ -27,7 +27,6 @@ class StartSettingsViewController: UIViewController {
          SettingsRow.help]
     ]
     private let tableView = UITableView()
-//    private let deleteView = UIView()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -39,7 +38,6 @@ class StartSettingsViewController: UIViewController {
                         title: "Настройки",
                         font: .boldSystemFontOfSize(size: 14))
         setupTableView()
-//        setupDeleteView()
         presenter?.loadSettings()
     }
     
@@ -47,6 +45,7 @@ class StartSettingsViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        self.tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Setup views
@@ -67,38 +66,7 @@ class StartSettingsViewController: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
-    /*
-    private func setupDeleteView() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(deleteButtonPressed))
-        deleteView.backgroundColor = .red
-        deleteView.addGestureRecognizer(tap)
-        view.addSubview(deleteView)
-        
-        deleteView.translatesAutoresizingMaskIntoConstraints = false
-        deleteView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        deleteView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        deleteView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
-        deleteView.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-
-    @objc private func deleteButtonPressed() {
-        let unRegistration = Registration(email: nil, password: nil, token: nil)
-        getData(typeOfContent: .deleteMail,
-                returning: (Int?, String?).self,
-                requestParams: [:]) { result in
-            let dispathGroup = DispatchGroup()
-            unRegistration.responce = result
-
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async {
-                    print("result= \(String(describing: unRegistration.responce))")
-                    UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                    AppDelegate.shared.rootViewController.switchToLogout() 
-                }
-            }
-        }
-    }
-    */
+    
 }
 
 // MARK: - Table View Delegate
