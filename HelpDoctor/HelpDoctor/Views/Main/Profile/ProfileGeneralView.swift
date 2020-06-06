@@ -22,10 +22,11 @@ class ProfileGeneralView: UIView {
     private let addressDataLabel = UILabel()
     private let leading = 20.f
     private let heightLabel = 15.f
-    private let verticalSpacing = 5.f
+    private var verticalSpacing = 5.f
     
-    convenience init(user: ProfileKeyUser) {
+    convenience init(user: ProfileKeyUser, height: CGFloat) {
         self.init()
+        verticalSpacing = (height - heightLabel * 9) / 10
         self.birthdayDataLabel.text = convertDate(user.birthday)
         self.genderDataLabel.text = formatGender(user.gender)
         self.emailLabel.text = user.email

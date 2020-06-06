@@ -16,6 +16,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Constants and variables
     private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 40.f
+    private let heightTopStackView = 50.f
+    private var heightTopView = 0.f
     private let scrollView = UIScrollView()
     private let topView = UIImageView()
     private var userPhoto = UIImageView()
@@ -40,6 +42,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        heightTopView = (Session.height / 2) - heightTopStackView - headerHeight
         view.backgroundColor = backgroundColor
         setupScrollView()
         setupHeaderView(color: .searchBarTintColor, height: headerHeight, presenter: presenter, title: "Мой профиль")
@@ -93,7 +96,9 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка формы отображения общей информации
     func setupGeneralView() {
         guard let user = Session.instance.user else { return }
-        generalView = ProfileGeneralView(user: user)
+        let statusBarHeight = UIApplication.shared.statusBarFrame.height
+        let height = (Session.height / 2) - 40 - (tabBarController?.tabBar.frame.height ?? 0) - statusBarHeight
+        generalView = ProfileGeneralView(user: user, height: height)
         let swipeRight = UISwipeGestureRecognizer()
         swipeRight.addTarget(self, action: #selector(educationPageButtonPressed))
         swipeRight.direction = .left
@@ -188,13 +193,14 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка формы с бэкграундом под фото
     private func setupTopView() {
         topView.image = UIImage(named: "BackgroundProfile")
+        topView.contentMode = .scaleAspectFill
         scrollView.addSubview(topView)
         
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         topView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         topView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        topView.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        topView.heightAnchor.constraint(equalToConstant: heightTopView).isActive = true
     }
     
     /// Установка поля для аватара пользователя
@@ -204,15 +210,15 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure("Missing ​​\(defaultImage) asset")
             return
         }
-        let imageSize = 120.f
+        let imageSize = heightTopView * 2 / 3
         userPhoto.image = image
         scrollView.addSubview(userPhoto)
         
         userPhoto.translatesAutoresizingMaskIntoConstraints = false
         userPhoto.centerXAnchor.constraint(equalTo: topView.centerXAnchor).isActive = true
         userPhoto.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
-        userPhoto.widthAnchor.constraint(equalToConstant: imageSize).isActive = true
-        userPhoto.heightAnchor.constraint(equalToConstant: imageSize).isActive = true
+        userPhoto.widthAnchor.constraint(equalTo: topView.heightAnchor, multiplier: 2 / 3).isActive = true
+        userPhoto.heightAnchor.constraint(equalTo: topView.heightAnchor, multiplier: 2 / 3).isActive = true
         
         userPhoto.layer.borderWidth = 5
         userPhoto.layer.borderColor = UIColor.white.cgColor
@@ -223,7 +229,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка иконки верифицированный пользователь
     private func setupVerificationIcon() {
-        let width = 30.f
+        let width = (heightTopView * 2 / 3) / 4
         let trailing = 10.f
         let bottom = 4.f
         
@@ -246,7 +252,6 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка формы под отображение ФИО, специализации и кнопки редактирования профиля
     private func setupTopStackView() {
-        let height = 50.f
         topStackView.backgroundColor = .searchBarTintColor
         scrollView.addSubview(topStackView)
         
@@ -254,7 +259,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         topStackView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
         topStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
         topStackView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        topStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
+        topStackView.heightAnchor.constraint(equalToConstant: heightTopStackView).isActive = true
     }
     
     /// Установка надписи отображения ФИО

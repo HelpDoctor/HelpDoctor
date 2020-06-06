@@ -92,9 +92,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
                                 UserDefaults.standard.set("processing", forKey: "userStatus")
                                 self?.toEndVerification()
                             case "verified":
-                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
-                                    self?.toOkVerification()
-                                }
+                                self?.toOkVerification()
                                 UserDefaults.standard.set("verified", forKey: "userStatus")
                             default:
                                 break

@@ -25,6 +25,8 @@ class StartMainViewController: UIViewController {
     private let eventView = UIView() //Temporary
     private let bottomLabel = UILabel()
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
+    private let profileButton = HDButton(title: "Профиль", fontSize: 14) //Temporary
+    private let deleteProfileButton = HDButton(title: "Удалить профиль", fontSize: 14) //Temporary
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -40,6 +42,8 @@ class StartMainViewController: UIViewController {
         setupEventView() //Temporary
         setupBottomLabel()
         setupFillProfileButton()
+        setupProfileButton() //Temporary
+        setupDeleteProfileButton() //Temporary
         presenter?.profileCheck()
     }
     
@@ -201,6 +205,31 @@ class StartMainViewController: UIViewController {
         fillProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
+    private func setupProfileButton() {
+        profileButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
+        profileButton.isEnabled = true
+        view.addSubview(profileButton)
+        
+        profileButton.translatesAutoresizingMaskIntoConstraints = false
+        profileButton.topAnchor.constraint(equalTo: fillProfileButton.bottomAnchor, constant: 10).isActive = true
+        profileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        profileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
+    private func setupDeleteProfileButton() {
+        deleteProfileButton.addTarget(self, action: #selector(deleteProfileButtonPressed), for: .touchUpInside)
+        deleteProfileButton.isEnabled = true
+        deleteProfileButton.backgroundColor = .red
+        view.addSubview(deleteProfileButton)
+        
+        deleteProfileButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteProfileButton.topAnchor.constraint(equalTo: profileButton.bottomAnchor, constant: 10).isActive = true
+        deleteProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        deleteProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        deleteProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
     // MARK: - Buttons methods
     /// Отработка нажатия кнопки Заполнить профиль
     @objc private func fillProfileButtonPressed() {
@@ -209,7 +238,29 @@ class StartMainViewController: UIViewController {
     
     /// Отработка нажатия кнопки Профиль
     @objc private func profileButtonPressed() {
-        presenter?.toProfile()
+        //        presenter?.toProfile()
+        let viewController = ProfileViewController()
+        let presenter = ProfilePresenter(view: viewController)
+        viewController.presenter = presenter
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc private func deleteProfileButtonPressed() {
+        let unRegistration = Registration(email: nil, password: nil, token: nil)
+        getData(typeOfContent: .deleteMail,
+                returning: (Int?, String?).self,
+                requestParams: [:]) { result in
+                    let dispathGroup = DispatchGroup()
+                    unRegistration.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async {
+                            print("result= \(String(describing: unRegistration.responce))")
+                            UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                            AppDelegate.shared.rootViewController.switchToLogout()
+                        }
+                    }
+        }
     }
     
 }

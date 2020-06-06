@@ -37,8 +37,8 @@ class FirstScreenViewController: UIViewController {
         setupTitleLabel()
         setupTopLabel()
         setupBottomLabel()
-        setupLoginButton()
         setupRegisterButton()
+        setupLoginButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -165,34 +165,34 @@ class FirstScreenViewController: UIViewController {
         bottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка кнопки "Войти"
-    private func setupLoginButton() {
-        let top = 24.f
-        loginButton.layer.cornerRadius = heightButton / 2
-        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
-        view.addSubview(loginButton)
-        
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
-                                         constant: top).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
-    }
-    
     /// Установка кнопки "Регистрация"
     private func setupRegisterButton() {
-        let top = 16.f
+        let top = 24.f
         registerButton.layer.cornerRadius = heightButton / 2
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         view.addSubview(registerButton)
         
         registerButton.translatesAutoresizingMaskIntoConstraints = false
-        registerButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor,
+        registerButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
                                             constant: top).isActive = true
         registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         registerButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
         registerButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
+    }
+    
+    /// Установка кнопки "Войти"
+    private func setupLoginButton() {
+        let top = 16.f
+        loginButton.layer.cornerRadius = heightButton / 2
+        loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
+        view.addSubview(loginButton)
+        
+        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
+                                         constant: top).isActive = true
+        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
+        loginButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
     // MARK: - Buttons methods

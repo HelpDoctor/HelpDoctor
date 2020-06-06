@@ -67,6 +67,7 @@ class SettingsCell: UITableViewCell {
     func configureDisabled(settingsRow: SettingsRow) {
         let imageName = String(describing: settingsRow)
         settingsImage.image = UIImage(named: imageName)
+        settingsImage.alpha = 0.5
         settingsLabel.text = settingsRow.rawValue
         settingsLabel.textColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     }

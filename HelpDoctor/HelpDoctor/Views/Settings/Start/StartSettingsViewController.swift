@@ -16,12 +16,18 @@ class StartSettingsViewController: UIViewController {
     // MARK: - Constants
     private let headerHeight = 40.f
     private let settingsArray = [
-        [SettingsRow.user, SettingsRow.generalSettings, SettingsRow.securitySettings, SettingsRow.addFriends],
-        [SettingsRow.notificationSettings, SettingsRow.emailSettings],
-        [SettingsRow.callback, SettingsRow.help]
+        [SettingsRow.user,
+         SettingsRow.verification,
+         SettingsRow.generalSettings,
+         SettingsRow.securitySettings,
+         SettingsRow.addFriends],
+        [SettingsRow.notificationSettings,
+         SettingsRow.emailSettings],
+        [SettingsRow.callback,
+         SettingsRow.help]
     ]
     private let tableView = UITableView()
-    private let deleteView = UIView()
+//    private let deleteView = UIView()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -33,7 +39,7 @@ class StartSettingsViewController: UIViewController {
                         title: "Настройки",
                         font: .boldSystemFontOfSize(size: 14))
         setupTableView()
-        setupDeleteView()
+//        setupDeleteView()
         presenter?.loadSettings()
     }
     
@@ -61,7 +67,7 @@ class StartSettingsViewController: UIViewController {
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
-    
+    /*
     private func setupDeleteView() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(deleteButtonPressed))
         deleteView.backgroundColor = .red
@@ -92,18 +98,26 @@ class StartSettingsViewController: UIViewController {
             }
         }
     }
-
+    */
 }
 
 // MARK: - Table View Delegate
 extension StartSettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        if Session.height == 568 {
+            return 30
+        } else {
+            return 40
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 40
+        if Session.height == 568 {
+            return 40
+        } else {
+            return 50
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -143,9 +157,11 @@ extension StartSettingsViewController: UITableViewDelegate {
             switch indexPath.row {
             case 0:
                 presenter?.userRow()
-            case 2:
-                presenter?.securityRow()
+            case 1:
+                presenter?.verificationRow()
             case 3:
+                presenter?.securityRow()
+            case 4:
                 presenter?.inviteRow()
             default:
                 print("\(indexPath.section)")
@@ -188,7 +204,7 @@ extension StartSettingsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
                                                        for: indexPath) as? SettingsCell
             else { return UITableViewCell() }
-        if indexPath.section == 0 && indexPath.row == 1 {
+        if indexPath.section == 0 && indexPath.row == 2 {
             cell.configureDisabled(settingsRow: settingsArray[indexPath.section][indexPath.row])
         } else {
             cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])

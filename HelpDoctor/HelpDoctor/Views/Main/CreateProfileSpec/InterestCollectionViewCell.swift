@@ -45,7 +45,7 @@ class InterestCollectionViewCell: UICollectionViewCell {
         cellLabel.translatesAutoresizingMaskIntoConstraints = false
         cellLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1).isActive = true
         cellLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1).isActive = true
-        cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 2).isActive = true
+        cellLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 4).isActive = true
         cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -22).isActive = true
     }
     

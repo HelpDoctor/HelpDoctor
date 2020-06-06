@@ -94,7 +94,12 @@ extension ProfileInterestsView: UICollectionViewDataSource {
 extension ProfileInterestsView: InterestCollectionViewCellDelegate {
     
     func fontSize(interest: String) -> CGFloat {
-        let width = ((collectionView.bounds.size.width - 32) / 3) - 24
+        let width = ((collectionView.bounds.size.width - 32) / 3) - 26
+        /*
+         32 - 8 и 8 отступы collectionView от краев, 8 и 8 расстояние между ячейками
+         3 - количество ячеек в строке
+         26 - отступы текста от кграниц ячейки (4 слева, 22 справа)
+         */
         let height = 42.f
         
         let font = UIFont.systemFontOfSize(size: size)
