@@ -12,7 +12,6 @@ protocol RegisterScreenPresenter {
     init(view: RegisterScreenViewController)
     func registerButtonPressed(email: String)
     func topEmailChanged(topEmail: String?)
-    func bottomEmailChanged(bottomEmail: String?)
     func checkPolicyChanged(isAgree: Bool)
     func register(email: String)
     func back()
@@ -26,9 +25,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     // MARK: - Constants and variables
     private let validateManager = ValidateManager()
     private var topEmail: String?
-    private var bottomEmail: String?
     private var isValidatedTopEmail = false
-    private var isValidatedBottomEmail = false
     private var isAgreePolicy = false
     
     // MARK: - Init
@@ -78,22 +75,6 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
         checkInput()
     }
     
-    /// Проверка подтверждения адреса электронной почты
-    /// - Parameter bottomEmail: подтверждение адреса электронной почты
-    func bottomEmailChanged(bottomEmail: String?) {
-        var isValidated = false
-        if let validateEmail = checkValid(email: bottomEmail) {
-            self.bottomEmail = validateEmail
-            if bottomEmail == topEmail {
-                isValidated = true
-            }
-        } else {
-            self.bottomEmail = nil
-        }
-        isValidatedBottomEmail = isValidated
-        checkInput()
-    }
-    
     func checkPolicyChanged(isAgree: Bool) {
         isAgreePolicy = isAgree
         checkInput()
@@ -102,7 +83,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     // MARK: - Private methods
     /// Проверка введенных адресов
     private func checkInput() {
-        if isValidatedBottomEmail, isValidatedTopEmail, topEmail == bottomEmail, isAgreePolicy {
+        if isValidatedTopEmail, isAgreePolicy {
             view.updateButtonRegister(isEnabled: true)
         } else {
             view.updateButtonRegister(isEnabled: false)

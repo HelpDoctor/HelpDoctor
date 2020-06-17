@@ -75,6 +75,7 @@
 		4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */; };
 		4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */; };
 		4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */; };
+		4645A63D24972C48006232F9 /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4645A63C24972C48006232F9 /* Dictionary+Extensions.swift */; };
 		4667C64C246FDE0A0032B6C2 /* Feedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64B246FDE0A0032B6C2 /* Feedback.swift */; };
 		4667C64E246FE1F90032B6C2 /* InviteUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64D246FE1F90032B6C2 /* InviteUserRequest.swift */; };
 		4667C6502470F5B20032B6C2 /* ProfileJobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64F2470F5B20032B6C2 /* ProfileJobCell.swift */; };
@@ -304,6 +305,7 @@
 		4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITapGestureRecognizer+Extensions.swift"; sourceTree = "<group>"; };
 		4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2ViewController.swift; sourceTree = "<group>"; };
 		4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2Presenter.swift; sourceTree = "<group>"; };
+		4645A63C24972C48006232F9 /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		4667C64B246FDE0A0032B6C2 /* Feedback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feedback.swift; sourceTree = "<group>"; };
 		4667C64D246FE1F90032B6C2 /* InviteUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InviteUserRequest.swift; sourceTree = "<group>"; };
 		4667C64F2470F5B20032B6C2 /* ProfileJobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileJobCell.swift; sourceTree = "<group>"; };
@@ -1065,6 +1067,7 @@
 				4640B6ED2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift */,
 				4609F43A24422DB400F17E45 /* UIView+Extensions.swift */,
 				469DD65B245ADEF0006DBD30 /* UITextView+Extensions.swift */,
+				4645A63C24972C48006232F9 /* Dictionary+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1441,6 +1444,7 @@
 				46EFF4E9243797B3004B9558 /* CreateProfileImageViewController.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
+				4645A63D24972C48006232F9 /* Dictionary+Extensions.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
 				469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */,
 				46203F2323CB04DC0072653A /* OtherTimeNotifyViewController.swift in Sources */,

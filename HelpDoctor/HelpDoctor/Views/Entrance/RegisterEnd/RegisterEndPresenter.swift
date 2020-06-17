@@ -10,6 +10,7 @@ import UIKit
 
 protocol RegisterEndPresenterProtocol {
     init(view: RegisterEndViewController)
+    func setEmailOnView() -> String
     func loginButtonPressed(email: String, password: String)
     func back()
 }
@@ -21,6 +22,10 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
     
     required init(view: RegisterEndViewController) {
         self.view = view
+    }
+    
+    func setEmailOnView() -> String {
+        return email ?? ""
     }
     
     /// Отправка на сервер запроса авторизации

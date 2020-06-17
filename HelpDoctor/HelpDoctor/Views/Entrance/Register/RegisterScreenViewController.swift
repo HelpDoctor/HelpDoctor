@@ -21,8 +21,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private let topLabel = UILabel()
     private let bottomLabel = UILabel()
     private let topEmailTextField = UITextField()
-    private let textFieldLabel = UILabel()
-    private let bottomEmailTextField = UITextField()
     private var registerButton = HDButton(title: "Отправить", fontSize: 18)
     private let backButton = BackButton()
     private let checkButton = CheckBox(type: .square)
@@ -40,8 +38,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         setupTopLabel()
         setupBottomLabel()
         setupTopEmailTextField()
-        setupTextFieldLabel()
-        setupBottomEmailTextField()
         setupRegisterButton()
         setupBackButton()
         setupPolicyLabel()
@@ -139,8 +135,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка верхней надписи
     private func setupTopLabel() {
-        let top = 6.f
-        let width = Session.width - 22.f
+        let top = 17.f
+        let width = Session.width - 40.f
         let height = 34.f
         topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
@@ -160,7 +156,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     /// Установка нижней надписи
     private func setupBottomLabel() {
         let top = 9.f
-        let width = Session.width - 22.f
+        let width = Session.width - 40.f
         let height = 34.f
         bottomLabel.font = .systemFontOfSize(size: 14)
         bottomLabel.textColor = .white
@@ -179,7 +175,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка поля ввода адреса электронной почты
     private func setupTopEmailTextField() {
-        let top = 10.f
+        let top = 17.f
         let width = Session.width - 114.f
         let height = 30.f
         topEmailTextField.addTarget(self,
@@ -209,61 +205,9 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка надписи подтверждения адреса электронной почты
-    private func setupTextFieldLabel() {
-        let top = 7.f
-        let width = Session.width - 22.f
-        let height = 16.f
-        textFieldLabel.font = .systemFontOfSize(size: 14)
-        textFieldLabel.textColor = .white
-        textFieldLabel.text = "Подтвердите свой e-mail, пожалуйста"
-        textFieldLabel.textAlignment = .left
-        textFieldLabel.numberOfLines = 0
-        scrollView.addSubview(textFieldLabel)
-        
-        textFieldLabel.translatesAutoresizingMaskIntoConstraints = false
-        textFieldLabel.topAnchor.constraint(equalTo: topEmailTextField.bottomAnchor,
-                                            constant: top).isActive = true
-        textFieldLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        textFieldLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        textFieldLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
-    /// Установка поля ввода подтверждения адреса электронной почты
-    private func setupBottomEmailTextField() {
-        let top = 7.f
-        let width = Session.width - 114.f
-        let height = 30.f
-        bottomEmailTextField.addTarget(self,
-                                       action: #selector(self.bottomEmailChanged(_:)),
-                                       for: UIControl.Event.editingChanged)
-        bottomEmailTextField.font = .systemFontOfSize(size: 14)
-        bottomEmailTextField.keyboardType = .emailAddress
-        bottomEmailTextField.textColor = .textFieldTextColor
-        bottomEmailTextField.autocapitalizationType = .none
-        bottomEmailTextField.placeholder = "E-mail*"
-        bottomEmailTextField.textAlignment = .left
-        bottomEmailTextField.backgroundColor = .white
-        bottomEmailTextField.layer.cornerRadius = 5
-        bottomEmailTextField.autocorrectionType = .no
-        bottomEmailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                             y: 0,
-                                                             width: 8,
-                                                             height: bottomEmailTextField.frame.height))
-        bottomEmailTextField.leftViewMode = .always
-        scrollView.addSubview(bottomEmailTextField)
-        
-        bottomEmailTextField.translatesAutoresizingMaskIntoConstraints = false
-        bottomEmailTextField.topAnchor.constraint(equalTo: textFieldLabel.bottomAnchor,
-                                                  constant: top).isActive = true
-        bottomEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        bottomEmailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        bottomEmailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
     /// Установка кнопки "Отправить"
     private func setupRegisterButton() {
-        let top = 10.f
+        let top = 20.f
         let width = 148.f
         let height = 44.f
         registerButton.layer.cornerRadius = height / 2
@@ -272,7 +216,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(registerButton)
         
         registerButton.translatesAutoresizingMaskIntoConstraints = false
-        registerButton.topAnchor.constraint(equalTo: bottomEmailTextField.bottomAnchor,
+        registerButton.topAnchor.constraint(equalTo: topEmailTextField.bottomAnchor,
                                             constant: top).isActive = true
         registerButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         registerButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -380,13 +324,13 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     @objc func topEmailChanged(_ textField: UITextField) {
         presenter?.topEmailChanged(topEmail: textField.text)
     }
-    
+    /*
     /// Проверка заполнения поля ввода подтверждения адреса электронной почты
     /// - Parameter textField: поле ввода подтверждения адреса электронной почты
     @objc func bottomEmailChanged(_ textField: UITextField) {
         presenter?.bottomEmailChanged(bottomEmail: textField.text)
     }
-    
+    */
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
@@ -420,7 +364,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
-        guard let email = bottomEmailTextField.text else { return }
+        guard let email = topEmailTextField.text else { return }
         presenter?.registerButtonPressed(email: email)
     }
     

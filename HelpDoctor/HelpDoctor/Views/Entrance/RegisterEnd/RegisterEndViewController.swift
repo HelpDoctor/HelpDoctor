@@ -152,6 +152,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.keyboardType = .emailAddress
         emailTextField.textColor = .textFieldTextColor
         emailTextField.placeholder = "E-mail*"
+        emailTextField.text = presenter?.setEmailOnView()
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
         emailTextField.textAlignment = .left
