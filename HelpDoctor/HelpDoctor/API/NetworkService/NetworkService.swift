@@ -238,6 +238,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         request.httpBody = jsonData
         
     default:

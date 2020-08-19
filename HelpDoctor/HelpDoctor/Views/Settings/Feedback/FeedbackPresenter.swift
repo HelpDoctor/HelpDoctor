@@ -27,6 +27,15 @@ class FeedbackPresenter: FeedbackPresenterProtocol {
             return
         }
         
+        if text.count > 300 {
+            view.showAlert(message:
+                """
+                Превышено допустимое кол-во символов ввода. Попробуйте рассказать о своей проблеме короче
+                """
+            )
+            return
+        }
+        
         view.startActivityIndicator()
         let sendFeedback = Feedback(text: text)
         

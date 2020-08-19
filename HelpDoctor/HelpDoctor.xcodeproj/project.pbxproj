@@ -89,6 +89,7 @@
 		46787A75243906D9005C0258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A74243906D9005C0258 /* Settings.swift */; };
 		46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */; };
 		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
+		46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */; };
 		469DD6562459463F006DBD30 /* CreateProfileStep6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */; };
 		469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */; };
 		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
@@ -319,6 +320,7 @@
 		46787A74243906D9005C0258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundViewController.swift; sourceTree = "<group>"; };
 		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
+		46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLayerCombine.swift; sourceTree = "<group>"; };
 		469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6ViewController.swift; sourceTree = "<group>"; };
 		469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6Presenter.swift; sourceTree = "<group>"; };
 		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -1227,6 +1229,7 @@
 			isa = PBXGroup;
 			children = (
 				C4CBC3A423D025E600434BFB /* NetworkService.swift */,
+				46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -1496,6 +1499,7 @@
 				C48F162A23B5FE87002D04E3 /* KeychainWrapper.swift in Sources */,
 				46F87F3E23BDEA510095264E /* ProfileHeaderView.swift in Sources */,
 				46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */,
+				46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */,
 				C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */,
 				46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
@@ -1717,7 +1721,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 786FYLB3L3;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1736,7 +1740,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 786FYLB3L3;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

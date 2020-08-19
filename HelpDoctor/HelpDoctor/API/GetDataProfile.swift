@@ -46,31 +46,33 @@ func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
     
     for (key, _) in startPoint {
         
-        let arrItems = startPoint[key] as! [AnyObject]
+//        let arrItems = startPoint[key] as! [AnyObject]
         
-        for finalObj in arrItems {
-            guard let obj = finalObj as? [String: Any] else { return ([:], nil, nil) }
+//        for finalObj in arrItems {
+            /*guard*/ let obj = startPoint[key]/* as? [String: Any] else { /*continue*/ return ([:], nil, nil) }*/
             
             switch key {
             case "interests":
-                profileKeyInterests.append(ProfileKeyInterests(interest_id: obj["interest_id"] as? Int,
-                                                               spec_code: obj["spec_code"] as? String,
-                                                               name: obj["name"] as? String))
+                profileKeyInterests.append(ProfileKeyInterests(interest_id: obj?["interest_id"] as? Int,
+                                                               spec_code: obj?["spec_code"] as? String,
+                                                               name: obj?["name"] as? String))
             case "job":
-                profileKeyJob.append(ProfileKeyJob(id: obj["id"] as? Int,
-                                                   job_oid: obj["job_oid"] as? String,
-                                                   is_main: obj["is_main"] as? Bool,
-                                                   nameShort: obj["nameShort"] as? String))
+                profileKeyJob.append(ProfileKeyJob(id: obj?["id"] as? Int,
+                                                   job_oid: obj?["job_oid"] as? String,
+                                                   is_main: obj?["is_main"] as? Bool,
+                                                   nameShort: obj?["nameShort"] as? String))
             case "spec":
-                profileKeySpec.append(ProfileKeySpec(id: obj["id"] as? Int,
-                                                     spec_id: obj["spec_id"] as? Int,
-                                                     is_main: obj["is_main"] as? Bool,
-                                                     code: obj["code"] as? String,
-                                                     name: obj["name"] as? String))
+                profileKeySpec.append(ProfileKeySpec(id: obj?["id"] as? Int,
+                                                     spec_id: obj?["spec_id"] as? Int,
+                                                     is_main: obj?["is_main"] as? Bool,
+                                                     code: obj?["code"] as? String,
+                                                     name: obj?["name"] as? String))
+            case "education":
+                print("education")
             default:
-                break
+                continue
             }
-        }
+//        }
         if key == "interests" { dataProfile[key] = profileKeyInterests as [AnyObject] }
         if key == "job" { dataProfile[key] = profileKeyJob as [AnyObject] }
         if key == "spec" { dataProfile[key] = profileKeySpec as [AnyObject] }

@@ -412,7 +412,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         hideEmploymentButton.addTarget(self, action: #selector(hideEmploymentCheckboxPressed), for: .touchUpInside)
         hideEmploymentButton.contentHorizontalAlignment = .left
         hideEmploymentButton.contentVerticalAlignment = .center
-        hideEmploymentButton.setTitle(" Скрыть информацию о моей занятости", for: .normal)
+        hideEmploymentButton.setTitle(" Скрыть информацию о моей занятости в результатах поиска", for: .normal)
         hideEmploymentButton.titleLabel?.font = .systemFontOfSize(size: 12)
         hideEmploymentButton.setTitleColor(.white, for: .normal)
         hideEmploymentButton.isSelected = false

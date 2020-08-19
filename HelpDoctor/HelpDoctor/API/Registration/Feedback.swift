@@ -17,7 +17,7 @@ final class Feedback {
     init(text: String?) {
         self.text = text
         requestParams = [:]
-        requestParams["text"] = self.text
+        requestParams["feedback"] = self.text
     }
     
 }

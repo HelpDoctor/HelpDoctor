@@ -22,6 +22,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     private let heightBottomLabel = 15.f
     private let heightCheckbox = 20.f
     private let heightSendButton = 44.f
+    private let heightAddFileTextField = 30.f
     private let widthContent = Session.width - 40
     private let scrollView = UIScrollView()
     private let topStackView = UIView()
@@ -29,10 +30,13 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     private let headerLabel = UILabel()
     private let textLabel = UILabel()
     private let textView = UITextView()
+    private let addFileTextField = UITextField()
     private let questionLabel = UILabel()
     private let emailButton = CheckBox(type: .square)
     private let messageButton = CheckBox(type: .square)
+    private let sendToEmailButton = UIButton()
     private var sendButton = HDButton(title: "Отправить", fontSize: 18)
+    private var sourceFile: URL?
     private var keyboardHeight = 0.f
     
     // MARK: - Lifecycle ViewController
@@ -51,9 +55,11 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         setupHeaderLabel()
         setupTextLabel()
         setupTextView()
+        setupAddFileTextField()
         setupQuestionLabel()
         setupEmailButton()
-        setupMessageButton()
+        setupSendToEmailButton()
+//        setupMessageButton()
         setupSendButton()
         addTapGestureToHideKeyboard()
     }
@@ -74,7 +80,8 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         let contentHeight = statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
-            + heightTextView + heightTopLabel + heightBottomLabel + (heightCheckbox * 2) + heightSendButton
+            + (heightAddFileTextField * 2)
+            + heightTextView + heightTopLabel + heightBottomLabel + heightCheckbox + heightSendButton
         return (Session.height - contentHeight) / 7
     }
     
@@ -179,6 +186,34 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         textView.heightAnchor.constraint(equalToConstant: heightTextView).isActive = true
     }
     
+    private func setupAddFileTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(addFileTextFieldPressed))
+        let leading = 20.f
+        let width = Session.width - (leading * 2)
+        addFileTextField.font = .systemFontOfSize(size: 14)
+        addFileTextField.textColor = .textFieldTextColor
+        addFileTextField.placeholder = "Прикрепить файл"
+        addFileTextField.textAlignment = .left
+        addFileTextField.backgroundColor = .white
+        addFileTextField.layer.cornerRadius = 5
+        addFileTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                         y: 0,
+                                                         width: 8,
+                                                         height: addFileTextField.frame.height))
+        addFileTextField.leftViewMode = .always
+        addFileTextField.addGestureRecognizer(tap)
+        scrollView.addSubview(addFileTextField)
+        
+        addFileTextField.translatesAutoresizingMaskIntoConstraints = false
+        addFileTextField.topAnchor.constraint(equalTo: textView.bottomAnchor,
+                                              constant: verticalInset).isActive = true
+        addFileTextField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                  constant: leading).isActive = true
+        addFileTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
+        addFileTextField.heightAnchor.constraint(equalToConstant: heightAddFileTextField).isActive = true
+    }
+    
     private func setupQuestionLabel() {
         let leading = 20.f
         let width = Session.width - (leading * 2)
@@ -192,7 +227,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         questionLabel.translatesAutoresizingMaskIntoConstraints = false
         questionLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: leading).isActive = true
-        questionLabel.topAnchor.constraint(equalTo: textView.bottomAnchor,
+        questionLabel.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
                                            constant: verticalInset).isActive = true
         questionLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         questionLabel.heightAnchor.constraint(equalToConstant: heightBottomLabel).isActive = true
@@ -216,6 +251,36 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         emailButton.heightAnchor.constraint(equalToConstant: heightCheckbox).isActive = true
     }
     
+    private func setupSendToEmailButton() {
+        let leading = 20.f
+        let width = 201.f
+        sendToEmailButton.addTarget(self, action: #selector(sendToEmailButtonPressed), for: .touchUpInside)
+        
+        let attributedString = NSMutableAttributedString(string: "Или напишите нам по адресу: helptodoctor@yandex.ru")
+        attributedString.addAttribute(.foregroundColor,
+                                      value: UIColor.white,
+                                      range: NSRange(location: 0, length: 28))
+        attributedString.addAttribute(.font,
+                                      value: UIFont.systemFontOfSize(size: 14),
+                                      range: NSRange(location: 0, length: 50))
+        attributedString.addAttribute(.link,
+                                      value: "mailto:helptodoctor@yandex.ru",
+                                      range: NSRange(location: 28, length: 22))
+        
+        sendToEmailButton.setAttributedTitle(attributedString, for: .normal)
+        sendToEmailButton.titleLabel?.numberOfLines = 0
+        scrollView.addSubview(sendToEmailButton)
+        
+        sendToEmailButton.translatesAutoresizingMaskIntoConstraints = false
+        sendToEmailButton.topAnchor.constraint(equalTo: emailButton.bottomAnchor,
+                                         constant: verticalInset).isActive = true
+        sendToEmailButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                   constant: leading).isActive = true
+        sendToEmailButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        sendToEmailButton.heightAnchor.constraint(equalToConstant: heightAddFileTextField).isActive = true
+    }
+    
+    /*
     private func setupMessageButton() {
         let leading = 20.f
         messageButton.setTitle("   Через сообщения HelpDoctor", for: .normal)
@@ -233,7 +298,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
                                                constant: leading).isActive = true
         messageButton.heightAnchor.constraint(equalToConstant: heightCheckbox).isActive = true
     }
-    
+    */
     private func setupSendButton() {
         let width = 148.f
         sendButton.layer.cornerRadius = heightSendButton / 2
@@ -241,7 +306,7 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.topAnchor.constraint(equalTo: messageButton.bottomAnchor,
+        sendButton.topAnchor.constraint(equalTo: sendToEmailButton.bottomAnchor,
                                         constant: verticalInset).isActive = true
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -275,6 +340,18 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func sendButtonPressed() {
         presenter?.sendFeedback(feedback: textView.text)
+        hideKeyboard()
+    }
+    
+    @objc private func addFileTextFieldPressed() {
+        let documentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
+        documentPickerViewController.delegate = self
+        present(documentPickerViewController, animated: true) { }
+    }
+    
+    @objc private func sendToEmailButtonPressed() {
+        guard let url = URL(string: "mailto:helptodoctor@yandex.ru") else { return }
+        UIApplication.shared.open(url)
     }
     
     // MARK: - IBActions
@@ -321,6 +398,17 @@ extension FeedbackViewController: UITextViewDelegate {
             textView.textColor = .lightGray
         }
         textView.resignFirstResponder()
+    }
+    
+}
+
+// MARK: - UIDocumentPickerDelegate
+extension FeedbackViewController: UIDocumentPickerDelegate {
+    
+    func documentPicker(_ controller: UIDocumentPickerViewController,
+                        didPickDocumentAt url: URL) {
+        addFileTextField.text = url.lastPathComponent
+        sourceFile = url
     }
     
 }
