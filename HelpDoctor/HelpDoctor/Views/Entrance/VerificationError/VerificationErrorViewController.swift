@@ -55,9 +55,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         setupAddFileTextField()
         setupSubscriptLabel()
         setupSendButton()
-        if #available(iOS 13.0, *) {} else {
-            setupBackButton()
-        }
         addTapGestureToHideKeyboard()
     }
     
@@ -342,25 +339,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         topConstraintSendButton = sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
                                                                   constant: top)
         topConstraintSendButton?.isActive = true
-    }
-    
-    /// Установка кнопки назад
-    private func setupBackButton() {
-        let leading = 8.f
-        let top = 10.f
-        let width = 57.f
-        let height = 21.f
-        let tap = UITapGestureRecognizer(target: self, action: #selector(backButtonPressed))
-        backButton.addGestureRecognizer(tap)
-        scrollView.addSubview(backButton)
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                            constant: leading).isActive = true
-        backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                        constant: top).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     /// Установка картинки

@@ -128,12 +128,7 @@ extension UniversitiesViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = true
-        if #available(iOS 13.0, *) {
-            searchBar.searchTextField.resignFirstResponder()
-        } else {
-            guard let searchField = searchBar.value(forKey: "searchField") as? UITextField else { return }
-            searchField.resignFirstResponder()
-        }
+        searchBar.searchTextField.resignFirstResponder()
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

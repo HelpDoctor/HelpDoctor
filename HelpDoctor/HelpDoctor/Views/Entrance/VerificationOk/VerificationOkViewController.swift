@@ -43,9 +43,6 @@ class VerificationOkViewController: UIViewController {
         setupTopLabel()
         setupLabel()
         setupSendButton()
-        if #available(iOS 13.0, *) {} else {
-            setupBackButton()
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -212,25 +209,6 @@ class VerificationOkViewController: UIViewController {
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         sendButton.topAnchor.constraint(equalTo: label.bottomAnchor,
                                         constant: top).isActive = true
-    }
-    
-    /// Установка кнопки назад
-    private func setupBackButton() {
-        let leading = 8.f
-        let top = 10.f
-        let width = 57.f
-        let height = 21.f
-        let tap = UITapGestureRecognizer(target: self, action: #selector(backButtonPressed))
-        backButton.addGestureRecognizer(tap)
-        view.addSubview(backButton)
-        
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                            constant: leading).isActive = true
-        backButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
-        backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
-        backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     // MARK: - Buttons methods
