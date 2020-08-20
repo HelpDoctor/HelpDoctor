@@ -77,9 +77,8 @@ class FeedbackViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private methods
     private func calculateInset() -> CGFloat {
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
-        let contentHeight = statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
+        let contentHeight = Session.statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
             + (heightAddFileTextField * 2)
             + heightTextView + heightTopLabel + heightBottomLabel + heightCheckbox + heightSendButton
         return (Session.height - contentHeight) / 7

@@ -12,26 +12,36 @@ extension UIApplication {
     
     func setStatusBarBackgroundColor(color: UIColor) {
         UIApplication.statusBarUIView?.backgroundColor = color
+        
+//        let sharedApplication = UIApplication.shared.delegate
+//        let frame = sharedApplication?.window??.windowScene?.statusBarManager?.statusBarFrame ?? .zero
+//        let statusBar = UIView(frame: frame)
+//        statusBar.backgroundColor = color
+        
     }
 
     class var statusBarUIView: UIView? {
-        if #available(iOS 13.0, *) {
-            let tag = 987654321
-            
-            if let statusBar = UIApplication.shared.keyWindow?.viewWithTag(tag) {
-                return statusBar
-            } else {
-                let statusBarView = UIView(frame: UIApplication.shared.statusBarFrame)
-                statusBarView.tag = tag
-                
-                UIApplication.shared.keyWindow?.addSubview(statusBarView)
-                return statusBarView
-            }
+        
+        let tag = 987654321
+        let sharedApplication = UIApplication.shared.delegate
+        let frame = sharedApplication?.window??.windowScene?.statusBarManager?.statusBarFrame ?? .zero
+        let keyWindow = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .map({ $0 as? UIWindowScene })
+            .compactMap({ $0 })
+            .first?.windows
+            .first(where: { $0.isKeyWindow })
+        
+        
+        if let statusBar = keyWindow?.viewWithTag(tag) {
+            return statusBar
         } else {
-            if responds(to: Selector(("statusBar"))) {
-                return value(forKey: "statusBar") as? UIView
-            }
+            let statusBarView = UIView(frame: frame)
+            statusBarView.tag = tag
+            
+            keyWindow?.addSubview(statusBarView)
+            return statusBarView
         }
-        return nil
     }
+ 
 }

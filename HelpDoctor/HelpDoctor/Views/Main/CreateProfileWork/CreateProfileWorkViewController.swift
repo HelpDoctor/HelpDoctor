@@ -59,7 +59,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = backgroundColor
         let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 3) + (heightTableView * 2)
             + heightTextField + (heightRadioButton * 2) + (heightPlusButton * 2) + heightNextButton
-        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 12
+        verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 12
         setupScrollView()
         setupStep7TitleLabel()
         setupStep7SpecLabel()

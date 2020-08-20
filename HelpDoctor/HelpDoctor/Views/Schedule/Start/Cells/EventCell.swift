@@ -13,16 +13,18 @@ class EventCell: UITableViewCell {
     static let reuseIdentifier = "EventCell"
     
     private let cellView = UIView()
-    private let leadingLabel = UILabel()
-    private let flagImage = UIImageView()
-    private let trailingLabel = UILabel()
+    private let startTimeLabel = UILabel()
+    private let endTimeLabel = UILabel()
+    private let titleLabel = UILabel()
+    private let linkView = UIView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupCellView()
-        setupLeadingLabel()
-        setupFlagImage()
-        setupTrailingLabel()
+        setupStartTimeLabel()
+        setupEndTimeLabel()
+        setupTitleLabel()
+        setupLinkView()
     }
     
     required init?(coder: NSCoder) {
@@ -36,60 +38,93 @@ class EventCell: UITableViewCell {
         contentView.addSubview(cellView)
         
         cellView.translatesAutoresizingMaskIntoConstraints = false
-        cellView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 1).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1).isActive = true
+        cellView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
         cellView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         cellView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
     
-    private func setupLeadingLabel() {
-        leadingLabel.numberOfLines = 1
-        leadingLabel.textAlignment = .left
-        leadingLabel.font = .systemFontOfSize(size: 12)
-        leadingLabel.textColor = .black
-        cellView.addSubview(leadingLabel)
+    private func setupStartTimeLabel() {
+        startTimeLabel.numberOfLines = 1
+        startTimeLabel.textAlignment = .left
+        startTimeLabel.font = .boldSystemFontOfSize(size: 14)
+        startTimeLabel.textColor = .black
+        cellView.addSubview(startTimeLabel)
         
-        leadingLabel.translatesAutoresizingMaskIntoConstraints = false
-        leadingLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 5).isActive = true
-        leadingLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -5).isActive = true
-        leadingLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 14).isActive = true
-        leadingLabel.widthAnchor.constraint(equalToConstant: 75).isActive = true
+        startTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        startTimeLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 7).isActive = true
+        startTimeLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10).isActive = true
+        startTimeLabel.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        startTimeLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
-    private func setupFlagImage() {
-        let imageName = "Flag Icon.pdf"
-        guard let image = UIImage(named: imageName) else {
-            assertionFailure("Missing ​​\(imageName) asset")
-            return
+    private func setupEndTimeLabel() {
+        endTimeLabel.numberOfLines = 1
+        endTimeLabel.textAlignment = .left
+        endTimeLabel.font = .boldSystemFontOfSize(size: 14)
+        endTimeLabel.textColor = .black
+        cellView.addSubview(endTimeLabel)
+        
+        endTimeLabel.translatesAutoresizingMaskIntoConstraints = false
+        endTimeLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -6).isActive = true
+        endTimeLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10).isActive = true
+        endTimeLabel.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        endTimeLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+    }
+    
+    private func setupTitleLabel() {
+        titleLabel.numberOfLines = 2
+        titleLabel.textAlignment = .left
+        titleLabel.font = .systemFontOfSize(size: 14)
+        titleLabel.textColor = .black
+        cellView.addSubview(titleLabel)
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 61).isActive = true
+        titleLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -30).isActive = true
+        titleLabel.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
+        titleLabel.heightAnchor.constraint(equalTo: cellView.heightAnchor).isActive = true
+    }
+    
+    private func setupLinkView() {
+        cellView.addSubview(linkView)
+        
+        linkView.translatesAutoresizingMaskIntoConstraints = false
+        linkView.trailingAnchor.constraint(equalTo: cellView.trailingAnchor).isActive = true
+        linkView.widthAnchor.constraint(equalToConstant: 20).isActive = true
+        linkView.heightAnchor.constraint(equalTo: cellView.heightAnchor).isActive = true
+    }
+    
+    func configure(startTime: String, endTime: String, event: String, eventColor: UIColor, isMajor: Bool) {
+        if isMajor {
+            cellView.backgroundColor = .majorEventColor
+            startTimeLabel.textColor = .white
+            endTimeLabel.textColor = .white
+            titleLabel.textColor = .white
+            let attributedString = NSMutableAttributedString(string: event)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 6
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
+                                          value: paragraphStyle,
+                                          range: NSMakeRange(0, attributedString.length))
+            titleLabel.attributedText = attributedString
+            
+            startTimeLabel.text = startTime
+            endTimeLabel.text = endTime
+            linkView.backgroundColor = .majorEventColor
+        } else {
+            let attributedString = NSMutableAttributedString(string: event)
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 6
+            attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
+                                          value: paragraphStyle,
+                                          range: NSMakeRange(0, attributedString.length))
+            titleLabel.attributedText = attributedString
+            
+            startTimeLabel.text = startTime
+            endTimeLabel.text = endTime
+            linkView.backgroundColor = eventColor
         }
-        flagImage.image = image
-        cellView.addSubview(flagImage)
-        
-        flagImage.translatesAutoresizingMaskIntoConstraints = false
-        flagImage.centerYAnchor.constraint(equalTo: cellView.centerYAnchor).isActive = true
-        flagImage.heightAnchor.constraint(equalToConstant: 15).isActive = true
-        flagImage.leadingAnchor.constraint(equalTo: leadingLabel.trailingAnchor, constant: 2).isActive = true
-        flagImage.widthAnchor.constraint(equalToConstant: 10).isActive = true
-    }
-    
-    private func setupTrailingLabel() {
-        trailingLabel.numberOfLines = 1
-        trailingLabel.textAlignment = .right
-        trailingLabel.font = .boldSystemFontOfSize(size: 12)
-        trailingLabel.textColor = .hdLinkColor
-        cellView.addSubview(trailingLabel)
-        
-        trailingLabel.translatesAutoresizingMaskIntoConstraints = false
-        trailingLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 5).isActive = true
-        trailingLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -5).isActive = true
-        trailingLabel.leadingAnchor.constraint(equalTo: flagImage.trailingAnchor, constant: 2).isActive = true
-        trailingLabel.trailingAnchor.constraint(equalTo: cellView.trailingAnchor, constant: -14).isActive = true
-    }
-    
-    func configure(timeEvent: String, flag: Bool, event: String) {
-        leadingLabel.text = timeEvent
-        flagImage.isHidden = !flag
-        trailingLabel.text = event
     }
     
 }

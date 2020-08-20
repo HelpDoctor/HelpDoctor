@@ -139,7 +139,6 @@ public class PickerField: UITextField, UITextFieldDelegate {
                                   message: "",
                                   preferredStyle: .actionSheet)
         guard let alert = alert else { return }
-        alert.isModalInPopover = true
         
         heightConstraint = NSLayoutConstraint(item: alert.view as Any,
                                               attribute: .height,
@@ -233,7 +232,7 @@ public class PickerField: UITextField, UITextFieldDelegate {
         separator.bottomAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
         seperatorHeightConstraint = separator.heightAnchor.constraint(equalToConstant: 1)
         seperatorHeightConstraint?.isActive = true
-        separator.backgroundColor = .groupTableViewBackground
+        separator.backgroundColor = .systemGroupedBackground
         
         //contentView
         contentView = UIView()

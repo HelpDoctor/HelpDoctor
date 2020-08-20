@@ -20,11 +20,20 @@ class Session {
     }
     
     static var statusBarHeight: CGFloat {
-        return UIApplication.shared.statusBarFrame.size.height
+        let sharedApplication = UIApplication.shared.delegate
+        guard let frame = sharedApplication?.window??.windowScene?.statusBarManager?.statusBarFrame else { return 0.f }
+        let statusBar = UIView(frame: frame)
+        return statusBar.frame.height
     }
     
     static var bottomPadding: CGFloat {
-        return UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        let keyWindow = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .map({ $0 as? UIWindowScene })
+            .compactMap({ $0 })
+            .first?.windows
+            .first(where: { $0.isKeyWindow })
+        return keyWindow?.safeAreaInsets.bottom ?? 0
     }
     
     var user: ProfileKeyUser?

@@ -17,7 +17,9 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getCurrentDate(date: Date) -> String
     func getCountPatients() -> Int?
     func getCountMajorEvents() -> Int?
-    func getTimeEvent(index: Int) -> String?
+    func getStartTimeEvent(index: Int) -> String?
+    func getEndTimeEvent(index: Int) -> String?
+    func getEventColor(index: Int) -> UIColor?
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
     func selectDate()
@@ -118,10 +120,30 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         return filteredArray?.count
     }
     
-    func getTimeEvent(index: Int) -> String? {
-        guard let startDate = arrayEvents?[index].start_date,
-            let endDate = arrayEvents?[index].end_date else { return nil }
-        return "\(startDate[11 ..< 16])-\(endDate[11 ..< 16])"
+    func getStartTimeEvent(index: Int) -> String? {
+        guard let startDate = arrayEvents?[index].start_date else { return nil }
+        return "\(startDate[11 ..< 16])"
+    }
+    
+    func getEndTimeEvent(index: Int) -> String? {
+        guard let endDate = arrayEvents?[index].end_date else { return nil }
+        return "\(endDate[11 ..< 16])"
+    }
+    
+    func getEventColor(index: Int) -> UIColor? {
+        guard let eventType = arrayEvents?[index].event_type else { return nil }
+        switch eventType {
+        case "reception":
+            return .receptionEventColor
+        case "administrative":
+            return .administrativeEventColor
+        case "scientific":
+            return .scientificEventColor
+        case "another":
+            return .anotherEventColor
+        default:
+            return .clear
+        }
     }
     
     func getMajorFlag(index: Int) -> Bool? {
@@ -129,7 +151,12 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     }
     
     func getTitleEvent(index: Int) -> String? {
-        return arrayEvents?[index].title
+        guard let title = arrayEvents?[index].title else { return nil }
+        if arrayEvents?[index].event_type == "reception" {
+            return "Прием пациента: \n\(title)"
+        } else {
+            return title
+        }
     }
     
     func selectDate() {

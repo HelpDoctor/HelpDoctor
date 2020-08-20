@@ -73,9 +73,8 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private methods
     private func calculateInset() -> CGFloat {
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
-        let contentHeight = statusBarHeight + headerHeight + heightTopStackView
+        let contentHeight = Session.statusBarHeight + headerHeight + heightTopStackView
             + heightLabel + (heightTextField * 3) + heightSendButton + heightArt + tabBarHeight
         if contentHeight > Session.height {
             return 10

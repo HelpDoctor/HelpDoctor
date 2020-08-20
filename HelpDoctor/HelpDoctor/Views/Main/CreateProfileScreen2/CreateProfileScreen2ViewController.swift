@@ -46,7 +46,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         view.backgroundColor = backgroundColor
         let contentHeight = headerHeight + (heightTitleLabel * 3) + (heightLabel * 3)
             + (heightTextField * 4) + (heightRadioButton * 3) + heightNextButton
-        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 14
+        verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 14
         setupScrollView()
         setupStep3TitleLabel()
         setupStep3Label()

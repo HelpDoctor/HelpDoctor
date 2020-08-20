@@ -57,6 +57,7 @@ enum TypeOfRequest: String {
     case getListOfInterests = "/profile/sc_interests/"
     case getListOfInterestsExtOne = "/profile/sc_interests_speccode1/"
     case getListOfInterestsExtTwo = "/profile/sc_interests_speccode2/"
+    case getUniversities = "/profile/educations"
     case checkProfile = "/profile/check"
     case updateProfile = "/profile/update"
     case getDataFromProfile = "/profile/get"
@@ -294,6 +295,14 @@ func getData<T>(typeOfContent: TypeOfRequest,
                 replyReturn = (parseJSON_getToken(for: startPoint, response: response) as? T)
                 
             case .getRegions :
+                
+                if responceTrueResult {
+                    guard let startPoint = json as? [AnyObject] else { return }
+                    replyReturn = (parseJSON_getRegions(for: startPoint, response: response) as? T)
+                } else {
+                    replyReturn = (([], 500, "Данные недоступны") as? T)
+                }
+            case .getUniversities :
                 
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }

@@ -14,18 +14,37 @@ class StartScheduleViewController: UIViewController {
     var presenter: StartSchedulePresenterProtocol?
     
     // MARK: - Constants
+    private let headerHeight = 40.f
+    private let heightTopView = 70.f
+    private let dateButton = UIButton() // TODO: - временное решение, сделать календарь CollectionView
+    private let topView = UIView()
+    private let appointmentImage = UIImageView()
+    private let appointmentLabel = UILabel()
+    private let appointmentCount = UILabel()
+    private let importantImage = UIImageView()
+    private let importantLabel = UILabel()
+    private let importantCount = UILabel()
     private let tableView = UITableView()
     private var addButton = PlusButton()
     private var currentDate = Date()
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
-        setupHeaderViewWithAvatar(title: "Расписание", text: nil, userImage: nil, presenter: presenter)
+        view.backgroundColor = UIColor.backgroundColor
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Расписание",
+                        font: .boldSystemFontOfSize(size: 14))
+        setupDateView()
+        setupTopView()
+        setupAppointmentImage()
+        setupAppointmentLabel()
+        setupAppointmentCount()
+        setupImportantImage()
+        setupImportantLabel()
+        setupImportantCount()
         setupTableView()
         setupAddButton()
         presenter?.getEvents(newDate: currentDate)
@@ -41,6 +60,20 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
+        dateButton.setTitle(currentDate.description, for: .normal)
+        let countPatients = presenter?.getCountPatients()
+        if countPatients == 0 || countPatients == nil {
+            appointmentCount.text = ""
+        } else {
+            appointmentCount.text = countPatients?.description
+        }
+        
+        let countMajorEvents = presenter?.getCountMajorEvents()
+        if countMajorEvents == 0 || countMajorEvents == nil {
+            importantCount.text = ""
+        } else {
+            importantCount.text = countMajorEvents?.description
+        }
     }
     
     func setDate(date: Date = Date()) {
@@ -52,12 +85,143 @@ class StartScheduleViewController: UIViewController {
     }
     
     // MARK: - Setup views
+    private func setupDateView() {
+        dateButton.addTarget(self, action: #selector(dateButtonPressed), for: .touchUpInside)
+        dateButton.backgroundColor = .white
+        dateButton.setTitle(presenter?.getCurrentDate(date: currentDate), for: .normal)
+        dateButton.titleLabel?.font = .boldSystemFontOfSize(size: 16)
+        dateButton.setTitleColor(.black, for: .normal)
+        
+        view.addSubview(dateButton)
+        
+        dateButton.translatesAutoresizingMaskIntoConstraints = false
+        dateButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                        constant: headerHeight).isActive = true
+        dateButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        dateButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        dateButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    private func setupTopView() {
+        topView.backgroundColor = .tabBarColor
+        view.addSubview(topView)
+        
+        topView.translatesAutoresizingMaskIntoConstraints = false
+        topView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                     constant: headerHeight + 50).isActive = true
+        topView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        topView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        topView.heightAnchor.constraint(equalToConstant: heightTopView).isActive = true
+    }
+    
+    private func setupAppointmentImage() {
+        let top = 10.f
+        let leading = 10.f
+        let size = 20.f
+        let imageName = "AppointmentIcon"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        appointmentImage.image = image
+        topView.addSubview(appointmentImage)
+        
+        appointmentImage.translatesAutoresizingMaskIntoConstraints = false
+        appointmentImage.topAnchor.constraint(equalTo: topView.topAnchor, constant: top).isActive = true
+        appointmentImage.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: leading).isActive = true
+        appointmentImage.widthAnchor.constraint(equalToConstant: size).isActive = true
+        appointmentImage.heightAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    
+    private func setupAppointmentLabel() {
+        let leading = 10.f
+        let width = 180.f
+        appointmentLabel.font = .mediumSystemFontOfSize(size: 14)
+        appointmentLabel.textColor = .white
+        appointmentLabel.text = "К вам на прием записаны:"
+        appointmentLabel.textAlignment = .left
+        topView.addSubview(appointmentLabel)
+        
+        appointmentLabel.translatesAutoresizingMaskIntoConstraints = false
+        appointmentLabel.leadingAnchor.constraint(equalTo: appointmentImage.trailingAnchor,
+                                                  constant: leading).isActive = true
+        appointmentLabel.centerYAnchor.constraint(equalTo: appointmentImage.centerYAnchor).isActive = true
+        appointmentLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    private func setupAppointmentCount() {
+        let leading = 10.f
+        let width = 20.f
+        appointmentCount.backgroundColor = .countColor
+        appointmentCount.font = .mediumSystemFontOfSize(size: 14)
+        appointmentCount.textColor = .white
+        appointmentCount.textAlignment = .center
+        appointmentCount.layer.cornerRadius = 10
+        appointmentCount.clipsToBounds = true
+        topView.addSubview(appointmentCount)
+        
+        appointmentCount.translatesAutoresizingMaskIntoConstraints = false
+        appointmentCount.leadingAnchor.constraint(equalTo: appointmentLabel.trailingAnchor,
+                                                  constant: leading).isActive = true
+        appointmentCount.centerYAnchor.constraint(equalTo: appointmentImage.centerYAnchor).isActive = true
+        appointmentCount.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    private func setupImportantImage() {
+        let top = 10.f
+        let leading = 10.f
+        let size = 20.f
+        let imageName = "Flag Icon"
+        guard let image = UIImage(named: imageName) else {
+            assertionFailure("Missing ​​\(imageName) asset")
+            return
+        }
+        importantImage.image = image
+        topView.addSubview(importantImage)
+        
+        importantImage.translatesAutoresizingMaskIntoConstraints = false
+        importantImage.topAnchor.constraint(equalTo: appointmentImage.bottomAnchor, constant: top).isActive = true
+        importantImage.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: leading).isActive = true
+        importantImage.widthAnchor.constraint(equalToConstant: size).isActive = true
+        importantImage.heightAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    
+    private func setupImportantLabel() {
+        let leading = 10.f
+        let width = 180.f
+        importantLabel.font = .mediumSystemFontOfSize(size: 14)
+        importantLabel.textColor = .white
+        importantLabel.text = "Важные события:"
+        importantLabel.textAlignment = .left
+        topView.addSubview(importantLabel)
+        
+        importantLabel.translatesAutoresizingMaskIntoConstraints = false
+        importantLabel.leadingAnchor.constraint(equalTo: importantImage.trailingAnchor,
+                                                constant: leading).isActive = true
+        importantLabel.centerYAnchor.constraint(equalTo: importantImage.centerYAnchor).isActive = true
+        importantLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
+    private func setupImportantCount() {
+        let leading = 10.f
+        let width = 20.f
+        importantCount.backgroundColor = .countColor
+        importantCount.font = .mediumSystemFontOfSize(size: 14)
+        importantCount.textColor = .white
+        importantCount.textAlignment = .center
+        importantCount.layer.cornerRadius = 10
+        importantCount.clipsToBounds = true
+        topView.addSubview(importantCount)
+        
+        importantCount.translatesAutoresizingMaskIntoConstraints = false
+        importantCount.leadingAnchor.constraint(equalTo: importantLabel.trailingAnchor,
+                                                constant: leading).isActive = true
+        importantCount.centerYAnchor.constraint(equalTo: importantImage.centerYAnchor).isActive = true
+        importantCount.widthAnchor.constraint(equalToConstant: width).isActive = true
+    }
+    
     private func setupTableView() {
         view.addSubview(tableView)
-        tableView.register(DateCell.self, forCellReuseIdentifier: "DateCell")
-        tableView.register(AppointmentCell.self, forCellReuseIdentifier: "AppointmentCell")
-        tableView.register(TodayEventCell.self, forCellReuseIdentifier: "TodayEventCell")
-        tableView.register(SeparatorCell.self, forCellReuseIdentifier: "SeparatorCell")
         tableView.register(EventCell.self, forCellReuseIdentifier: "EventCell")
         tableView.backgroundColor = .clear
         tableView.dataSource = self
@@ -68,7 +232,7 @@ class StartScheduleViewController: UIViewController {
         tableView.refreshControl?.addTarget(self, action: #selector(refresh(_:)), for: UIControl.Event.valueChanged)
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 62).isActive = true
+        tableView.topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 10).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
@@ -76,6 +240,11 @@ class StartScheduleViewController: UIViewController {
     
     private func setupAddButton() {
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
+        addButton.layer.masksToBounds = false
+        addButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        addButton.layer.shadowOpacity = 1
+        addButton.layer.shadowRadius = 4
+        addButton.layer.shadowOffset = CGSize(width: 0, height: 4)
         view.addSubview(addButton)
         
         addButton.translatesAutoresizingMaskIntoConstraints = false
@@ -106,12 +275,16 @@ class StartScheduleViewController: UIViewController {
         presenter?.addButtonPressed()
     }
     
+    @objc private func dateButtonPressed() {
+        presenter?.selectDate()
+    }
+    
 }
 
 // MARK: - Table View Delegate
 extension StartScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 25))
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: Session.width, height: 25))
         footerView.backgroundColor = .clear
         return footerView
     }
@@ -124,83 +297,28 @@ extension StartScheduleViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (presenter?.getCountEvents() ?? 0) + 4
+        return (presenter?.getCountEvents() ?? 0)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch indexPath.row {
-        case 0:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "DateCell",
-                                                           for: indexPath) as? DateCell
-                else { return UITableViewCell() }
-            cell.configure(presenter?.getCurrentDate(date: currentDate) ?? "")
-            cell.backgroundColor = .clear
-            return cell
-        case 1:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "AppointmentCell",
-                                                           for: indexPath) as? AppointmentCell
-                else { return UITableViewCell() }
-            cell.configure(presenter?.getCountPatients() ?? 0)
-            cell.backgroundColor = .clear
-            return cell
-        case 2:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "TodayEventCell",
-                                                           for: indexPath) as? TodayEventCell
-                else { return UITableViewCell() }
-            cell.configure(presenter?.getCountMajorEvents() ?? 0)
-            cell.backgroundColor = .clear
-            return cell
-        case 3:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "SeparatorCell",
-                                                           for: indexPath) as? SeparatorCell
-                else { return UITableViewCell() }
-            cell.backgroundColor = .clear
-            return cell
-        case 4:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
-                                                           for: indexPath) as? EventCell
-                else { return UITableViewCell() }
-            cell.configure(timeEvent: presenter?.getTimeEvent(index: indexPath.row - 4) ?? "",
-                           flag: presenter?.getMajorFlag(index: indexPath.row - 4) ?? false,
-                           event: presenter?.getTitleEvent(index: indexPath.row - 4) ?? "")
-            cell.backgroundColor = .clear
-            return cell
-        default:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
-                                                           for: indexPath) as? EventCell
-                else { return UITableViewCell() }
-            cell.configure(timeEvent: presenter?.getTimeEvent(index: indexPath.row - 4) ?? "",
-                           flag: presenter?.getMajorFlag(index: indexPath.row - 4) ?? false,
-                           event: presenter?.getTitleEvent(index: indexPath.row - 4) ?? "")
-            cell.backgroundColor = .clear
-            return cell
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
+                                                       for: indexPath) as? EventCell
+            else { return UITableViewCell() }
+        cell.configure(startTime: presenter?.getStartTimeEvent(index: indexPath.row) ?? "",
+                       endTime: presenter?.getStartTimeEvent(index: indexPath.row) ?? "",
+                       event: presenter?.getTitleEvent(index: indexPath.row) ?? "",
+                       eventColor: presenter?.getEventColor(index: indexPath.row) ?? .clear,
+                       isMajor: presenter?.getMajorFlag(index: indexPath.row) ?? false)
+        cell.backgroundColor = .clear
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch indexPath.row {
-        case 0:
-            return 25
-        case 1:
-            return 25
-        case 2:
-            return 25
-        case 3:
-            return 25
-        case 4:
-            return 25
-        default:
-            return 25
-        }
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        switch indexPath.row {
-        case 0:
-            presenter?.selectDate()
-        default:
-            presenter?.didSelectRow(index: indexPath.row - 4)
-        }
+        presenter?.didSelectRow(index: indexPath.row)
     }
     
 }

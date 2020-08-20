@@ -47,7 +47,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = backgroundColor
         let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 5)
             + (heightTextField * 2) + (heightRadioButton * 3) + heightNextButton
-        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 12
+        verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 12
         setupScrollView()
         setupStep6TitleLabel()
         setupStep6Label()
@@ -84,7 +84,9 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
-    
+    func setUniversity(university: String) {
+        universityTextField.text = university
+    }
     
     // MARK: - Private methods
     private func setUser() {
@@ -153,6 +155,8 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupUniversityTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(universitySearchButtonPressed))
         universityTextField.font = .systemFontOfSize(size: 14)
         universityTextField.textColor = .textFieldTextColor
         universityTextField.placeholder = "Учебное заведение*"
@@ -164,6 +168,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
                                                             width: 8,
                                                             height: universityTextField.frame.height))
         universityTextField.leftViewMode = .always
+        universityTextField.addGestureRecognizer(tap)
         scrollView.addSubview(universityTextField)
         
         universityTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -436,6 +441,9 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
+    @objc private func universitySearchButtonPressed() {
+        presenter?.universitySearch()
+    }
     
     // MARK: - Navigation
     @objc private func nextButtonPressed() {

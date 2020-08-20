@@ -49,7 +49,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         view.backgroundColor = backgroundColor
         let contentHeight = headerHeight + (heightTitleLabel * 3) + heightTopLabel + (heightStep1Label * 2)
             + (heightTextField * 3) + (heightRadioButton * 2) + heightNextButton
-        verticalInset = (Session.height - UIApplication.shared.statusBarFrame.height - contentHeight) / 13
+        verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 13
         setupScrollView()
         setupTitleLabel()
         setupTopLabel()

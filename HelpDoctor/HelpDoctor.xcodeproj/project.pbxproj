@@ -90,6 +90,9 @@
 		46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */; };
 		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
 		46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */; };
+		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
+		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
+		46959B5324ED2D0800139A17 /* Universities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5224ED2D0800139A17 /* Universities.swift */; };
 		469DD6562459463F006DBD30 /* CreateProfileStep6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */; };
 		469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */; };
 		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
@@ -321,6 +324,9 @@
 		46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundViewController.swift; sourceTree = "<group>"; };
 		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
 		46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLayerCombine.swift; sourceTree = "<group>"; };
+		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
+		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
+		46959B5224ED2D0800139A17 /* Universities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Universities.swift; sourceTree = "<group>"; };
 		469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6ViewController.swift; sourceTree = "<group>"; };
 		469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6Presenter.swift; sourceTree = "<group>"; };
 		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -695,6 +701,15 @@
 			path = PushAndSound;
 			sourceTree = "<group>";
 		};
+		46959B4D24ED251700139A17 /* Universities */ = {
+			isa = PBXGroup;
+			children = (
+				46959B5024ED256200139A17 /* UniversitiesViewController.swift */,
+				46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */,
+			);
+			path = Universities;
+			sourceTree = "<group>";
+		};
 		469DD65424594612006DBD30 /* CreateProfileStep6 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1002,6 +1017,7 @@
 				46203EE823C443C40072653A /* ScheduleEvents.swift */,
 				46787A74243906D9005C0258 /* Settings.swift */,
 				463010B4243CD817008B9D50 /* UserStatus.swift */,
+				46959B5224ED2D0800139A17 /* Universities.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -1160,6 +1176,7 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				46959B4D24ED251700139A17 /* Universities */,
 				46F87F6123BFC0710095264E /* Interests */,
 				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
 				46F87F5723BF7E460095264E /* MedicalOrganization */,
@@ -1470,6 +1487,7 @@
 				469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
 				4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */,
+				46959B5324ED2D0800139A17 /* Universities.swift in Sources */,
 				46F87F6023BF93CD0095264E /* MedicalSpecializationPresenter.swift in Sources */,
 				4609F43B24422DB400F17E45 /* UIView+Extensions.swift in Sources */,
 				4640B6D52402B0660023C3A3 /* EmailViewController.swift in Sources */,
@@ -1493,6 +1511,7 @@
 				46F87F1723BB72CA0095264E /* EnterProfileButton.swift in Sources */,
 				46072E1523C229BE0070F2F6 /* SeparatorCell.swift in Sources */,
 				C4CBC3B323D026D600434BFB /* Registration.swift in Sources */,
+				46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */,
 				C4CBC3AD23D026A900434BFB /* Profile.swift in Sources */,
 				C48F162623B5FE87002D04E3 /* GetMedicalOrganization.swift in Sources */,
 				46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */,
@@ -1523,6 +1542,7 @@
 				46203EEE23C443E20072653A /* Schedule.swift in Sources */,
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
+				46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */,
 				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,

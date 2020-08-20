@@ -22,5 +22,10 @@ extension UIColor {
     static let backgroundColor = UIColor(named: "backgroundColor")!
     static let hdGreenColor = UIColor(named: "hdGreenColor")!
     static let hdRedColor = UIColor(named: "hdRedColor")!
-    
+    static let countColor = UIColor(named: "countColor")!
+    static let majorEventColor = UIColor(named: "majorEventColor")!
+    static let receptionEventColor = UIColor(named: "receptionEventColor")!
+    static let administrativeEventColor = UIColor(named: "administrativeEventColor")!
+    static let scientificEventColor = UIColor(named: "scientificEventColor")!
+    static let anotherEventColor = UIColor(named: "anotherEventColor")!
 }

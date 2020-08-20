@@ -12,6 +12,8 @@ protocol CreateProfileStep6PresenterProtocol: Presenter, PickerFieldDelegate {
     init(view: CreateProfileStep6ViewController)
     var isEdit: Bool { get }
     func convertDate(_ birthDate: String) -> String?
+    func setUniversity(university: Universities)
+    func universitySearch()
     func next()
 }
 
@@ -24,6 +26,7 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     var user: UpdateProfileKeyUser?
     var isEdit = false
     var region: Regions?
+    var university: Universities?
 //    private var city: Cities?
     
     // MARK: - Init
@@ -43,6 +46,19 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
         guard let birthday = dateFormatter.date(from: birthDate) else { return nil }
         dateFormatter.dateFormat = "dd.MM.yyyy"
         return dateFormatter.string(from: birthday)
+    }
+    
+    func setUniversity(university: Universities) {
+        self.university = university
+        view.setUniversity(university: university.universityName ?? "")
+    }
+    
+    func universitySearch() {
+        let viewController = UniversitiesViewController()
+        let presenter = UniversitiesPresenter(view: viewController)
+        viewController.presenter = presenter
+        viewController.startActivityIndicator()
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     // MARK: - Coordinator

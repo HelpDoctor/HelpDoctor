@@ -96,8 +96,7 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     /// Установка формы отображения общей информации
     func setupGeneralView() {
         guard let user = Session.instance.user else { return }
-        let statusBarHeight = UIApplication.shared.statusBarFrame.height
-        let height = (Session.height / 2) - 40 - (tabBarController?.tabBar.frame.height ?? 0) - statusBarHeight
+        let height = (Session.height / 2) - 40 - (tabBarController?.tabBar.frame.height ?? 0) - Session.statusBarHeight
         generalView = ProfileGeneralView(user: user, height: height)
         let swipeRight = UISwipeGestureRecognizer()
         swipeRight.addTarget(self, action: #selector(educationPageButtonPressed))
