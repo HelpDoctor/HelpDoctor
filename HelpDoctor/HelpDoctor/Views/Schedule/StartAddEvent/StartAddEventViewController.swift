@@ -14,23 +14,23 @@ class StartAddEventViewController: UIViewController {
     var presenter: StartAddEventPresenterProtocol?
     
     // MARK: - Constants
+    private let verticalInset = 30.f
+    private let heightButton = 44.f
+    private let widthButton = 248.f
     private let topLabel = UILabel()
-    private var appointmentButton = HDButton()
-    private var administrativeButton = HDButton()
-    private var scienceButton = HDButton()
-    private var otherButton = HDButton()
-    
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
+    private let appointmentButton = HDButton(title: "Прием пациентов", fontSize: 14)
+    private let administrativeButton = HDButton(title: "Административная деятельность", fontSize: 14)
+    private let scienceButton = HDButton(title: "Научная деятельность", fontSize: 14)
+    private let otherButton = HDButton(title: "Другое", fontSize: 14)
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
-        setupHeaderViewWithAvatar(title: "Новое событие",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = UIColor.backgroundColor
+//        setupHeaderViewWithAvatar(title: "Новое событие",
+//                                  text: nil,
+//                                  userImage: nil,
+//                                  presenter: presenter)
         setupTopLabel()
         setupAppointmentButton()
         setupAdministrativeButton()
@@ -48,69 +48,74 @@ class StartAddEventViewController: UIViewController {
     
     // MARK: - Setup views
     private func setupTopLabel() {
-        topLabel.font = .systemFontOfSize(size: 14)
+        topLabel.backgroundColor = .searchBarTintColor
+        topLabel.font = .mediumSystemFontOfSize(size: 14)
         topLabel.textColor = .white
-        topLabel.attributedText = redStar(text: "Выберите к какому виду деятельности относится новое событие*")
+        topLabel.text = "Тип события"
         topLabel.textAlignment = .center
-        topLabel.numberOfLines = 0
+        topLabel.numberOfLines = 1
         view.addSubview(topLabel)
         
         topLabel.translatesAutoresizingMaskIntoConstraints = false
-        topLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 90).isActive = true
+        topLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        topLabel.widthAnchor.constraint(equalToConstant: width - 40).isActive = true
-        topLabel.heightAnchor.constraint(equalToConstant: 36).isActive = true
+        topLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        topLabel.heightAnchor.constraint(equalToConstant: verticalInset).isActive = true
     }
     private func setupAppointmentButton() {
-        appointmentButton = HDButton(title: "Прием пациентов", fontSize: 14)
         appointmentButton.addTarget(self, action: #selector(appointmentButtonPressed), for: .touchUpInside)
         appointmentButton.isEnabled = true
+        appointmentButton.backgroundColor = .receptionEventColor
         view.addSubview(appointmentButton)
         
         appointmentButton.translatesAutoresizingMaskIntoConstraints = false
-        appointmentButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 36).isActive = true
+        appointmentButton.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
+                                               constant: verticalInset).isActive = true
         appointmentButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        appointmentButton.widthAnchor.constraint(equalToConstant: 235).isActive = true
-        appointmentButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        appointmentButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
+        appointmentButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
     private func setupAdministrativeButton() {
-        administrativeButton = HDButton(title: "Административная деятельность", fontSize: 14)
         administrativeButton.addTarget(self, action: #selector(administrativeButtonPressed), for: .touchUpInside)
         administrativeButton.isEnabled = true
+        administrativeButton.backgroundColor = .administrativeEventColor
         view.addSubview(administrativeButton)
         
         administrativeButton.translatesAutoresizingMaskIntoConstraints = false
-        administrativeButton.topAnchor.constraint(equalTo: appointmentButton.bottomAnchor, constant: 10).isActive = true
+        administrativeButton.topAnchor.constraint(equalTo: appointmentButton.bottomAnchor,
+                                                  constant: verticalInset).isActive = true
         administrativeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        administrativeButton.widthAnchor.constraint(equalToConstant: 235).isActive = true
-        administrativeButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        administrativeButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
+        administrativeButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
     private func setupScienceButton() {
-        scienceButton = HDButton(title: "Научная деятельность", fontSize: 14)
         scienceButton.addTarget(self, action: #selector(scienceButtonPressed), for: .touchUpInside)
         scienceButton.isEnabled = true
+        scienceButton.backgroundColor = .scientificEventColor
         view.addSubview(scienceButton)
         
         scienceButton.translatesAutoresizingMaskIntoConstraints = false
-        scienceButton.topAnchor.constraint(equalTo: administrativeButton.bottomAnchor, constant: 10).isActive = true
+        scienceButton.topAnchor.constraint(equalTo: administrativeButton.bottomAnchor,
+                                           constant: verticalInset).isActive = true
         scienceButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        scienceButton.widthAnchor.constraint(equalToConstant: 235).isActive = true
-        scienceButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        scienceButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
+        scienceButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
     private func setupOtherButton() {
-        otherButton = HDButton(title: "Другое", fontSize: 14)
         otherButton.addTarget(self, action: #selector(otherButtonPressed), for: .touchUpInside)
         otherButton.isEnabled = true
+        otherButton.backgroundColor = .anotherEventColor
         view.addSubview(otherButton)
         
         otherButton.translatesAutoresizingMaskIntoConstraints = false
-        otherButton.topAnchor.constraint(equalTo: scienceButton.bottomAnchor, constant: 10).isActive = true
+        otherButton.topAnchor.constraint(equalTo: scienceButton.bottomAnchor,
+                                         constant: verticalInset).isActive = true
         otherButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        otherButton.widthAnchor.constraint(equalToConstant: 235).isActive = true
-        otherButton.heightAnchor.constraint(equalToConstant: 35).isActive = true
+        otherButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
+        otherButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
     /// Добавляет свайп влево для перехода назад

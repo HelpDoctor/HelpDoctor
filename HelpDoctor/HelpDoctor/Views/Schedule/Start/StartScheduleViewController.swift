@@ -6,6 +6,7 @@
 //  Copyright © 2019 Mikhail Semerikov. All rights reserved.
 //
 
+import JTAppleCalendar
 import UIKit
 
 class StartScheduleViewController: UIViewController {
@@ -16,6 +17,7 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Constants
     private let headerHeight = 40.f
     private let heightTopView = 70.f
+    private let calendarView = JTACMonthView()
     private let dateButton = UIButton() // TODO: - временное решение, сделать календарь CollectionView
     private let topView = UIView()
     private let appointmentImage = UIImageView()
@@ -32,12 +34,13 @@ class StartScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundColor
+//        setupCalendarView()
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
                         presenter: presenter,
                         title: "Расписание",
                         font: .boldSystemFontOfSize(size: 14))
-        setupDateView()
+        setupCalendarView()
         setupTopView()
         setupAppointmentImage()
         setupAppointmentLabel()
@@ -85,25 +88,34 @@ class StartScheduleViewController: UIViewController {
     }
     
     // MARK: - Setup views
-    private func setupDateView() {
-        dateButton.addTarget(self, action: #selector(dateButtonPressed), for: .touchUpInside)
-        dateButton.backgroundColor = .white
-        dateButton.setTitle(presenter?.getCurrentDate(date: currentDate), for: .normal)
-        dateButton.titleLabel?.font = .boldSystemFontOfSize(size: 16)
-        dateButton.setTitleColor(.black, for: .normal)
+    private func setupCalendarView() {
+        calendarView.register(DayCell.self, forCellWithReuseIdentifier: "DayCell")
+        calendarView.calendarDelegate = self
+        calendarView.calendarDataSource = self
+        calendarView.backgroundColor = .white
+        calendarView.scrollDirection = .horizontal
+        calendarView.scrollToDate(Date() - (86400 * 3))
+        calendarView.selectDates([Date()])
+//        calendarView.allowsMultipleSelection = true
+//        calendarView.allowsRangedSelection = true
+        calendarView.sectionInset.bottom = 0
+        calendarView.sectionInset.top = 0
+        calendarView.sectionInset.left = 0
+        calendarView.sectionInset.right = 0
+        calendarView.minimumInteritemSpacing = 0
+        calendarView.minimumLineSpacing = 0
+        view.addSubview(calendarView)
         
-        view.addSubview(dateButton)
-        
-        dateButton.translatesAutoresizingMaskIntoConstraints = false
-        dateButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: headerHeight).isActive = true
-        dateButton.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        dateButton.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        dateButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        calendarView.translatesAutoresizingMaskIntoConstraints = false
+        calendarView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                          constant: headerHeight).isActive = true
+        calendarView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        calendarView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        calendarView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
     
     private func setupTopView() {
-        topView.backgroundColor = .tabBarColor
+        topView.backgroundColor = .searchBarTintColor
         view.addSubview(topView)
         
         topView.translatesAutoresizingMaskIntoConstraints = false
@@ -270,24 +282,38 @@ class StartScheduleViewController: UIViewController {
         }
     }
     
+    func handleCellConfiguration(cell: JTACDayCell?, cellState: CellState) {
+        handleCellSelection(view: cell, cellState: cellState)
+    }
+    
+    func handleCellSelection(view: JTACDayCell?, cellState: CellState) {
+        guard let myCustomCell = view as? DayCell else { return }
+        
+        if cellState.isSelected {
+            myCustomCell.selectedView.isHidden = false
+            myCustomCell.dateLabel.textColor = .white
+        } else {
+            myCustomCell.selectedView.isHidden = true
+            myCustomCell.dateLabel.textColor = .black
+        }
+    }
+    
     // MARK: - Buttons methods
     @objc private func addButtonPressed() {
         presenter?.addButtonPressed()
-    }
-    
-    @objc private func dateButtonPressed() {
-        presenter?.selectDate()
     }
     
 }
 
 // MARK: - Table View Delegate
 extension StartScheduleViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: Session.width, height: 25))
         footerView.backgroundColor = .clear
         return footerView
     }
+    
 }
 
 // MARK: - Table Data Source
@@ -319,6 +345,87 @@ extension StartScheduleViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         presenter?.didSelectRow(index: indexPath.row)
+    }
+    
+}
+
+extension StartScheduleViewController: JTACMonthViewDataSource {
+    
+    func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy MM dd"
+        let startDate = formatter.date(from: "2020 08 01")!
+        let endDate = formatter.date(from: "2020 08 31")!
+        return ConfigurationParameters(startDate: startDate,
+                                       endDate: endDate,
+                                       numberOfRows: 1,
+                                       calendar: Calendar.current,
+                                       generateInDates: .off,
+                                       generateOutDates: .off,
+                                       firstDayOfWeek: .monday,
+                                       hasStrictBoundaries: true)
+    }
+    
+}
+
+extension StartScheduleViewController: JTACMonthViewDelegate {
+    
+    func calendar(_ calendar: JTACMonthView,
+                  willDisplay cell: JTACDayCell,
+                  forItemAt date: Date,
+                  cellState: CellState,
+                  indexPath: IndexPath) {
+        let myCustomCell = cell as! DayCell
+        configureVisibleCell(myCustomCell: myCustomCell,
+                             cellState: cellState,
+                             date: date,
+                             indexPath: indexPath)
+    }
+    
+    func calendar(_ calendar: JTACMonthView,
+                  cellForItemAt date: Date,
+                  cellState: CellState,
+                  indexPath: IndexPath) -> JTACDayCell {
+        let myCustomCell = calendar.dequeueReusableCell(withReuseIdentifier: "DayCell",
+                                                        for: indexPath) as! DayCell
+        configureVisibleCell(myCustomCell: myCustomCell,
+                             cellState: cellState,
+                             date: date,
+                             indexPath: indexPath)
+        return myCustomCell
+    }
+    
+    func configureVisibleCell(myCustomCell: DayCell, cellState: CellState, date: Date, indexPath: IndexPath) {
+        myCustomCell.dateLabel.text = cellState.text
+        myCustomCell.dayOfWeekLabel.text = presenter?.getCurrentDate(date: date)
+        if Calendar.current.isDateInToday(date) {
+            myCustomCell.isSelected = true
+            handleCellSelection(view: myCustomCell, cellState: cellState)
+        }
+    }
+    
+    func calendar(_ calendar: JTACMonthView,
+                  shouldSelectDate date: Date,
+                  cell: JTACDayCell?,
+                  cellState: CellState) -> Bool {
+        return true
+    }
+    
+    func calendar(_ calendar: JTACMonthView,
+                  didSelectDate date: Date,
+                  cell: JTACDayCell?,
+                  cellState: CellState,
+                  indexPath: IndexPath) {
+        presenter?.getEvents(newDate: date)
+        handleCellConfiguration(cell: cell, cellState: cellState)
+    }
+    
+    func calendar(_ calendar: JTACMonthView,
+                  didDeselectDate date: Date,
+                  cell: JTACDayCell?,
+                  cellState: CellState,
+                  indexPath: IndexPath) {
+        handleCellConfiguration(cell: cell, cellState: cellState)
     }
     
 }

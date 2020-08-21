@@ -22,7 +22,7 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getEventColor(index: Int) -> UIColor?
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
-    func selectDate()
+//    func selectDate()
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
@@ -46,8 +46,8 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     }
     
     func addButtonPressed() {
-        let viewController = StartAddEventViewController()
-        let presenter = StartAddEventPresenter(view: viewController)
+        let viewController = AddEventViewController()
+        let presenter = AddEventPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.delegate = self
         view.navigationController?.pushViewController(viewController, animated: true)
@@ -87,23 +87,23 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         var weekdayString = ""
         switch weekday {
         case 1:
-            weekdayString = "вс"
+            weekdayString = "Вс"
         case 2:
-            weekdayString = "пн"
+            weekdayString = "Пн"
         case 3:
-            weekdayString = "вт"
+            weekdayString = "Вт"
         case 4:
-            weekdayString = "ср"
+            weekdayString = "Ср"
         case 5:
-            weekdayString = "чт"
+            weekdayString = "Чт"
         case 6:
-            weekdayString = "пт"
+            weekdayString = "Пт"
         case 7:
-            weekdayString = "сб"
+            weekdayString = "Сб"
         default:
             weekdayString = ""
         }
-        return "\(weekdayString), \(dateString)"
+        return "\(weekdayString)"
     }
     
     func getCountPatients() -> Int? {
@@ -158,7 +158,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
             return title
         }
     }
-    
+    /*
     func selectDate() {
         let viewController = SelectDateViewController()
         let presenter = SelectDatePresenter(view: viewController, startDate: view.getDate())
@@ -167,7 +167,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         viewController.delegate = delegate
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+    */
     // MARK: - PresenterProtocol
     func back() { }
     
@@ -187,3 +187,4 @@ extension StartSchedulePresenter: SelectDateControllerDelegate {
     }
     
 }
+

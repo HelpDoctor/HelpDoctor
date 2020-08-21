@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -22,6 +22,10 @@
 		4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */; };
 		4609F4392441AD9000F17E45 /* VerificationOkPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */; };
 		4609F43B24422DB400F17E45 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4609F43A24422DB400F17E45 /* UIView+Extensions.swift */; };
+		46164B9524EE48A000879DE4 /* AddEventViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46164B9424EE48A000879DE4 /* AddEventViewController.swift */; };
+		46164B9724EE48B000879DE4 /* AddEventPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46164B9624EE48B000879DE4 /* AddEventPresenter.swift */; };
+		46164B9A24EE5DA600879DE4 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 46164B9924EE5DA600879DE4 /* JTAppleCalendar */; };
+		46164B9C24EEBA7200879DE4 /* DayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46164B9B24EEBA7200879DE4 /* DayCell.swift */; };
 		46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EE823C443C40072653A /* ScheduleEvents.swift */; };
 		46203EED23C443E20072653A /* CreateOrUpdateEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */; };
 		46203EEE23C443E20072653A /* Schedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46203EEC23C443E20072653A /* Schedule.swift */; };
@@ -256,6 +260,9 @@
 		4609F4362441AD7D00F17E45 /* VerificationOkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkViewController.swift; sourceTree = "<group>"; };
 		4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationOkPresenter.swift; sourceTree = "<group>"; };
 		4609F43A24422DB400F17E45 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		46164B9424EE48A000879DE4 /* AddEventViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventViewController.swift; sourceTree = "<group>"; };
+		46164B9624EE48B000879DE4 /* AddEventPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEventPresenter.swift; sourceTree = "<group>"; };
+		46164B9B24EEBA7200879DE4 /* DayCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCell.swift; sourceTree = "<group>"; };
 		46203EE823C443C40072653A /* ScheduleEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScheduleEvents.swift; sourceTree = "<group>"; };
 		46203EEB23C443E20072653A /* CreateOrUpdateEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateOrUpdateEvent.swift; sourceTree = "<group>"; };
 		46203EEC23C443E20072653A /* Schedule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Schedule.swift; sourceTree = "<group>"; };
@@ -481,6 +488,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46164B9A24EE5DA600879DE4 /* JTAppleCalendar in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +513,7 @@
 				46072E1223C228E80070F2F6 /* TodayEventCell.swift */,
 				46072E1423C229BE0070F2F6 /* SeparatorCell.swift */,
 				46072E1623C22B710070F2F6 /* EventCell.swift */,
+				46164B9B24EEBA7200879DE4 /* DayCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -534,6 +543,15 @@
 				4609F4382441AD9000F17E45 /* VerificationOkPresenter.swift */,
 			);
 			path = VerificationOk;
+			sourceTree = "<group>";
+		};
+		46164B9324EE487F00879DE4 /* Add Event */ = {
+			isa = PBXGroup;
+			children = (
+				46164B9424EE48A000879DE4 /* AddEventViewController.swift */,
+				46164B9624EE48B000879DE4 /* AddEventPresenter.swift */,
+			);
+			path = "Add Event";
 			sourceTree = "<group>";
 		};
 		46203EEA23C443E20072653A /* Schedule */ = {
@@ -1205,6 +1223,7 @@
 				46203F0723C761880072653A /* EventAddEvent */,
 				46072E1F23C267420070F2F6 /* AppointmentAddEvent */,
 				46072E1823C23FDF0070F2F6 /* StartAddEvent */,
+				46164B9324EE487F00879DE4 /* Add Event */,
 				46072E0723C1F49B0070F2F6 /* Start */,
 			);
 			path = Schedule;
@@ -1311,6 +1330,9 @@
 			dependencies = (
 			);
 			name = HelpDoctor;
+			packageProductDependencies = (
+				46164B9924EE5DA600879DE4 /* JTAppleCalendar */,
+			);
 			productName = HelpDoctor;
 			productReference = C48F15DE23B5FD30002D04E3 /* HelpDoctor.app */;
 			productType = "com.apple.product-type.application";
@@ -1339,6 +1361,9 @@
 				Base,
 			);
 			mainGroup = C48F15D523B5FD30002D04E3;
+			packageReferences = (
+				46164B9824EE5DA600879DE4 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
+			);
 			productRefGroup = C48F15DF23B5FD30002D04E3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1532,8 +1557,10 @@
 				46F87F7523C1BEF60095264E /* MedicalOrganizationSearchTextField.swift in Sources */,
 				46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */,
 				46395E102423EBD600BE4F70 /* CitiesSearchTextField.swift in Sources */,
+				46164B9524EE48A000879DE4 /* AddEventViewController.swift in Sources */,
 				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
 				46203F0623C5F6C30072653A /* TileButton.swift in Sources */,
+				46164B9724EE48B000879DE4 /* AddEventPresenter.swift in Sources */,
 				46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */,
 				46203F0B23C761880072653A /* EventAddViewController.swift in Sources */,
 				46F87F1923BB72D30095264E /* AlertView.swift in Sources */,
@@ -1543,6 +1570,7 @@
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
 				46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */,
+				46164B9C24EEBA7200879DE4 /* DayCell.swift in Sources */,
 				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
@@ -1794,6 +1822,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		46164B9824EE5DA600879DE4 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/patchthecode/JTAppleCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		46164B9924EE5DA600879DE4 /* JTAppleCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46164B9824EE5DA600879DE4 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
+			productName = JTAppleCalendar;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C48F15D623B5FD30002D04E3 /* Project object */;
 }
