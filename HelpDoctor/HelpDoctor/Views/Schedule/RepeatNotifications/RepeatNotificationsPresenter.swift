@@ -69,9 +69,9 @@ class RepeatNotificationsPresenter: RepeatNotificationsPresenterProtocol {
     // MARK: - Coordinator
     func back() {
         view.navigationController?.popViewController(animated: true)
-        let previous = view.navigationController?.viewControllers.last as! EventAddViewController
+        let previous = view.navigationController?.viewControllers.last as! AddEventViewController
         let presenter = previous.presenter
-        presenter?.setRepeat(repeatArray: indexArray)
+//        presenter?.setRepeat(repeatArray: indexArray)
     }
     
     func backToRoot() {

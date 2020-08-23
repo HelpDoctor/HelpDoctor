@@ -22,7 +22,6 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getEventColor(index: Int) -> UIColor?
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
-//    func selectDate()
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
@@ -37,10 +36,12 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     // MARK: - Public methods
     func didSelectRow(index: Int) {
-        let viewController = ViewEventViewController()
-        let presenter = ViewEventPresenter(view: viewController)
+//        let viewController = ViewEventViewController()
+//        let presenter = ViewEventPresenter(view: viewController)
+        let viewController = AddEventViewController()
+        let presenter = AddEventPresenter(view: viewController)
         viewController.presenter = presenter
-        presenter.delegate = self
+//        presenter.delegate = self
         presenter.setIdEvent(idEvent: arrayEvents?[index].id ?? 0)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
@@ -49,7 +50,6 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         let viewController = AddEventViewController()
         let presenter = AddEventPresenter(view: viewController)
         viewController.presenter = presenter
-        presenter.delegate = self
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -83,7 +83,6 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
-        let dateString = dateFormatter.string(from: date)
         var weekdayString = ""
         switch weekday {
         case 1:
@@ -158,21 +157,19 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
             return title
         }
     }
-    /*
-    func selectDate() {
-        let viewController = SelectDateViewController()
-        let presenter = SelectDatePresenter(view: viewController, startDate: view.getDate())
-        let delegate = self
-        viewController.presenter = presenter
-        viewController.delegate = delegate
-        view.navigationController?.pushViewController(viewController, animated: true)
+    
+    func convertDate(date: Date) -> String {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: date)
+        return dateString
     }
-    */
+    
     // MARK: - PresenterProtocol
     func back() { }
     
 }
-
+/*
 extension StartSchedulePresenter: SelectDateControllerDelegate {
     
     func callback(newDate: Date) {
@@ -187,4 +184,4 @@ extension StartSchedulePresenter: SelectDateControllerDelegate {
     }
     
 }
-
+*/

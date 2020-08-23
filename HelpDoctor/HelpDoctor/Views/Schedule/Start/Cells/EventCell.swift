@@ -106,7 +106,7 @@ class EventCell: UITableViewCell {
             paragraphStyle.lineSpacing = 6
             attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
                                           value: paragraphStyle,
-                                          range: NSMakeRange(0, attributedString.length))
+                                          range: NSRange(location: 0, length: attributedString.length))
             titleLabel.attributedText = attributedString
             
             startTimeLabel.text = startTime
@@ -118,7 +118,7 @@ class EventCell: UITableViewCell {
             paragraphStyle.lineSpacing = 6
             attributedString.addAttribute(NSAttributedString.Key.paragraphStyle,
                                           value: paragraphStyle,
-                                          range: NSMakeRange(0, attributedString.length))
+                                          range: NSRange(location: 0, length: attributedString.length))
             titleLabel.attributedText = attributedString
             
             startTimeLabel.text = startTime

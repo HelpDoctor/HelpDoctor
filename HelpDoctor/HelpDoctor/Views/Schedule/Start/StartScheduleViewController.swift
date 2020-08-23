@@ -18,7 +18,6 @@ class StartScheduleViewController: UIViewController {
     private let headerHeight = 40.f
     private let heightTopView = 70.f
     private let calendarView = JTACMonthView()
-    private let dateButton = UIButton() // TODO: - временное решение, сделать календарь CollectionView
     private let topView = UIView()
     private let appointmentImage = UIImageView()
     private let appointmentLabel = UILabel()
@@ -34,7 +33,6 @@ class StartScheduleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundColor
-//        setupCalendarView()
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
                         presenter: presenter,
@@ -63,7 +61,6 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
-        dateButton.setTitle(currentDate.description, for: .normal)
         let countPatients = presenter?.getCountPatients()
         if countPatients == 0 || countPatients == nil {
             appointmentCount.text = ""
@@ -288,14 +285,30 @@ class StartScheduleViewController: UIViewController {
     
     func handleCellSelection(view: JTACDayCell?, cellState: CellState) {
         guard let myCustomCell = view as? DayCell else { return }
+        let dayOfWeek = myCustomCell.dayOfWeekLabel.text
         
         if cellState.isSelected {
             myCustomCell.selectedView.isHidden = false
             myCustomCell.dateLabel.textColor = .white
+            
+            if dayOfWeek == "Сб" || dayOfWeek == "Вс" {
+                myCustomCell.dayOfWeekLabel.textColor = .holidayColor
+            } else {
+                myCustomCell.dayOfWeekLabel.textColor = .black
+            }
+            
         } else {
             myCustomCell.selectedView.isHidden = true
-            myCustomCell.dateLabel.textColor = .black
+            
+            if dayOfWeek == "Сб" || dayOfWeek == "Вс" {
+                myCustomCell.dateLabel.textColor = .holidayColor
+                myCustomCell.dayOfWeekLabel.textColor = .holidayColor
+            } else {
+                myCustomCell.dateLabel.textColor = .black
+                myCustomCell.dayOfWeekLabel.textColor = .black
+            }
         }
+        
     }
     
     // MARK: - Buttons methods
@@ -318,6 +331,7 @@ extension StartScheduleViewController: UITableViewDelegate {
 
 // MARK: - Table Data Source
 extension StartScheduleViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -396,12 +410,18 @@ extension StartScheduleViewController: JTACMonthViewDelegate {
     }
     
     func configureVisibleCell(myCustomCell: DayCell, cellState: CellState, date: Date, indexPath: IndexPath) {
+        let dayOfWeek = presenter?.getCurrentDate(date: date)
         myCustomCell.dateLabel.text = cellState.text
-        myCustomCell.dayOfWeekLabel.text = presenter?.getCurrentDate(date: date)
+        myCustomCell.dayOfWeekLabel.text = dayOfWeek
+        
         if Calendar.current.isDateInToday(date) {
             myCustomCell.isSelected = true
             handleCellSelection(view: myCustomCell, cellState: cellState)
+        } else {
+            myCustomCell.isSelected = false
+            handleCellSelection(view: myCustomCell, cellState: cellState)
         }
+        
     }
     
     func calendar(_ calendar: JTACMonthView,

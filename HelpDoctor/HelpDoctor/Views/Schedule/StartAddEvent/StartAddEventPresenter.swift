@@ -8,18 +8,19 @@
 
 import UIKit
 
-protocol StartAddEventPresenterProtocol: Presenter {
+protocol StartAddEventControllerDelegate: AnyObject {
+    func callback(eventType: EventType)
+}
+
+protocol StartAddEventPresenterProtocol {
     init(view: StartAddEventViewController)
-    func appointmentButtonPressed()
-    func administrativeButtonPressed()
-    func scienceButtonPressed()
-    func otherButtonPressed()
+    func buttonPressed(_ eventType: EventType)
 }
 
 class StartAddEventPresenter: StartAddEventPresenterProtocol {
     
     let view: StartAddEventViewController
-    weak var delegate: SelectDateControllerDelegate?
+    weak var delegate: StartAddEventControllerDelegate?
     
     // MARK: - Init
     required init(view: StartAddEventViewController) {
@@ -27,40 +28,18 @@ class StartAddEventPresenter: StartAddEventPresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func appointmentButtonPressed() {
-        let viewController = AppointmentAddViewController()
-        let presenter = AppointmentAddPresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.delegate = delegate
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func administrativeButtonPressed() {
-        let viewController = EventAddViewController()
-        let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
-        viewController.presenter = presenter
-        presenter.delegate = delegate
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func scienceButtonPressed() {
-        let viewController = EventAddViewController()
-        let presenter = EventAddPresenter(view: viewController, eventType: .science)
-        viewController.presenter = presenter
-        presenter.delegate = delegate
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func otherButtonPressed() {
-        let viewController = EventAddViewController()
-        let presenter = EventAddPresenter(view: viewController, eventType: .other)
-        viewController.presenter = presenter
-        presenter.delegate = delegate
-        view.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
-    func back() {
-        view.navigationController?.popViewController(animated: true)
+    func buttonPressed(_ eventType: EventType) {
+        view.dismiss(animated: true, completion: nil)
+        switch eventType {
+        case .administrative:
+            delegate?.callback(eventType: .administrative)
+        case .other:
+            delegate?.callback(eventType: .other)
+        case .reception:
+            delegate?.callback(eventType: .reception)
+        case .science:
+            delegate?.callback(eventType: .science)
+        }
     }
     
 }

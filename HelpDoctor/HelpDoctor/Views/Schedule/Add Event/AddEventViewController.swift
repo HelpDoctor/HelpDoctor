@@ -31,6 +31,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let okButton = UIButton()
     private let titleTextField = UITextField()
     private let eventTypeTextField = UITextField()
+    private let eventTypeRightView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
     private let dateLabel = UILabel()
     private let startDateLabel = UILabel()
     private let startDateTextField = UITextField()
@@ -54,7 +55,9 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.getEvent()
         view.backgroundColor = UIColor.backgroundColor
+        eventTypeRightView.backgroundColor = .clear
         widthDateTextField = (Session.width - 40 - (2 * widthDateLabel) - (3 * insetDateLabel)) / 2
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
@@ -94,6 +97,47 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - Public methods
+    func setEventType(eventType: String, color: UIColor) {
+        eventTypeTextField.text = eventType
+        eventTypeRightView.backgroundColor = color
+    }
+    
+    func setStartDate(startDate: String) {
+        startDateTextField.text = startDate
+    }
+    
+    func setEndDate(endDate: String) {
+        endDateTextField.text = endDate
+    }
+    
+    func setEventOnView(event: ScheduleEvents) {
+        let eventType = event.event_type
+        switch eventType {
+        case "reception":
+            setEventType(eventType: "Приём пациентов", color: .receptionEventColor)
+        case "administrative":
+            setEventType(eventType: "Административная деятельность", color: .administrativeEventColor)
+        case "scientific":
+            setEventType(eventType: "Научная деятельность", color: .scientificEventColor)
+        case "another":
+            setEventType(eventType: "Другое", color: .anotherEventColor)
+        default:
+            self.showAlert(message: "Не верный тип события")
+        }
+        startDateTextField.text = presenter?.convertDate(date: event.start_date) ?? event.start_date
+        endDateTextField.text = presenter?.convertDate(date: event.end_date) ?? event.end_date
+        titleTextField.text = event.title
+        locationTextField.text = event.event_place
+//        guard let notifyDate = event.notify_date else { return }
+//        guard let startDate = presenter?.convertStringToDate(date: event.start_date),
+//            let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
+//        guard let dateDiff = Calendar.current.dateComponents([.minute],
+//                                                             from: notify,
+//                                                             to: startDate).minute else { return }
+//        timerLabel.text = "Уведомить за \(dateDiff) минут"
     }
     
     // MARK: - Setup views
@@ -182,11 +226,14 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         eventTypeTextField.autocorrectionType = .no
         eventTypeTextField.backgroundColor = .white
         eventTypeTextField.layer.cornerRadius = 5
+        eventTypeTextField.clipsToBounds = true
         eventTypeTextField.leftView = UIView(frame: CGRect(x: 0,
                                                            y: 0,
                                                            width: 8,
                                                            height: eventTypeTextField.frame.height))
         eventTypeTextField.leftViewMode = .always
+        eventTypeTextField.rightView = eventTypeRightView
+        eventTypeTextField.rightViewMode = .always
         eventTypeTextField.addGestureRecognizer(tap)
         scrollView.addSubview(eventTypeTextField)
         
@@ -235,6 +282,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupStartDateTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(startDateButtonPressed))
         startDateTextField.font = .systemFontOfSize(size: 14)
         startDateTextField.textColor = .textFieldTextColor
         startDateTextField.textAlignment = .left
@@ -246,6 +295,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
                                                            width: 8,
                                                            height: heightTextField))
         startDateTextField.leftViewMode = .always
+        startDateTextField.addGestureRecognizer(tap)
         scrollView.addSubview(startDateTextField)
         
         startDateTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -273,6 +323,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupEndDateTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(endDateButtonPressed))
         endDateTextField.font = .systemFontOfSize(size: 14)
         endDateTextField.textColor = .textFieldTextColor
         endDateTextField.textAlignment = .left
@@ -284,6 +336,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
                                                          width: 8,
                                                          height: heightTextField))
         endDateTextField.leftViewMode = .always
+        endDateTextField.addGestureRecognizer(tap)
         scrollView.addSubview(endDateTextField)
         
         endDateTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -576,6 +629,14 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func eventTypeButtonPressed() {
         presenter?.eventTypeChoice()
+    }
+    
+    @objc private func startDateButtonPressed() {
+        presenter?.dateChoice(isStart: true)
+    }
+    
+    @objc private func endDateButtonPressed() {
+        presenter?.dateChoice(isStart: false)
     }
     
     @objc private func alldayButtonPressed() {

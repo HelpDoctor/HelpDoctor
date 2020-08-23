@@ -27,23 +27,11 @@ class StartAddEventViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.backgroundColor
-//        setupHeaderViewWithAvatar(title: "Новое событие",
-//                                  text: nil,
-//                                  userImage: nil,
-//                                  presenter: presenter)
         setupTopLabel()
         setupAppointmentButton()
         setupAdministrativeButton()
         setupScienceButton()
         setupOtherButton()
-        addSwipeGestureToBack()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: animated)
-        UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
-        tabBarController?.tabBar.isHidden = false
     }
     
     // MARK: - Setup views
@@ -62,8 +50,9 @@ class StartAddEventViewController: UIViewController {
         topLabel.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         topLabel.heightAnchor.constraint(equalToConstant: verticalInset).isActive = true
     }
+    
     private func setupAppointmentButton() {
-        appointmentButton.addTarget(self, action: #selector(appointmentButtonPressed), for: .touchUpInside)
+        appointmentButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         appointmentButton.isEnabled = true
         appointmentButton.backgroundColor = .receptionEventColor
         view.addSubview(appointmentButton)
@@ -77,7 +66,7 @@ class StartAddEventViewController: UIViewController {
     }
     
     private func setupAdministrativeButton() {
-        administrativeButton.addTarget(self, action: #selector(administrativeButtonPressed), for: .touchUpInside)
+        administrativeButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         administrativeButton.isEnabled = true
         administrativeButton.backgroundColor = .administrativeEventColor
         view.addSubview(administrativeButton)
@@ -91,7 +80,7 @@ class StartAddEventViewController: UIViewController {
     }
     
     private func setupScienceButton() {
-        scienceButton.addTarget(self, action: #selector(scienceButtonPressed), for: .touchUpInside)
+        scienceButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         scienceButton.isEnabled = true
         scienceButton.backgroundColor = .scientificEventColor
         view.addSubview(scienceButton)
@@ -105,7 +94,7 @@ class StartAddEventViewController: UIViewController {
     }
     
     private func setupOtherButton() {
-        otherButton.addTarget(self, action: #selector(otherButtonPressed), for: .touchUpInside)
+        otherButton.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         otherButton.isEnabled = true
         otherButton.backgroundColor = .anotherEventColor
         view.addSubview(otherButton)
@@ -118,34 +107,20 @@ class StartAddEventViewController: UIViewController {
         otherButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
     }
     
-    /// Добавляет свайп влево для перехода назад
-    private func addSwipeGestureToBack() {
-        let swipeLeft = UISwipeGestureRecognizer()
-        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
-        swipeLeft.direction = .right
-        view.addGestureRecognizer(swipeLeft)
-    }
-    
     // MARK: - Buttons methods
-    @objc private func appointmentButtonPressed() {
-        presenter?.appointmentButtonPressed()
-    }
-    
-    @objc private func administrativeButtonPressed() {
-        presenter?.administrativeButtonPressed()
-    }
-    
-    @objc private func scienceButtonPressed() {
-        presenter?.scienceButtonPressed()
-    }
-    
-    @objc private func otherButtonPressed() {
-        presenter?.otherButtonPressed()
-    }
-    
-    /// Переход на предыдущий экран
-    @objc private func backButtonPressed() {
-        presenter?.back()
+    @objc func buttonTapped(_ sender: UIButton) {
+        switch sender {
+        case appointmentButton:
+            presenter?.buttonPressed(EventType.reception)
+        case administrativeButton:
+            presenter?.buttonPressed(EventType.administrative)
+        case scienceButton:
+            presenter?.buttonPressed(EventType.science)
+        case otherButton:
+            presenter?.buttonPressed(EventType.other)
+        default:
+            presenter?.buttonPressed(EventType.other)
+        }
     }
     
 }

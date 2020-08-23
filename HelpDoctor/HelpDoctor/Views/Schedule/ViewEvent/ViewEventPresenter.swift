@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 11.01.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 protocol ViewEventPresenterProtocol: Presenter {
@@ -25,7 +25,7 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
     let view: ViewEventViewController
     var idEvent: Int?
     var eventType: String?
-    weak var delegate: SelectDateControllerDelegate?
+//    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Init
     required init(view: ViewEventViewController) {
@@ -59,31 +59,39 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
     func saveEvent() {
         switch eventType {
         case "reception":
-            let viewController = AppointmentAddViewController()
-            let presenter = AppointmentAddPresenter(view: viewController)
+//            let viewController = AppointmentAddViewController()
+//            let presenter = AppointmentAddPresenter(view: viewController)
+            let viewController = AddEventViewController()
+            let presenter = AddEventPresenter(view: viewController)
             viewController.presenter = presenter
-            presenter.delegate = delegate
+//            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "administrative":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
+//            let viewController = EventAddViewController()
+//            let presenter = EventAddPresenter(view: viewController, eventType: .administrative)
+            let viewController = AddEventViewController()
+            let presenter = AddEventPresenter(view: viewController)
             viewController.presenter = presenter
-            presenter.delegate = delegate
+//            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "scientific":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .science)
+//            let viewController = EventAddViewController()
+//            let presenter = EventAddPresenter(view: viewController, eventType: .science)
+            let viewController = AddEventViewController()
+            let presenter = AddEventPresenter(view: viewController)
             viewController.presenter = presenter
-            presenter.delegate = delegate
+//            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         case "another":
-            let viewController = EventAddViewController()
-            let presenter = EventAddPresenter(view: viewController, eventType: .other)
+//            let viewController = EventAddViewController()
+//            let presenter = EventAddPresenter(view: viewController, eventType: .other)
+            let viewController = AddEventViewController()
+            let presenter = AddEventPresenter(view: viewController)
             viewController.presenter = presenter
-            presenter.delegate = delegate
+//            presenter.delegate = delegate
             presenter.setIdEvent(idEvent: idEvent ?? 0)
             view.navigationController?.pushViewController(viewController, animated: true)
         default:
@@ -106,7 +114,7 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
                     guard let code = resultDeleteEvents.responce?.0 else { return }
                     if responceCode(code: code) {
                         self?.backToRoot()
-                        self?.delegate?.callback(newDate: Date())
+//                        self?.delegate?.callback(newDate: Date())
                     } else {
                         self?.view.showAlert(message: resultDeleteEvents.responce?.1)
                     }
@@ -146,3 +154,4 @@ class ViewEventPresenter: ViewEventPresenterProtocol {
     }
     
 }
+*/
