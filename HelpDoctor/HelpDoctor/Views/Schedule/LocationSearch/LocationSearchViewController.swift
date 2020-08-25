@@ -17,6 +17,8 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
     private var locationManager = LocationManager.instance
     
     // MARK: - Constants and variables
+    private let inset = 10.f
+    private let headerHeight = 40.f
     private let mapView = MKMapView()
     private var nearMeParent = UIView()
     private let linkView = UIView()
@@ -123,18 +125,15 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
     private var userLocationRequest: CLAuthorizationStatus?
     private var alertSubtitle: String?
     
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
-    
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .tabBarColor
-        tabBarController?.tabBar.isHidden = true
-        setupHeaderViewWithAvatar(title: "Выбор локации",
-                                  text: nil,
-                                  userImage: nil,
-                                  presenter: presenter)
+        view.backgroundColor = UIColor.backgroundColor
+        setupHeaderView(color: .tabBarColor,
+                        height: headerHeight,
+                        presenter: presenter,
+                        title: "Местоположение",
+                        font: .boldSystemFontOfSize(size: 14))
         setupMapView()
         setupStackView()
         setupSearchBar()
@@ -169,6 +168,7 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
+        tabBarController?.tabBar.isHidden = true
     }
     
     deinit {
@@ -184,13 +184,18 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
                                  fromEyeCoordinate: coordinate,
                                  eyeAltitude: 2000)
         mapView.setCamera(camera, animated: true)
+        mapView.layer.cornerRadius = 5
         view.addSubview(mapView)
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
-        mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50).isActive = true
-        mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
+        mapView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                     constant: headerHeight + inset).isActive = true
+        mapView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
+                                         constant: inset).isActive = true
+        mapView.trailingAnchor.constraint(equalTo: view.trailingAnchor,
+                                          constant: -inset).isActive = true
+        mapView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                        constant: -inset).isActive = true
     }
     
     /// Установка StackView со строкой поиска и таблицой результатов
@@ -199,11 +204,12 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
         stackView.alignment = .fill
         stackView.distribution = .fill
         stackView.spacing = 0
+        stackView.layer.cornerRadius = 5
         stackViewHeight = stackView.heightAnchor.constraint(equalToConstant: 60)
         view.addSubview(stackView)
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        stackView.widthAnchor.constraint(equalTo: mapView.widthAnchor).isActive = true
         stackView.bottomAnchor.constraint(equalTo: mapView.bottomAnchor).isActive = true
         stackViewHeight.isActive = true
         stackView.leadingAnchor.constraint(equalTo: mapView.leadingAnchor).isActive = true
@@ -211,17 +217,19 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
     
     /// Установка строки поиска
     private func setupSearchBar() {
+        searchBar.layer.cornerRadius = 5
         stackView.addSubview(searchBar)
         
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         searchBar.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
         searchBar.topAnchor.constraint(equalTo: stackView.topAnchor).isActive = true
-        searchBar.widthAnchor.constraint(equalToConstant: width).isActive = true
+        searchBar.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         searchBar.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
     
     /// Установка таблицы с результатами поиска
     private func setupTableView() {
+        tableView.layer.cornerRadius = 5
         stackView.addSubview(tableView)
         tableView.register(MapItemTableViewCell.self,
                            forCellReuseIdentifier: "MapItemTableViewCell")
@@ -233,7 +241,7 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
         tableView.tableFooterView = UIView()
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        tableView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         tableView.topAnchor.constraint(equalTo: searchBar.bottomAnchor).isActive = true
         tableView.bottomAnchor.constraint(equalTo: stackView.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: stackView.leadingAnchor).isActive = true
@@ -241,9 +249,9 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
     
     /// Добавление на экран распознователя жестов
     private func setupGestureRecognizer() {
-//        let pan = UIPanGestureRecognizer(target: self, action: #selector(mapView(isPan:)))
-//        pan.delegate = self
-//        mapView.addGestureRecognizer(pan)
+        //        let pan = UIPanGestureRecognizer(target: self, action: #selector(mapView(isPan:)))
+        //        pan.delegate = self
+        //        mapView.addGestureRecognizer(pan)
         
         let pinch = UIPinchGestureRecognizer(target: self, action: #selector(mapView(isPinch:)))
         pinch.delegate = self
@@ -652,6 +660,7 @@ class LocationSearchViewController: UIViewController, UIGestureRecognizerDelegat
 
 // MARK: - Map Delegate
 extension LocationSearchViewController: MKMapViewDelegate {
+    
     func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
         geocodeRequestCancel()
     }
@@ -688,10 +697,12 @@ extension LocationSearchViewController: MKMapViewDelegate {
             self.mapView.deselectAnnotation(annotation, animated: true)
         }
     }
+    
 }
 
 // MARK: - Search Delegate
 extension LocationSearchViewController: UISearchBarDelegate, MKLocalSearchCompleterDelegate {
+    
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         
     }
@@ -722,11 +733,12 @@ extension LocationSearchViewController: UISearchBarDelegate, MKLocalSearchComple
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         searchRequestStart(dismissKeyboard: true)
     }
-
+    
 }
 
 // MARK: - Table Data Source
 extension LocationSearchViewController: UITableViewDataSource {
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -745,13 +757,13 @@ extension LocationSearchViewController: UITableViewDataSource {
         switch tableViewType {
         case .searchCompletion:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCompletionTableViewCell",
-                                                     for: indexPath) as? SearchCompletionTableViewCell
+                                                           for: indexPath) as? SearchCompletionTableViewCell
                 else { return UITableViewCell() }
             cell.viewSetup(withSearchCompletion: searchCompletions[indexPath.row])
             return cell
         case .mapItem:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "MapItemTableViewCell",
-                                                     for: indexPath) as? MapItemTableViewCell
+                                                           for: indexPath) as? MapItemTableViewCell
                 else { return UITableViewCell() }
             cell.viewSetup(withMapItem: searchMapItems[indexPath.row], tintColor: .red)
             return cell
@@ -761,6 +773,7 @@ extension LocationSearchViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cell.backgroundColor = UIColor.clear
     }
+    
 }
 
 // MARK: - Table View Delegate
@@ -782,11 +795,14 @@ extension LocationSearchViewController: UITableViewDelegate {
             presenter?.back()
         }
     }
+    
 }
 
 // MARK: - Location Manager Delegate
 extension LocationSearchViewController: LocationManagerDelegate {
+    
     func didBeginLocationUpdate() {
         mapView.setCenter(locationManager.userLocation.coordinate, animated: true)
     }
+    
 }

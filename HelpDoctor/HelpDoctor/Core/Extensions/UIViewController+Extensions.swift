@@ -42,6 +42,7 @@ extension UIViewController {
                                     height: height,
                                     presenter: presenter,
                                     font: font)
+        headerView.tag = 996
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false

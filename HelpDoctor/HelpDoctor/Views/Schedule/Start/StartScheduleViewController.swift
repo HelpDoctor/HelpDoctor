@@ -345,7 +345,7 @@ extension StartScheduleViewController: UITableViewDataSource {
                                                        for: indexPath) as? EventCell
             else { return UITableViewCell() }
         cell.configure(startTime: presenter?.getStartTimeEvent(index: indexPath.row) ?? "",
-                       endTime: presenter?.getStartTimeEvent(index: indexPath.row) ?? "",
+                       endTime: presenter?.getEndTimeEvent(index: indexPath.row) ?? "",
                        event: presenter?.getTitleEvent(index: indexPath.row) ?? "",
                        eventColor: presenter?.getEventColor(index: indexPath.row) ?? .clear,
                        isMajor: presenter?.getMajorFlag(index: indexPath.row) ?? false)

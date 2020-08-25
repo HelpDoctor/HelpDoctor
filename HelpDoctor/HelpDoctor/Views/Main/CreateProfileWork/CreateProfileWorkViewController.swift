@@ -384,7 +384,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         heightScroll += verticalInset + heightTextField
         positionTextField.font = UIFont.systemFontOfSize(size: 14)
         positionTextField.textColor = .textFieldTextColor
-        positionTextField.placeholder = "Должность"
+        positionTextField.placeholder = "Профессиональный статус"
         positionTextField.textAlignment = .left
         positionTextField.backgroundColor = .white
         positionTextField.layer.cornerRadius = 5

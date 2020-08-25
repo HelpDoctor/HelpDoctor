@@ -55,7 +55,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     func getEvents(newDate: Date) {
         let getEvents = Schedule()
-        let anyDate = convertDate(date: newDate)
+        let anyDate = newDate.toString(withFormat: "yyyy-MM-dd")
         getData(typeOfContent: .schedule_getEventsForCurrentDate,
                 returning: ([ScheduleEvents], Int?, String?).self,
                 requestParams: ["AnyDate": anyDate]) { [weak self] result in
@@ -158,30 +158,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         }
     }
     
-    func convertDate(date: Date) -> String {
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: date)
-        return dateString
-    }
-    
     // MARK: - PresenterProtocol
     func back() { }
     
 }
-/*
-extension StartSchedulePresenter: SelectDateControllerDelegate {
-    
-    func callback(newDate: Date) {
-        getEvents(newDate: newDate)
-    }
-    
-    func convertDate(date: Date) -> String {
-        let dateFormatter: DateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let dateString = dateFormatter.string(from: date)
-        return dateString
-    }
-    
-}
-*/

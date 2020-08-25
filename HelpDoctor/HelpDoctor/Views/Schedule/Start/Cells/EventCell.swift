@@ -54,7 +54,7 @@ class EventCell: UITableViewCell {
         startTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         startTimeLabel.topAnchor.constraint(equalTo: cellView.topAnchor, constant: 7).isActive = true
         startTimeLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10).isActive = true
-        startTimeLabel.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        startTimeLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
         startTimeLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
@@ -68,7 +68,7 @@ class EventCell: UITableViewCell {
         endTimeLabel.translatesAutoresizingMaskIntoConstraints = false
         endTimeLabel.bottomAnchor.constraint(equalTo: cellView.bottomAnchor, constant: -6).isActive = true
         endTimeLabel.leadingAnchor.constraint(equalTo: cellView.leadingAnchor, constant: 10).isActive = true
-        endTimeLabel.widthAnchor.constraint(equalToConstant: 35).isActive = true
+        endTimeLabel.widthAnchor.constraint(equalToConstant: 40).isActive = true
         endTimeLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
     }
     
@@ -113,6 +113,10 @@ class EventCell: UITableViewCell {
             endTimeLabel.text = endTime
             linkView.backgroundColor = .majorEventColor
         } else {
+            cellView.backgroundColor = .white
+            startTimeLabel.textColor = .black
+            endTimeLabel.textColor = .black
+            titleLabel.textColor = .black
             let attributedString = NSMutableAttributedString(string: event)
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 6

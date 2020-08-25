@@ -6,6 +6,7 @@
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
+import MapKit
 import UIKit
 
 class AddEventViewController: UIViewController, UIScrollViewDelegate {
@@ -114,6 +115,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func setEventOnView(event: ScheduleEvents) {
+        let headerView = view.viewWithTag(996) as? HeaderView
+        headerView?.titleLabel.text = "Редактирование события"
         let eventType = event.event_type
         switch eventType {
         case "reception":
@@ -131,6 +134,11 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         endDateTextField.text = presenter?.convertDate(date: event.end_date) ?? event.end_date
         titleTextField.text = event.title
         locationTextField.text = event.event_place
+        if event.is_major ?? false {
+            majorSwitch.isOn = true
+            majorSwitch.thumbTintColor = UIColor.majorEventColor
+            topView.backgroundColor = .majorEventColor
+        }
 //        guard let notifyDate = event.notify_date else { return }
 //        guard let startDate = presenter?.convertStringToDate(date: event.start_date),
 //            let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
@@ -348,6 +356,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupLocationTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(locationButtonPressed))
         let top = 20.f
         locationTextField.font = .systemFontOfSize(size: 14)
         locationTextField.textColor = .textFieldTextColor
@@ -374,6 +384,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         view.addSubview(imageView)
         locationTextField.rightView = view
         locationTextField.rightViewMode = .always
+        locationTextField.addGestureRecognizer(tap)
         scrollView.addSubview(locationTextField)
         
         locationTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -624,7 +635,9 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func okButtonPressed() {
-        print("Tap ok")
+        presenter?.saveEvent(isMajor: majorSwitch.isOn,
+                             title: titleTextField.text,
+                             location: locationTextField.text)
     }
     
     @objc private func eventTypeButtonPressed() {
@@ -637,6 +650,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func endDateButtonPressed() {
         presenter?.dateChoice(isStart: false)
+    }
+    
+    @objc private func locationButtonPressed() {
+        presenter?.toMap()
     }
     
     @objc private func alldayButtonPressed() {
@@ -676,6 +693,14 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     /// Переход на предыдущий экран
     @objc private func backButtonPressed() {
         presenter?.back()
+    }
+    
+}
+
+extension AddEventViewController: MapKitSearchDelegate {
+    
+    func mapKitSearch(_ locationSearchViewController: LocationSearchViewController, mapItem: MKMapItem) {
+        locationTextField.text = mapItem.name
     }
     
 }

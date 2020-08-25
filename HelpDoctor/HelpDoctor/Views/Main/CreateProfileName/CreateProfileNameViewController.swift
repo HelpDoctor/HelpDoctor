@@ -38,8 +38,9 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let maleButtonLabel = UILabel()
     private let femaleButton = RadioButton()
     private let femaleButtonLabel = UILabel()
-    private let nosexButton = RadioButton()
-    private let nosexButtonLabel = UILabel()
+//    private let nosexButton = RadioButton()
+//    private let nosexButtonLabel = UILabel()
+    private let hideGenderCheckbox = CheckBox(type: .square)
     private let nextButton = HDButton(title: "Далее")
     private var keyboardHeight = 0.f
     
@@ -64,8 +65,9 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupMaleButtonLabel()
         setupFemaleButton()
         setupFemaleButtonLabel()
-        setupNosexButton()
-        setupNosexButtonLabel()
+        setupHideGenderCheckbox()
+//        setupNosexButton()
+//        setupNosexButtonLabel()
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
@@ -357,6 +359,25 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         femaleButtonLabel.heightAnchor.constraint(equalTo: femaleButton.heightAnchor).isActive = true
     }
     
+    private func setupHideGenderCheckbox() {
+        let leading = 20.f
+        hideGenderCheckbox.contentHorizontalAlignment = .left
+        hideGenderCheckbox.contentVerticalAlignment = .center
+        hideGenderCheckbox.setTitle(" Не показывать другим", for: .normal)
+        hideGenderCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
+        hideGenderCheckbox.setTitleColor(.white, for: .normal)
+        hideGenderCheckbox.addTarget(self, action: #selector(hideGenderCheckboxPressed), for: .touchUpInside)
+        scrollView.addSubview(hideGenderCheckbox)
+        
+        hideGenderCheckbox.translatesAutoresizingMaskIntoConstraints = false
+        hideGenderCheckbox.topAnchor.constraint(equalTo: maleButton.bottomAnchor,
+                                                  constant: verticalInset).isActive = true
+        hideGenderCheckbox.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                                      constant: leading).isActive = true
+        hideGenderCheckbox.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        hideGenderCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
+    }
+    /*
     /// Установка радиокнопки
     private func setupNosexButton() {
         let leading = 20.f
@@ -389,7 +410,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nosexButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         nosexButtonLabel.heightAnchor.constraint(equalTo: nosexButton.heightAnchor).isActive = true
     }
-    
+    */
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let width = 110.f
@@ -408,9 +429,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     
     /// Настройка выбора радиокнопки
     private func configureRadioButtons() {
-        maleButton.alternateButton = [femaleButton, nosexButton]
-        femaleButton.alternateButton = [maleButton, nosexButton]
-        nosexButton.alternateButton = [maleButton, femaleButton]
+        maleButton.alternateButton = [femaleButton]
+        femaleButton.alternateButton = [maleButton]
     }
     
     /// Добавление распознавания касания экрана
@@ -467,6 +487,10 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         } else {
             presenter?.setGender("null")
         }
+    }
+    
+    @objc private func hideGenderCheckboxPressed() {
+        hideGenderCheckbox.isSelected = !hideGenderCheckbox.isSelected
     }
     
     /// Действие при нажатии кнопки далее

@@ -11,7 +11,7 @@ import UIKit
 class HeaderView: UIView {
     private let backButton = UIButton()
     private let logoImage = UIImageView()
-    private let titleLabel = UILabel()
+    let titleLabel = UILabel()
     private var presenter: Presenter?
     private var font = UIFont.titleFont(size: 24)
     private var heightHeader = 0.f

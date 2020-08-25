@@ -13,15 +13,18 @@ protocol AddEventPresenterProtocol: Presenter {
     func eventTypeChoice()
     func dateChoice(isStart: Bool)
     func getEvent()
+    func saveEvent(isMajor: Bool, title: String?, location: String?)
     func setIdEvent(idEvent: Int)
     func convertDate(date: String?) -> String?
+    func toMap()
 }
 
-class AddEventPresenter: AddEventPresenterProtocol, StartAddEventControllerDelegate {
+class AddEventPresenter: AddEventPresenterProtocol {
     
     let view: AddEventViewController
     private let transition = PanelTransition()
-    var idEvent: Int?
+    private var idEvent: Int?
+    private var eventType: EventType?
     private var startDate: Date?
     private var endDate: Date?
     
@@ -74,8 +77,87 @@ class AddEventPresenter: AddEventPresenterProtocol, StartAddEventControllerDeleg
                 DispatchQueue.main.async { [weak self]  in
                     print("getEvents =\(String(describing: getEvents.events))")
                     guard let events = getEvents.events else { return }
-//                    self?.eventType = events[0].event_type
+                    self?.setEventType(events[0].event_type)
+                    self?.startDate = events[0].start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.endDate = events[0].end_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
                     self?.view.setEventOnView(event: events[0])
+                }
+            }
+        }
+    }
+    
+    private func setEventType(_ eventTypeString: String) {
+        switch eventTypeString {
+        case "reception":
+            eventType = .reception
+        case "administrative":
+            eventType = .administrative
+        case "scientific":
+            eventType = .science
+        case "another":
+            eventType = .other
+        default:
+            eventType = nil
+        }
+    }
+    
+    func saveEvent(isMajor: Bool, title: String?, location: String?) {
+        if title == "" {
+            view.showAlert(message: "Заполните название события")
+            return
+        }
+        guard let startDate = startDate else {
+            view.showAlert(message: "Укажите дату начала события")
+            return
+        }
+        guard let endDate = endDate else {
+            view.showAlert(message: "Укажите дату окончания события")
+            return
+        }
+        guard let eventType = eventType else {
+            view.showAlert(message: "Выберите тип события")
+            return
+        }
+        let currentEvent = ScheduleEvents(id: idEvent,
+                                          start_date: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
+                                          end_date: endDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
+                                          notify_date: nil,
+                                          title: title,
+                                          description: nil,
+                                          is_major: isMajor,
+                                          event_place: location,
+                                          event_type: eventType.rawValue)
+        
+        let createEvent = CreateOrUpdateEvent(events: currentEvent)
+        getData(typeOfContent: .schedule_CreateOrUpdateEvent,
+                returning: (Int?, String?).self,
+                requestParams: ["json": createEvent.jsonData as Any] ) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            createEvent.responce = result
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async {
+                    print("createEvent = \(String(describing: createEvent.responce))")
+                    guard let self = self,
+                        let code = createEvent.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self.back()
+//                        self.delegate?.callback(newDate: startDate)
+//                        guard let title = title,
+//                            let notifyDate = self.notifyDate else { return }
+//                        for day in self.repeatArray {
+//                            self.notification.scheduleNotification(identifier: UUID().uuidString,
+//                                                                   title: self.getEventTitle(),
+//                                                                    body: desc,
+//                                                                    description: title,
+//                                                                    notifyDate: notifyDate,
+//                                                                    repeatDay: day)
+//                        }
+                        
+                    } else {
+                        self.view.showAlert(message: createEvent.responce?.1)
+                    }
                 }
             }
         }
@@ -98,12 +180,24 @@ class AddEventPresenter: AddEventPresenterProtocol, StartAddEventControllerDeleg
         return dateFormatter.string(from: dateDate)
     }
     
+    func toMap() {
+        let viewController = LocationSearchViewController()
+        let presenter = LocationSearchPresenter(view: viewController)
+        viewController.delegate = self.view
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
-    // MARK: - StartAddEventControllerDelegate
+}
+
+extension AddEventPresenter: StartAddEventControllerDelegate {
+    
     func callback(eventType: EventType) {
+        self.eventType = eventType
         switch eventType {
         case .administrative:
             view.setEventType(eventType: "Административная деятельность", color: .administrativeEventColor)

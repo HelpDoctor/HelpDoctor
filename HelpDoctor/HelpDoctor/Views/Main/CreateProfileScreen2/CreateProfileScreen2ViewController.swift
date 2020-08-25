@@ -183,7 +183,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         let leading = 0.f
         hideBirthdayCheckbox.contentHorizontalAlignment = .left
         hideBirthdayCheckbox.contentVerticalAlignment = .center
-        hideBirthdayCheckbox.setTitle(" Не указывать в профиле", for: .normal)
+        hideBirthdayCheckbox.setTitle(" Не показывать другим", for: .normal)
         hideBirthdayCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
         hideBirthdayCheckbox.setTitleColor(.white, for: .normal)
         hideBirthdayCheckbox.addTarget(self, action: #selector(hideBirthdayCheckboxPressed), for: .touchUpInside)
@@ -283,7 +283,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         let leading = 0.f
         hidePhoneCheckbox.contentHorizontalAlignment = .left
         hidePhoneCheckbox.contentVerticalAlignment = .center
-        hidePhoneCheckbox.setTitle(" Не указывать в профиле", for: .normal)
+        hidePhoneCheckbox.setTitle(" Не показывать другим", for: .normal)
         hidePhoneCheckbox.titleLabel?.font = .systemFontOfSize(size: 12)
         hidePhoneCheckbox.setTitleColor(.white, for: .normal)
         hidePhoneCheckbox.addTarget(self, action: #selector(hidePhoneCheckboxPressed), for: .touchUpInside)

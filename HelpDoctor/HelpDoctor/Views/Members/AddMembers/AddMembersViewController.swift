@@ -24,7 +24,7 @@ class AddMembersViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .backgroundColor
         setupHeaderViewWithAvatar(title: "Добавление участников",
                                   text: nil,
                                   userImage: nil,
