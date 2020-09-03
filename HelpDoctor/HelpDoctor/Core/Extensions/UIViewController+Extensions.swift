@@ -179,4 +179,12 @@ extension UIViewController {
         view.viewWithTag(999)?.removeFromSuperview()
     }
     
+    func setupDefaultLeftView() -> UIView {
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: 8,
+                                        height: Session.heightTextField))
+        return view
+    }
+    
 }

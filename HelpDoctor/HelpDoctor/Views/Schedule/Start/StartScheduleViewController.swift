@@ -366,10 +366,8 @@ extension StartScheduleViewController: UITableViewDataSource {
 extension StartScheduleViewController: JTACMonthViewDataSource {
     
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy MM dd"
-        let startDate = formatter.date(from: "2020 08 01")!
-        let endDate = formatter.date(from: "2020 08 31")!
+        let startDate = "2020 08 01".toDate(withFormat: "yyyy MM dd") ?? Date()
+        let endDate = "2029 12 31".toDate(withFormat: "yyyy MM dd") ?? Date()
         return ConfigurationParameters(startDate: startDate,
                                        endDate: endDate,
                                        numberOfRows: 1,
@@ -377,7 +375,7 @@ extension StartScheduleViewController: JTACMonthViewDataSource {
                                        generateInDates: .off,
                                        generateOutDates: .off,
                                        firstDayOfWeek: .monday,
-                                       hasStrictBoundaries: true)
+                                       hasStrictBoundaries: false)
     }
     
 }

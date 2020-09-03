@@ -12,6 +12,7 @@ protocol AddEventPresenterProtocol: Presenter {
     init(view: AddEventViewController)
     func eventTypeChoice()
     func dateChoice(isStart: Bool)
+    func repeatChoice()
     func getEvent()
     func saveEvent(isMajor: Bool, title: String?, location: String?)
     func setIdEvent(idEvent: Int)
@@ -54,6 +55,20 @@ class AddEventPresenter: AddEventPresenterProtocol {
             fromDate = startDate ?? Date()
         }
         let presenter = SelectDatePresenter(view: viewController, startDate: fromDate, isStart: isStart)
+        viewController.presenter = presenter
+        presenter.delegate = self
+        transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
+                                                                y: Session.height - 356,
+                                                                width: view.view.bounds.width,
+                                                                height: 356)
+        viewController.transitioningDelegate = transition
+        viewController.modalPresentationStyle = .custom
+        view.present(viewController, animated: true)
+    }
+    
+    func repeatChoice() {
+        let viewController = RepeatEventViewController()
+        let presenter = RepeatEventPresenter(view: viewController)
         viewController.presenter = presenter
         presenter.delegate = self
         transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
@@ -222,6 +237,46 @@ extension AddEventPresenter: SelectDateControllerDelegate {
     func callbackEndDate(newDate: String) {
         view.setEndDate(endDate: convertDate(date: newDate) ?? "")
         endDate = newDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+    }
+    
+}
+
+extension AddEventPresenter: RepeatEventControllerDelegate {
+    
+    func callbackDayRepeat() {
+        view.setRepeatLabel(repeatText: "Каждый день")
+    }
+    
+    func callbackWeekRepeat() {
+        view.setRepeatLabel(repeatText: "Каждую неделю")
+    }
+    
+    func callbackMonthRepeat() {
+        view.setRepeatLabel(repeatText: "Каждый месяц")
+    }
+    
+    func callbackYearRepeat() {
+        view.setRepeatLabel(repeatText: "Каждый год")
+    }
+    
+    func callbackNeverRepeat() {
+        view.setNeverRepeat()
+    }
+    
+    func callbackTimeRepeat() {
+        let viewController = SelectRepeatTimeViewController()
+        let presenter = SelectRepeatTimePresenter(view: viewController)
+        presenter.delegate = self
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: false)
+    }
+    
+}
+
+extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
+    
+    func callbackNoTime() {
+        view.setNeverRepeat()
     }
     
 }

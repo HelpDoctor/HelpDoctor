@@ -36,6 +36,10 @@ class Session {
         return keyWindow?.safeAreaInsets.bottom ?? 0
     }
     
+    static var heightTextField: CGFloat {
+        return 30
+    }
+    
     var user: ProfileKeyUser?
     var userJob: [ProfileKeyJob?]?
     var userInterests: [ProfileKeyInterests]?

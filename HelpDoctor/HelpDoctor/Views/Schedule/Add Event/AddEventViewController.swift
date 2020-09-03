@@ -20,16 +20,12 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let insetDateLabel = 10.f
     private let headerHeight = 40.f
     private let heightTextView = 60.f
-    private let heightTopView = 40.f
     private let heightLabel = 20.f
-    private let heightTextField = 30.f
+    private let heightTextField = Session.heightTextField
     private let widthDateLabel = 50.f
     private var widthDateTextField = 0.f
     private let widthTextField = Session.width - 40
     private let scrollView = UIScrollView()
-    private let topView = UIView()
-    private let cancelButton = UIButton()
-    private let okButton = UIButton()
     private let titleTextField = UITextField()
     private let eventTypeTextField = UITextField()
     private let eventTypeRightView = UIView(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
@@ -41,17 +37,16 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let locationTextField = UITextField()
     private let guestLabel = UILabel()
     private let guestTextView = UITextView()
-    private let alldayLabel = UILabel()
-    private let alldayButton = UIButton()
     private let repeatLabel = UILabel()
+//    private let repeatButton = UIButton()
     private let repeatSwitch = UISwitch()
+    private let repeatDateLabel = UILabel()
     private let majorLabel = UILabel()
     private let majorSwitch = UISwitch()
     private let timerImage = UIImageView()
-    private let timerLabel = UILabel()
-    private let tenMinutesButton = HDButton(title: "10 минут", fontSize: 12)
-    private let thirtyMinutesButton = HDButton(title: "30 минут", fontSize: 12)
-    private let oneHourButton = HDButton(title: "1 час", fontSize: 12)
+    private let timerTextField = UITextField()
+    private let deleteButton = HDButton(title: "Удалить", fontSize: 18)
+    private let saveButton = HDButton(title: "Сохранить", fontSize: 18)
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -66,9 +61,6 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
                         title: "Новое событие",
                         font: .boldSystemFontOfSize(size: 14))
         setupScrollView()
-        setupTopView()
-        setupCancelButton()
-        setupOkButton()
         setupTitleTextField()
         setupEventTypeTextField()
         setupDateLabel()
@@ -79,17 +71,16 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         setupLocationTextField()
         setupGuestLabel()
         setupGuestTextView()
-        setupAlldayLabel()
-        setupAlldayButton()
         setupRepeatLabel()
+//        setupRepeatButton()
         setupRepeatSwitch()
+        setupRepeatDateLabel()
         setupMajorLabel()
         setupMajorSwitch()
         setupTimerImage()
-        setupTimerLabel()
-        setupTenMinutesButton()
-        setupThirtyMinutesButton()
-        setupOneHourButton()
+        setupTimerTextField()
+        setupDeleteButton()
+        setupSaveButton()
         addSwipeGestureToBack()
     }
     
@@ -104,14 +95,27 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     func setEventType(eventType: String, color: UIColor) {
         eventTypeTextField.text = eventType
         eventTypeRightView.backgroundColor = color
+        eventTypeTextField.leftView = setupDefaultLeftView()
     }
     
     func setStartDate(startDate: String) {
         startDateTextField.text = startDate
+        startDateTextField.leftView = setupDefaultLeftView()
     }
     
     func setEndDate(endDate: String) {
         endDateTextField.text = endDate
+        endDateTextField.leftView = setupDefaultLeftView()
+    }
+    
+    func setRepeatLabel(repeatText: String) {
+        repeatDateLabel.text = repeatText
+    }
+    
+    func setNeverRepeat() {
+//        repeatButton.isSelected = false
+        repeatSwitch.isOn = false
+        repeatSwitch.thumbTintColor = offThumbTintColor
     }
     
     func setEventOnView(event: ScheduleEvents) {
@@ -137,15 +141,15 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         if event.is_major ?? false {
             majorSwitch.isOn = true
             majorSwitch.thumbTintColor = UIColor.majorEventColor
-            topView.backgroundColor = .majorEventColor
+            //            topView.backgroundColor = .majorEventColor
         }
-//        guard let notifyDate = event.notify_date else { return }
-//        guard let startDate = presenter?.convertStringToDate(date: event.start_date),
-//            let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
-//        guard let dateDiff = Calendar.current.dateComponents([.minute],
-//                                                             from: notify,
-//                                                             to: startDate).minute else { return }
-//        timerLabel.text = "Уведомить за \(dateDiff) минут"
+        //        guard let notifyDate = event.notify_date else { return }
+        //        guard let startDate = presenter?.convertStringToDate(date: event.start_date),
+        //            let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
+        //        guard let dateDiff = Calendar.current.dateComponents([.minute],
+        //                                                             from: notify,
+        //                                                             to: startDate).minute else { return }
+        //        timerLabel.text = "Уведомить за \(dateDiff) минут"
     }
     
     // MARK: - Setup views
@@ -162,45 +166,9 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
-    private func setupTopView() {
-        topView.backgroundColor = .searchBarTintColor
-        scrollView.addSubview(topView)
-        
-        topView.translatesAutoresizingMaskIntoConstraints = false
-        topView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        topView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        topView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        topView.heightAnchor.constraint(equalToConstant: heightTopView).isActive = true
-    }
-    
-    private func setupCancelButton() {
-        let leading = 20.f
-        cancelButton.addTarget(self, action: #selector(cancelButtonPressed), for: .touchUpInside)
-        cancelButton.setImage(UIImage(named: "Cross"), for: .normal)
-        topView.addSubview(cancelButton)
-        
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
-        cancelButton.leadingAnchor.constraint(equalTo: topView.leadingAnchor, constant: leading).isActive = true
-        cancelButton.widthAnchor.constraint(equalToConstant: leading).isActive = true
-        cancelButton.heightAnchor.constraint(equalToConstant: leading).isActive = true
-    }
-    
-    private func setupOkButton() {
-        let leading = 20.f
-        okButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
-        okButton.setImage(UIImage(named: "Checkmark"), for: .normal)
-        topView.addSubview(okButton)
-        
-        okButton.translatesAutoresizingMaskIntoConstraints = false
-        okButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
-        okButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor, constant: -leading).isActive = true
-        okButton.widthAnchor.constraint(equalToConstant: leading).isActive = true
-        okButton.heightAnchor.constraint(equalToConstant: leading).isActive = true
-    }
-    
     private func setupTitleTextField() {
         let top = 10.f
+        titleTextField.delegate = self
         titleTextField.font = .systemFontOfSize(size: 14)
         titleTextField.textColor = .textFieldTextColor
         titleTextField.placeholder = "Название события"
@@ -208,15 +176,12 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         titleTextField.autocorrectionType = .no
         titleTextField.backgroundColor = .white
         titleTextField.layer.cornerRadius = 5
-        titleTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: titleTextField.frame.height))
+        titleTextField.leftView = setupLeftView()
         titleTextField.leftViewMode = .always
         scrollView.addSubview(titleTextField)
         
         titleTextField.translatesAutoresizingMaskIntoConstraints = false
-        titleTextField.topAnchor.constraint(equalTo: topView.bottomAnchor,
+        titleTextField.topAnchor.constraint(equalTo: scrollView.topAnchor,
                                             constant: top).isActive = true
         titleTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
@@ -235,10 +200,19 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         eventTypeTextField.backgroundColor = .white
         eventTypeTextField.layer.cornerRadius = 5
         eventTypeTextField.clipsToBounds = true
-        eventTypeTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                           y: 0,
-                                                           width: 8,
-                                                           height: eventTypeTextField.frame.height))
+        let imageView = UIImageView(frame: CGRect(x: 10,
+                                                  y: 0,
+                                                  width: 12,
+                                                  height: heightTextField))
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "calendar")
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: 28,
+                                        height: heightTextField))
+        view.addSubview(imageView)
+        eventTypeTextField.leftView = view
         eventTypeTextField.leftViewMode = .always
         eventTypeTextField.rightView = eventTypeRightView
         eventTypeTextField.rightViewMode = .always
@@ -254,10 +228,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupDateLabel() {
-        let top = 7.f
+        let top = 16.f
         dateLabel.font = .boldSystemFontOfSize(size: 14)
         dateLabel.textColor = .white
-        dateLabel.text = "Дата и время события"
+        dateLabel.text = "Установите дату и время события"
         dateLabel.textAlignment = .left
         dateLabel.numberOfLines = 1
         scrollView.addSubview(dateLabel)
@@ -298,10 +272,19 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         startDateTextField.autocorrectionType = .no
         startDateTextField.backgroundColor = .white
         startDateTextField.layer.cornerRadius = 5
-        startDateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                           y: 0,
-                                                           width: 8,
-                                                           height: heightTextField))
+        let imageView = UIImageView(frame: CGRect(x: 10,
+                                                  y: 0,
+                                                  width: 12,
+                                                  height: heightTextField))
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "ClockIcon")
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: 28,
+                                        height: heightTextField))
+        view.addSubview(imageView)
+        startDateTextField.leftView = view
         startDateTextField.leftViewMode = .always
         startDateTextField.addGestureRecognizer(tap)
         scrollView.addSubview(startDateTextField)
@@ -339,10 +322,19 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         endDateTextField.autocorrectionType = .no
         endDateTextField.backgroundColor = .white
         endDateTextField.layer.cornerRadius = 5
-        endDateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: heightTextField))
+        let imageView = UIImageView(frame: CGRect(x: 10,
+                                                  y: 0,
+                                                  width: 12,
+                                                  height: heightTextField))
+        
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "ClockIcon")
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: 28,
+                                        height: heightTextField))
+        view.addSubview(imageView)
+        endDateTextField.leftView = view
         endDateTextField.leftViewMode = .always
         endDateTextField.addGestureRecognizer(tap)
         scrollView.addSubview(endDateTextField)
@@ -366,24 +358,20 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         locationTextField.autocorrectionType = .no
         locationTextField.backgroundColor = .white
         locationTextField.layer.cornerRadius = 5
-        locationTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: heightTextField))
-        locationTextField.leftViewMode = .always
-        let imageView = UIImageView(frame: CGRect(x: 0,
+        let imageView = UIImageView(frame: CGRect(x: 10,
                                                   y: 0,
-                                                  width: 11,
+                                                  width: 12,
                                                   height: heightTextField))
+        
         imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: "LocationMark")
         let view = UIView(frame: CGRect(x: 0,
                                         y: 0,
-                                        width: 23,
+                                        width: 28,
                                         height: heightTextField))
         view.addSubview(imageView)
-        locationTextField.rightView = view
-        locationTextField.rightViewMode = .always
+        locationTextField.leftView = view
+        locationTextField.leftViewMode = .always
         locationTextField.addGestureRecognizer(tap)
         scrollView.addSubview(locationTextField)
         
@@ -406,7 +394,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         guestLabel.translatesAutoresizingMaskIntoConstraints = false
         guestLabel.topAnchor.constraint(equalTo: locationTextField.bottomAnchor,
-                                       constant: top).isActive = true
+                                        constant: top).isActive = true
         guestLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         guestLabel.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         guestLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -424,47 +412,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         guestTextView.translatesAutoresizingMaskIntoConstraints = false
         guestTextView.topAnchor.constraint(equalTo: guestLabel.bottomAnchor,
-                                               constant: top).isActive = true
+                                           constant: top).isActive = true
         guestTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         guestTextView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         guestTextView.heightAnchor.constraint(equalToConstant: heightTextView).isActive = true
-    }
-    
-    private func setupAlldayLabel() {
-        let top = 20.f
-        let leading = 20.f
-        let width = 135.f
-        alldayLabel.font = .systemFontOfSize(size: 14)
-        alldayLabel.textColor = .white
-        alldayLabel.text = "Весь день"
-        alldayLabel.textAlignment = .left
-        alldayLabel.numberOfLines = 1
-        scrollView.addSubview(alldayLabel)
-        
-        alldayLabel.translatesAutoresizingMaskIntoConstraints = false
-        alldayLabel.topAnchor.constraint(equalTo: guestTextView.bottomAnchor,
-                                       constant: top).isActive = true
-        alldayLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: leading).isActive = true
-        alldayLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        alldayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
-    }
-    
-    private func setupAlldayButton() {
-        let size = 20.f
-        alldayButton.setImage(UIImage(named: "WhiteEllipse"), for: .normal)
-        alldayButton.setImage(UIImage(named: "WhiteSelectedEllipse"), for: .selected)
-        alldayButton.imageView?.contentMode = .scaleAspectFill
-        alldayButton.contentHorizontalAlignment = .center
-        alldayButton.contentVerticalAlignment = .center
-        alldayButton.addTarget(self, action: #selector(alldayButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(alldayButton)
-        
-        alldayButton.translatesAutoresizingMaskIntoConstraints = false
-        alldayButton.centerYAnchor.constraint(equalTo: alldayLabel.centerYAnchor).isActive = true
-        alldayButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: Session.width - 20).isActive = true
-        alldayButton.widthAnchor.constraint(equalToConstant: size).isActive = true
-        alldayButton.heightAnchor.constraint(equalToConstant: size).isActive = true
     }
     
     private func setupRepeatLabel() {
@@ -479,30 +430,63 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(repeatLabel)
         
         repeatLabel.translatesAutoresizingMaskIntoConstraints = false
-        repeatLabel.topAnchor.constraint(equalTo: alldayLabel.bottomAnchor,
-                                       constant: top).isActive = true
+        repeatLabel.topAnchor.constraint(equalTo: guestTextView.bottomAnchor,
+                                         constant: top).isActive = true
         repeatLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: leading).isActive = true
         repeatLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         repeatLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
-    
+    /*
+    private func setupRepeatButton() {
+        let size = 20.f
+        repeatButton.setImage(UIImage(named: "Ellipse"), for: .normal)
+        repeatButton.setImage(UIImage(named: "SelectedEllipse"), for: .selected)
+        repeatButton.imageView?.contentMode = .scaleAspectFill
+        repeatButton.contentHorizontalAlignment = .center
+        repeatButton.contentVerticalAlignment = .center
+        repeatButton.addTarget(self, action: #selector(repeatButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(repeatButton)
+        
+        repeatButton.translatesAutoresizingMaskIntoConstraints = false
+        repeatButton.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
+        repeatButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                               constant: Session.width - 20).isActive = true
+        repeatButton.widthAnchor.constraint(equalToConstant: size).isActive = true
+        repeatButton.heightAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    */
     private func setupRepeatSwitch() {
         repeatSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
         repeatSwitch.setOn(false, animated: true)
         repeatSwitch.thumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
         repeatSwitch.onTintColor = .white
         repeatSwitch.tintColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.7)
-//        repeatSwitch.transform = CGAffineTransform(scaleX: 0.65, y: 0.65)
         scrollView.addSubview(repeatSwitch)
         
         repeatSwitch.translatesAutoresizingMaskIntoConstraints = false
         repeatSwitch.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                               constant: Session.width - 20).isActive = true
+                                              constant: Session.width - 20).isActive = true
         repeatSwitch.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
     }
     
+    private func setupRepeatDateLabel() {
+        let top = 10.f
+        repeatDateLabel.font = .mediumSystemFontOfSize(size: 14)
+        repeatDateLabel.textColor = .white
+        repeatDateLabel.textAlignment = .center
+        repeatDateLabel.numberOfLines = 1
+        scrollView.addSubview(repeatDateLabel)
+        
+        repeatDateLabel.translatesAutoresizingMaskIntoConstraints = false
+        repeatDateLabel.topAnchor.constraint(equalTo: repeatLabel.bottomAnchor,
+                                         constant: top).isActive = true
+        repeatDateLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        repeatDateLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        repeatDateLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+    }
+    
     private func setupMajorLabel() {
-        let top = 20.f
+        let top = 30.f
         let leading = 20.f
         let width = 135.f
         majorLabel.font = .systemFontOfSize(size: 14)
@@ -514,7 +498,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         majorLabel.translatesAutoresizingMaskIntoConstraints = false
         majorLabel.topAnchor.constraint(equalTo: repeatLabel.bottomAnchor,
-                                       constant: top).isActive = true
+                                        constant: top).isActive = true
         majorLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: leading).isActive = true
         majorLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         majorLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -530,14 +514,13 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         majorSwitch.translatesAutoresizingMaskIntoConstraints = false
         majorSwitch.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                               constant: Session.width - 20).isActive = true
+                                              constant: Session.width - 20).isActive = true
         majorSwitch.centerYAnchor.constraint(equalTo: majorLabel.centerYAnchor).isActive = true
     }
     
     private func setupTimerImage() {
         let top = 10.f
         let leading = 20.f
-        let size = 20.f
         timerImage.image = UIImage(named: "BellIcon")
         scrollView.addSubview(timerImage)
         
@@ -545,70 +528,71 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         timerImage.topAnchor.constraint(equalTo: majorLabel.bottomAnchor,
                                         constant: top).isActive = true
         timerImage.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                          constant: leading).isActive = true
-        timerImage.widthAnchor.constraint(equalToConstant: size).isActive = true
-        timerImage.heightAnchor.constraint(equalToConstant: size).isActive = true
-    }
-    
-    private func setupTimerLabel() {
-        let leading = 10.f
-        timerLabel.font = .boldSystemFontOfSize(size: 14)
-        timerLabel.textColor = .white
-        timerLabel.text = "Уведомить за"
-        timerLabel.textAlignment = .left
-        timerLabel.numberOfLines = 1
-        scrollView.addSubview(timerLabel)
-        
-        timerLabel.translatesAutoresizingMaskIntoConstraints = false
-        timerLabel.centerYAnchor.constraint(equalTo: timerImage.centerYAnchor).isActive = true
-        timerLabel.leadingAnchor.constraint(equalTo: timerImage.trailingAnchor,
                                             constant: leading).isActive = true
-        timerLabel.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: Session.width - 20).isActive = true
-        timerLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
+        timerImage.widthAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        timerImage.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
-    private func setupTenMinutesButton() {
-        let top = 10.f
-        tenMinutesButton.layer.cornerRadius = 20
-        tenMinutesButton.addTarget(self, action: #selector(tenMinutesButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(tenMinutesButton)
+    private func setupTimerTextField() {
+        let leading = 10.f
+        timerTextField.font = .systemFontOfSize(size: 14)
+        timerTextField.textColor = .textFieldTextColor
+        timerTextField.placeholder = "Уведомить за"
+        timerTextField.textAlignment = .left
+        timerTextField.autocorrectionType = .no
+        timerTextField.backgroundColor = .white
+        timerTextField.layer.cornerRadius = 5
+        timerTextField.leftView = setupDefaultLeftView()
+        timerTextField.leftViewMode = .always
+        scrollView.addSubview(timerTextField)
         
-        tenMinutesButton.translatesAutoresizingMaskIntoConstraints = false
-        tenMinutesButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
-                                              constant: top).isActive = true
-        tenMinutesButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                  constant: 20).isActive = true
-        tenMinutesButton.widthAnchor.constraint(equalToConstant: (Session.width - 80) / 3).isActive = true
-        tenMinutesButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        timerTextField.translatesAutoresizingMaskIntoConstraints = false
+        timerTextField.leadingAnchor.constraint(equalTo: timerImage.trailingAnchor,
+                                            constant: leading).isActive = true
+        timerTextField.centerYAnchor.constraint(equalTo: timerImage.centerYAnchor).isActive = true
+        timerTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
+        timerTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
-    private func setupThirtyMinutesButton() {
-        thirtyMinutesButton.layer.cornerRadius = 20
-        thirtyMinutesButton.addTarget(self, action: #selector(thirtyMinutesButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(thirtyMinutesButton)
+    private func setupDeleteButton() {
+//        deleteButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(deleteButton)
         
-        thirtyMinutesButton.translatesAutoresizingMaskIntoConstraints = false
-        thirtyMinutesButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
-                                                 constant: 10).isActive = true
-        thirtyMinutesButton.leadingAnchor.constraint(equalTo: tenMinutesButton.trailingAnchor,
-                                                     constant: 20).isActive = true
-        thirtyMinutesButton.widthAnchor.constraint(equalToConstant: (Session.width - 80) / 3).isActive = true
-        thirtyMinutesButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-    
-    private func setupOneHourButton() {
-        oneHourButton.layer.cornerRadius = 20
-        oneHourButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(oneHourButton)
-        
-        oneHourButton.translatesAutoresizingMaskIntoConstraints = false
-        oneHourButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
-                                           constant: 10).isActive = true
-        oneHourButton.leadingAnchor.constraint(equalTo: thirtyMinutesButton.trailingAnchor,
+        deleteButton.translatesAutoresizingMaskIntoConstraints = false
+        deleteButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
+                                           constant: 35).isActive = true
+        deleteButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                                constant: 20).isActive = true
-        oneHourButton.widthAnchor.constraint(equalToConstant: (Session.width - 80) / 3).isActive = true
-        oneHourButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        deleteButton.widthAnchor.constraint(equalToConstant: (Session.width - 60) / 2).isActive = true
+        deleteButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    }
+    
+    private func setupSaveButton() {
+        //        saveButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
+        scrollView.addSubview(saveButton)
+        
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
+                                        constant: 35).isActive = true
+        saveButton.leadingAnchor.constraint(equalTo: deleteButton.trailingAnchor,
+                                            constant: 20).isActive = true
+        saveButton.widthAnchor.constraint(equalToConstant: (Session.width - 60) / 2).isActive = true
+        saveButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
+    }
+    
+    private func setupLeftView() -> UIView {
+        let imageView = UIImageView(frame: CGRect(x: 10,
+                                                  y: 0,
+                                                  width: 12,
+                                                  height: heightTextField))
+        imageView.contentMode = .scaleAspectFit
+        imageView.image = UIImage(named: "TitleIcon")
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: 28,
+                                        height: heightTextField))
+        view.addSubview(imageView)
+        return view
     }
     
     /// Добавляет свайп влево для перехода назад
@@ -622,9 +606,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     func handleSwitchOn(_ sender: UISwitch) {
         
         if sender.isOn {
-            topView.backgroundColor = .majorEventColor
+            presenter?.repeatChoice()
+            //            topView.backgroundColor = .majorEventColor
         } else {
-            topView.backgroundColor = .searchBarTintColor
+            //            topView.backgroundColor = .searchBarTintColor
         }
         
     }
@@ -655,39 +640,23 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     @objc private func locationButtonPressed() {
         presenter?.toMap()
     }
-    
-    @objc private func alldayButtonPressed() {
-        alldayButton.isSelected = !alldayButton.isSelected
+    /*
+    @objc private func repeatButtonPressed() {
+        if !repeatButton.isSelected {
+            presenter?.repeatChoice()
+        }
+        repeatButton.isSelected = !repeatButton.isSelected
+        repeatDateLabel.text = ""
     }
-    
+    */
     @objc func switchStateDidChange(_ sender: UISwitch) {
         if sender == majorSwitch {
             sender.thumbTintColor = sender.isOn ? UIColor.majorEventColor : offThumbTintColor
-            handleSwitchOn(sender)
         } else {
             sender.thumbTintColor = sender.isOn ? onThumbTintColor : offThumbTintColor
+            handleSwitchOn(sender)
+            repeatDateLabel.text = ""
         }
-    }
-    
-    @objc private func tenMinutesButtonPressed() {
-//        presenter?.setNotifyDate(date: startDatePicker.date - 600)
-        tenMinutesButton.update(isSelected: true)
-        thirtyMinutesButton.update(isSelected: false)
-        oneHourButton.update(isSelected: false)
-    }
-    
-    @objc private func thirtyMinutesButtonPressed() {
-//        presenter?.setNotifyDate(date: startDatePicker.date - 1800)
-        tenMinutesButton.update(isSelected: false)
-        thirtyMinutesButton.update(isSelected: true)
-        oneHourButton.update(isSelected: false)
-    }
-    
-    @objc private func oneHourButtonPressed() {
-//        presenter?.setNotifyDate(date: startDatePicker.date - 3600)
-        tenMinutesButton.update(isSelected: false)
-        thirtyMinutesButton.update(isSelected: false)
-        oneHourButton.update(isSelected: true)
     }
     
     /// Переход на предыдущий экран
@@ -701,6 +670,30 @@ extension AddEventViewController: MapKitSearchDelegate {
     
     func mapKitSearch(_ locationSearchViewController: LocationSearchViewController, mapItem: MKMapItem) {
         locationTextField.text = mapItem.name
+        locationTextField.leftView = setupDefaultLeftView()
     }
+    
+}
+
+extension AddEventViewController: UITextFieldDelegate {
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if textField == titleTextField {
+            titleTextField.leftView = UIView(frame: CGRect(x: 0,
+                                                           y: 0,
+                                                           width: 8,
+                                                           height: heightTextField))
+        }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        if textField == titleTextField {
+            if titleTextField.text?.count == 0 {
+                titleTextField.leftView = setupLeftView()
+            }
+        }
+    }
+    
+    
     
 }
