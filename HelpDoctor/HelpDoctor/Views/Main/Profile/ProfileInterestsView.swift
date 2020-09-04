@@ -81,8 +81,10 @@ extension ProfileInterestsView: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
-                                                      for: indexPath) as! InterestCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
+                                                            for: indexPath) as? InterestCollectionViewCell else {
+                                                                return UICollectionViewCell()
+        }
         size = 18
         cell.delegate = self
         cell.configure(interestsArray?[indexPath.item].name ?? "", icon: "Search")

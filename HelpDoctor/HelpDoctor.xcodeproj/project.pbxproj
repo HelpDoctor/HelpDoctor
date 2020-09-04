@@ -109,6 +109,7 @@
 		4682F39E25021E1A005BDA9E /* ScaleSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */; };
 		4682F3A125022856005BDA9E /* SelectNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */; };
 		4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */; };
+		4682F3A525023DBE005BDA9E /* GuestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A425023DBE005BDA9E /* GuestCell.swift */; };
 		46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */; };
 		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
 		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
@@ -362,6 +363,7 @@
 		4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleSwitch.swift; sourceTree = "<group>"; };
 		4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyViewController.swift; sourceTree = "<group>"; };
 		4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyPresenter.swift; sourceTree = "<group>"; };
+		4682F3A425023DBE005BDA9E /* GuestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestCell.swift; sourceTree = "<group>"; };
 		46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLayerCombine.swift; sourceTree = "<group>"; };
 		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
 		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
@@ -583,6 +585,7 @@
 			children = (
 				46164B9424EE48A000879DE4 /* AddEventViewController.swift */,
 				46164B9624EE48B000879DE4 /* AddEventPresenter.swift */,
+				4682F3A425023DBE005BDA9E /* GuestCell.swift */,
 			);
 			path = "Add Event";
 			sourceTree = "<group>";
@@ -1616,6 +1619,7 @@
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
 				469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */,
 				46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */,
+				4682F3A525023DBE005BDA9E /* GuestCell.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
 				C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */,

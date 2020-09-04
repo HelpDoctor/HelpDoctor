@@ -93,8 +93,8 @@ class StartScheduleViewController: UIViewController {
         calendarView.scrollDirection = .horizontal
         calendarView.scrollToDate(Date() - (86400 * 3))
         calendarView.selectDates([Date()])
-//        calendarView.allowsMultipleSelection = true
-//        calendarView.allowsRangedSelection = true
+        //        calendarView.allowsMultipleSelection = true
+        //        calendarView.allowsRangedSelection = true
         calendarView.sectionInset.bottom = 0
         calendarView.sectionInset.top = 0
         calendarView.sectionInset.left = 0
@@ -387,7 +387,7 @@ extension StartScheduleViewController: JTACMonthViewDelegate {
                   forItemAt date: Date,
                   cellState: CellState,
                   indexPath: IndexPath) {
-        let myCustomCell = cell as! DayCell
+        guard let myCustomCell = cell as? DayCell else { return }
         configureVisibleCell(myCustomCell: myCustomCell,
                              cellState: cellState,
                              date: date,
@@ -398,8 +398,8 @@ extension StartScheduleViewController: JTACMonthViewDelegate {
                   cellForItemAt date: Date,
                   cellState: CellState,
                   indexPath: IndexPath) -> JTACDayCell {
-        let myCustomCell = calendar.dequeueReusableCell(withReuseIdentifier: "DayCell",
-                                                        for: indexPath) as! DayCell
+        guard let myCustomCell = calendar.dequeueReusableCell(withReuseIdentifier: "DayCell",
+                                                              for: indexPath) as? DayCell else { return JTACDayCell() }
         configureVisibleCell(myCustomCell: myCustomCell,
                              cellState: cellState,
                              date: date,

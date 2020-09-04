@@ -35,18 +35,18 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
         getData(typeOfContent: .getMedicalSpecialization,
                 returning: ([MedicalSpecialization], Int?, String?).self,
                 requestParams: [:]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getMedicalSpecialization.medicalSpecialization = result?.0
-            getMedicalSpecialization.responce = (result?.1, result?.2)
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopActivityIndicator()
-                    self?.arrayMedicalSpecialization = getMedicalSpecialization.medicalSpecialization
-                    self?.filteredArray = getMedicalSpecialization.medicalSpecialization ?? []
-                    self?.view.tableView.reloadData()
-                }
-            }
+                    let dispathGroup = DispatchGroup()
+                    
+                    getMedicalSpecialization.medicalSpecialization = result?.0
+                    getMedicalSpecialization.responce = (result?.1, result?.2)
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            self?.view.stopActivityIndicator()
+                            self?.arrayMedicalSpecialization = getMedicalSpecialization.medicalSpecialization
+                            self?.filteredArray = getMedicalSpecialization.medicalSpecialization ?? []
+                            self?.view.tableView.reloadData()
+                        }
+                    }
         }
     }
     
@@ -74,12 +74,14 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     // MARK: - Coordinator
     func next(index: Int?) {
         guard let index = index else {
-                view.showAlert(message: "Выберите одну специализацию")
-                return
+            view.showAlert(message: "Выберите одну специализацию")
+            return
         }
         let medicalSpecialization = filteredArray[index]
         view.navigationController?.popViewController(animated: true)
-        let previous = view.navigationController?.viewControllers.last as! CreateProfileWorkViewController
+        guard let previous = view.navigationController?.viewControllers.last as? CreateProfileWorkViewController else {
+            return
+        }
         let presenter = previous.presenter
         presenter?.setSpec(spec: medicalSpecialization)
     }

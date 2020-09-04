@@ -19,7 +19,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let offThumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     private let insetDateLabel = 10.f
     private let headerHeight = 40.f
-    private let heightTextView = 60.f
+    private let heightCollectionView = 70.f
     private let heightLabel = 20.f
     private let heightTextField = Session.heightTextField
     private let widthDateLabel = 50.f
@@ -36,7 +36,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let endDateTextField = UITextField()
     private let locationTextField = UITextField()
     private let guestLabel = UILabel()
-    private let guestTextView = UITextView()
+    private let guestCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let repeatLabel = UILabel()
     private let repeatSwitch = ScaleSwitch()//UISwitch()
     private let repeatDateLabel = UILabel()
@@ -70,7 +70,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         setupEndDateTextField()
         setupLocationTextField()
         setupGuestLabel()
-        setupGuestTextView()
+        setupGuestCollectionView()
         setupRepeatLabel()
         setupRepeatSwitch()
         setupRepeatButton()
@@ -410,22 +410,21 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         guestLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
-    private func setupGuestTextView() {
+    private func setupGuestCollectionView() {
         let top = 7.f
-        guestTextView.font = .systemFontOfSize(size: 14)
-        guestTextView.textColor = .textFieldTextColor
-        guestTextView.textAlignment = .left
-        guestTextView.autocorrectionType = .no
-        guestTextView.backgroundColor = .white
-        guestTextView.layer.cornerRadius = 5
-        scrollView.addSubview(guestTextView)
+        guestCollectionView.backgroundColor = .white
+        guestCollectionView.layer.cornerRadius = 5
+        guestCollectionView.register(GuestCell.self, forCellWithReuseIdentifier: "GuestCell")
+        guestCollectionView.dataSource = self
+        guestCollectionView.delegate = self
+        scrollView.addSubview(guestCollectionView)
         
-        guestTextView.translatesAutoresizingMaskIntoConstraints = false
-        guestTextView.topAnchor.constraint(equalTo: guestLabel.bottomAnchor,
+        guestCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        guestCollectionView.topAnchor.constraint(equalTo: guestLabel.bottomAnchor,
                                            constant: top).isActive = true
-        guestTextView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        guestTextView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
-        guestTextView.heightAnchor.constraint(equalToConstant: heightTextView).isActive = true
+        guestCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        guestCollectionView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
+        guestCollectionView.heightAnchor.constraint(equalToConstant: heightCollectionView).isActive = true
     }
     
     private func setupRepeatLabel() {
@@ -440,7 +439,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(repeatLabel)
         
         repeatLabel.translatesAutoresizingMaskIntoConstraints = false
-        repeatLabel.topAnchor.constraint(equalTo: guestTextView.bottomAnchor,
+        repeatLabel.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor,
                                          constant: top).isActive = true
         repeatLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: leading).isActive = true
         repeatLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -706,5 +705,65 @@ extension AddEventViewController: UITextFieldDelegate {
     }
     
     
+    
+}
+
+// MARK: - Collection view
+extension AddEventViewController: UICollectionViewDelegate {
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        presenter?.addInterest(index: indexPath.item)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+//        presenter?.deleteInterest(index: indexPath.item)
+    }
+    
+}
+
+extension AddEventViewController: UICollectionViewDataSource {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+//        return presenter?.getInterestsCount() ?? 0
+        return 6
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GuestCell",
+                                                            for: indexPath) as? GuestCell else {
+                                                                return UICollectionViewCell()
+        }
+        cell.configure("Участник №1", UIImage(named: "Enter_Profile_Button")!)
+        return cell
+    }
+    
+}
+
+extension AddEventViewController: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: ((widthTextField - 40) / 2), height: 20)
+    }
+    /*
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20
+    }
+    */
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+    }
     
 }
