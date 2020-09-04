@@ -449,9 +449,9 @@ class SelectRepeatTimeViewController: UIViewController {
     
     @objc private func saveButtonPressed() {
 //        let date = datesTableView.indexPathForSelectedRow?.item
-//        let hours = hoursTableView.indexPathForSelectedRow?.item
-//        let minutes = minutesTableView.indexPathForSelectedRow?.item
-//        presenter?.saveDate(indexDate: date, indexHours: hours, indexMinutes: minutes)
+        let hours = hoursTableView.indexPathForSelectedRow?.item
+        let minutes = minutesTableView.indexPathForSelectedRow?.item
+        presenter?.saveDate(indexHours: hours, indexMinutes: minutes)
     }
     
 }

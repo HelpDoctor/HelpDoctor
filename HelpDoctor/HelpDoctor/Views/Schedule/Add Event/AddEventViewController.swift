@@ -38,9 +38,9 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let guestLabel = UILabel()
     private let guestTextView = UITextView()
     private let repeatLabel = UILabel()
-//    private let repeatButton = UIButton()
     private let repeatSwitch = UISwitch()
     private let repeatDateLabel = UILabel()
+    private let repeatButton = UIButton()
     private let majorLabel = UILabel()
     private let majorSwitch = UISwitch()
     private let timerImage = UIImageView()
@@ -72,8 +72,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         setupGuestLabel()
         setupGuestTextView()
         setupRepeatLabel()
-//        setupRepeatButton()
         setupRepeatSwitch()
+        setupRepeatButton()
         setupRepeatDateLabel()
         setupMajorLabel()
         setupMajorSwitch()
@@ -110,10 +110,14 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
     func setRepeatLabel(repeatText: String) {
         repeatDateLabel.text = repeatText
+        repeatSwitch.isHidden = true
+        repeatButton.isHidden = false
     }
     
     func setNeverRepeat() {
-//        repeatButton.isSelected = false
+        repeatDateLabel.text = ""
+        repeatSwitch.isHidden = false
+        repeatButton.isHidden = true
         repeatSwitch.isOn = false
         repeatSwitch.thumbTintColor = offThumbTintColor
     }
@@ -422,7 +426,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         let top = 20.f
         let leading = 20.f
         let width = 135.f
-        repeatLabel.font = .systemFontOfSize(size: 14)
+        repeatLabel.font = .boldSystemFontOfSize(size: 14)
         repeatLabel.textColor = .white
         repeatLabel.text = "Повторять событие"
         repeatLabel.textAlignment = .left
@@ -436,25 +440,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         repeatLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         repeatLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
-    /*
-    private func setupRepeatButton() {
-        let size = 20.f
-        repeatButton.setImage(UIImage(named: "Ellipse"), for: .normal)
-        repeatButton.setImage(UIImage(named: "SelectedEllipse"), for: .selected)
-        repeatButton.imageView?.contentMode = .scaleAspectFill
-        repeatButton.contentHorizontalAlignment = .center
-        repeatButton.contentVerticalAlignment = .center
-        repeatButton.addTarget(self, action: #selector(repeatButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(repeatButton)
-        
-        repeatButton.translatesAutoresizingMaskIntoConstraints = false
-        repeatButton.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
-        repeatButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                               constant: Session.width - 20).isActive = true
-        repeatButton.widthAnchor.constraint(equalToConstant: size).isActive = true
-        repeatButton.heightAnchor.constraint(equalToConstant: size).isActive = true
-    }
-    */
+    
     private func setupRepeatSwitch() {
         repeatSwitch.addTarget(self, action: #selector(switchStateDidChange(_:)), for: .valueChanged)
         repeatSwitch.setOn(false, animated: true)
@@ -469,19 +455,39 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         repeatSwitch.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
     }
     
+    private func setupRepeatButton() {
+        let size = 20.f
+        repeatButton.backgroundColor = .hdButtonColor
+        repeatButton.layer.cornerRadius = 10
+        repeatButton.setImage(UIImage(named: "Edit_Button"), for: .normal)
+        repeatButton.imageView?.contentMode = .scaleAspectFill
+        repeatButton.contentHorizontalAlignment = .center
+        repeatButton.contentVerticalAlignment = .center
+        repeatButton.addTarget(self, action: #selector(repeatButtonPressed), for: .touchUpInside)
+        repeatButton.isHidden = true
+        scrollView.addSubview(repeatButton)
+        
+        repeatButton.translatesAutoresizingMaskIntoConstraints = false
+        repeatButton.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
+        repeatButton.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+                                               constant: Session.width - 20).isActive = true
+        repeatButton.widthAnchor.constraint(equalToConstant: size).isActive = true
+        repeatButton.heightAnchor.constraint(equalToConstant: size).isActive = true
+    }
+    
     private func setupRepeatDateLabel() {
-        let top = 10.f
-        repeatDateLabel.font = .mediumSystemFontOfSize(size: 14)
+        let leading = 10.f
+        repeatDateLabel.font = .systemFontOfSize(size: 14)
         repeatDateLabel.textColor = .white
-        repeatDateLabel.textAlignment = .center
+        repeatDateLabel.textAlignment = .right
         repeatDateLabel.numberOfLines = 1
         scrollView.addSubview(repeatDateLabel)
         
         repeatDateLabel.translatesAutoresizingMaskIntoConstraints = false
-        repeatDateLabel.topAnchor.constraint(equalTo: repeatLabel.bottomAnchor,
-                                         constant: top).isActive = true
-        repeatDateLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        repeatDateLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        repeatDateLabel.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
+        repeatDateLabel.trailingAnchor.constraint(equalTo: repeatButton.leadingAnchor,
+                                                  constant: -leading).isActive = true
+        repeatDateLabel.widthAnchor.constraint(equalToConstant: (Session.width / 2) - 50).isActive = true
         repeatDateLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
     
@@ -489,7 +495,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         let top = 30.f
         let leading = 20.f
         let width = 135.f
-        majorLabel.font = .systemFontOfSize(size: 14)
+        majorLabel.font = .boldSystemFontOfSize(size: 14)
         majorLabel.textColor = .white
         majorLabel.text = "Важное"
         majorLabel.textAlignment = .left
@@ -640,15 +646,11 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     @objc private func locationButtonPressed() {
         presenter?.toMap()
     }
-    /*
+    
     @objc private func repeatButtonPressed() {
-        if !repeatButton.isSelected {
-            presenter?.repeatChoice()
-        }
-        repeatButton.isSelected = !repeatButton.isSelected
-        repeatDateLabel.text = ""
+        presenter?.repeatChoice()
     }
-    */
+    
     @objc func switchStateDidChange(_ sender: UISwitch) {
         if sender == majorSwitch {
             sender.thumbTintColor = sender.isOn ? UIColor.majorEventColor : offThumbTintColor

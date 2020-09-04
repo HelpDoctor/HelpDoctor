@@ -279,4 +279,8 @@ extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
         view.setNeverRepeat()
     }
     
+    func callbackTime() {
+        view.setRepeatLabel(repeatText: "Польз. настройки")
+    }
+    
 }
