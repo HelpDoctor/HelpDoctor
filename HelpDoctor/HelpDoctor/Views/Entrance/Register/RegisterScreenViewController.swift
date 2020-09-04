@@ -190,10 +190,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         topEmailTextField.backgroundColor = .white
         topEmailTextField.layer.cornerRadius = 5
         topEmailTextField.autocorrectionType = .no
-        topEmailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: topEmailTextField.frame.height))
+        topEmailTextField.leftView = setupDefaultLeftView()
         topEmailTextField.leftViewMode = .always
         scrollView.addSubview(topEmailTextField)
         
@@ -237,7 +234,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -271,7 +268,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         policyLabel.translatesAutoresizingMaskIntoConstraints = false
         policyLabel.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
-                                            constant: top).isActive = true
+                                         constant: top).isActive = true
         policyLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: leading).isActive = true
         policyLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -325,12 +322,12 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         presenter?.topEmailChanged(topEmail: textField.text)
     }
     /*
-    /// Проверка заполнения поля ввода подтверждения адреса электронной почты
-    /// - Parameter textField: поле ввода подтверждения адреса электронной почты
-    @objc func bottomEmailChanged(_ textField: UITextField) {
-        presenter?.bottomEmailChanged(bottomEmail: textField.text)
-    }
-    */
+     /// Проверка заполнения поля ввода подтверждения адреса электронной почты
+     /// - Parameter textField: поле ввода подтверждения адреса электронной почты
+     @objc func bottomEmailChanged(_ textField: UITextField) {
+     presenter?.bottomEmailChanged(bottomEmail: textField.text)
+     }
+     */
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)

@@ -12,7 +12,6 @@ class SelectRepeatTimeViewController: UIViewController {
     
     // MARK: - Dependency
     var presenter: SelectRepeatTimePresenterProtocol?
-    weak var delegate: SelectRepeatTimeControllerDelegate?
     
     // MARK: - Constants and variables
     private let headerHeight = 40.f
@@ -174,9 +173,9 @@ class SelectRepeatTimeViewController: UIViewController {
         
         mondayLabel.translatesAutoresizingMaskIntoConstraints = false
         mondayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                             constant: leading).isActive = true
         mondayLabel.topAnchor.constraint(equalTo: hoursTableView.bottomAnchor,
-                                          constant: heightLabel).isActive = true
+                                         constant: heightLabel).isActive = true
         mondayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         mondayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
     }
@@ -187,7 +186,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         mondayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         mondayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                 constant: -leading).isActive = true
         mondayCheckbox.centerYAnchor.constraint(equalTo: mondayLabel.centerYAnchor).isActive = true
         mondayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         mondayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -215,7 +214,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         tuesdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         tuesdayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                  constant: -leading).isActive = true
         tuesdayCheckbox.centerYAnchor.constraint(equalTo: tuesdayLabel.centerYAnchor).isActive = true
         tuesdayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         tuesdayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -231,7 +230,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         wednesdayLabel.translatesAutoresizingMaskIntoConstraints = false
         wednesdayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                                constant: leading).isActive = true
         wednesdayLabel.topAnchor.constraint(equalTo: tuesdayLabel.bottomAnchor).isActive = true
         wednesdayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         wednesdayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -243,7 +242,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         wednesdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         wednesdayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                    constant: -leading).isActive = true
         wednesdayCheckbox.centerYAnchor.constraint(equalTo: wednesdayLabel.centerYAnchor).isActive = true
         wednesdayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         wednesdayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -259,7 +258,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         thursdayLabel.translatesAutoresizingMaskIntoConstraints = false
         thursdayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                               constant: leading).isActive = true
         thursdayLabel.topAnchor.constraint(equalTo: wednesdayLabel.bottomAnchor).isActive = true
         thursdayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         thursdayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -271,7 +270,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         thursdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         thursdayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                   constant: -leading).isActive = true
         thursdayCheckbox.centerYAnchor.constraint(equalTo: thursdayLabel.centerYAnchor).isActive = true
         thursdayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         thursdayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -287,7 +286,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         fridayLabel.translatesAutoresizingMaskIntoConstraints = false
         fridayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                             constant: leading).isActive = true
         fridayLabel.topAnchor.constraint(equalTo: thursdayLabel.bottomAnchor).isActive = true
         fridayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         fridayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -299,7 +298,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         fridayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         fridayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                 constant: -leading).isActive = true
         fridayCheckbox.centerYAnchor.constraint(equalTo: fridayLabel.centerYAnchor).isActive = true
         fridayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         fridayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -315,7 +314,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         saturdayLabel.translatesAutoresizingMaskIntoConstraints = false
         saturdayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                               constant: leading).isActive = true
         saturdayLabel.topAnchor.constraint(equalTo: fridayLabel.bottomAnchor).isActive = true
         saturdayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         saturdayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -327,7 +326,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         saturdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         saturdayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                   constant: -leading).isActive = true
         saturdayCheckbox.centerYAnchor.constraint(equalTo: saturdayLabel.centerYAnchor).isActive = true
         saturdayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         saturdayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -343,7 +342,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         sundayLabel.translatesAutoresizingMaskIntoConstraints = false
         sundayLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                              constant: leading).isActive = true
+                                             constant: leading).isActive = true
         sundayLabel.topAnchor.constraint(equalTo: saturdayLabel.bottomAnchor).isActive = true
         sundayLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         sundayLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -355,7 +354,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         sundayCheckbox.translatesAutoresizingMaskIntoConstraints = false
         sundayCheckbox.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                         constant: -leading).isActive = true
+                                                 constant: -leading).isActive = true
         sundayCheckbox.centerYAnchor.constraint(equalTo: sundayLabel.centerYAnchor).isActive = true
         sundayCheckbox.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         sundayCheckbox.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
@@ -368,9 +367,9 @@ class SelectRepeatTimeViewController: UIViewController {
         
         monthButton.translatesAutoresizingMaskIntoConstraints = false
         monthButton.topAnchor.constraint(equalTo: sundayLabel.bottomAnchor,
-                                       constant: heightLabel / 2).isActive = true
+                                         constant: heightLabel / 2).isActive = true
         monthButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                           constant: leading).isActive = true
+                                             constant: leading).isActive = true
         monthButton.widthAnchor.constraint(equalToConstant: checkboxSize).isActive = true
         monthButton.heightAnchor.constraint(equalToConstant: checkboxSize).isActive = true
     }
@@ -385,7 +384,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         monthLabel.translatesAutoresizingMaskIntoConstraints = false
         monthLabel.leadingAnchor.constraint(equalTo: monthButton.trailingAnchor,
-                                          constant: leading).isActive = true
+                                            constant: leading).isActive = true
         monthLabel.centerYAnchor.constraint(equalTo: monthButton.centerYAnchor).isActive = true
         monthLabel.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         monthLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -414,7 +413,7 @@ class SelectRepeatTimeViewController: UIViewController {
         
         yearLabel.translatesAutoresizingMaskIntoConstraints = false
         yearLabel.leadingAnchor.constraint(equalTo: yearButton.trailingAnchor,
-                                          constant: leading).isActive = true
+                                           constant: leading).isActive = true
         yearLabel.centerYAnchor.constraint(equalTo: yearButton.centerYAnchor).isActive = true
         yearLabel.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         yearLabel.heightAnchor.constraint(equalToConstant: heightLabel).isActive = true
@@ -448,7 +447,6 @@ class SelectRepeatTimeViewController: UIViewController {
     }
     
     @objc private func saveButtonPressed() {
-//        let date = datesTableView.indexPathForSelectedRow?.item
         let hours = hoursTableView.indexPathForSelectedRow?.item
         let minutes = minutesTableView.indexPathForSelectedRow?.item
         presenter?.saveDate(indexHours: hours, indexMinutes: minutes)

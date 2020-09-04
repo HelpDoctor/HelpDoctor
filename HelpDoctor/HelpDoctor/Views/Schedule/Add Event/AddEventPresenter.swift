@@ -13,6 +13,7 @@ protocol AddEventPresenterProtocol: Presenter {
     func eventTypeChoice()
     func dateChoice(isStart: Bool)
     func repeatChoice()
+    func notifyChoice()
     func getEvent()
     func saveEvent(isMajor: Bool, title: String?, location: String?)
     func setIdEvent(idEvent: Int)
@@ -28,6 +29,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     private var eventType: EventType?
     private var startDate: Date?
     private var endDate: Date?
+    private var notifyDate: Date?
     
     // MARK: - Init
     required init(view: AddEventViewController) {
@@ -80,6 +82,24 @@ class AddEventPresenter: AddEventPresenterProtocol {
         view.present(viewController, animated: true)
     }
     
+    func notifyChoice() {
+        guard startDate != nil else {
+            view.showAlert(message: "Сначала заполните время начала события")
+            return
+        }
+        let viewController = SelectNotifyViewController()
+        let presenter = SelectNotifyPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.delegate = self
+        transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
+                                                                y: Session.height - 356,
+                                                                width: view.view.bounds.width,
+                                                                height: 356)
+        viewController.transitioningDelegate = transition
+        viewController.modalPresentationStyle = .custom
+        view.present(viewController, animated: true)
+    }
+    
     func getEvent() {
         guard let idEvent = idEvent else { return }
         let getEvents = Schedule()
@@ -95,6 +115,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
                     self?.setEventType(events[0].event_type)
                     self?.startDate = events[0].start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
                     self?.endDate = events[0].end_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.notifyDate = events[0].notify_date?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
                     self?.view.setEventOnView(event: events[0])
                 }
             }
@@ -136,7 +157,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
         let currentEvent = ScheduleEvents(id: idEvent,
                                           start_date: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
                                           end_date: endDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
-                                          notify_date: nil,
+                                          notify_date: notifyDate?.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
                                           title: title,
                                           description: nil,
                                           is_major: isMajor,
@@ -281,6 +302,16 @@ extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
     
     func callbackTime() {
         view.setRepeatLabel(repeatText: "Польз. настройки")
+    }
+    
+}
+
+extension AddEventPresenter: SelectNotifyControllerDelegate {
+    
+    func callback(notifyTime: Double) {
+        view.setNotifyTime(notifyTime: "Уведомить за \(Int(notifyTime)) минут")
+        guard let startDate = startDate else { return }
+        notifyDate = startDate - (60 * notifyTime)
     }
     
 }

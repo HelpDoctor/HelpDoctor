@@ -27,7 +27,6 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     private var keyboardHeight = 0.f
     private var isKeyboardShown = false
     private let widthTextField = Session.width - 114.f
-    private let heightTextField = 30.f
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -169,10 +168,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
+        emailTextField.leftView = setupDefaultLeftView()
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -181,7 +177,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
                                             constant: top).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка поля ввода пароля
@@ -194,10 +190,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5
-        passwordTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: passwordTextField.frame.height))
+        passwordTextField.leftView = setupDefaultLeftView()
         passwordTextField.leftViewMode = .always
         scrollView.addSubview(passwordTextField)
         
@@ -206,7 +199,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
                                                constant: top).isActive = true
         passwordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установки кнопки восстановления пароля
@@ -261,7 +254,7 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         backButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         backButton.topAnchor.constraint(equalTo: scrollView.topAnchor,
-                                           constant: top).isActive = true
+                                        constant: top).isActive = true
         backButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }

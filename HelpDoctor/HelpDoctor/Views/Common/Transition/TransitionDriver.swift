@@ -40,12 +40,12 @@ class TransitionDriver: UIPercentDrivenInteractiveTransition {
     // MARK: - Direction
     var direction: TransitionDirection = .present
     
-    @objc private func handle(recognizer r: UIPanGestureRecognizer) {
+    @objc private func handle(recognizer: UIPanGestureRecognizer) {
         switch direction {
         case .present:
-            handlePresentation(recognizer: r)
+            handlePresentation(recognizer: recognizer)
         case .dismiss:
-            handleDismiss(recognizer: r)
+            handleDismiss(recognizer: recognizer)
         }
     }
     
@@ -54,16 +54,16 @@ class TransitionDriver: UIPercentDrivenInteractiveTransition {
 // MARK: - Gesture Handling
 extension TransitionDriver {
     
-    private func handlePresentation(recognizer r: UIPanGestureRecognizer) {
-        switch r.state {
+    private func handlePresentation(recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
         case .began:
             pause()
         case .changed:
-            let increment = -r.incrementToBottom(maxTranslation: maxTranslation)
+            let increment = -recognizer.incrementToBottom(maxTranslation: maxTranslation)
             update(percentComplete + increment)
             
         case .ended, .cancelled:
-            if r.isProjectedToDownHalf(maxTranslation: maxTranslation) {
+            if recognizer.isProjectedToDownHalf(maxTranslation: maxTranslation) {
                 cancel()
             } else {
                 finish()
@@ -77,8 +77,8 @@ extension TransitionDriver {
         }
     }
     
-    private func handleDismiss(recognizer r: UIPanGestureRecognizer) {
-        switch r.state {
+    private func handleDismiss(recognizer: UIPanGestureRecognizer) {
+        switch recognizer.state {
         case .began:
             pause() // Без паузы percentComplete всегда равен 0
             
@@ -87,10 +87,10 @@ extension TransitionDriver {
             }
             
         case .changed:
-            update(percentComplete + r.incrementToBottom(maxTranslation: maxTranslation))
+            update(percentComplete + recognizer.incrementToBottom(maxTranslation: maxTranslation))
             
         case .ended, .cancelled:
-            if r.isProjectedToDownHalf(maxTranslation: maxTranslation) {
+            if recognizer.isProjectedToDownHalf(maxTranslation: maxTranslation) {
                 finish()
             } else {
                 cancel()

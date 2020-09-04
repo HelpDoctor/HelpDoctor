@@ -106,6 +106,9 @@
 		46787A75243906D9005C0258 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A74243906D9005C0258 /* Settings.swift */; };
 		46787A782439A6D7005C0258 /* PushAndSoundViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */; };
 		46787A7A2439A6E2005C0258 /* PushAndSoundPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */; };
+		4682F39E25021E1A005BDA9E /* ScaleSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */; };
+		4682F3A125022856005BDA9E /* SelectNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */; };
+		4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */; };
 		46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */; };
 		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
 		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
@@ -356,6 +359,9 @@
 		46787A74243906D9005C0258 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		46787A772439A6D7005C0258 /* PushAndSoundViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundViewController.swift; sourceTree = "<group>"; };
 		46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAndSoundPresenter.swift; sourceTree = "<group>"; };
+		4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleSwitch.swift; sourceTree = "<group>"; };
+		4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyViewController.swift; sourceTree = "<group>"; };
+		4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyPresenter.swift; sourceTree = "<group>"; };
 		46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLayerCombine.swift; sourceTree = "<group>"; };
 		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
 		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
@@ -549,17 +555,18 @@
 			children = (
 				46072E1923C23FF20070F2F6 /* StartAddEventViewController.swift */,
 				46072E1B23C240160070F2F6 /* StartAddEventPresenter.swift */,
+				46203F0E23C76B880072653A /* EventType.swift */,
 			);
 			path = StartAddEvent;
 			sourceTree = "<group>";
 		};
-		46072E1F23C267420070F2F6 /* AppointmentAddEvent */ = {
+		46072E1F23C267420070F2F6 /* AppointmentAddEvent_OLD */ = {
 			isa = PBXGroup;
 			children = (
 				46072E2023C267670070F2F6 /* AppointmentAddViewController.swift */,
 				46072E2223C267710070F2F6 /* AppointmentAdd.swift */,
 			);
-			path = AppointmentAddEvent;
+			path = AppointmentAddEvent_OLD;
 			sourceTree = "<group>";
 		};
 		4609F4352441AD5E00F17E45 /* VerificationOk */ = {
@@ -602,32 +609,31 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
-		46203F0723C761880072653A /* EventAddEvent */ = {
+		46203F0723C761880072653A /* EventAddEvent_OLD */ = {
 			isa = PBXGroup;
 			children = (
 				46203F0923C761880072653A /* EventAddViewController.swift */,
 				46203F0823C761880072653A /* EventAddPresenter.swift */,
-				46203F0E23C76B880072653A /* EventType.swift */,
 			);
-			path = EventAddEvent;
+			path = EventAddEvent_OLD;
 			sourceTree = "<group>";
 		};
-		46203F1A23C9CC550072653A /* ViewEvent */ = {
+		46203F1A23C9CC550072653A /* ViewEvent_OLD */ = {
 			isa = PBXGroup;
 			children = (
 				46203F1B23C9CC810072653A /* ViewEventViewController.swift */,
 				46203F1D23C9CC910072653A /* ViewEventPresenter.swift */,
 			);
-			path = ViewEvent;
+			path = ViewEvent_OLD;
 			sourceTree = "<group>";
 		};
-		46203F2123CB04B40072653A /* OtherTimeNotify */ = {
+		46203F2123CB04B40072653A /* OtherTimeNotify_OLD */ = {
 			isa = PBXGroup;
 			children = (
 				46203F2223CB04DC0072653A /* OtherTimeNotifyViewController.swift */,
 				46203F2423CB04F10072653A /* OtherTimeNotifyPresenter.swift */,
 			);
-			path = OtherTimeNotify;
+			path = OtherTimeNotify_OLD;
 			sourceTree = "<group>";
 		};
 		46203F2C23CCC71C0072653A /* Members */ = {
@@ -749,14 +755,14 @@
 			path = CreateProfileScreen2;
 			sourceTree = "<group>";
 		};
-		4670346F23D480C300AFAA91 /* RepeatNotifications */ = {
+		4670346F23D480C300AFAA91 /* RepeatNotifications_OLD */ = {
 			isa = PBXGroup;
 			children = (
 				4670347023D480E200AFAA91 /* RepeatNotificationsViewController.swift */,
 				4670347223D4811F00AFAA91 /* RepeatNotificationsPresenter.swift */,
 				4670347423D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift */,
 			);
-			path = RepeatNotifications;
+			path = RepeatNotifications_OLD;
 			sourceTree = "<group>";
 		};
 		4670347B23DD703300AFAA91 /* SelectDate */ = {
@@ -776,6 +782,15 @@
 				46787A792439A6E2005C0258 /* PushAndSoundPresenter.swift */,
 			);
 			path = PushAndSound;
+			sourceTree = "<group>";
+		};
+		4682F39F25022839005BDA9E /* SelectNotify */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */,
+				4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */,
+			);
+			path = SelectNotify;
 			sourceTree = "<group>";
 		};
 		46959B4D24ED251700139A17 /* Universities */ = {
@@ -887,6 +902,7 @@
 				46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */,
 				469E0583242B794E00F60A6F /* PickerField.swift */,
 				46164BC024EFF41700879DE4 /* Transition */,
+				4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1276,15 +1292,16 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				4682F39F25022839005BDA9E /* SelectNotify */,
 				462A6A1C2500B00500914994 /* SelectRepeatTime */,
 				4636B81824FFE8B5005C4CC8 /* RepeatEvent */,
 				C4CBC3F523E2AB7B00434BFB /* LocationSearch */,
 				4670347B23DD703300AFAA91 /* SelectDate */,
-				4670346F23D480C300AFAA91 /* RepeatNotifications */,
-				46203F2123CB04B40072653A /* OtherTimeNotify */,
-				46203F1A23C9CC550072653A /* ViewEvent */,
-				46203F0723C761880072653A /* EventAddEvent */,
-				46072E1F23C267420070F2F6 /* AppointmentAddEvent */,
+				4670346F23D480C300AFAA91 /* RepeatNotifications_OLD */,
+				46203F2123CB04B40072653A /* OtherTimeNotify_OLD */,
+				46203F1A23C9CC550072653A /* ViewEvent_OLD */,
+				46203F0723C761880072653A /* EventAddEvent_OLD */,
+				46072E1F23C267420070F2F6 /* AppointmentAddEvent_OLD */,
 				46072E1823C23FDF0070F2F6 /* StartAddEvent */,
 				46164B9324EE487F00879DE4 /* Add Event */,
 				46072E0723C1F49B0070F2F6 /* Start */,
@@ -1646,10 +1663,12 @@
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
 				4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */,
+				4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
 				4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */,
+				4682F39E25021E1A005BDA9E /* ScaleSwitch.swift in Sources */,
 				46203F0023C46A670072653A /* CreateFindUsers.swift in Sources */,
 				4609F4392441AD9000F17E45 /* VerificationOkPresenter.swift in Sources */,
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
@@ -1693,6 +1712,7 @@
 				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
 				46787A75243906D9005C0258 /* Settings.swift in Sources */,
 				46203F0D23C761A80072653A /* CheckBox.swift in Sources */,
+				4682F3A125022856005BDA9E /* SelectNotifyViewController.swift in Sources */,
 				46203F1923C99ED40072653A /* InterestCollectionViewLayout.swift in Sources */,
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,

@@ -38,11 +38,11 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let guestLabel = UILabel()
     private let guestTextView = UITextView()
     private let repeatLabel = UILabel()
-    private let repeatSwitch = UISwitch()
+    private let repeatSwitch = ScaleSwitch()//UISwitch()
     private let repeatDateLabel = UILabel()
     private let repeatButton = UIButton()
     private let majorLabel = UILabel()
-    private let majorSwitch = UISwitch()
+    private let majorSwitch = ScaleSwitch()
     private let timerImage = UIImageView()
     private let timerTextField = UITextField()
     private let deleteButton = HDButton(title: "Удалить", fontSize: 18)
@@ -122,6 +122,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         repeatSwitch.thumbTintColor = offThumbTintColor
     }
     
+    func setNotifyTime(notifyTime: String) {
+        timerTextField.text = notifyTime
+    }
+    
     func setEventOnView(event: ScheduleEvents) {
         let headerView = view.viewWithTag(996) as? HeaderView
         headerView?.titleLabel.text = "Редактирование события"
@@ -139,21 +143,23 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
             self.showAlert(message: "Не верный тип события")
         }
         startDateTextField.text = presenter?.convertDate(date: event.start_date) ?? event.start_date
+        startDateTextField.leftView = setupDefaultLeftView()
         endDateTextField.text = presenter?.convertDate(date: event.end_date) ?? event.end_date
+        endDateTextField.leftView = setupDefaultLeftView()
         titleTextField.text = event.title
+        titleTextField.leftView = setupDefaultLeftView()
         locationTextField.text = event.event_place
         if event.is_major ?? false {
             majorSwitch.isOn = true
             majorSwitch.thumbTintColor = UIColor.majorEventColor
-            //            topView.backgroundColor = .majorEventColor
         }
-        //        guard let notifyDate = event.notify_date else { return }
-        //        guard let startDate = presenter?.convertStringToDate(date: event.start_date),
-        //            let notify = presenter?.convertStringToDate(date: notifyDate) else { return }
-        //        guard let dateDiff = Calendar.current.dateComponents([.minute],
-        //                                                             from: notify,
-        //                                                             to: startDate).minute else { return }
-        //        timerLabel.text = "Уведомить за \(dateDiff) минут"
+        guard let notifyDate = event.notify_date else { return }
+        guard let startDate = event.start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss"),
+            let notify = notifyDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss") else { return }
+        guard let dateDiff = Calendar.current.dateComponents([.minute],
+                                                             from: notify,
+                                                             to: startDate).minute else { return }
+        timerTextField.text = "Уведомить за \(dateDiff) минут"
     }
     
     // MARK: - Setup views
@@ -451,7 +457,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         repeatSwitch.translatesAutoresizingMaskIntoConstraints = false
         repeatSwitch.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: Session.width - 20).isActive = true
+                                               constant: Session.width - 20).isActive = true
         repeatSwitch.centerYAnchor.constraint(equalTo: repeatLabel.centerYAnchor).isActive = true
     }
     
@@ -540,6 +546,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupTimerTextField() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(timerButtonPressed))
         let leading = 10.f
         timerTextField.font = .systemFontOfSize(size: 14)
         timerTextField.textColor = .textFieldTextColor
@@ -550,31 +558,31 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         timerTextField.layer.cornerRadius = 5
         timerTextField.leftView = setupDefaultLeftView()
         timerTextField.leftViewMode = .always
+        timerTextField.addGestureRecognizer(tap)
         scrollView.addSubview(timerTextField)
         
         timerTextField.translatesAutoresizingMaskIntoConstraints = false
         timerTextField.leadingAnchor.constraint(equalTo: timerImage.trailingAnchor,
-                                            constant: leading).isActive = true
+                                                constant: leading).isActive = true
         timerTextField.centerYAnchor.constraint(equalTo: timerImage.centerYAnchor).isActive = true
         timerTextField.widthAnchor.constraint(equalToConstant: Session.width - 80).isActive = true
         timerTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     private func setupDeleteButton() {
-//        deleteButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
         scrollView.addSubview(deleteButton)
         
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
         deleteButton.topAnchor.constraint(equalTo: timerImage.bottomAnchor,
-                                           constant: 35).isActive = true
+                                          constant: 35).isActive = true
         deleteButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                               constant: 20).isActive = true
+                                              constant: 20).isActive = true
         deleteButton.widthAnchor.constraint(equalToConstant: (Session.width - 60) / 2).isActive = true
         deleteButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
     
     private func setupSaveButton() {
-        //        saveButton.addTarget(self, action: #selector(oneHourButtonPressed), for: .touchUpInside)
+        saveButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
         scrollView.addSubview(saveButton)
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
@@ -651,6 +659,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         presenter?.repeatChoice()
     }
     
+    @objc private func timerButtonPressed() {
+        presenter?.notifyChoice()
+    }
+    
     @objc func switchStateDidChange(_ sender: UISwitch) {
         if sender == majorSwitch {
             sender.thumbTintColor = sender.isOn ? UIColor.majorEventColor : offThumbTintColor
@@ -681,10 +693,7 @@ extension AddEventViewController: UITextFieldDelegate {
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == titleTextField {
-            titleTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                           y: 0,
-                                                           width: 8,
-                                                           height: heightTextField))
+            titleTextField.leftView = setupDefaultLeftView()
         }
     }
     
