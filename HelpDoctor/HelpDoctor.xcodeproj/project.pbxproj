@@ -110,6 +110,9 @@
 		4682F3A125022856005BDA9E /* SelectNotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */; };
 		4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */; };
 		4682F3A525023DBE005BDA9E /* GuestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A425023DBE005BDA9E /* GuestCell.swift */; };
+		4682F3A82502502E005BDA9E /* AddGuestsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A72502502E005BDA9E /* AddGuestsViewController.swift */; };
+		4682F3AA2502503A005BDA9E /* AddGuestsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3A92502503A005BDA9E /* AddGuestsPresenter.swift */; };
+		4682F3AC250275D6005BDA9E /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3AB250275D6005BDA9E /* ContactTableViewCell.swift */; };
 		46959B4C24ECEECA00139A17 /* NetworkingLayerCombine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */; };
 		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
 		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
@@ -364,6 +367,9 @@
 		4682F3A025022856005BDA9E /* SelectNotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyViewController.swift; sourceTree = "<group>"; };
 		4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectNotifyPresenter.swift; sourceTree = "<group>"; };
 		4682F3A425023DBE005BDA9E /* GuestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuestCell.swift; sourceTree = "<group>"; };
+		4682F3A72502502E005BDA9E /* AddGuestsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGuestsViewController.swift; sourceTree = "<group>"; };
+		4682F3A92502503A005BDA9E /* AddGuestsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddGuestsPresenter.swift; sourceTree = "<group>"; };
+		4682F3AB250275D6005BDA9E /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		46959B4B24ECEECA00139A17 /* NetworkingLayerCombine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLayerCombine.swift; sourceTree = "<group>"; };
 		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
 		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
@@ -794,6 +800,16 @@
 				4682F3A225022864005BDA9E /* SelectNotifyPresenter.swift */,
 			);
 			path = SelectNotify;
+			sourceTree = "<group>";
+		};
+		4682F3A625025009005BDA9E /* AddGuests */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3A72502502E005BDA9E /* AddGuestsViewController.swift */,
+				4682F3A92502503A005BDA9E /* AddGuestsPresenter.swift */,
+				4682F3AB250275D6005BDA9E /* ContactTableViewCell.swift */,
+			);
+			path = AddGuests;
 			sourceTree = "<group>";
 		};
 		46959B4D24ED251700139A17 /* Universities */ = {
@@ -1295,6 +1311,7 @@
 		C48F167F23BA058F002D04E3 /* Schedule */ = {
 			isa = PBXGroup;
 			children = (
+				4682F3A625025009005BDA9E /* AddGuests */,
 				4682F39F25022839005BDA9E /* SelectNotify */,
 				462A6A1C2500B00500914994 /* SelectRepeatTime */,
 				4636B81824FFE8B5005C4CC8 /* RepeatEvent */,
@@ -1534,6 +1551,7 @@
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
 				C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */,
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
+				4682F3AA2502503A005BDA9E /* AddGuestsPresenter.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
 				462A6A1B2500A91000914994 /* RepeatButtons.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
@@ -1610,6 +1628,7 @@
 				4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */,
 				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
+				4682F3A82502502E005BDA9E /* AddGuestsViewController.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				46164BB924EFEF3300879DE4 /* PresentationController.swift in Sources */,
 				4640B6BB240159560023C3A3 /* SettingsRows.swift in Sources */,
@@ -1647,6 +1666,7 @@
 				C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */,
 				46F87F7523C1BEF60095264E /* MedicalOrganizationSearchTextField.swift in Sources */,
 				46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */,
+				4682F3AC250275D6005BDA9E /* ContactTableViewCell.swift in Sources */,
 				46395E102423EBD600BE4F70 /* CitiesSearchTextField.swift in Sources */,
 				46164B9524EE48A000879DE4 /* AddEventViewController.swift in Sources */,
 				46164BBF24EFF1E100879DE4 /* DismissAnimation.swift in Sources */,

@@ -43,7 +43,6 @@ class HDButton: UIButton {
             setTitleColor(.white, for: .normal)
         }
         
-        layer.cornerRadius = 20
         clipsToBounds = true
         updateLayerProperties()
         update(isEnabled: self.isEnabled)
@@ -58,10 +57,14 @@ class HDButton: UIButton {
             setTitleColor(.white, for: .normal)
         }
         
-        layer.cornerRadius = 20
         clipsToBounds = true
         updateLayerProperties()
         update(isEnabled: self.isEnabled)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = frame.height / 2
     }
     
     func update(isEnabled: Bool) {
@@ -107,6 +110,18 @@ class HDButton: UIButton {
             self.layer.shadowRadius = 4.0
             self.layer.masksToBounds = false
         }
+    }
+    
+    func clearBackground() {
+        shapeLayer.removeFromSuperlayer()
+        backgroundColor = .clear
+        layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        layer.shadowOffset = CGSize(width: 0, height: 4)
+        layer.shadowOpacity = 1.0
+        layer.shadowRadius = 4.0
+        layer.masksToBounds = false
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.hdButtonColor.cgColor
     }
     
 }

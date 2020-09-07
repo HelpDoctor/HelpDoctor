@@ -19,6 +19,7 @@ protocol AddEventPresenterProtocol: Presenter {
     func setIdEvent(idEvent: Int)
     func convertDate(date: String?) -> String?
     func toMap()
+    func toAddGuests()
 }
 
 class AddEventPresenter: AddEventPresenterProtocol {
@@ -221,6 +222,12 @@ class AddEventPresenter: AddEventPresenterProtocol {
         let presenter = LocationSearchPresenter(view: viewController)
         viewController.delegate = self.view
         viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func toAddGuests() {
+        let viewController = AddGuestsViewController()
+        viewController.presenter = AddGuestsPresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

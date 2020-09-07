@@ -411,12 +411,15 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupGuestCollectionView() {
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(guestButtonPressed))
         let top = 7.f
         guestCollectionView.backgroundColor = .white
         guestCollectionView.layer.cornerRadius = 5
         guestCollectionView.register(GuestCell.self, forCellWithReuseIdentifier: "GuestCell")
         guestCollectionView.dataSource = self
         guestCollectionView.delegate = self
+        guestCollectionView.addGestureRecognizer(tap)
         scrollView.addSubview(guestCollectionView)
         
         guestCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -557,6 +560,23 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         timerTextField.layer.cornerRadius = 5
         timerTextField.leftView = setupDefaultLeftView()
         timerTextField.leftViewMode = .always
+        timerTextField.clipsToBounds = true
+        let imageView = UIImageView(frame: CGRect(x: 0,
+                                                  y: 0,
+                                                  width: heightTextField,
+                                                  height: heightTextField))
+        
+        imageView.contentMode = .center
+        imageView.image = UIImage(named: "CheckMarkE")
+        let view = UIView(frame: CGRect(x: 0,
+                                        y: 0,
+                                        width: heightTextField,
+                                        height: heightTextField))
+        view.backgroundColor = .hdButtonColor
+        view.addSubview(imageView)
+        timerTextField.rightView = view
+        timerTextField.rightViewMode = .always
+        
         timerTextField.addGestureRecognizer(tap)
         scrollView.addSubview(timerTextField)
         
@@ -569,6 +589,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupDeleteButton() {
+        deleteButton.clearBackground()
         scrollView.addSubview(deleteButton)
         
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
@@ -620,9 +641,6 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         if sender.isOn {
             presenter?.repeatChoice()
-            //            topView.backgroundColor = .majorEventColor
-        } else {
-            //            topView.backgroundColor = .searchBarTintColor
         }
         
     }
@@ -652,6 +670,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
     @objc private func locationButtonPressed() {
         presenter?.toMap()
+    }
+    
+    @objc private func guestButtonPressed() {
+        presenter?.toAddGuests()
     }
     
     @objc private func repeatButtonPressed() {

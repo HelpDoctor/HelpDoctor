@@ -148,7 +148,7 @@ extension RegionsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { return UITableViewCell() }
+            else { fatalError("Could not dequeue a cell") }
 
         cell.configure(presenter?.getRegionTitle(index: indexPath.row) ?? "Region not found")
         return cell
