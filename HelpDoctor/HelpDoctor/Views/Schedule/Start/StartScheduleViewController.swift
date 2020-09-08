@@ -56,6 +56,7 @@ class StartScheduleViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         tabBarController?.tabBar.isHidden = false
+        refresh(tableView)
     }
     
     // MARK: - Public methods

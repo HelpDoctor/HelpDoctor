@@ -16,6 +16,7 @@ protocol AddEventPresenterProtocol: Presenter {
     func notifyChoice()
     func getEvent()
     func saveEvent(isMajor: Bool, title: String?, location: String?)
+    func deleteEvent()
     func setIdEvent(idEvent: Int)
     func convertDate(date: String?) -> String?
     func toMap()
@@ -194,6 +195,29 @@ class AddEventPresenter: AddEventPresenterProtocol {
                         
                     } else {
                         self.view.showAlert(message: createEvent.responce?.1)
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteEvent() {
+        guard let idEvent = idEvent else { return }
+        let resultDeleteEvents = Schedule()
+        getData(typeOfContent: .schedule_deleteForCurrentEvent,
+                returning: (Int?, String?).self,
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            resultDeleteEvents.responce = result
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("getEvents =\(String(describing: resultDeleteEvents.responce))")
+                    guard let code = resultDeleteEvents.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.back()
+                    } else {
+                        self?.view.showAlert(message: resultDeleteEvents.responce?.1)
                     }
                 }
             }

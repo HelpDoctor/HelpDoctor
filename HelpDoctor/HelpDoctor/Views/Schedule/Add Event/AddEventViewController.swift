@@ -590,6 +590,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupDeleteButton() {
         deleteButton.clearBackground()
+        deleteButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
         scrollView.addSubview(deleteButton)
         
         deleteButton.translatesAutoresizingMaskIntoConstraints = false
@@ -646,8 +647,8 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Buttons methods
-    @objc private func cancelButtonPressed() {
-        print("Tap cancel")
+    @objc private func deleteButtonPressed() {
+        presenter?.deleteEvent()
     }
     
     @objc private func okButtonPressed() {
