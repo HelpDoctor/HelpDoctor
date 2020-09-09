@@ -45,7 +45,7 @@ class AddGuestsViewController: UIViewController {
         setupInviteButton()
         setupTableView()
         setupSaveButton()
-        addSwipeGestureToBack()
+        presenter?.getContactList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -56,7 +56,18 @@ class AddGuestsViewController: UIViewController {
     }
     
     // MARK: - Public methods
+    func reloadTableView() {
+        tableView.reloadData()
+    }
     
+    func reloadCollectionView() {
+        guestCollectionView.reloadData()
+        selectedGuestsLabel.text = "Выбрано участников: \(presenter?.getCountSelectedContacts() ?? 0)"
+    }
+    
+    func setCountContactList(contactsCount: Int) {
+        contactsLabel.text = "Контактов: \(contactsCount)"
+    }
     
     // MARK: - Setup views
     private func setupSearchBar() {
@@ -80,7 +91,7 @@ class AddGuestsViewController: UIViewController {
         
         topView.translatesAutoresizingMaskIntoConstraints = false
         topView.topAnchor.constraint(equalTo: searchBar.bottomAnchor,
-                                                 constant: verticalInset).isActive = true
+                                     constant: verticalInset).isActive = true
         topView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         topView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         topView.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
@@ -89,7 +100,7 @@ class AddGuestsViewController: UIViewController {
     private func setupSelectedGuestsLabel() {
         selectedGuestsLabel.font = .mediumSystemFontOfSize(size: 12)
         selectedGuestsLabel.textColor = .black
-        selectedGuestsLabel.text = "Выбрано участников: 4"
+        selectedGuestsLabel.text = "Выбрано участников: \(presenter?.getCountSelectedContacts() ?? 0)"
         selectedGuestsLabel.textAlignment = .left
         selectedGuestsLabel.numberOfLines = 1
         topView.addSubview(selectedGuestsLabel)
@@ -123,7 +134,7 @@ class AddGuestsViewController: UIViewController {
         
         guestCollectionView.translatesAutoresizingMaskIntoConstraints = false
         guestCollectionView.topAnchor.constraint(equalTo: centralView.topAnchor,
-                                           constant: verticalInset).isActive = true
+                                                 constant: verticalInset).isActive = true
         guestCollectionView.centerXAnchor.constraint(equalTo: centralView.centerXAnchor).isActive = true
         guestCollectionView.widthAnchor.constraint(equalTo: centralView.widthAnchor).isActive = true
         guestCollectionView.heightAnchor.constraint(equalToConstant: heightCollectionView).isActive = true
@@ -140,7 +151,7 @@ class AddGuestsViewController: UIViewController {
         contactsLabel.translatesAutoresizingMaskIntoConstraints = false
         contactsLabel.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor).isActive = true
         contactsLabel.leadingAnchor.constraint(equalTo: centralView.leadingAnchor,
-                                                     constant: verticalInset).isActive = true
+                                               constant: verticalInset).isActive = true
         contactsLabel.widthAnchor.constraint(equalToConstant: (Session.width / 2) - (verticalInset * 2)).isActive = true
         contactsLabel.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
     }
@@ -157,7 +168,7 @@ class AddGuestsViewController: UIViewController {
         inviteButton.translatesAutoresizingMaskIntoConstraints = false
         inviteButton.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor).isActive = true
         inviteButton.trailingAnchor.constraint(equalTo: centralView.trailingAnchor,
-                                                     constant: -verticalInset).isActive = true
+                                               constant: -verticalInset).isActive = true
         inviteButton.widthAnchor.constraint(equalToConstant: (Session.width / 2) - (verticalInset * 2)).isActive = true
         inviteButton.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
     }
@@ -168,6 +179,7 @@ class AddGuestsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.backgroundColor = .backgroundColor
+        tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -188,9 +200,9 @@ class AddGuestsViewController: UIViewController {
         
         saveButton.translatesAutoresizingMaskIntoConstraints = false
         saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                        constant: -verticalInset).isActive = true
+                                           constant: -verticalInset).isActive = true
         saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                            constant: -verticalInset).isActive = true
+                                             constant: -verticalInset).isActive = true
         saveButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
         saveButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
     }
@@ -204,29 +216,17 @@ class AddGuestsViewController: UIViewController {
         
     }
     
-    /// Добавляет свайп влево для перехода назад
-    private func addSwipeGestureToBack() {
-        let swipeLeft = UISwipeGestureRecognizer()
-        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
-        swipeLeft.direction = .right
-        view.addGestureRecognizer(swipeLeft)
-    }
-    
-    @objc private func backButtonPressed() {
-        presenter?.back()
-    }
-    
 }
 
 // MARK: - Collection view
 extension AddGuestsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        presenter?.addInterest(index: indexPath.item)
+        //        presenter?.addInterest(index: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        presenter?.deleteInterest(index: indexPath.item)
+        //        presenter?.deleteInterest(index: indexPath.item)
     }
     
 }
@@ -234,8 +234,7 @@ extension AddGuestsViewController: UICollectionViewDelegate {
 extension AddGuestsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return presenter?.getInterestsCount() ?? 0
-        return 6
+        return presenter?.getCountSelectedContacts() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -244,7 +243,7 @@ extension AddGuestsViewController: UICollectionViewDataSource {
                                                             for: indexPath) as? GuestCell else {
                                                                 return UICollectionViewCell()
         }
-        cell.configure("Участник №1", UIImage(named: "Enter_Profile_Button")!)
+        cell.configure(contact: (presenter?.getSelectedContact(index: indexPath.item)))
         return cell
     }
     
@@ -257,19 +256,7 @@ extension AddGuestsViewController: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: ((Session.width - 40) / 2), height: 20)
     }
-    /*
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
-    }
-    */
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
@@ -283,10 +270,10 @@ extension AddGuestsViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard !searchText.isEmpty else {
-//            presenter?.searchTextIsEmpty()
+            //            presenter?.searchTextIsEmpty()
             return
         }
-//        presenter?.filter(searchText: searchText)
+        //        presenter?.filter(searchText: searchText)
     }
     
 }
@@ -295,7 +282,34 @@ extension AddGuestsViewController: UISearchBarDelegate {
 extension AddGuestsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.cellForRow(at: indexPath)?.isSelected = true
+        presenter?.addToSelected(index: indexPath.section)
+//        searchBar.searchTextField.resignFirstResponder()
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteContact = UIContextualAction(style: .destructive,
+                                               title: "") {  (_, _, completion) in
+                                                self.presenter?.deleteFromSelected(index: indexPath.section)
+                                                completion(true)
+        }
+        deleteContact.backgroundColor = .hdButtonColor
+        deleteContact.image = UIImage(named: "Trash Icon")
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteContact])
+        
+        return swipeActions
+    }
+
+    // Make the background color show through
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        return headerView
     }
     
 }
@@ -304,20 +318,25 @@ extension AddGuestsViewController: UITableViewDelegate {
 extension AddGuestsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 12
+        return 1
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return presenter?.getCountContacts() ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell",
                                                        for: indexPath) as? ContactTableViewCell
             else { return UITableViewCell() }
-        cell.configure("Дурова Екатерина Васильевна", UIImage(named: "WomanAvatar_3")!, "Гастроэнтеролог", false)
-
+        
+        cell.configure(contact: (presenter?.getContact(index: indexPath.section)))
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
-
+    
 }

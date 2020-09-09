@@ -26,7 +26,8 @@ func parseJSON_getEventForId(for startPoint: [String: Any]?,
                            description: startPoint["description"] as? String,
                            is_major: startPoint["is_major"] as? Bool,
                            event_place: startPoint["event_place"] as? String,
-                           event_type: startPoint["event_type"] as! String)
+                           event_type: startPoint["event_type"] as! String,
+                           participants: startPoint["participants"] as? [Any])
 
     return ([event], httpResponse.statusCode, nil)
 }

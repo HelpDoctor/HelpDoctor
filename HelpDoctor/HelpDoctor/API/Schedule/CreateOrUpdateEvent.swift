@@ -44,8 +44,7 @@ class CreateOrUpdateEvent {
                         "event_type": events.event_type as Any
             ]
         }
-        
-        self.jsonModel = ["event": dataUser]
+        self.jsonModel = ["event": dataUser, "participants": events.participants ?? []]
         self.jsonData = todoJSON(obj: jsonModel)
     }
 }

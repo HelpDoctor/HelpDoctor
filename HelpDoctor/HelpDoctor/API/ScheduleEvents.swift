@@ -18,4 +18,5 @@ struct ScheduleEvents {
     let is_major: Bool?
     let event_place: String?
     let event_type: String
+    let participants: [Any]?
 }

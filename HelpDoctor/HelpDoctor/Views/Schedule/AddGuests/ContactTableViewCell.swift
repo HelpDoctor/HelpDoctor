@@ -12,7 +12,6 @@ class ContactTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "ContactTableViewCell"
     private let topView = UIView()
-    private let bottomView = UIView()
     private let nameLabel = UILabel()
     private let specLabel = UILabel()
     private let cellImage = UIImageView()
@@ -22,7 +21,6 @@ class ContactTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.backgroundColor = .backgroundColor
         setupTopView()
-        setupBottomView()
         setupCellImage()
         setupVerificationImage()
         setupNameLabel()
@@ -43,17 +41,6 @@ class ContactTableViewCell: UITableViewCell {
         topView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
         topView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         topView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
-    }
-    
-    private func setupBottomView() {
-        bottomView.backgroundColor = .backgroundColor
-        contentView.addSubview(bottomView)
-        
-        bottomView.translatesAutoresizingMaskIntoConstraints = false
-        bottomView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
-        bottomView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
-        bottomView.heightAnchor.constraint(equalToConstant: 10).isActive = true
-        bottomView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
     }
     
     private func setupCellImage() {
@@ -118,11 +105,12 @@ class ContactTableViewCell: UITableViewCell {
         specLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor).isActive = true
     }
     
-    func configure(_ name: String, _ image: UIImage, _ spec: String, _ verification: Bool) {
-        nameLabel.text = name
-        cellImage.image = image
-        specLabel.text = spec
-        verificationImage.isHidden = !verification
+    func configure(contact: Contacts?) {
+        guard let contact = contact else { return }
+        nameLabel.text = "\(contact.last_name ?? "") \(contact.first_name ?? "") \(contact.middle_name ?? "")"
+        cellImage.image = contact.foto?.toImage()
+        specLabel.text = contact.specialization
+        verificationImage.isHidden = true
     }
 
 }

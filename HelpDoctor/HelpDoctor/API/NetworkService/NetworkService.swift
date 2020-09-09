@@ -73,6 +73,7 @@ enum TypeOfRequest: String {
     case changePassword = "/profile/change_password"
     case feedback = "/support/feedback"
     case invite = "/registration/invite"
+    case getContactList = "/contact_list/get"
 }
 
 enum NetworkMimeType: String {
@@ -230,7 +231,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
-    case .userStatus, .getSettings:
+    case .userStatus, .getSettings, .getContactList:
         request.httpMethod = "GET"
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         
@@ -390,6 +391,11 @@ func getData<T>(typeOfContent: TypeOfRequest,
             case .invite:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
+                
+            case .getContactList:
+                guard let startPoint = json as? [String: AnyObject] else { return }
+                replyReturn = (parseJSON_getContactList(for: startPoint, response: response) as? T)
+                
             }
             DispatchQueue.main.async {
                 completionBlock(replyReturn)

@@ -28,7 +28,8 @@ func parseJSON_getEventsForCurrentDate(for startPoint: [AnyObject]?,
                                         description: obj["description"] as? String,
                                         is_major: obj["is_major"] as? Bool,
                                         event_place: obj["event_place"] as? String,
-                                        event_type: obj["event_type"] as! String))
+                                        event_type: obj["event_type"] as! String,
+                                        participants: obj["participants"] as? [Any]))
   
     }
     return (arrEvents, httpResponse.statusCode, nil)

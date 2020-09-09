@@ -164,7 +164,8 @@ class AddEventPresenter: AddEventPresenterProtocol {
                                           description: nil,
                                           is_major: isMajor,
                                           event_place: location,
-                                          event_type: eventType.rawValue)
+                                          event_type: eventType.rawValue,
+                                          participants: [25, 852])
         
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
         getData(typeOfContent: .schedule_CreateOrUpdateEvent,

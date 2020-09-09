@@ -58,4 +58,10 @@ class GuestCell: UICollectionViewCell {
         cellImage.image = guestImage
     }
     
+    func configure(contact: Contacts?) {
+        guard let contact = contact else { return }
+        cellLabel.text = "\(contact.last_name ?? "") \(contact.first_name ?? "") \(contact.middle_name ?? "")"
+        cellImage.image = contact.foto?.toImage()
+    }
+    
 }
