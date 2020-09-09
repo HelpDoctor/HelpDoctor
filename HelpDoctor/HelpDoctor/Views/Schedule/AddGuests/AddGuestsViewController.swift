@@ -213,7 +213,7 @@ class AddGuestsViewController: UIViewController {
     }
     
     @objc private func okButtonPressed() {
-        
+        presenter?.saveGuests()
     }
     
 }
@@ -305,7 +305,6 @@ extension AddGuestsViewController: UITableViewDelegate {
         return swipeActions
     }
 
-    // Make the background color show through
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = .clear

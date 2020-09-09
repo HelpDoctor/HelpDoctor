@@ -12,7 +12,6 @@ class SelectDateViewController: UIViewController {
     
     // MARK: - Dependency
     var presenter: SelectDatePresenterProtocol?
-//    weak var delegate: SelectDateControllerDelegate?
     
     // MARK: - Constants and variables
     private let heightTopLabel = 30.f

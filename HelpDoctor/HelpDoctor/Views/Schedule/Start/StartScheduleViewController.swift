@@ -322,10 +322,28 @@ class StartScheduleViewController: UIViewController {
 // MARK: - Table View Delegate
 extension StartScheduleViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: Session.width, height: 25))
-        footerView.backgroundColor = .clear
-        return footerView
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 10
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteContact = UIContextualAction(style: .destructive,
+                                               title: "") {  (_, _, completion) in
+                                                self.presenter?.deleteEvent(index: indexPath.section)
+                                                completion(true)
+        }
+        deleteContact.backgroundColor = .hdButtonColor
+        deleteContact.image = UIImage(named: "Trash Icon")
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteContact])
+        
+        return swipeActions
     }
     
 }
@@ -334,32 +352,32 @@ extension StartScheduleViewController: UITableViewDelegate {
 extension StartScheduleViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return presenter?.getCountEvents() ?? 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return (presenter?.getCountEvents() ?? 0)
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "EventCell",
                                                        for: indexPath) as? EventCell
             else { return UITableViewCell() }
-        cell.configure(startTime: presenter?.getStartTimeEvent(index: indexPath.row) ?? "",
-                       endTime: presenter?.getEndTimeEvent(index: indexPath.row) ?? "",
-                       event: presenter?.getTitleEvent(index: indexPath.row) ?? "",
-                       eventColor: presenter?.getEventColor(index: indexPath.row) ?? .clear,
-                       isMajor: presenter?.getMajorFlag(index: indexPath.row) ?? false)
+        cell.configure(startTime: presenter?.getStartTimeEvent(index: indexPath.section) ?? "",
+                       endTime: presenter?.getEndTimeEvent(index: indexPath.section) ?? "",
+                       event: presenter?.getTitleEvent(index: indexPath.section) ?? "",
+                       eventColor: presenter?.getEventColor(index: indexPath.section) ?? .clear,
+                       isMajor: presenter?.getMajorFlag(index: indexPath.section) ?? false)
         cell.backgroundColor = .clear
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        presenter?.didSelectRow(index: indexPath.row)
+        presenter?.didSelectRow(index: indexPath.section)
     }
     
 }

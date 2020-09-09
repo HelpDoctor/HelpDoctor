@@ -145,7 +145,8 @@ class InterestsPresenter: InterestsPresenterProtocol {
         view.navigationController?.popViewController(animated: true)
         let prevVC = view.navigationController?.viewControllers.last
         if prevVC is CreateProfileSpecViewController {
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileSpecViewController
+            guard let previous = view.navigationController?.viewControllers.last as? CreateProfileSpecViewController
+                else { return }
             let presenter = previous.presenter
             presenter?.setInterests(interests: userInterests)
         } 

@@ -92,6 +92,10 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Public methods
+    func reloadCollectionView() {
+        guestCollectionView.reloadData()
+    }
+    
     func setEventType(eventType: String, color: UIColor) {
         eventTypeTextField.text = eventType
         eventTypeRightView.backgroundColor = color
@@ -424,7 +428,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         
         guestCollectionView.translatesAutoresizingMaskIntoConstraints = false
         guestCollectionView.topAnchor.constraint(equalTo: guestLabel.bottomAnchor,
-                                           constant: top).isActive = true
+                                                 constant: top).isActive = true
         guestCollectionView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         guestCollectionView.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         guestCollectionView.heightAnchor.constraint(equalToConstant: heightCollectionView).isActive = true
@@ -735,11 +739,11 @@ extension AddEventViewController: UITextFieldDelegate {
 extension AddEventViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        presenter?.addInterest(index: indexPath.item)
+        //        presenter?.addInterest(index: indexPath.item)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-//        presenter?.deleteInterest(index: indexPath.item)
+        //        presenter?.deleteInterest(index: indexPath.item)
     }
     
 }
@@ -747,8 +751,7 @@ extension AddEventViewController: UICollectionViewDelegate {
 extension AddEventViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return presenter?.getInterestsCount() ?? 0
-        return 6
+        return presenter?.getCountContacts() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -757,7 +760,7 @@ extension AddEventViewController: UICollectionViewDataSource {
                                                             for: indexPath) as? GuestCell else {
                                                                 return UICollectionViewCell()
         }
-        cell.configure("Участник №1", UIImage(named: "Enter_Profile_Button")!)
+        cell.configure(contact: (presenter?.getContact(index: indexPath.item)))
         return cell
     }
     
@@ -770,19 +773,7 @@ extension AddEventViewController: UICollectionViewDelegateFlowLayout {
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: ((widthTextField - 40) / 2), height: 20)
     }
-    /*
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10
-    }
     
-    func collectionView(_ collectionView: UICollectionView,
-                        layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20
-    }
-    */
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {

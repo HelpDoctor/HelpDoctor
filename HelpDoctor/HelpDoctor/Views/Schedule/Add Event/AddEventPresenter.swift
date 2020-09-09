@@ -15,6 +15,9 @@ protocol AddEventPresenterProtocol: Presenter {
     func repeatChoice()
     func notifyChoice()
     func getEvent()
+    func getCountContacts() -> Int
+    func getContact(index: Int) -> Contacts?
+    func setGuestList(guests: [Contacts])
     func saveEvent(isMajor: Bool, title: String?, location: String?)
     func deleteEvent()
     func setIdEvent(idEvent: Int)
@@ -32,6 +35,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     private var startDate: Date?
     private var endDate: Date?
     private var notifyDate: Date?
+    private var guestList: [Contacts] = []
     
     // MARK: - Init
     required init(view: AddEventViewController) {
@@ -118,10 +122,23 @@ class AddEventPresenter: AddEventPresenterProtocol {
                     self?.startDate = events[0].start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
                     self?.endDate = events[0].end_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
                     self?.notifyDate = events[0].notify_date?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.createGuestList(participants: events[0].participants ?? [])
                     self?.view.setEventOnView(event: events[0])
                 }
             }
         }
+    }
+    
+    private func createGuestList(participants: [AnyObject]) {
+        for guest in participants {
+            guestList.append(Contacts(id: guest["user_id"] as? Int,
+                                      first_name: guest["full_name"] as? String,
+                                      middle_name: nil,
+                                      last_name: nil,
+                                      foto: nil,
+                                      specialization: nil))
+        }
+        view.reloadCollectionView()
     }
     
     private func setEventType(_ eventTypeString: String) {
@@ -137,6 +154,19 @@ class AddEventPresenter: AddEventPresenterProtocol {
         default:
             eventType = nil
         }
+    }
+    
+    func getCountContacts() -> Int {
+        return guestList.count
+    }
+    
+    func getContact(index: Int) -> Contacts? {
+        return guestList[index]
+    }
+    
+    func setGuestList(guests: [Contacts]) {
+        guestList = guests
+        view.reloadCollectionView()
     }
     
     func saveEvent(isMajor: Bool, title: String?, location: String?) {
@@ -156,6 +186,8 @@ class AddEventPresenter: AddEventPresenterProtocol {
             view.showAlert(message: "Выберите тип события")
             return
         }
+        let participants: [Int] = guestList.compactMap({ $0.id })
+            
         let currentEvent = ScheduleEvents(id: idEvent,
                                           start_date: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
                                           end_date: endDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
@@ -165,7 +197,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
                                           is_major: isMajor,
                                           event_place: location,
                                           event_type: eventType.rawValue,
-                                          participants: [25, 852])
+                                          participants: participants as [AnyObject])
         
         let createEvent = CreateOrUpdateEvent(events: currentEvent)
         getData(typeOfContent: .schedule_CreateOrUpdateEvent,

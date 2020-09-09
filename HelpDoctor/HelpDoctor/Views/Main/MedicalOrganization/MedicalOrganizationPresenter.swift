@@ -84,7 +84,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
         
         guard let controllers = view.navigationController?.viewControllers else { return }
         for viewControllers in controllers where viewControllers is CreateProfileWorkViewController {
-            let previous = viewControllers as! CreateProfileWorkViewController
+            guard let previous = viewControllers as? CreateProfileWorkViewController else { return }
             let presenter = previous.presenter
             presenter?.setJob(job: medicalOrganization)
             view.navigationController?.popToViewController(viewControllers, animated: true)

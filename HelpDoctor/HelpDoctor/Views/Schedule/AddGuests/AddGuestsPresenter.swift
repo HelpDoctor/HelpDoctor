@@ -19,6 +19,7 @@ protocol AddGuestsPresenterProtocol: Presenter {
     func addToSelected(index: Int)
     func deleteFromSelected(index: Int)
     func toInviteFriend()
+    func saveGuests()
 }
 
 class AddGuestsPresenter: AddGuestsPresenterProtocol {
@@ -95,22 +96,15 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    func saveGuests() {
+        view.navigationController?.popViewController(animated: true)
+        guard let previous = view.navigationController?.viewControllers.last as? AddEventViewController else { return }
+        let presenter = previous.presenter
+        presenter?.setGuestList(guests: selectedContacts)
+    }
+    
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
 }
-    
-/*
- func selectRows() {
-     for element in userInterests {
-         guard let index = arrayInterests?.firstIndex(where: { $0.id == element.id }) else { return }
-         view.setSelected(index: index)
-     }
-     
-     for value in userInterests {
-         guard let index = filteredArray.firstIndex(where: { $0.id == value.id }) else { continue }
-         view.setSelected(index: index)
-     }
- }
- */

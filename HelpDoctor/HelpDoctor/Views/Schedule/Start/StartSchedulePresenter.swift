@@ -22,6 +22,7 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getEventColor(index: Int) -> UIColor?
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
+    func deleteEvent(index: Int)
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
@@ -155,6 +156,30 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
             return "Прием пациента: \n\(title)"
         } else {
             return title
+        }
+    }
+    
+    func deleteEvent(index: Int) {
+        guard let idEvent = arrayEvents?[index].id else { return }
+        let resultDeleteEvents = Schedule()
+        getData(typeOfContent: .schedule_deleteForCurrentEvent,
+                returning: (Int?, String?).self,
+                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
+            let dispathGroup = DispatchGroup()
+            
+            resultDeleteEvents.responce = result
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("getEvents =\(String(describing: resultDeleteEvents.responce))")
+                    guard let code = resultDeleteEvents.responce?.0 else { return }
+                    if responceCode(code: code) {
+                        guard let newDate = self?.view.getDate() else { return }
+                        self?.getEvents(newDate: newDate)
+                    } else {
+                        self?.view.showAlert(message: resultDeleteEvents.responce?.1)
+                    }
+                }
+            }
         }
     }
     

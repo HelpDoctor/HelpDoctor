@@ -71,7 +71,8 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy MM dd"
         let today = formatter.string(from: Date())
-        return datesArray.firstIndex(of: formatter.date(from: today)!) ?? 0
+        guard let date = formatter.date(from: today) else { return 0 }
+        return datesArray.firstIndex(of: date) ?? 0
     }
     
     func getCurrentDayOfWeek(date: Date) -> String {
@@ -117,11 +118,11 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
         var currentDate = startDate
         repeat {
             returnDates.append(currentDate)
-            currentDate = calendar.startOfDay(for: calendar.date(byAdding: .day, value: 1, to: currentDate)!)
+            guard let addDate = calendar.date(byAdding: .day, value: 1, to: currentDate) else { return [] }
+            currentDate = calendar.startOfDay(for: addDate)
         } while currentDate <= endDate
         return returnDates
     }
-
     
     // MARK: - Coordinator
     func back() { }

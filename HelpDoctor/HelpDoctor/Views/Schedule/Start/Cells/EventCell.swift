@@ -39,7 +39,7 @@ class EventCell: UITableViewCell {
         
         cellView.translatesAutoresizingMaskIntoConstraints = false
         cellView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10).isActive = true
+        cellView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         cellView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
         cellView.widthAnchor.constraint(equalTo: contentView.widthAnchor).isActive = true
     }
