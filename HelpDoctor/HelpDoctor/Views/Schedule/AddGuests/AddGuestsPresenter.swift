@@ -18,6 +18,8 @@ protocol AddGuestsPresenterProtocol: Presenter {
     func getSelectedContact(index: Int) -> Contacts?
     func addToSelected(index: Int)
     func deleteFromSelected(index: Int)
+    func searchTextIsEmpty()
+    func filter(searchText: String)
     func toInviteFriend()
     func saveGuests()
 }
@@ -29,6 +31,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     
     // MARK: - Constants and variables
     private var contactList: [Contacts] = []
+    var filteredArray: [Contacts] = []
     private var selectedContacts: [Contacts] = []
     
     // MARK: - Init
@@ -50,6 +53,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
                     print("getContactList =\(String(describing: getContactList.contacts))")
                     self?.view.setCountContactList(contactsCount: getContactList.contacts?.count ?? 0)
                     self?.contactList = getContactList.contacts ?? []
+                    self?.filteredArray = getContactList.contacts ?? []
                     self?.view.reloadTableView()
                 }
             }
@@ -58,7 +62,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     }
     
     func getCountContacts() -> Int {
-        return contactList.count
+        return filteredArray.count
     }
     
     func getCountSelectedContacts() -> Int {
@@ -66,7 +70,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     }
     
     func getContact(index: Int) -> Contacts? {
-        return contactList[index]
+        return filteredArray[index]
     }
     
     func getSelectedContact(index: Int) -> Contacts? {
@@ -74,11 +78,11 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     }
     
     func addToSelected(index: Int) {
-        if selectedContacts.firstIndex(where: { $0.id == contactList[index].id }) != nil {
+        if selectedContacts.firstIndex(where: { $0.id == filteredArray[index].id }) != nil {
             view.showAlert(message: "Контакт уже выбран")
             return
         } else {
-            selectedContacts.append(contactList[index])
+            selectedContacts.append(filteredArray[index])
             view.reloadCollectionView()
         }
     }
@@ -88,6 +92,27 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
             selectedContacts.remove(at: findIndex)
         }
         view.reloadCollectionView()
+    }
+    
+    func searchTextIsEmpty() {
+        filteredArray = contactList
+        view.reloadTableView()
+        selectRows()
+    }
+    
+    func filter(searchText: String) {
+        filteredArray = contactList.filter({ contact -> Bool in
+            return (contact.last_name?.lowercased().contains(searchText.lowercased()) ?? false)
+        })
+        view.reloadTableView()
+        selectRows()
+    }
+    
+    private func selectRows() {
+        for value in selectedContacts {
+            guard let index = filteredArray.firstIndex(where: { $0.id == value.id }) else { continue }
+            view.setSelected(index: index)
+        }
     }
     
     func toInviteFriend() {

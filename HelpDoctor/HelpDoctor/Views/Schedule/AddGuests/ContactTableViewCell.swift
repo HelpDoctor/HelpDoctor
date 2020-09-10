@@ -31,6 +31,16 @@ class ContactTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            verificationImage.isHidden = isSelected ? false : true
+        }
+    }
+    
     private func setupTopView() {
         topView.layer.cornerRadius = 5
         topView.backgroundColor = .white
@@ -110,7 +120,6 @@ class ContactTableViewCell: UITableViewCell {
         nameLabel.text = "\(contact.last_name ?? "") \(contact.first_name ?? "") \(contact.middle_name ?? "")"
         cellImage.image = contact.foto?.toImage()
         specLabel.text = contact.specialization
-        verificationImage.isHidden = true
     }
 
 }

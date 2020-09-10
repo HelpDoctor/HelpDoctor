@@ -69,6 +69,11 @@ class AddGuestsViewController: UIViewController {
         contactsLabel.text = "Контактов: \(contactsCount)"
     }
     
+    func setSelected(index: Int) {
+        let indexPath = IndexPath(row: 0, section: index)
+        tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none)
+    }
+    
     // MARK: - Setup views
     private func setupSearchBar() {
         searchBar.delegate = self
@@ -181,6 +186,7 @@ class AddGuestsViewController: UIViewController {
         tableView.backgroundColor = .backgroundColor
         tableView.separatorStyle = .none
         tableView.keyboardDismissMode = .onDrag
+        tableView.allowsMultipleSelection = true
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.topAnchor.constraint(equalTo: centralView.bottomAnchor,
@@ -270,10 +276,10 @@ extension AddGuestsViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard !searchText.isEmpty else {
-            //            presenter?.searchTextIsEmpty()
+            presenter?.searchTextIsEmpty()
             return
         }
-        //        presenter?.filter(searchText: searchText)
+        presenter?.filter(searchText: searchText)
     }
     
 }
@@ -286,9 +292,9 @@ extension AddGuestsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.cellForRow(at: indexPath)?.isSelected = true
+        tableView.cellForRow(at: indexPath)?.isSelected = true
         presenter?.addToSelected(index: indexPath.section)
-//        searchBar.searchTextField.resignFirstResponder()
+        searchBar.searchTextField.resignFirstResponder()
     }
     
     func tableView(_ tableView: UITableView,
@@ -296,6 +302,7 @@ extension AddGuestsViewController: UITableViewDelegate {
         let deleteContact = UIContextualAction(style: .destructive,
                                                title: "") {  (_, _, completion) in
                                                 self.presenter?.deleteFromSelected(index: indexPath.section)
+                                                tableView.cellForRow(at: indexPath)?.isSelected = false
                                                 completion(true)
         }
         deleteContact.backgroundColor = .hdButtonColor
