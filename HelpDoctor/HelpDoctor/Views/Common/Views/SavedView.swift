@@ -23,7 +23,7 @@ class SavedView: UIView {
     private func setupView() {
         backgroundColor = .savedColor
         layer.cornerRadius = 5
-        layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        layer.shadowColor = UIColor.shadowColor.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowOpacity = 1.0
         layer.shadowRadius = 4.0

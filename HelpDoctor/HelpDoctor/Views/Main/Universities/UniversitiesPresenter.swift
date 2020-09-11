@@ -16,11 +16,10 @@ protocol UniversitiesPresenterProtocol: Presenter {
     func searchTextIsEmpty()
     func filter(searchText: String)
     func next(index: Int?)
-    func back()
 }
 
 class UniversitiesPresenter: UniversitiesPresenterProtocol {
-        
+    
     var view: UniversitiesViewController
     var arrayUniversities: [Universities]?
     var filteredArray: [Universities] = []
@@ -54,8 +53,6 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         }
     }
     
-    
-   
     
     func getCountUniversities() -> Int? {
         return filteredArray.count

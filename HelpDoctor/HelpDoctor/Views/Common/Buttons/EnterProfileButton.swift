@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 31.12.2019.
 //  Copyright © 2019 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 class EnterProfileButton: UIButton {
@@ -35,7 +35,7 @@ class EnterProfileButton: UIButton {
     }
     
     func updateLayerProperties() {
-        self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        self.layer.shadowColor = UIColor.shadowColor.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 4)
         self.layer.shadowOpacity = 1.0
         self.layer.shadowRadius = 4.0
@@ -43,3 +43,4 @@ class EnterProfileButton: UIButton {
     }
     
 }
+*/

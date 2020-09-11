@@ -29,4 +29,6 @@ extension UIColor {
     static let scientificEventColor = UIColor(named: "scientificEventColor")!
     static let anotherEventColor = UIColor(named: "anotherEventColor")!
     static let holidayColor = UIColor(named: "holidayColor")!
+    static let cellGuestColor = UIColor(named: "cellGuestColor")!
+    static let shadowColor = UIColor(named: "shadowColor")!
 }

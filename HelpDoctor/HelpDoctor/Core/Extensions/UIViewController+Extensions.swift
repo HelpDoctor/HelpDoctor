@@ -63,36 +63,6 @@ extension UIViewController {
         headerView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    func setupHeaderViewWithAvatar(title: String,
-                                   text: String?,
-                                   userImage: String?,
-                                   presenter: Presenter?) {
-        let headerView = HeaderViewWithoutLogo(title: title,
-                                               text: text,
-                                               userImage: userImage,
-                                               presenter: presenter)
-        view.addSubview(headerView)
-        let width = UIScreen.main.bounds.width
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
-    func setupHeaderViewWithBack(title: String,
-                                 presenter: Presenter?) {
-        let headerView = HeaderViewWithoutLogo(title: title,
-                                               presenter: presenter)
-        view.addSubview(headerView)
-        let width = Session.width
-        headerView.translatesAutoresizingMaskIntoConstraints = false
-        headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        headerView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        headerView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-    }
-    
     func showAlert(message: String?) {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideAlert))
         let alertView = UIView()

@@ -18,7 +18,7 @@ class GuestCell: UICollectionViewCell {
         super.init(frame: frame)
         setupCellImage()
         setupCellLabel()
-        backgroundColor = UIColor(red: 0.188, green: 0.298, blue: 0.537, alpha: 1)
+        backgroundColor = .cellGuestColor
         layer.cornerRadius = frame.height / 2
         clipsToBounds = true
     }
@@ -28,14 +28,14 @@ class GuestCell: UICollectionViewCell {
     }
     
     private func setupCellImage() {
-        cellImage.image = UIImage(named: "Alert Icon")
-        cellImage.layer.cornerRadius = 10
+        cellImage.layer.cornerRadius = frame.height / 2
+        cellImage.layer.masksToBounds = true
         contentView.addSubview(cellImage)
         
         cellImage.translatesAutoresizingMaskIntoConstraints = false
         cellImage.centerYAnchor.constraint(equalTo: contentView.centerYAnchor).isActive = true
-        cellImage.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        cellImage.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        cellImage.widthAnchor.constraint(equalToConstant: frame.height).isActive = true
+        cellImage.heightAnchor.constraint(equalToConstant: frame.height).isActive = true
         cellImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
     }
     

@@ -23,7 +23,7 @@ class UniversitiesViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-//        presenter?.getRegions()
+        presenter?.getUniversities()
         view.backgroundColor = backgroundColor
         setupHeaderView(color: backgroundColor,
                         height: headerHeight,

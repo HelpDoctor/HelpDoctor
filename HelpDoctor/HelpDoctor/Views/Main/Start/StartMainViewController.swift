@@ -16,7 +16,6 @@ class StartMainViewController: UIViewController {
     // MARK: - Constants
     private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 60.f
-    private let enterProfileButton = EnterProfileButton(icon: UIImage(named: "Enter_Profile_Button.pdf"))
     private let newUserLabel = UILabel()
     private let topLine = UIView()
     private let userView = UIView() //Temporary
@@ -33,7 +32,6 @@ class StartMainViewController: UIViewController {
         super.viewDidLoad()
         setupBackground()
         setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
-        setupEnterProfileButton()
         setupNewUserLabel()
         setupTopLine()
         setupUserView() //Temporary
@@ -58,38 +56,14 @@ class StartMainViewController: UIViewController {
     func hideFillProfileButton() {
         bottomLabel.isHidden = true
         fillProfileButton.isHidden = true
-        enterProfileButton.isEnabled = true
     }
     
     func showFillProfileButton() {
         bottomLabel.isHidden = false
         fillProfileButton.isHidden = false
-        enterProfileButton.isEnabled = false
-    }
-    
-    func setImage(image: UIImage?) {
-        let defaultImageName = "Enter_Profile_Button.pdf"
-        guard let defaultImage = UIImage(named: defaultImageName) else {
-            assertionFailure("Missing ​​\(defaultImageName) asset")
-            return
-        }
-        enterProfileButton.setImage(image ?? defaultImage, for: .normal)
     }
     
     // MARK: - Setup views
-    /// Установка кнопки заполнить профиль в заголовке формы
-    private func setupEnterProfileButton() {
-        enterProfileButton.addTarget(self, action: #selector(profileButtonPressed), for: .touchUpInside)
-        view.addSubview(enterProfileButton)
-        
-        enterProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        enterProfileButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                                constant: 10).isActive = true
-        enterProfileButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10).isActive = true
-        enterProfileButton.widthAnchor.constraint(equalToConstant: 40).isActive = true
-        enterProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-    
     /// Установка заголовка "Новые пользователи"
     private func setupNewUserLabel() {
         newUserLabel.font = UIFont.boldSystemFontOfSize(size: 14)

@@ -27,7 +27,7 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     var isEdit = false
     var region: Regions?
     var university: Universities?
-//    private var city: Cities?
+    //    private var city: Cities?
     
     // MARK: - Init
     required init(view: CreateProfileStep6ViewController) {

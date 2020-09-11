@@ -138,7 +138,6 @@ class StartMainPresenter: StartMainPresenterProtocol {
                                                foto: userData[0].foto,
                                                gender: userData[0].gender,
                                                is_medic_worker: userData[0].is_medic_worker)
-        view.setImage(image: Session.instance.user?.foto?.toImage())
     }
     
     /// Переход на первый экран заполнения профиля

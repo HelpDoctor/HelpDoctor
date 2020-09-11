@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//swiftlint:disable force_cast
+
 func parseJSON_getListOfInterests(for startPoint: [String: AnyObject]?,
                                   response: URLResponse?) -> ([String: [ListOfInterests]], [Int]?, Int?, String?)? {
     var arrListOfInterests: [ListOfInterests] = []
@@ -22,13 +22,14 @@ func parseJSON_getListOfInterests(for startPoint: [String: AnyObject]?,
     for (key, _) in startPoint {
         
         arrListOfInterests = []
-        let arrItems = startPoint[key] as! [AnyObject]
+        guard let arrItems = startPoint[key] as? [AnyObject] else { continue }
         
         for finalObj in arrItems {
             guard let obj = finalObj as? [String: Any] else { return ([:], nil, nil, nil) }
             
             if key == "relevant" {
-                idRelevantInterests.append(obj["interest_id"] as! Int)
+                guard let interestId = obj["interest_id"] as? Int else { continue }
+                idRelevantInterests.append(interestId)
             } else {
                 guard let id = obj["id"] as? Int else { continue }
                 arrListOfInterests.append(ListOfInterests(id: id,

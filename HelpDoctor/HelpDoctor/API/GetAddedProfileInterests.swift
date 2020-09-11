@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//swiftlint:disable force_cast
+
 func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
                                    startPoint2: [AnyObject]?,
                                    response: URLResponse?) -> ([ListOfInterests], Int?, String?)? {
@@ -17,20 +17,22 @@ func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
     
     guard  let httpResponse = response as? HTTPURLResponse
         else { return ([], nil, nil) }
-        
+    
     responce = (httpResponse.statusCode, nil)
-
+    
     switch httpResponse.statusCode {
     case 200:
         guard let startPoint = startPoint else { return ([], nil, nil) }
-        addInterests.append(ListOfInterests(id: startPoint["id"] as! Int,
+        guard let intId = startPoint["id"] as? Int else { return ([], nil, nil) }
+        addInterests.append(ListOfInterests(id: intId,
                                             specializationCode: nil,
                                             name: startPoint["name"] as? String))
     case 409:
         guard let startPoint2 = startPoint2 else { return ([], nil, nil) }
         for finalObj in startPoint2 {
             guard let obj = finalObj as? [String: Any] else { return ([], nil, nil) }
-            addInterests.append(ListOfInterests(id: obj["id"] as! Int,
+            guard let intId = obj["id"] as? Int else { continue }
+            addInterests.append(ListOfInterests(id: intId,
                                                 specializationCode: nil,
                                                 name: obj["name"] as? String))
         }

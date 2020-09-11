@@ -45,7 +45,6 @@ class PeriodicButton: UIButton {
         layer.borderWidth = 1
         layer.cornerRadius = 15
         clipsToBounds = true
-//        updateLayerProperties()
         update(isEnabled: self.isEnabled)
     }
     
@@ -67,7 +66,7 @@ class PeriodicButton: UIButton {
     }
     
     func updateLayerProperties() {
-        self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        self.layer.shadowColor = UIColor.shadowColor.cgColor
         self.layer.shadowOffset = CGSize(width: 0, height: 4)
         self.layer.shadowOpacity = 1.0
         self.layer.shadowRadius = 4.0

@@ -18,7 +18,6 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     private var verticalInset = 0.f
     private let headerHeight = 60.f
     private let textFieldWidth = Session.width - 40
-    private let heightTextField = 30.f
     private let heightTitleLabel = 20.f
     private let heightLabel = 15.f
     private let heightRadioButton = 20.f
@@ -46,7 +45,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = backgroundColor
         let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 5)
-            + (heightTextField * 2) + (heightRadioButton * 3) + heightNextButton
+            + (Session.heightTextField * 2) + (heightRadioButton * 3) + heightNextButton
         verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 12
         setupScrollView()
         setupStep6TitleLabel()
@@ -163,10 +162,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         universityTextField.textAlignment = .left
         universityTextField.backgroundColor = .white
         universityTextField.layer.cornerRadius = 5
-        universityTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                            y: 0,
-                                                            width: 8,
-                                                            height: universityTextField.frame.height))
+        universityTextField.leftView = setupDefaultLeftView()
         universityTextField.leftViewMode = .always
         universityTextField.addGestureRecognizer(tap)
         scrollView.addSubview(universityTextField)
@@ -176,7 +172,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
                                                  constant: verticalInset).isActive = true
         universityTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         universityTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        universityTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        universityTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupGraduateDateLabel() {
@@ -205,10 +201,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         graduateDateTextField.pickerFieldDelegate = presenter
         graduateDateTextField.datePicker?.datePickerMode = .date
         graduateDateTextField.datePicker?.maximumDate = Date()
-        graduateDateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                              y: 0,
-                                                              width: 8,
-                                                              height: graduateDateTextField.frame.height))
+        graduateDateTextField.leftView = setupDefaultLeftView()
         graduateDateTextField.leftViewMode = .always
         scrollView.addSubview(graduateDateTextField)
         
@@ -217,7 +210,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
                                                    constant: verticalInset).isActive = true
         graduateDateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         graduateDateTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        graduateDateTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        graduateDateTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupGraduateTitleLabel() {
@@ -426,8 +419,8 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets

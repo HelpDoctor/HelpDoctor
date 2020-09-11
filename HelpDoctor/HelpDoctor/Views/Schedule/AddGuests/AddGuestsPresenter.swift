@@ -88,7 +88,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     }
     
     func deleteFromSelected(index: Int) {
-        if let findIndex = selectedContacts.firstIndex(where: { $0.id == contactList[index].id }) {
+        if let findIndex = selectedContacts.firstIndex(where: { $0.id == filteredArray[index].id }) {
             selectedContacts.remove(at: findIndex)
         }
         view.reloadCollectionView()

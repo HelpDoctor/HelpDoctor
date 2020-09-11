@@ -21,18 +21,6 @@ class InfoView: UIView {
     private var contentViewHeight = 180.f
     private let buttonHeight = 44.f
     
-//    convenience init(message: String) {
-//        self.init()
-//        self.message.text = message
-//        labelHeight = message.height(withConstrainedWidth: contentViewWidth, font: .systemFontOfSize(size: 12))
-//        contentViewHeight = topViewHeight + (inset * 3) + labelHeight + buttonHeight
-//        backgroundColor = .clear
-//        setupView()
-//        setupProblemIcon()
-//        setupLabel()
-//        setupButton()
-//    }
-    
     convenience init(message: String, buttonTitle: String, iconName: String) {
         self.init()
         self.message.text = message
@@ -50,7 +38,7 @@ class InfoView: UIView {
         let cornerRadius = 15.f
         contentView.backgroundColor = .white
         contentView.layer.cornerRadius = cornerRadius
-        contentView.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        contentView.layer.shadowColor = UIColor.shadowColor.cgColor
         contentView.layer.shadowOffset = CGSize(width: 0, height: 0)
         contentView.layer.shadowOpacity = 1.0
         contentView.layer.shadowRadius = 10.0

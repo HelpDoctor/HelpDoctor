@@ -76,9 +76,6 @@ class HDButton: UIButton {
     
     func update(isSelected: Bool) {
         self.isSelected = isSelected
-        //        self.backgroundColor = isSelected
-        //            ? selectedBackgroundColor
-        //            : enabledBackgroundColor
         updateLayerProperties()
     }
     
@@ -99,12 +96,12 @@ class HDButton: UIButton {
             shapeLayer.path = path.cgPath
             self.layer.addSublayer(shapeLayer)
             shapeLayer.shadowOpacity = 1
-            shapeLayer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+            shapeLayer.shadowColor = UIColor.shadowColor.cgColor
             shapeLayer.shadowOffset = CGSize(width: 0, height: 4)
             shapeLayer.shadowRadius = 4
         } else {
             shapeLayer.removeFromSuperlayer()
-            self.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+            self.layer.shadowColor = UIColor.shadowColor.cgColor
             self.layer.shadowOffset = CGSize(width: 0, height: 4)
             self.layer.shadowOpacity = 1.0
             self.layer.shadowRadius = 4.0
@@ -115,7 +112,7 @@ class HDButton: UIButton {
     func clearBackground() {
         shapeLayer.removeFromSuperlayer()
         backgroundColor = .clear
-        layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        layer.shadowColor = UIColor.shadowColor.cgColor
         layer.shadowOffset = CGSize(width: 0, height: 4)
         layer.shadowOpacity = 1.0
         layer.shadowRadius = 4.0

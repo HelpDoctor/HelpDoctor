@@ -8,7 +8,7 @@
 
 import Foundation
 
-func parseJSON_getToken (for startPoint: [String: AnyObject]?, response: URLResponse?) -> (Int?, String?)? {
+func parseJSON_getToken(for startPoint: [String: AnyObject]?, response: URLResponse?) -> (Int?, String?)? {
     
     guard let status = startPoint?["status"] as? String,
         let token = startPoint?["X-Auth-Token"] as? String,

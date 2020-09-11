@@ -7,7 +7,7 @@
 //
 
 import Foundation
-//swiftlint:disable force_cast
+
 func parseJSON_getMedicalOrganization (for startPoint: [AnyObject]?,
                                        response: URLResponse?) -> ([MedicalOrganization], Int?, String?)? {
     var arrMedicalOrg: [MedicalOrganization] = []
@@ -19,8 +19,8 @@ func parseJSON_getMedicalOrganization (for startPoint: [AnyObject]?,
     
     for finalObj in startPoint { 
         guard let obj = finalObj as? [String: Any] else { return ([], nil, nil) }
-        
-        arrMedicalOrg.append(MedicalOrganization(id: obj["id"] as! Int,
+        guard let organizationId = obj["id"] as? Int else { continue }
+        arrMedicalOrg.append(MedicalOrganization(id: organizationId,
                                                  oid: obj["oid"] as? String,
                                                  nameShort: obj["nameShort"] as? String,
                                                  regionId: obj["regionId"] as? Int,

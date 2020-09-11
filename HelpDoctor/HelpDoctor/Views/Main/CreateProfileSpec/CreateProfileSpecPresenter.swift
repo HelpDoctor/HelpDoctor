@@ -177,7 +177,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                            let specArr: [ProfileKeySpec] = getDataProfile.dataFromProfile?["spec"] as! [ProfileKeySpec]
+                            guard let specArr = getDataProfile.dataFromProfile?["spec"] as? [ProfileKeySpec]
+                                else {
+                                    self?.view.showAlert(message: "Error")
+                                    return }
                             self?.loadPopularInterests(specArr[0].code)
                             switch specArr.count {
                             case 0:

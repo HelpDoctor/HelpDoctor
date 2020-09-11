@@ -251,7 +251,7 @@ class StartScheduleViewController: UIViewController {
     private func setupAddButton() {
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton.layer.masksToBounds = false
-        addButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        addButton.layer.shadowColor = UIColor.shadowColor.cgColor
         addButton.layer.shadowOpacity = 1
         addButton.layer.shadowRadius = 4
         addButton.layer.shadowOffset = CGSize(width: 0, height: 4)

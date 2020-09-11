@@ -14,13 +14,13 @@ class RadioButton: UIButton {
     let uncheckedImage = UIImage(named: "Ellipse.pdf")
     
     var alternateButton: [RadioButton]?
-
+    
     override func awakeFromNib() {
         self.layer.cornerRadius = 5
         self.layer.borderWidth = 2.0
         self.layer.masksToBounds = true
     }
-
+    
     func unselectAlternateButtons() {
         guard let alternateButton = alternateButton else {
             toggleButton()
@@ -32,16 +32,16 @@ class RadioButton: UIButton {
             aButton.isSelected = false
         }
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         unselectAlternateButtons()
         super.touchesBegan(touches, with: event)
     }
-
+    
     func toggleButton() {
         self.isSelected = !isSelected
     }
-
+    
     override var isSelected: Bool {
         didSet {
             if isSelected {
@@ -51,5 +51,5 @@ class RadioButton: UIButton {
             }
         }
     }
-
+    
 }

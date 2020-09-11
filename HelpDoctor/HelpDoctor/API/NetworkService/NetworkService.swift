@@ -307,7 +307,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
                 
                 if responceTrueResult {
                     guard let startPoint = json as? [AnyObject] else { return }
-                    replyReturn = (parseJSON_getRegions(for: startPoint, response: response) as? T)
+                    replyReturn = (parseJSON_getUniversities(for: startPoint, response: response) as? T)
                 } else {
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }

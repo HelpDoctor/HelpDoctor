@@ -7,8 +7,8 @@
 //
 
 import Foundation
-//swiftlint:disable force_cast
-func parseJSON_getCities (for startPoint: [AnyObject]?, response: URLResponse?) -> ([Cities], Int?, String?)? {
+
+func parseJSON_getCities(for startPoint: [AnyObject]?, response: URLResponse?) -> ([Cities], Int?, String?)? {
     var arrCities: [Cities] = []
     
     guard  let httpResponse = response as? HTTPURLResponse
@@ -18,7 +18,8 @@ func parseJSON_getCities (for startPoint: [AnyObject]?, response: URLResponse?) 
     
     for finalObj in startPoint {
         guard let obj = finalObj as? [String: Any] else { return ([], nil, nil) }
-        arrCities.append(Cities(id: obj["id"] as! Int,
+        guard let citiesId = obj["id"] as? Int else { continue }
+        arrCities.append(Cities(id: citiesId,
                                 cityName: obj["cityName"] as? String))
     }    
     return (arrCities, httpResponse.statusCode, nil)
