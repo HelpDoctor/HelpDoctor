@@ -19,11 +19,10 @@ class FirstScreenViewController: UIViewController {
     private let logoLabel = UILabel()
     private let titleLabel = UILabel()
     private let topLabel = UILabel()
-    private let bottomLabel = UILabel()
-    private var loginButton = HDButton(title: "Войти", fontSize: 18)
-    private var registerButton = HDButton(title: "Регистрация", fontSize: 18)
+    private var loginButton = HDButton(title: "Войти", fontSize: 16)
+    private var registerButton = HDButton(title: "Новый пользователь", fontSize: 16)
     
-    private let widthLabel = Session.width - 22.f
+    private let widthLabel = Session.width - 40.f
     private let widthButton = 148.f
     private let heightButton = 44.f
     
@@ -36,7 +35,6 @@ class FirstScreenViewController: UIViewController {
         setupLogoLabel()
         setupTitleLabel()
         setupTopLabel()
-        setupBottomLabel()
         setupRegisterButton()
         setupLoginButton()
     }
@@ -143,38 +141,17 @@ class FirstScreenViewController: UIViewController {
         topLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
-    /// Установка нижней надписи
-    private func setupBottomLabel() {
-        let top = 11.f
-        let height = 51.f
-        bottomLabel.font = .systemFontOfSize(size: 14)
-        bottomLabel.textColor = .white
-        bottomLabel.text =
-        """
-        Чтобы воспользоваться функциями приложения, войдите в существующий аккаунт или пройдите регистрацию.
-        """
-        bottomLabel.textAlignment = .left
-        bottomLabel.numberOfLines = 0
-        view.addSubview(bottomLabel)
-        
-        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        bottomLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor,
-                                         constant: top).isActive = true
-        bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
-        bottomLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
-    }
-    
     /// Установка кнопки "Регистрация"
     private func setupRegisterButton() {
-        let top = 24.f
-        registerButton.layer.cornerRadius = heightButton / 2
+        let bottom = 97.f
         registerButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
+        registerButton.titleLabel?.numberOfLines = 2
+        registerButton.titleLabel?.textAlignment = .center
         view.addSubview(registerButton)
         
         registerButton.translatesAutoresizingMaskIntoConstraints = false
-        registerButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor,
-                                            constant: top).isActive = true
+        registerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+                                               constant: -bottom).isActive = true
         registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         registerButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
         registerButton.heightAnchor.constraint(equalToConstant: heightButton).isActive = true
@@ -182,8 +159,7 @@ class FirstScreenViewController: UIViewController {
     
     /// Установка кнопки "Войти"
     private func setupLoginButton() {
-        let top = 16.f
-        loginButton.layer.cornerRadius = heightButton / 2
+        let top = 20.f
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         

@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 09.03.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 extension UITapGestureRecognizer {
@@ -34,6 +34,10 @@ extension UITapGestureRecognizer {
         
         let xTextContainerOffset = (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x
         let yTextContainerOffset = (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y
+        print(labelSize.width)
+        print(textBoundingBox.size.width)
+        print(textBoundingBox.origin.x)
+        print(xTextContainerOffset)
         let textContainerOffset = CGPoint(x: xTextContainerOffset,
                                           y: yTextContainerOffset)
         
@@ -42,7 +46,9 @@ extension UITapGestureRecognizer {
         let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer,
                                                             in: textContainer,
                                                             fractionOfDistanceBetweenInsertionPoints: nil)
+        print(indexOfCharacter)
         return NSLocationInRange(indexOfCharacter, targetRange)
     }
     
 }
+*/

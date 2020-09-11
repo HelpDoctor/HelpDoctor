@@ -47,16 +47,19 @@ class ProfilePresenter: ProfilePresenterProtocol {
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                    //swiftlint:disable force_cast
-                    let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as! [ProfileKeyUser]
-                    let jobData: [ProfileKeyJob] = getDataProfile.dataFromProfile?["job"] as! [ProfileKeyJob]
-                    let specData: [ProfileKeySpec] = getDataProfile.dataFromProfile?["spec"] as! [ProfileKeySpec]
-                    let interestData: [ProfileKeyInterests] = getDataProfile.dataFromProfile?["interests"] as! [ProfileKeyInterests] //swiftlint:disable:this line_length
-                    //swiftlint:enable force_cast
-                    self?.setUser(userData: userData)
-                    self?.setJob(jobData: jobData)
-                    self?.setSpec(specData: specData)
-                    self?.setInterests(interestData: interestData)
+                    if let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] {
+                        self?.setUser(userData: userData)
+                    }
+                    if let jobData: [ProfileKeyJob] = getDataProfile.dataFromProfile?["job"] as? [ProfileKeyJob] {
+                        self?.setJob(jobData: jobData)
+                    }
+                    if let specData: [ProfileKeySpec] = getDataProfile.dataFromProfile?["spec"] as? [ProfileKeySpec] {
+                        self?.setSpec(specData: specData)
+                    }
+                    if let interestData: [ProfileKeyInterests] = getDataProfile.dataFromProfile?["interests"]
+                        as? [ProfileKeyInterests] {
+                        self?.setInterests(interestData: interestData)
+                    }
                 }
             }
         }

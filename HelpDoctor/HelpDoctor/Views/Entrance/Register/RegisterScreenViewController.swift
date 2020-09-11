@@ -24,14 +24,15 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private var registerButton = HDButton(title: "Отправить", fontSize: 18)
     private let backButton = BackButton()
     private let checkButton = CheckBox(type: .square)
-    private let policyLabel = UILabel()
+    private let policyTextView = UITextView()
     private var keyboardHeight: CGFloat = 0
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .white
         setupScrollView()
+        setupBackgroundImage()
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
@@ -40,7 +41,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         setupTopEmailTextField()
         setupRegisterButton()
         setupBackButton()
-        setupPolicyLabel()
+        setupPolicyTextView()
         setupCheckButton()
         addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
@@ -72,6 +73,13 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
+    }
+    
+    func setupBackgroundImage() {
+        let backgroundImage = UIImageView()
+        backgroundImage.image = UIImage(named: "Background.pdf")
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
+        scrollView.addSubview(backgroundImage)
     }
     
     /// Установка логотипа приложения
@@ -239,7 +247,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         backButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    private func setupPolicyLabel() {
+    private func setupPolicyTextView() {
         let font = UIFont.systemFontOfSize(size: 12)
         let leading = 50.f
         let top = 15.f
@@ -253,26 +261,31 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         let range1 = (text as NSString).range(of: "Лицензионного договора")
         let range2 = (text as NSString).range(of: "Политикой обработки персональных данных")
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range1)
-        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.hdLinkColor, range: range2)
+        attributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.yandex.ru", range: range1)
+        attributedString.addAttribute(NSAttributedString.Key.link, value: "https://www.apple.com", range: range2)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(labelPressed(tap:)))
-        policyLabel.addGestureRecognizer(tap)
-        policyLabel.isUserInteractionEnabled = true  
-        policyLabel.font = font
-        policyLabel.textColor = .black
-        policyLabel.attributedText = attributedString
-        policyLabel.textAlignment = .left
-        policyLabel.numberOfLines = 0
-        scrollView.addSubview(policyLabel)
+        policyTextView.linkTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.hdLinkColor]
+        policyTextView.isUserInteractionEnabled = true  
+        policyTextView.font = font
+        policyTextView.textColor = .black
+        policyTextView.attributedText = attributedString
+        policyTextView.textAlignment = .left
+        policyTextView.delegate = self
+        policyTextView.backgroundColor = .backgroundColor
+        policyTextView.isScrollEnabled = false
+        policyTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        policyTextView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        policyTextView.showsVerticalScrollIndicator = false
+        policyTextView.showsHorizontalScrollIndicator = false
+        scrollView.addSubview(policyTextView)
         
-        policyLabel.translatesAutoresizingMaskIntoConstraints = false
-        policyLabel.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
+        policyTextView.translatesAutoresizingMaskIntoConstraints = false
+        policyTextView.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
                                          constant: top).isActive = true
-        policyLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+        policyTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: leading).isActive = true
-        policyLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        policyLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
+        policyTextView.widthAnchor.constraint(equalToConstant: width).isActive = true
+        policyTextView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     /// Установка чекбокса согласия с условиями использования
@@ -283,7 +296,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(checkButton)
         
         checkButton.translatesAutoresizingMaskIntoConstraints = false
-        checkButton.centerYAnchor.constraint(equalTo: policyLabel.centerYAnchor).isActive = true
+        checkButton.centerYAnchor.constraint(equalTo: policyTextView.centerYAnchor).isActive = true
         checkButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                              constant: leading).isActive = true
         checkButton.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -321,13 +334,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     @objc func topEmailChanged(_ textField: UITextField) {
         presenter?.topEmailChanged(topEmail: textField.text)
     }
-    /*
-     /// Проверка заполнения поля ввода подтверждения адреса электронной почты
-     /// - Parameter textField: поле ввода подтверждения адреса электронной почты
-     @objc func bottomEmailChanged(_ textField: UITextField) {
-     presenter?.bottomEmailChanged(bottomEmail: textField.text)
-     }
-     */
+    
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
@@ -342,8 +349,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets
@@ -376,19 +383,16 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         presenter?.checkPolicyChanged(isAgree: checkButton.isSelected)
     }
     
-    /// Обработка нажатия на гиперссылку
-    /// - Parameter tap: UITapGestureRecognizer
-    @objc private func labelPressed(tap: UITapGestureRecognizer) {
-        guard let range = rangeOfHost(text: policyLabel.text ?? "") else { return }
-        if tap.didTapAttributedTextInLabel(label: self.policyLabel, inRange: range) { //TODO: - не работает
-            print("Лицензионного договора")
-        }
-    }
+}
+
+extension RegisterScreenViewController: UITextViewDelegate {
     
-    private func rangeOfHost(text: String) -> NSRange? {
-        guard let range = text.range(of: "Лицензионного договора") else { return nil }
-        return NSRange(location: range.lowerBound.utf16Offset(in: text),
-                       length: range.upperBound.utf16Offset(in: text) - range.lowerBound.utf16Offset(in: text))
+    func textView(_ textView: UITextView,
+                  shouldInteractWith URL: URL,
+                  in characterRange: NSRange,
+                  interaction: UITextItemInteraction) -> Bool {
+        UIApplication.shared.open(URL)
+        return false
     }
     
 }
