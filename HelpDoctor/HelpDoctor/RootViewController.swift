@@ -38,11 +38,9 @@ class RootViewController: UIViewController {
     func switchToLogout() {
         let loginViewController = FirstScreenViewController()
         loginViewController.presenter = FirstScreenPresenter(view: loginViewController)
+//        let loginViewController = VerificationViewController()
+//        loginViewController.presenter = VerificationPresenter(view: loginViewController)
         let logoutScreen = UINavigationController(rootViewController: loginViewController)
-        
-//        let loginViewController = RegisterEndViewController()
-//        loginViewController.presenter = RegisterEndPresenter(view: loginViewController)
-//        let logoutScreen = UINavigationController(rootViewController: loginViewController)
         
         animateDismissTransition(to: logoutScreen)
     }

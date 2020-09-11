@@ -22,7 +22,6 @@ class VerificationOkViewController: UIViewController {
     private let topLabel = UILabel()
     private let label = UILabel()
     private let sendButton = HDButton(title: "Ок")
-    private let backButton = BackButton()
     private var heightCloudImage = 0.f
     
     private var topConstraintImage: NSLayoutConstraint?
@@ -197,7 +196,6 @@ class VerificationOkViewController: UIViewController {
         let top = 20.f
         let width = 110.f
         let height = 44.f
-        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 18)
@@ -214,11 +212,6 @@ class VerificationOkViewController: UIViewController {
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
-        presenter?.back()
-    }
-    
-    /// Обработка нажатия кнопки "Назад"
-    @objc private func backButtonPressed() {
         presenter?.back()
     }
     

@@ -27,7 +27,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить на \nпроверку")
-    private let backButton = BackButton()
     private var sourceFile: URL?
     private var keyboardHeight = 0.f
     private var heightCloudImage = 0.f
@@ -275,7 +274,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
                                          action: #selector(addFileTextFieldPressed))
         let top = 15.f
         let width = Session.width - 114.f
-        let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
         addFileTextField.keyboardType = .emailAddress
         addFileTextField.autocapitalizationType = .none
@@ -285,10 +283,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         addFileTextField.textAlignment = .left
         addFileTextField.backgroundColor = .white
         addFileTextField.layer.cornerRadius = 5
-        addFileTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: addFileTextField.frame.height))
+        addFileTextField.leftView = setupDefaultLeftView()
         addFileTextField.leftViewMode = .always
         addFileTextField.addGestureRecognizer(tap)
         scrollView.addSubview(addFileTextField)
@@ -298,7 +293,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
                                               constant: top).isActive = true
         addFileTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         addFileTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        addFileTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        addFileTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка текста под полем ввода
@@ -324,7 +319,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         let top = 20.f
         let width = 148.f
         let height = 44.f
-        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
@@ -399,8 +393,8 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets
@@ -434,11 +428,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
             presenter?.send(src: url)
             sendButton.isSelected = true
         }
-    }
-    
-    /// Обработка нажатия кнопки "Назад"
-    @objc private func backButtonPressed() {
-        presenter?.back()
     }
     
 }

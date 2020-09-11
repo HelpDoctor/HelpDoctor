@@ -29,8 +29,9 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .white
         setupScrollView()
+        setupBackgroundImage()
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
@@ -72,6 +73,13 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
+    }
+    
+    func setupBackgroundImage() {
+        let backgroundImage = UIImageView()
+        backgroundImage.image = UIImage(named: "Background.pdf")
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
+        scrollView.addSubview(backgroundImage)
     }
     
     /// Установка логотипа приложения
@@ -121,7 +129,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Восстановление пароля"
+        titleLabel.text = "Восстановление доступа"
         titleLabel.textAlignment = .center
         scrollView.addSubview(titleLabel)
         
@@ -158,7 +166,6 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     private func setupEmailTextField() {
         let top = 45.f
         let width = Session.width - 114.f
-        let height = 30.f
         emailTextField.font = .systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
         emailTextField.autocapitalizationType = .none
@@ -168,10 +175,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
+        emailTextField.leftView = setupDefaultLeftView()
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -180,7 +184,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
                                             constant: top).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка кнопки "Отправить"
@@ -188,7 +192,6 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         let top = 31.f
         let width = 148.f
         let height = 44.f
-        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         scrollView.addSubview(sendButton)
@@ -290,8 +293,8 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets
@@ -315,8 +318,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
     
     /// Обработка нажатия кнопки "Отправить"
     @objc private func registerButtonPressed() {
-        guard let email = emailTextField.text, let presenter = presenter else { return }
-        presenter.sendButtonTapped(email: email)
+        presenter?.sendButtonTapped(email: emailTextField.text)
     }
     
     // MARK: - Navigation

@@ -8,17 +8,16 @@
 
 import UIKit
 
-protocol VerificationPresenterProtocol {
+protocol VerificationPresenterProtocol: Presenter {
     init(view: VerificationViewController)
     func send(src: URL)
-    func back()
 }
 
 class VerificationPresenter: VerificationPresenterProtocol {
     
     // MARK: - Dependency
     let view: VerificationViewController
-        
+    
     // MARK: - Init
     required init(view: VerificationViewController) {
         self.view = view

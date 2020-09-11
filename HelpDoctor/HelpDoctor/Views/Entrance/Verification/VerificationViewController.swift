@@ -8,18 +8,17 @@
 
 import UIKit
 
-class VerificationViewController: UIViewController, UIScrollViewDelegate {
+class VerificationViewController: UIViewController {
     
     // MARK: - Dependency
     var presenter: VerificationPresenterProtocol?
     
     // MARK: - Constants and variables
-    private let scrollView = UIScrollView()
     private let logoImage = UIImageView()
     private let doctorsImage = UIImageView()
     private let titleLabel = UILabel()
     private let subtitleLabel = UILabel()
-    private let label = UITextView()//UILabel()
+    private let label = UITextView()
     private let addFileTextField = UITextField()
     private let subscriptLabel = UILabel()
     private let sendButton = HDButton(title: "Отправить на \nпроверку")
@@ -33,7 +32,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupBackground()
-        setupScrollView()
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
@@ -41,8 +39,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         setupAddFileTextField()
         setupSubscriptLabel()
         setupSendButton()
-        addTapGestureToHideKeyboard()
-        addSwipeGestureToBack()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,19 +78,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - Setup views
-    /// Установка ScrollView
-    private func setupScrollView() {
-        scrollView.delegate = self
-        scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
-        view.addSubview(scrollView)
-        
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
-    }
-    
     /// Установка логотипа приложения
     private func setupLogoImage() {
         let top = 10.f
@@ -106,12 +89,12 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
             return
         }
         logoImage.image = image
-        scrollView.addSubview(logoImage)
+        view.addSubview(logoImage)
         
         logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
+        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                        constant: top).isActive = true
-        logoImage.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
+        logoImage.trailingAnchor.constraint(equalTo: view.leadingAnchor,
                                             constant: leading).isActive = true
         logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
         logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
@@ -127,11 +110,11 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         }
         let resizedImage = image.resizeImage(width, opaque: false)
         doctorsImage.image = resizedImage
-        scrollView.addSubview(doctorsImage)
+        view.addSubview(doctorsImage)
         
         doctorsImage.translatesAutoresizingMaskIntoConstraints = false
-        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
-        doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        doctorsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
         doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
     }
@@ -144,12 +127,12 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.textColor = .white
         titleLabel.text = "Верификация"
         titleLabel.textAlignment = .center
-        scrollView.addSubview(titleLabel)
+        view.addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
                                         constant: top).isActive = true
-        titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -162,12 +145,12 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text = "На рассмотрении"
         subtitleLabel.textAlignment = .center
-        scrollView.addSubview(subtitleLabel)
+        view.addSubview(subtitleLabel)
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                            constant: top).isActive = true
-        subtitleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -207,12 +190,12 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         label.backgroundColor = .clear
         label.attributedText = myString
         label.textAlignment = .left
-        scrollView.addSubview(label)
+        view.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                    constant: top).isActive = true
-        label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        label.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         label.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
@@ -222,7 +205,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
                                          action: #selector(addFileTextFieldPressed))
         let top = 40.f
         let width = Session.width - 110.f
-        let height = 30.f
         addFileTextField.font = .systemFontOfSize(size: 14)
         addFileTextField.keyboardType = .emailAddress
         addFileTextField.autocapitalizationType = .none
@@ -232,20 +214,17 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         addFileTextField.textAlignment = .left
         addFileTextField.backgroundColor = .white
         addFileTextField.layer.cornerRadius = 5
-        addFileTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: addFileTextField.frame.height))
+        addFileTextField.leftView = setupDefaultLeftView()
         addFileTextField.leftViewMode = .always
         addFileTextField.addGestureRecognizer(tap)
-        scrollView.addSubview(addFileTextField)
+        view.addSubview(addFileTextField)
         
         addFileTextField.translatesAutoresizingMaskIntoConstraints = false
         addFileTextField.topAnchor.constraint(equalTo: label.bottomAnchor,
                                               constant: top).isActive = true
-        addFileTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        addFileTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         addFileTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        addFileTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        addFileTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка текста под полем ввода
@@ -257,11 +236,11 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         subscriptLabel.text = "Поддерживаемые форматы: pdf или jpg, png"
         subscriptLabel.textAlignment = .left
         subscriptLabel.numberOfLines = 0
-        scrollView.addSubview(subscriptLabel)
+        view.addSubview(subscriptLabel)
         
         subscriptLabel.translatesAutoresizingMaskIntoConstraints = false
         subscriptLabel.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor).isActive = true
-        subscriptLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        subscriptLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         subscriptLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         subscriptLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -271,47 +250,21 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
         let top = 20.f
         let width = 148.f
         let height = 44.f
-        sendButton.layer.cornerRadius = height / 2
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
         sendButton.titleLabel?.font = .boldSystemFontOfSize(size: 12)
         sendButton.titleLabel?.numberOfLines = 2
         sendButton.titleLabel?.textAlignment = .center
-        scrollView.addSubview(sendButton)
+        view.addSubview(sendButton)
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        sendButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
         sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: width)
         sendButtonWidth?.isActive = true
         sendButtonTop = sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
                                                         constant: top)
         sendButtonTop?.isActive = true
-    }
-    
-    /// Добавление распознавания касания экрана
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-    
-    /// Добавляет свайп влево для перехода назад
-    private func addSwipeGestureToBack() {
-        let swipeLeft = UISwipeGestureRecognizer()
-        swipeLeft.addTarget(self, action: #selector(backButtonPressed))
-        swipeLeft.direction = .right
-        view.addGestureRecognizer(swipeLeft)
     }
     
     @objc func handleAttachmentTap(_ sender: AttachmentTapGestureRecognizer) {
@@ -324,36 +277,6 @@ class VerificationViewController: UIViewController, UIScrollViewDelegate {
     }
     
     // MARK: - IBActions
-    /// Скрытие клавиатуры
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
-    }
-    
-    /// Изменение размера ScrollView при появлении клавиатуры
-    /// - Parameter notification: событие появления клавиатуры
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    /// Изменение размера ScrollView при скрытии клавиатуры
-    /// - Parameter notification: событие скрытия клавиатуры
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
     @objc private func addFileTextFieldPressed() {
         let documentPickerViewController = UIDocumentPickerViewController(documentTypes: ["public.item"], in: .import)
         documentPickerViewController.delegate = self

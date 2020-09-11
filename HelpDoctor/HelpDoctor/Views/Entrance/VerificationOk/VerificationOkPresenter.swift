@@ -8,9 +8,8 @@
 
 import UIKit
 
-protocol VerificationOkPresenterProtocol {
+protocol VerificationOkPresenterProtocol: Presenter {
     init(view: VerificationOkViewController)
-    func back()
 }
 
 class VerificationOkPresenter: VerificationOkPresenterProtocol {

@@ -20,7 +20,6 @@ class VerificationEndViewController: UIViewController {
     private let subtitleLabel = UILabel()
     private let textLabel = UILabel()
     private let okButton = HDButton(title: "Ок")
-    private let backButton = BackButton()
     private let widthLabel = Session.width - 22.f
     
     // MARK: - Lifecycle ViewController
@@ -171,11 +170,6 @@ class VerificationEndViewController: UIViewController {
     // MARK: - Buttons methods
     /// Обработка нажатия кнопки "Ок"
     @objc private func okButtonPressed() {
-        presenter?.back()
-    }
-    
-    /// Обработка нажатия кнопки "Назад"
-    @objc private func backButtonPressed() {
         presenter?.back()
     }
     

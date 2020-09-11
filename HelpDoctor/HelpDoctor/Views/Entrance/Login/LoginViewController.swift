@@ -31,8 +31,9 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .white
         setupScrollView()
+        setupBackgroundImage()
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
@@ -75,6 +76,13 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
+    }
+    
+    func setupBackgroundImage() {
+        let backgroundImage = UIImageView()
+        backgroundImage.image = UIImage(named: "Background.pdf")
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
+        scrollView.addSubview(backgroundImage)
     }
     
     /// Установка логотипа приложения
@@ -205,21 +213,19 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     /// Установки кнопки восстановления пароля
     private func setupForgotButton() {
         let top = 5.f
-        let leading = 64.f
-        let width = 120.f
         let height = 16.f
         forgotButton.addTarget(self, action: #selector(forgotButtonPressed), for: .touchUpInside)
         forgotButton.setTitle("Забыли пароль?", for: .normal)
         forgotButton.setTitleColor(.hdLinkColor, for: .normal)
         forgotButton.titleLabel?.font = .boldSystemFontOfSize(size: 14)
+        forgotButton.contentHorizontalAlignment = .left
         scrollView.addSubview(forgotButton)
         
         forgotButton.translatesAutoresizingMaskIntoConstraints = false
         forgotButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor,
                                           constant: top).isActive = true
-        forgotButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                              constant: leading).isActive = true
-        forgotButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+        forgotButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        forgotButton.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
         forgotButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
@@ -228,7 +234,6 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
         let top = 41.f
         let width = 148.f
         let height = 44.f
-        loginButton.layer.cornerRadius = height / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         
@@ -299,8 +304,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets
@@ -323,10 +328,10 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Обработка нажатия кнопки "Войти"
     @objc private func loginButtonPressed() {
-        guard let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
+//        guard let email = emailTextField.text,
+//            let password = passwordTextField.text else { return }
         hideKeyboard()
-        presenter?.loginButtonPressed(email: email, password: password)
+        presenter?.loginButtonPressed(email: emailTextField.text, password: passwordTextField.text)
     }
     
     // MARK: - Navigation

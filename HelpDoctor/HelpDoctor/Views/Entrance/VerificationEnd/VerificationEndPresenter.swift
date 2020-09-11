@@ -10,7 +10,6 @@ import UIKit
 
 protocol VerificationEndPresenterProtocol {
     init(view: VerificationEndViewController)
-//    func login()
     func back()
 }
 
@@ -27,22 +26,8 @@ class VerificationEndPresenter: VerificationEndPresenterProtocol {
         self.view = view
     }
     
-    // MARK: - Coordinator
-//    func login() {
-//        let viewController = LoginViewController()
-//        let presenter = LoginPresenter(view: viewController)
-//        viewController.presenter = presenter
-//        viewController.setEmail(email: email ?? "")
-//        view.navigationController?.pushViewController(viewController, animated: true)
-//    }
-    
     /// Переход к предыдущему экрану
     func back() {
-        view.dismiss(animated: true, completion: nil)
-    }
-    
-    /// Переход к предыдущему экрану
-    func hide() {
         view.dismiss(animated: true, completion: nil)
     }
     

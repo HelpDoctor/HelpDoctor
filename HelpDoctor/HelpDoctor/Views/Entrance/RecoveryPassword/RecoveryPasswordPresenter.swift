@@ -8,11 +8,10 @@
 
 import UIKit
 
-protocol RecoveryPasswordPresenterProtocol {
+protocol RecoveryPasswordPresenterProtocol: Presenter {
     init(view: RecoveryPasswordViewController)
-    func sendButtonTapped(email: String)
+    func sendButtonTapped(email: String?)
     func send()
-    func back()
 }
 
 class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
@@ -28,7 +27,11 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     // MARK: - Publiс methods
     /// Отправка на сервер запроса по восстановлению пароля
     /// - Parameter email: адрес электронной почты
-    func sendButtonTapped(email: String) {
+    func sendButtonTapped(email: String?) {
+        if email == "" {
+            view.showAlert(message: "Заполните E-Mail")
+            return
+        }
         view.startActivityIndicator()
         let recovery = Registration(email: email, password: nil, token: nil)
         

@@ -8,10 +8,9 @@
 
 import UIKit
 
-protocol VerificationErrorPresenterProtocol {
+protocol VerificationErrorPresenterProtocol: Presenter {
     init(view: VerificationErrorViewController)
     func send(src: URL)
-    func back()
 }
 
 class VerificationErrorPresenter: VerificationErrorPresenterProtocol {

@@ -85,7 +85,7 @@ class RecoveryPasswordEndViewController: UIViewController {
         let height = 22.f
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
-        titleLabel.text = "Восстановление пароля"
+        titleLabel.text = "Восстановление доступа"
         titleLabel.textAlignment = .center
         view.addSubview(titleLabel)
         
@@ -125,7 +125,6 @@ class RecoveryPasswordEndViewController: UIViewController {
         let top = 35.f
         let width = 148.f
         let height = 44.f
-        loginButton.layer.cornerRadius = height / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         view.addSubview(loginButton)
         
