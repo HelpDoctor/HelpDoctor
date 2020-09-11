@@ -36,22 +36,22 @@ class InvitePresenter: InvitePresenterProtocol {
         getData(typeOfContent: .invite,
                 returning: (Int?, String?).self,
                 requestParams: invite.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            invite.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    let code = invite.responce?.0
-                    switch code {
-                    case nil:
-                        self?.view.clearTextFields()
-                        self?.view.showSaved(message: "Отправлено")
-                    default:
-                        self?.view.showAlert(message: invite.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    invite.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            let code = invite.responce?.0
+                            switch code {
+                            case nil:
+                                self?.view.clearTextFields()
+                                self?.view.showSaved(message: "Отправлено")
+                            default:
+                                self?.view.showAlert(message: invite.responce?.1)
+                            }
+                            self?.view.stopActivityIndicator()
+                        }
                     }
-                    self?.view.stopActivityIndicator()
-                }
-            }
         }
     }
     

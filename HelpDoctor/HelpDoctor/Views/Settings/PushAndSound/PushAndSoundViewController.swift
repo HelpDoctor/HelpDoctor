@@ -14,6 +14,7 @@ class PushAndSoundViewController: UIViewController {
     var presenter: PushAndSoundPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let leading = 20.f
     private let headerHeight = 40.f
     private let rowHeight = 40.f
     private let borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.1)
@@ -143,7 +144,6 @@ class PushAndSoundViewController: UIViewController {
     
     private func setupHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         headerIcon.image = UIImage(named: "notificationSettings")
         topStackView.addSubview(headerIcon)
         
@@ -156,7 +156,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupHeaderLabel() {
-        let leading = 20.f
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
         headerLabel.font = .boldSystemFontOfSize(size: 14)
@@ -228,7 +227,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupMessagesLabel() {
-        let leading = 20.f
         let width = 220.f
         messagesLabel.numberOfLines = 1
         messagesLabel.textAlignment = .left
@@ -272,7 +270,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupContactsLabel() {
-        let leading = 20.f
         let width = 220.f
         contactsLabel.numberOfLines = 1
         contactsLabel.textAlignment = .left
@@ -316,7 +313,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupEventsLabel() {
-        let leading = 20.f
         let width = 220.f
         eventsLabel.numberOfLines = 1
         eventsLabel.textAlignment = .left
@@ -392,7 +388,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupBlockedUserView() {
-        // TODO: - добавить действие
         blockedUserView.addViewBackedBorder(side: .bottom, thickness: 1, color: borderColor)
         view.addSubview(blockedUserView)
         
@@ -432,7 +427,6 @@ class PushAndSoundViewController: UIViewController {
     
     private func setupBottomHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         bottomHeaderIcon.image = UIImage(named: "sound")
         bottomStackView.addSubview(bottomHeaderIcon)
         
@@ -445,7 +439,6 @@ class PushAndSoundViewController: UIViewController {
     }
     
     private func setupBottomHeaderLabel() {
-        let leading = 20.f
         bottomHeaderLabel.numberOfLines = 1
         bottomHeaderLabel.textAlignment = .left
         bottomHeaderLabel.font = .boldSystemFontOfSize(size: 14)

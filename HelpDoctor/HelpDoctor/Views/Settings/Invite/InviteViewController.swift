@@ -14,11 +14,11 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     var presenter: InvitePresenterProtocol?
     
     // MARK: - Constants and variables
+    private let leading = 20.f
     private var verticalInset = 0.f
     private let headerHeight = 40.f
     private let heightTopStackView = 40.f
-    private let heightLabel = 80.f
-    private let heightTextField = 30.f
+    private let heightLabel = 51.f
     private let heightSendButton = 44.f
     private var heightArt = 0.f
     private let image = UIImage(named: "InviteFriend")?.resizeImage(Session.width, opaque: false)
@@ -73,14 +73,9 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private methods
     private func calculateInset() -> CGFloat {
-        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         let contentHeight = Session.statusBarHeight + headerHeight + heightTopStackView
-            + heightLabel + (heightTextField * 3) + heightSendButton + heightArt + tabBarHeight
-        if contentHeight > Session.height {
-            return 10
-        } else {
-            return (Session.height - contentHeight) / 6
-        }
+            + heightLabel + (Session.heightTextField * 3) + heightSendButton + heightArt
+        return (Session.height - contentHeight) / 5
     }
     
     // MARK: - Setup views
@@ -110,7 +105,6 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         headerIcon.image = UIImage(named: "addFriends")
         topStackView.addSubview(headerIcon)
         
@@ -123,7 +117,6 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupHeaderLabel() {
-        let leading = 20.f
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
         headerLabel.font = .systemFontOfSize(size: 14)
@@ -141,7 +134,6 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupTextLabel() {
-        let leading = 20.f
         let width = Session.width - (leading * 2)
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
@@ -160,7 +152,6 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupNameTextField() {
-        let leading = 20.f
         let width = Session.width - (leading * 2)
         nameTextField.font = UIFont.systemFontOfSize(size: 14)
         nameTextField.textColor = .textFieldTextColor
@@ -168,10 +159,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.textAlignment = .left
         nameTextField.backgroundColor = .white
         nameTextField.layer.cornerRadius = 5
-        nameTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: nameTextField.frame.height))
+        nameTextField.leftView = setupDefaultLeftView()
         nameTextField.leftViewMode = .always
         scrollView.addSubview(nameTextField)
         
@@ -180,11 +168,10 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
                                            constant: verticalInset).isActive = true
         nameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         nameTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        nameTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        nameTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupSurnameTextField() {
-        let leading = 20.f
         let width = Session.width - (leading * 2)
         surnameTextField.font = UIFont.systemFontOfSize(size: 14)
         surnameTextField.textColor = .textFieldTextColor
@@ -192,10 +179,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         surnameTextField.textAlignment = .left
         surnameTextField.backgroundColor = .white
         surnameTextField.layer.cornerRadius = 5
-        surnameTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: surnameTextField.frame.height))
+        surnameTextField.leftView = setupDefaultLeftView()
         surnameTextField.leftViewMode = .always
         scrollView.addSubview(surnameTextField)
         
@@ -204,11 +188,10 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
                                               constant: verticalInset).isActive = true
         surnameTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         surnameTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        surnameTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        surnameTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupEmailTextField() {
-        let leading = 20.f
         let width = Session.width - (leading * 2)
         emailTextField.font = UIFont.systemFontOfSize(size: 14)
         emailTextField.keyboardType = .emailAddress
@@ -219,10 +202,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.layer.cornerRadius = 5
         emailTextField.autocorrectionType = .no
         emailTextField.autocapitalizationType = .none
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
+        emailTextField.leftView = setupDefaultLeftView()
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -231,7 +211,7 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
                                             constant: verticalInset).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupSendButton() {
@@ -295,8 +275,8 @@ class InviteViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets

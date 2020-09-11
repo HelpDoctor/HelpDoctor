@@ -88,7 +88,7 @@ class EditProfileViewController: UIViewController {
         titleView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         titleView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         titleView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                            constant: headerHeight).isActive = true
+                                       constant: headerHeight).isActive = true
         titleView.heightAnchor.constraint(equalToConstant: headerHeight).isActive = true
         
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -101,7 +101,7 @@ class EditProfileViewController: UIViewController {
     private func setupDividerView() {
         dividerView.backgroundColor = .searchBarTintColor
         view.addSubview(dividerView)
-
+        
         dividerView.translatesAutoresizingMaskIntoConstraints = false
         dividerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         dividerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -144,7 +144,7 @@ class EditProfileViewController: UIViewController {
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.leadingAnchor.constraint(equalTo: onView.leadingAnchor,
-                                       constant: leading).isActive = true
+                                           constant: leading).isActive = true
         imageView.centerYAnchor.constraint(equalTo: onView.centerYAnchor).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 40).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: 40).isActive = true

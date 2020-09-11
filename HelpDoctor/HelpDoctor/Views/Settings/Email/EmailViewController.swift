@@ -14,8 +14,9 @@ class EmailViewController: UIViewController {
     var presenter: EmailPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let leading = 20.f
     private let headerHeight = 40.f
-    private let onThumbTintColor = UIColor(red: 0.149, green: 0.404, blue: 1, alpha: 1)
+    private let onThumbTintColor = UIColor.hdButtonColor
     private let offThumbTintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
     private let topStackView = UIView()
     private let headerIcon = UIImageView()
@@ -83,7 +84,6 @@ class EmailViewController: UIViewController {
     // MARK: - Setup views
     private func setupTopStackView() {
         let height = 40.f
-        
         topStackView.backgroundColor = .searchBarTintColor
         view.addSubview(topStackView)
         
@@ -97,21 +97,18 @@ class EmailViewController: UIViewController {
     
     private func setupHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         headerIcon.image = UIImage(named: "emailSettings")
         topStackView.addSubview(headerIcon)
         
         headerIcon.translatesAutoresizingMaskIntoConstraints = false
         headerIcon.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                            constant: leading).isActive = true
         headerIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         headerIcon.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     private func setupHeaderLabel() {
-        let leading = 20.f
-        
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
         headerLabel.font = .boldSystemFontOfSize(size: 14)
@@ -121,19 +118,17 @@ class EmailViewController: UIViewController {
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.leadingAnchor.constraint(equalTo: headerIcon.trailingAnchor,
-                                               constant: leading).isActive = true
+                                             constant: leading).isActive = true
         headerLabel.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor,
-                                                constant: -leading).isActive = true
+                                              constant: -leading).isActive = true
         headerLabel.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerLabel.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
     }
     
     private func setupAllowLabel() {
-        let leading = 20.f
         let top = 11.f
         let height = 19.f
         let width = 210.f
-        
         allowLabel.numberOfLines = 1
         allowLabel.textAlignment = .left
         allowLabel.font = .mediumSystemFontOfSize(size: 14)
@@ -161,16 +156,14 @@ class EmailViewController: UIViewController {
         
         emailSwitch.translatesAutoresizingMaskIntoConstraints = false
         emailSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                            constant: -trailing).isActive = true
+                                              constant: -trailing).isActive = true
         emailSwitch.centerYAnchor.constraint(equalTo: allowLabel.centerYAnchor).isActive = true
     }
     
     private func setupPeriodLabel() {
-        let leading = 20.f
         let top = 11.f
         let height = 19.f
         let width = 210.f
-        
         periodLabel.numberOfLines = 1
         periodLabel.textAlignment = .left
         periodLabel.font = .mediumSystemFontOfSize(size: 14)
@@ -180,9 +173,9 @@ class EmailViewController: UIViewController {
         
         periodLabel.translatesAutoresizingMaskIntoConstraints = false
         periodLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                            constant: leading).isActive = true
+                                             constant: leading).isActive = true
         periodLabel.topAnchor.constraint(equalTo: emailSwitch.bottomAnchor,
-                                        constant: top).isActive = true
+                                         constant: top).isActive = true
         periodLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         periodLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -232,9 +225,9 @@ class EmailViewController: UIViewController {
         
         weekButton.translatesAutoresizingMaskIntoConstraints = false
         weekButton.topAnchor.constraint(equalTo: dayButton.bottomAnchor,
-                                       constant: top).isActive = true
+                                        constant: top).isActive = true
         weekButton.leadingAnchor.constraint(equalTo: view.leadingAnchor,
-                                           constant: leading).isActive = true
+                                            constant: leading).isActive = true
         weekButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         weekButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -250,7 +243,7 @@ class EmailViewController: UIViewController {
         monthButton.translatesAutoresizingMaskIntoConstraints = false
         monthButton.centerYAnchor.constraint(equalTo: weekButton.centerYAnchor).isActive = true
         monthButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                                  constant: -trailing).isActive = true
+                                              constant: -trailing).isActive = true
         monthButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         monthButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -258,35 +251,31 @@ class EmailViewController: UIViewController {
     private func setupBottomStackView() {
         let height = 40.f
         let top = 20.f
-        
         bottomStackView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
         view.addSubview(bottomStackView)
         
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         bottomStackView.topAnchor.constraint(equalTo: monthButton.bottomAnchor,
-                                          constant: top).isActive = true
+                                             constant: top).isActive = true
         bottomStackView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
         bottomStackView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
     private func setupBottomHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         bottomHeaderIcon.image = UIImage(named: "emailInvite")
         bottomStackView.addSubview(bottomHeaderIcon)
         
         bottomHeaderIcon.translatesAutoresizingMaskIntoConstraints = false
         bottomHeaderIcon.leadingAnchor.constraint(equalTo: bottomStackView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                                  constant: leading).isActive = true
         bottomHeaderIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         bottomHeaderIcon.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
         bottomHeaderIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     private func setupBottomHeaderLabel() {
-        let leading = 20.f
-        
         bottomHeaderLabel.numberOfLines = 1
         bottomHeaderLabel.textAlignment = .left
         bottomHeaderLabel.font = .boldSystemFontOfSize(size: 14)
@@ -296,9 +285,9 @@ class EmailViewController: UIViewController {
         
         bottomHeaderLabel.translatesAutoresizingMaskIntoConstraints = false
         bottomHeaderLabel.leadingAnchor.constraint(equalTo: bottomHeaderIcon.trailingAnchor,
-                                               constant: leading).isActive = true
+                                                   constant: leading).isActive = true
         bottomHeaderLabel.trailingAnchor.constraint(equalTo: bottomStackView.trailingAnchor,
-                                                constant: -leading).isActive = true
+                                                    constant: -leading).isActive = true
         bottomHeaderLabel.centerYAnchor.constraint(equalTo: bottomStackView.centerYAnchor).isActive = true
         bottomHeaderLabel.heightAnchor.constraint(equalTo: bottomStackView.heightAnchor).isActive = true
     }
@@ -309,7 +298,7 @@ class EmailViewController: UIViewController {
         let height = 20.f
         companyCheckbox.contentHorizontalAlignment = .left
         companyCheckbox.contentVerticalAlignment = .center
-        companyCheckbox.setTitle("Получать приглашения от компаний", for: .normal)
+        companyCheckbox.setTitle(" Получать приглашения от компаний", for: .normal)
         companyCheckbox.titleLabel?.font = .systemFontOfSize(size: 14)
         companyCheckbox.setTitleColor(.white, for: .normal)
         companyCheckbox.addTarget(self, action: #selector(companyCheckboxPressed), for: .touchUpInside)
@@ -350,7 +339,7 @@ class EmailViewController: UIViewController {
     
     @objc func switchStateDidChange(_ sender: UISwitch) {
         emailSwitch.thumbTintColor = sender.isOn ? onThumbTintColor : offThumbTintColor
-
+        
         if sender == emailSwitch {
             presenter?.updateSettings("email_notification", sender.isOn ? 1 : 0)
         }

@@ -14,12 +14,12 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     var presenter: ChangePasswordPresenterProtocol?
     
     // MARK: - Constants and variables
+    private let leading = 20.f
     private var verticalInset = 0.f
     private let headerHeight = 40.f
     private let heightTopStackView = 40.f
     private let heightArt = 157.f
     private let heightLabel = 51.f
-    private let heightTextField = 30.f
     private let heightSendButton = 44.f
     private let widthContent = Session.width - 40
     private let scrollView = UIScrollView()
@@ -82,7 +82,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     private func calculateInset() -> CGFloat {
         let tabBarHeight = tabBarController?.tabBar.frame.height ?? 0
         let contentHeight = Session.statusBarHeight + tabBarHeight + headerHeight + heightTopStackView
-            + heightArt + (heightLabel * 2) + (heightTextField * 3) + heightSendButton
+            + heightArt + (heightLabel * 2) + (Session.heightTextField * 3) + heightSendButton
         return (Session.height - contentHeight) / 8
     }
     
@@ -113,20 +113,18 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupHeaderIcon() {
         let width = 30.f
-        let leading = 20.f
         headerIcon.image = UIImage(named: "securitySettings")
         topStackView.addSubview(headerIcon)
         
         headerIcon.translatesAutoresizingMaskIntoConstraints = false
         headerIcon.leadingAnchor.constraint(equalTo: topStackView.leadingAnchor,
-                                               constant: leading).isActive = true
+                                            constant: leading).isActive = true
         headerIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         headerIcon.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
     
     private func setupHeaderLabel() {
-        let leading = 20.f
         headerLabel.numberOfLines = 1
         headerLabel.textAlignment = .left
         headerLabel.font = .boldSystemFontOfSize(size: 14)
@@ -136,15 +134,14 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         
         headerLabel.translatesAutoresizingMaskIntoConstraints = false
         headerLabel.leadingAnchor.constraint(equalTo: headerIcon.trailingAnchor,
-                                               constant: leading).isActive = true
+                                             constant: leading).isActive = true
         headerLabel.trailingAnchor.constraint(equalTo: topStackView.trailingAnchor,
-                                                constant: -leading).isActive = true
+                                              constant: -leading).isActive = true
         headerLabel.centerYAnchor.constraint(equalTo: topStackView.centerYAnchor).isActive = true
         headerLabel.heightAnchor.constraint(equalTo: topStackView.heightAnchor).isActive = true
     }
     
     private func setupTextLabel() {
-        let leading = 20.f
         textLabel.numberOfLines = 0
         textLabel.textAlignment = .left
         textLabel.font = .systemFontOfSize(size: 14)
@@ -166,8 +163,8 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupOldPasswordTextField() {
         oldPasswordTextField.addTarget(self,
-                                    action: #selector(self.oldPasswordChanged(_:)),
-                                    for: UIControl.Event.editingChanged)
+                                       action: #selector(self.oldPasswordChanged(_:)),
+                                       for: UIControl.Event.editingChanged)
         oldPasswordTextField.font = .systemFontOfSize(size: 14)
         oldPasswordTextField.isSecureTextEntry = true
         oldPasswordTextField.textColor = .textFieldTextColor
@@ -175,10 +172,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         oldPasswordTextField.textAlignment = .left
         oldPasswordTextField.backgroundColor = .white
         oldPasswordTextField.layer.cornerRadius = 5
-        oldPasswordTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                             y: 0,
-                                                             width: 8,
-                                                             height: oldPasswordTextField.frame.height))
+        oldPasswordTextField.leftView = setupDefaultLeftView()
         oldPasswordTextField.leftViewMode = .always
         scrollView.addSubview(oldPasswordTextField)
         
@@ -187,7 +181,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
                                                   constant: verticalInset).isActive = true
         oldPasswordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         oldPasswordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
-        oldPasswordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        oldPasswordTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupPasswordTextField() {
@@ -201,10 +195,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5
-        passwordTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: passwordTextField.frame.height))
+        passwordTextField.leftView = setupDefaultLeftView()
         passwordTextField.leftViewMode = .always
         scrollView.addSubview(passwordTextField)
         
@@ -213,7 +204,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
                                                constant: verticalInset).isActive = true
         passwordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupConfirmPasswordTextField() {
@@ -227,10 +218,7 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
         confirmPasswordTextField.textAlignment = .left
         confirmPasswordTextField.backgroundColor = .white
         confirmPasswordTextField.layer.cornerRadius = 5
-        confirmPasswordTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                                 y: 0,
-                                                                 width: 8,
-                                                                 height: confirmPasswordTextField.frame.height))
+        confirmPasswordTextField.leftView = setupDefaultLeftView()
         confirmPasswordTextField.leftViewMode = .always
         scrollView.addSubview(confirmPasswordTextField)
         
@@ -239,11 +227,10 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
                                                       constant: verticalInset).isActive = true
         confirmPasswordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         confirmPasswordTextField.widthAnchor.constraint(equalToConstant: widthContent).isActive = true
-        confirmPasswordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        confirmPasswordTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupBottomLabel() {
-        let leading = 20.f
         bottomLabel.numberOfLines = 0
         bottomLabel.textAlignment = .left
         bottomLabel.font = .systemFontOfSize(size: 14)
@@ -332,8 +319,8 @@ class ChangePasswordViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets

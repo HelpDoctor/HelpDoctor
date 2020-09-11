@@ -15,6 +15,10 @@ class StartSettingsViewController: UIViewController {
     
     // MARK: - Constants
     private let headerHeight = 40.f
+    private var heightTableHeader = 0.f
+    private var heightTableRow = 0.f
+    private var countItems = 0
+    private var countRows = 0
     private let settingsArray = [
         [SettingsRow.user,
          SettingsRow.verification,
@@ -48,8 +52,23 @@ class StartSettingsViewController: UIViewController {
         self.tabBarController?.tabBar.isHidden = false
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let tableHeight = tableView.frame.height
+        countItems = 0
+        countRows = 0
+        settingsArray.forEach({ arr in
+            countItems += arr.count
+            countRows += arr.count
+        })
+        countItems += settingsArray.count
+        heightTableHeader = tableHeight / CGFloat(countItems) * 0.8
+        heightTableRow = (tableHeight - (heightTableHeader * CGFloat(settingsArray.count))) / CGFloat(countRows)
+    }
+    
     // MARK: - Setup views
     private func setupTableView() {
+        let bottom = tabBarController?.tabBar.frame.height ?? 0
         view.addSubview(tableView)
         tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
         tableView.backgroundColor = .backgroundColor
@@ -62,7 +81,7 @@ class StartSettingsViewController: UIViewController {
         tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
                                        constant: headerHeight).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                          constant: -48).isActive = true
+                                          constant: -bottom).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
@@ -73,34 +92,29 @@ class StartSettingsViewController: UIViewController {
 extension StartSettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if Session.height == 568 {
-            return 30
-        } else {
-            return 40
-        }
+        return heightTableHeader
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if Session.height == 568 {
-            return 40
-        } else {
-            return 50
-        }
+        return heightTableRow
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: Session.width, height: 40))
+        let headerView = UIView(frame: CGRect(x: 0,
+                                              y: 0,
+                                              width: Session.width,
+                                              height: heightTableHeader))
         let label = UILabel()
         label.font = .boldSystemFontOfSize(size: 14)
         label.textColor = .white
-        headerView.backgroundColor = UIColor(red: 0.137, green: 0.455, blue: 0.671, alpha: 1)
+        headerView.backgroundColor = UIColor.searchBarTintColor
         headerView.addSubview(label)
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerYAnchor.constraint(equalTo: headerView.centerYAnchor).isActive = true
         label.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 20).isActive = true
-        label.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        label.heightAnchor.constraint(equalToConstant: heightTableHeader).isActive = true
         
         switch section {
         case 0:
@@ -116,7 +130,7 @@ extension StartSettingsViewController: UITableViewDelegate {
             label.text = ""
             return headerView
         }
-
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

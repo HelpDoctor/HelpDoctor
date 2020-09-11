@@ -42,23 +42,23 @@ class FeedbackPresenter: FeedbackPresenterProtocol {
         getData(typeOfContent: .feedback,
                 returning: (Int?, String?).self,
                 requestParams: sendFeedback.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            sendFeedback.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result= \(String(describing: sendFeedback.responce))")
-                    let code = sendFeedback.responce?.0
-                    switch code {
-                    case 200:
-                        self?.view.clearTextFields()
-                        self?.view.showSaved(message: "Отзыв отправлен")
-                    default:
-                        self?.view.showAlert(message: sendFeedback.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    sendFeedback.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("result= \(String(describing: sendFeedback.responce))")
+                            let code = sendFeedback.responce?.0
+                            switch code {
+                            case 200:
+                                self?.view.clearTextFields()
+                                self?.view.showSaved(message: "Отзыв отправлен")
+                            default:
+                                self?.view.showAlert(message: sendFeedback.responce?.1)
+                            }
+                            self?.view.stopActivityIndicator()
+                        }
                     }
-                    self?.view.stopActivityIndicator()
-                }
-            }
         }
     }
     

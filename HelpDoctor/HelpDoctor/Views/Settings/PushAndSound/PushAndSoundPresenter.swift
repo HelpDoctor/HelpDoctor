@@ -49,21 +49,21 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
         getData(typeOfContent: .updateSettings,
                 returning: (Int?, String?).self,
                 requestParams: ["json": updateSettings.jsonData as Any] ) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            updateSettings.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("updateSettings = \(String(describing: updateSettings.responce))")
-                    guard let code = updateSettings.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.loadSettings()
-                    } else {
-                        self?.view.showAlert(message: updateSettings.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    
+                    updateSettings.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("updateSettings = \(String(describing: updateSettings.responce))")
+                            guard let code = updateSettings.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                self?.loadSettings()
+                            } else {
+                                self?.view.showAlert(message: updateSettings.responce?.1)
+                            }
+                        }
                     }
-                }
-            }
         }
     }
     

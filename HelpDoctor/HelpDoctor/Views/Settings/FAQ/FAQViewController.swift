@@ -252,8 +252,8 @@ class FAQViewController: UIViewController {
     private func setupRulesView() {
         let height = 50.f
         rulesView.addViewBackedBorder(side: .bottom,
-                                        thickness: 1,
-                                        color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
+                                      thickness: 1,
+                                      color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.2))
         view.addSubview(rulesView)
         
         rulesView.translatesAutoresizingMaskIntoConstraints = false
@@ -271,7 +271,7 @@ class FAQViewController: UIViewController {
         
         rulesIcon.translatesAutoresizingMaskIntoConstraints = false
         rulesIcon.leadingAnchor.constraint(equalTo: rulesView.leadingAnchor,
-                                             constant: leading).isActive = true
+                                           constant: leading).isActive = true
         rulesIcon.widthAnchor.constraint(equalToConstant: width).isActive = true
         rulesIcon.centerYAnchor.constraint(equalTo: rulesView.centerYAnchor).isActive = true
         rulesIcon.heightAnchor.constraint(equalToConstant: width).isActive = true
@@ -288,9 +288,9 @@ class FAQViewController: UIViewController {
         
         rulesLabel.translatesAutoresizingMaskIntoConstraints = false
         rulesLabel.leadingAnchor.constraint(equalTo: rulesIcon.trailingAnchor,
-                                              constant: leading).isActive = true
+                                            constant: leading).isActive = true
         rulesLabel.trailingAnchor.constraint(equalTo: rulesView.trailingAnchor,
-                                               constant: -leading).isActive = true
+                                             constant: -leading).isActive = true
         rulesLabel.centerYAnchor.constraint(equalTo: rulesView.centerYAnchor).isActive = true
         rulesLabel.heightAnchor.constraint(equalTo: rulesView.heightAnchor).isActive = true
     }
@@ -308,9 +308,9 @@ class FAQViewController: UIViewController {
         
         versionLabel.translatesAutoresizingMaskIntoConstraints = false
         versionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                              constant: -trailing).isActive = true
+                                               constant: -trailing).isActive = true
         versionLabel.bottomAnchor.constraint(equalTo: view.bottomAnchor,
-                                          constant: -bottom).isActive = true
+                                             constant: -bottom).isActive = true
         versionLabel.widthAnchor.constraint(equalToConstant: Session.width - (trailing * 2)).isActive = true
         versionLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
