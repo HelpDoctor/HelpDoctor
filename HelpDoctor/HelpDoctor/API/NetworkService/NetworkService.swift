@@ -16,7 +16,7 @@ class Auth_Info {
     static let instance = Auth_Info()
     
     private init() {
-        self.token = KeychainWrapper.standard.string(forKey: "myToken")
+        self.token = KeychainWrapper.default.string(forKey: "myToken")
     }
     var token: String?
 }

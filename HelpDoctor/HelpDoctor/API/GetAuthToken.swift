@@ -17,7 +17,7 @@ func parseJSON_getToken (for startPoint: [String: AnyObject]?, response: URLResp
     
     let auth = Auth_Info.instance
     auth.token = token
-    KeychainWrapper.standard.set(token, forKey: "myToken")
+    KeychainWrapper.default.set(token, forKey: "myToken")
     
     return (httpResponse.statusCode, status)
 }

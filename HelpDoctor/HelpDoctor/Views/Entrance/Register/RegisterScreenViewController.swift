@@ -62,14 +62,12 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Setup views
     /// Установка ScrollView
     private func setupScrollView() {
-        let top = 0.f
         scrollView.delegate = self
         scrollView.contentSize = CGSize(width: Session.width, height: Session.height)
         view.addSubview(scrollView)
         
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                        constant: top).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         scrollView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
@@ -185,7 +183,6 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     private func setupTopEmailTextField() {
         let top = 17.f
         let width = Session.width - 114.f
-        let height = 30.f
         topEmailTextField.addTarget(self,
                                     action: #selector(self.topEmailChanged(_:)),
                                     for: UIControl.Event.editingChanged)
@@ -207,7 +204,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
                                                constant: top).isActive = true
         topEmailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         topEmailTextField.widthAnchor.constraint(equalToConstant: width).isActive = true
-        topEmailTextField.heightAnchor.constraint(equalToConstant: height).isActive = true
+        topEmailTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка кнопки "Отправить"

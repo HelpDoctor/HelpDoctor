@@ -23,15 +23,15 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
     private let passwordTextField = UITextField()
     private let loginButton = HDButton(title: "Войти", fontSize: 18)
     private let widthTextField = Session.width - 114.f
-    private let heightTextField = 30.f
     private var keyboardHeight = 0.f
     private var isKeyboardShown = false
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
+        view.backgroundColor = .white
         setupScrollView()
+        setupBackgroundImage()
         setupLogoImage()
         setupDoctorsImage()
         setupTitleLabel()
@@ -61,6 +61,13 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         scrollView.heightAnchor.constraint(equalToConstant: Session.height).isActive = true
     }
     
+    func setupBackgroundImage() {
+        let backgroundImage = UIImageView()
+        backgroundImage.image = UIImage(named: "Background.pdf")
+        backgroundImage.frame = CGRect(x: 0, y: 0, width: Session.width, height: Session.height)
+        scrollView.addSubview(backgroundImage)
+    }
+    
     /// Установка логотипа приложения
     private func setupLogoImage() {
         let top = 10.f
@@ -75,9 +82,9 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(logoImage)
         
         logoImage.translatesAutoresizingMaskIntoConstraints = false
-        logoImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+        logoImage.topAnchor.constraint(equalTo: scrollView.topAnchor,
                                        constant: top).isActive = true
-        logoImage.trailingAnchor.constraint(equalTo: view.leadingAnchor,
+        logoImage.trailingAnchor.constraint(equalTo: scrollView.leadingAnchor,
                                             constant: leading).isActive = true
         logoImage.widthAnchor.constraint(equalToConstant: width).isActive = true
         logoImage.heightAnchor.constraint(equalToConstant: width).isActive = true
@@ -96,8 +103,8 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(doctorsImage)
         
         doctorsImage.translatesAutoresizingMaskIntoConstraints = false
-        doctorsImage.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-        doctorsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        doctorsImage.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        doctorsImage.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         doctorsImage.widthAnchor.constraint(equalToConstant: resizedImage.size.width).isActive = true
         doctorsImage.heightAnchor.constraint(equalToConstant: resizedImage.size.height).isActive = true
     }
@@ -115,7 +122,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: doctorsImage.bottomAnchor,
                                         constant: top).isActive = true
-        titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        titleLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         titleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         titleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -140,7 +147,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
                                       constant: top).isActive = true
-        textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        textLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -158,10 +165,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         emailTextField.textAlignment = .left
         emailTextField.backgroundColor = .white
         emailTextField.layer.cornerRadius = 5
-        emailTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                       y: 0,
-                                                       width: 8,
-                                                       height: emailTextField.frame.height))
+        emailTextField.leftView = setupDefaultLeftView()
         emailTextField.leftViewMode = .always
         scrollView.addSubview(emailTextField)
         
@@ -170,7 +174,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
                                             constant: top).isActive = true
         emailTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         emailTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
-        emailTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        emailTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка поля ввода пароля
@@ -183,10 +187,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         passwordTextField.textAlignment = .left
         passwordTextField.backgroundColor = .white
         passwordTextField.layer.cornerRadius = 5
-        passwordTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                          y: 0,
-                                                          width: 8,
-                                                          height: passwordTextField.frame.height))
+        passwordTextField.leftView = setupDefaultLeftView()
         passwordTextField.leftViewMode = .always
         scrollView.addSubview(passwordTextField)
         
@@ -195,7 +196,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
                                                constant: top).isActive = true
         passwordTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         passwordTextField.widthAnchor.constraint(equalToConstant: widthTextField).isActive = true
-        passwordTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        passwordTextField.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     /// Установка кнопки "Войти"
@@ -203,14 +204,13 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         let top = 26.f
         let width = 148.f
         let height = 44.f
-        loginButton.layer.cornerRadius = height / 2
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         scrollView.addSubview(loginButton)
         
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor,
                                          constant: top).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        loginButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         loginButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         loginButton.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
@@ -247,8 +247,8 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets
