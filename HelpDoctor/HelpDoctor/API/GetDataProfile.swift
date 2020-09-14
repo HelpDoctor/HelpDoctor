@@ -58,9 +58,10 @@ func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
                                                                name: obj?["name"] as? String))
             case "job":
                 profileKeyJob.append(ProfileKeyJob(id: obj?["id"] as? Int,
-                                                   job_oid: obj?["job_oid"] as? String,
+//                                                   job_oid: obj?["job_oid"] as? String,
                                                    is_main: obj?["is_main"] as? Bool,
-                                                   nameShort: obj?["nameShort"] as? String))
+                                                   organization: obj?["organization"] as? MedicalOrganization))
+//                                                   nameShort: obj?["nameShort"] as? String))
             case "spec":
                 profileKeySpec.append(ProfileKeySpec(id: obj?["id"] as? Int,
                                                      spec_id: obj?["spec_id"] as? Int,

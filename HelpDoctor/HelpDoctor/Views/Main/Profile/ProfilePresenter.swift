@@ -21,10 +21,13 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Dependency
     let view: ProfileViewController
+    let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let session = Session.instance
-    private var user: ProfileKeyUser?
+//    private var user: ProfileKeyUser?
+    private var user: User?
+    private var educationArray: [Education] = []
     private var jobArray: [ProfileKeyJob?] = [nil, nil, nil, nil, nil]
     private var interestsArray: [ProfileKeyInterests]?
     
@@ -36,20 +39,20 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Загрузка информации о пользователе с сервера
     func getUser() {
         let getDataProfile = Profile()
-        
+
         getData(typeOfContent: .getDataFromProfile,
                 returning: ([String: [AnyObject]], Int?, String?).self,
                 requestParams: [:] ) { [weak self] result in
             let dispathGroup = DispatchGroup()
-            
+
             getDataProfile.dataFromProfile = result?.0
-            
+
             dispathGroup.notify(queue: DispatchQueue.main) {
                 DispatchQueue.main.async { [weak self]  in
                     print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                    if let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] {
-                        self?.setUser(userData: userData)
-                    }
+//                    if let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] {
+//                        self?.setUser(userData: userData)
+//                    }
                     if let jobData: [ProfileKeyJob] = getDataProfile.dataFromProfile?["job"] as? [ProfileKeyJob] {
                         self?.setJob(jobData: jobData)
                     }
@@ -63,12 +66,18 @@ class ProfilePresenter: ProfilePresenterProtocol {
                 }
             }
         }
-    }
-    
-    func toEditProfile() {
-        let viewController = EditProfileViewController()
-        viewController.presenter = EditProfilePresenter(view: viewController)
-        view.navigationController?.pushViewController(viewController, animated: true)
+        self.networkManager.getUser { profiles, error in
+            if let error = error {
+                self.view.showAlert(message: error)
+            }
+            if let profiles = profiles {
+                self.setUser(userData: profiles.user)
+                self.setEducation(education: profiles.educations)
+                //                self.setJob(jobData: profiles.job)
+                //                self.view.setupCareerView()
+                //                self.view.setupInterestsView()
+            }
+        }
     }
     
     func getStatusUser() {
@@ -133,29 +142,60 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Private methods
     /// Установка информации о пользователе в форму
     /// - Parameter userData: информация с сервера
-    private func setUser(userData: [ProfileKeyUser]) {
-        self.user = ProfileKeyUser(id: userData[0].id,
-                                   first_name: userData[0].first_name,
-                                   last_name: userData[0].last_name,
-                                   middle_name: userData[0].middle_name,
-                                   email: userData[0].email,
-                                   phone_number: userData[0].phone_number,
-                                   birthday: userData[0].birthday,
-                                   city_id: userData[0].city_id,
-                                   cityName: userData[0].cityName,
-                                   regionId: userData[0].regionId,
-                                   regionName: userData[0].regionName,
-                                   foto: userData[0].foto,
-                                   gender: userData[0].gender,
-                                   is_medic_worker: userData[0].is_medic_worker)
-        let lastName: String = user?.last_name ?? ""
-        let name: String = user?.first_name ?? ""
-        let middleName: String = user?.middle_name ?? ""
-        view.setName(name: "\(lastName) \(name) \(middleName)")
-        view.setImage(image: user?.foto?.toImage())
-        session.user = user
-        view.setupGeneralView()
-        view.setupEducationView()
+//    private func setUser(userData: [ProfileKeyUser]) {
+//        self.user = ProfileKeyUser(id: userData[0].id,
+//                                   first_name: userData[0].first_name,
+//                                   last_name: userData[0].last_name,
+//                                   middle_name: userData[0].middle_name,
+//                                   email: userData[0].email,
+//                                   phone_number: userData[0].phone_number,
+//                                   birthday: userData[0].birthday,
+//                                   city_id: userData[0].city_id,
+//                                   cityName: userData[0].cityName,
+//                                   regionId: userData[0].regionId,
+//                                   regionName: userData[0].regionName,
+//                                   foto: userData[0].foto,
+//                                   gender: userData[0].gender,
+//                                   is_medic_worker: userData[0].is_medic_worker)
+//    }
+    private func setUser(userData: User) {
+        var verifiedUser = false
+        if UserDefaults.standard.string(forKey: "userStatus") == "verified" {
+            verifiedUser = true
+        }
+        self.user = User(id: userData.id,
+                         firstName: userData.firstName,
+                         lastName: userData.lastName,
+                         middleName: userData.middleName,
+                         gender: userData.gender,
+                         email: userData.email,
+                         phoneNumber: userData.phoneNumber,
+                         birthday: userData.birthday,
+                         cityId: userData.cityId,
+                         cityName: userData.cityName,
+                         regionId: userData.regionId,
+                         regionName: userData.regionName,
+                         foto: userData.foto,
+                         isMedicWorker: userData.isMedicWorker,
+                         verifiedUser: verifiedUser)
+        let lastName = user?.lastName ?? ""
+        let name = user?.firstName ?? ""
+        let middleName = user?.middleName ?? ""
+        DispatchQueue.main.async {
+            self.view.setName(name: "\(lastName) \(name) \(middleName)")
+            self.view.setImage(image: self.user?.foto?.toImage())
+            self.session.user = self.user
+            self.view.setupGeneralView()
+        }
+    }
+    
+    private func setEducation(education: [Education]) {
+        session.education?.removeAll()
+        session.education = education
+        educationArray = education
+        DispatchQueue.main.async {
+            self.view.setupEducationView()
+        }
     }
 
     /// Установка информации о работе пользователя в форму
@@ -166,6 +206,13 @@ class ProfilePresenter: ProfilePresenterProtocol {
         jobArray = jobData
         view.setupCareerView()
     }
+    
+//    private func setJob(jobData: [Job]) {
+//        session.userJob?.removeAll()
+//        session.userJob = jobData
+//        jobArray = jobData
+//        view.setupCareerView()
+//    }
     
     /// Установка информации о специализации пользователя в форму
     /// - Parameter specData: информация с сервера
@@ -230,6 +277,12 @@ class ProfilePresenter: ProfilePresenterProtocol {
         let viewController = VerificationOkViewController()
         viewController.presenter = VerificationOkPresenter(view: viewController)
         view.present(viewController, animated: true, completion: nil)
+    }
+    
+    func toEditProfile() {
+        let viewController = EditProfileViewController()
+        viewController.presenter = EditProfilePresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
 }

@@ -10,7 +10,8 @@ import Foundation
 
 struct ProfileKeyJob {
     let id: Int?
-    let job_oid: String?
+//    let job_oid: String?
     let is_main: Bool?
-    let nameShort: String?
+//    let nameShort: String?
+    let organization: MedicalOrganization?
 }

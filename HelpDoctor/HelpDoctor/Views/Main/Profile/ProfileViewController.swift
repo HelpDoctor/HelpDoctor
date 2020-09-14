@@ -113,8 +113,8 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка формы отображения информации об образовании
     func setupEducationView() {
-        guard let user = Session.instance.user else { return }
-        educationView = ProfileEducationView(user: user)
+        guard let education = Session.instance.education else { return }
+        educationView = ProfileEducationView(education: education)
         let swipeRight = UISwipeGestureRecognizer()
         swipeRight.addTarget(self, action: #selector(careerPageButtonPressed))
         swipeRight.direction = .left

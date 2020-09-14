@@ -91,9 +91,12 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Private methods
     /// Установка значений из памяти устройства
     private func setUser() {
-        surnameTextField.text = Session.instance.user?.last_name
-        nameTextField.text = Session.instance.user?.first_name
-        patronymicTextField.text = Session.instance.user?.middle_name
+//        surnameTextField.text = Session.instance.user?.last_name
+//        nameTextField.text = Session.instance.user?.first_name
+//        patronymicTextField.text = Session.instance.user?.middle_name
+        surnameTextField.text = Session.instance.user?.lastName
+        nameTextField.text = Session.instance.user?.firstName
+        patronymicTextField.text = Session.instance.user?.middleName
         switch Session.instance.user?.gender {
         case "male":
             maleButton.isSelected = true

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Universities {
-    let universityId: Int
-    let universityName: String?
+struct University: Codable {
+    let educationId: Int
+    let educationName: String?
 }

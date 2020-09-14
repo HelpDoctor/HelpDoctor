@@ -21,8 +21,8 @@ protocol UniversitiesPresenterProtocol: Presenter {
 class UniversitiesPresenter: UniversitiesPresenterProtocol {
     
     var view: UniversitiesViewController
-    var arrayUniversities: [Universities]?
-    var filteredArray: [Universities] = []
+    var arrayUniversities: [University]?
+    var filteredArray: [University] = []
     var sender: String?
     
     required init(view: UniversitiesViewController) {
@@ -36,7 +36,7 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         let getUniversities = Profile()
         
         getData(typeOfContent: .getUniversities,
-                returning: ([Universities], Int?, String?).self,
+                returning: ([University], Int?, String?).self,
                 requestParams: [:]) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -59,7 +59,7 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
     }
     
     func getUniversityTitle(index: Int) -> String? {
-        return filteredArray[index].universityName
+        return filteredArray[index].educationName
     }
     
     func searchTextIsEmpty() {
@@ -70,7 +70,7 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
     func filter(searchText: String) {
         guard let arrayUniversities = arrayUniversities else { return }
         filteredArray = arrayUniversities.filter({ university -> Bool in
-            return (university.universityName?.lowercased().contains(searchText.lowercased()) ?? false)
+            return (university.educationName?.lowercased().contains(searchText.lowercased()) ?? false)
         })
         view.reloadTableView()
     }

@@ -46,15 +46,24 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     }
     
     func setUser() {
-        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-                                    last_name: Session.instance.user?.last_name,
-                                    middle_name: Session.instance.user?.middle_name,
-                                    phone_number: Session.instance.user?.phone_number,
+//        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+//                                    last_name: Session.instance.user?.last_name,
+//                                    middle_name: Session.instance.user?.middle_name,
+//                                    phone_number: Session.instance.user?.phone_number,
+//                                    birthday: Session.instance.user?.birthday,
+//                                    city_id: Session.instance.user?.city_id,
+//                                    foto: Session.instance.user?.foto,
+//                                    gender: Session.instance.user?.gender,
+//                                    is_medic_worker: Session.instance.user?.is_medic_worker)
+        user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
+                                    last_name: Session.instance.user?.lastName,
+                                    middle_name: Session.instance.user?.middleName,
+                                    phone_number: Session.instance.user?.phoneNumber,
                                     birthday: Session.instance.user?.birthday,
-                                    city_id: Session.instance.user?.city_id,
+                                    city_id: Session.instance.user?.cityId,
                                     foto: Session.instance.user?.foto,
                                     gender: Session.instance.user?.gender,
-                                    is_medic_worker: Session.instance.user?.is_medic_worker)
+                                    is_medic_worker: Session.instance.user?.isMedicWorker)
     }
     
     /// Установка фотографии в классе UpdateProfileKeyUser
@@ -202,15 +211,24 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     /// Обновление информации о пользователе на сервере
     /// - Parameter profile: информация для обновления
     private func updateProfile() {
-        let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-                                           last_name: Session.instance.user?.last_name,
-                                           middle_name: Session.instance.user?.middle_name,
-                                           phone_number: Session.instance.user?.phone_number,
+//        let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+//                                           last_name: Session.instance.user?.last_name,
+//                                           middle_name: Session.instance.user?.middle_name,
+//                                           phone_number: Session.instance.user?.phone_number,
+//                                           birthday: Session.instance.user?.birthday,
+//                                           city_id: Session.instance.user?.city_id,
+//                                           foto: user?.foto,
+//                                           gender: Session.instance.user?.gender,
+//                                           is_medic_worker: Session.instance.user?.is_medic_worker)
+        let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
+                                           last_name: Session.instance.user?.lastName,
+                                           middle_name: Session.instance.user?.middleName,
+                                           phone_number: Session.instance.user?.phoneNumber,
                                            birthday: Session.instance.user?.birthday,
-                                           city_id: Session.instance.user?.city_id,
+                                           city_id: Session.instance.user?.cityId,
                                            foto: user?.foto,
                                            gender: Session.instance.user?.gender,
-                                           is_medic_worker: Session.instance.user?.is_medic_worker)
+                                           is_medic_worker: Session.instance.user?.isMedicWorker)
         
         getData(typeOfContent: .updateProfile,
                 returning: (Int?, String?).self,

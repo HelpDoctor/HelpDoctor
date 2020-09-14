@@ -79,7 +79,8 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
-        if jobArray.count == 0 {
+        print(jobArray)
+        if jobArray == [nil, nil, nil, nil, nil] {
             updateSpec()
         } else {
             guard let oid = jobArray[0]?.oid else { return }
@@ -87,7 +88,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
             updateJob.append(job)
             for i in 1 ..< jobArray.count {
-                updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+                updateJob.append(["id": i + 1, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
             }
             print("Update job: \(updateJob)")
             let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
@@ -117,10 +118,10 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     private func updateSpec() {
         guard let specId = specArray[0]?.id else { return }
         var updateSpec: [[String: Any]] = []
-        let spec: [String: Any] = ["id": 0, "spec_id": specId as Any, "is_main": true]
+        let spec: [String: Any] = ["id": 1, "spec_id": specId as Any, "is_main": true]
         updateSpec.append(spec)
         for i in 1 ..< specArray.count {
-            updateSpec.append(["id": 0, "spec_id": specArray[i]?.id as Any, "is_main": false])
+            updateSpec.append(["id": i + 1, "spec_id": specArray[i]?.id as Any, "is_main": false])
         }
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
         
@@ -209,15 +210,24 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     func setUser() {
-        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-                                    last_name: Session.instance.user?.last_name,
-                                    middle_name: Session.instance.user?.middle_name,
-                                    phone_number: Session.instance.user?.phone_number,
+//        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
+//                                    last_name: Session.instance.user?.last_name,
+//                                    middle_name: Session.instance.user?.middle_name,
+//                                    phone_number: Session.instance.user?.phone_number,
+//                                    birthday: Session.instance.user?.birthday,
+//                                    city_id: Session.instance.user?.city_id,
+//                                    foto: Session.instance.user?.foto,
+//                                    gender: Session.instance.user?.gender,
+//                                    is_medic_worker: Session.instance.user?.is_medic_worker)
+        user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
+                                    last_name: Session.instance.user?.lastName,
+                                    middle_name: Session.instance.user?.middleName,
+                                    phone_number: Session.instance.user?.phoneNumber,
                                     birthday: Session.instance.user?.birthday,
-                                    city_id: Session.instance.user?.city_id,
+                                    city_id: Session.instance.user?.cityId,
                                     foto: Session.instance.user?.foto,
                                     gender: Session.instance.user?.gender,
-                                    is_medic_worker: Session.instance.user?.is_medic_worker)
+                                    is_medic_worker: Session.instance.user?.isMedicWorker)
         guard let isMedic = user?.is_medic_worker else { return }
         if isMedic == 0 {
             view.setEmployment(isMedic: false)

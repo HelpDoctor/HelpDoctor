@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct MedicalOrganization {
+struct MedicalOrganization: Codable, Equatable {
     let id: Int
     let oid: String?
     let nameShort: String?

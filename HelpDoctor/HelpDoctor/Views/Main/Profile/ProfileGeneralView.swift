@@ -24,13 +24,15 @@ class ProfileGeneralView: UIView {
     private let heightLabel = 15.f
     private var verticalSpacing = 5.f
     
-    convenience init(user: ProfileKeyUser, height: CGFloat) {
+//    convenience init(user: ProfileKeyUser, height: CGFloat) {
+    convenience init(user: User, height: CGFloat) {
         self.init()
         verticalSpacing = (height - heightLabel * 9) / 10
         self.birthdayDataLabel.text = convertDate(user.birthday)
         self.genderDataLabel.text = formatGender(user.gender)
         self.emailLabel.text = user.email
-        self.phoneLabel.text = user.phone_number
+//        self.phoneLabel.text = user.phone_number
+        self.phoneLabel.text = user.phoneNumber
         self.addressDataLabel.text = "\(user.regionName ?? ""), \(user.cityName ?? "")"
         backgroundColor = .white
         setupBirthdayLabel()

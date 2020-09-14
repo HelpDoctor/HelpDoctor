@@ -43,9 +43,10 @@ func parseJSON_getFindedUsers(for startPoint: [String: AnyObject]?,
                     for items in jobArray {
                         let item = items as! [String: Any]
                         let job = ProfileKeyJob(id: nil,
-                                                job_oid: item["oid"] as? String,
+//                                                job_oid: item["oid"] as? String,
                                                 is_main: item["is_main"] as? Bool,
-                                                nameShort: item["nameShort"] as? String)
+                                                organization: item["organization"] as? MedicalOrganization)
+//                                                nameShort: item["nameShort"] as? String)
                         job_places.append(job)
                     }
                 }

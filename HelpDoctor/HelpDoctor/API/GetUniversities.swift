@@ -9,8 +9,8 @@
 import Foundation
 
 func parseJSON_getUniversities (for startPoint: [AnyObject]?,
-                                response: URLResponse?) -> ([Universities], Int?, String?)? {
-    var arrUniversities: [Universities] = []
+                                response: URLResponse?) -> ([University], Int?, String?)? {
+    var arrUniversities: [University] = []
     
     guard let httpResponse = response as? HTTPURLResponse
         else { return ([], nil, nil) }
@@ -20,8 +20,8 @@ func parseJSON_getUniversities (for startPoint: [AnyObject]?,
     for finalObj in startPoint {
         guard let obj = finalObj as? [String: Any] else { return ([], nil, nil) }
         guard let universityId = obj["educationId"] as? Int else { continue }
-        arrUniversities.append(Universities(universityId: universityId,
-                                            universityName: obj["educationName"] as? String))
+        arrUniversities.append(University(educationId: universityId,
+                                          educationName: obj["educationName"] as? String))
     }
     return (arrUniversities, httpResponse.statusCode, nil)
 }

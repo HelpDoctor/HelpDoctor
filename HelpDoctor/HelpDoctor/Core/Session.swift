@@ -40,7 +40,9 @@ class Session {
         return 30
     }
     
-    var user: ProfileKeyUser?
+//    var user: ProfileKeyUser?
+    var user: User?
+    var education: [Education]?
     var userJob: [ProfileKeyJob?]?
     var userInterests: [ProfileKeyInterests]?
     var userSettings: Settings?

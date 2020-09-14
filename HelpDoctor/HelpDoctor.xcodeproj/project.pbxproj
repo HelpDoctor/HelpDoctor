@@ -115,6 +115,21 @@
 		4682F3AC250275D6005BDA9E /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3AB250275D6005BDA9E /* ContactTableViewCell.swift */; };
 		4682F3AE250741B4005BDA9E /* GetContactList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3AD250741B4005BDA9E /* GetContactList.swift */; };
 		4682F3B2250BEDB4005BDA9E /* GetUniversities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3B1250BEDB4005BDA9E /* GetUniversities.swift */; };
+		4682F3BA250F4C7F005BDA9E /* EndPointType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3B9250F4C7F005BDA9E /* EndPointType.swift */; };
+		4682F3BC250F4CF7005BDA9E /* HTTPMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3BB250F4CF7005BDA9E /* HTTPMethod.swift */; };
+		4682F3BE250F4D45005BDA9E /* HTTPTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3BD250F4D45005BDA9E /* HTTPTask.swift */; };
+		4682F3C0250F4DE5005BDA9E /* ParameterEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3BF250F4DE5005BDA9E /* ParameterEncoding.swift */; };
+		4682F3C2250F4ED9005BDA9E /* URLParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3C1250F4ED9005BDA9E /* URLParameterEncoder.swift */; };
+		4682F3C4250F4F59005BDA9E /* JSONParameterEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3C3250F4F59005BDA9E /* JSONParameterEncoder.swift */; };
+		4682F3C6250F4F9D005BDA9E /* NetworkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3C5250F4F9D005BDA9E /* NetworkRouter.swift */; };
+		4682F3C8250F50F2005BDA9E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3C7250F50F2005BDA9E /* Router.swift */; };
+		4682F3CA250F5D6F005BDA9E /* HelpDoctorEndPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3C9250F5D6F005BDA9E /* HelpDoctorEndPoint.swift */; };
+		4682F3CC250F6147005BDA9E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3CB250F6147005BDA9E /* NetworkManager.swift */; };
+		4682F3CF250F7757005BDA9E /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3CE250F7757005BDA9E /* User.swift */; };
+		4682F3D1250F778A005BDA9E /* Education.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D0250F778A005BDA9E /* Education.swift */; };
+		4682F3D3250F77A6005BDA9E /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D2250F77A6005BDA9E /* Job.swift */; };
+		4682F3D5250F77C9005BDA9E /* Specialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D4250F77C9005BDA9E /* Specialization.swift */; };
+		4682F3D7250F77FA005BDA9E /* Interest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D6250F77FA005BDA9E /* Interest.swift */; };
 		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
 		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
 		46959B5324ED2D0800139A17 /* Universities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5224ED2D0800139A17 /* Universities.swift */; };
@@ -373,6 +388,21 @@
 		4682F3AB250275D6005BDA9E /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		4682F3AD250741B4005BDA9E /* GetContactList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetContactList.swift; sourceTree = "<group>"; };
 		4682F3B1250BEDB4005BDA9E /* GetUniversities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetUniversities.swift; sourceTree = "<group>"; };
+		4682F3B9250F4C7F005BDA9E /* EndPointType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndPointType.swift; sourceTree = "<group>"; };
+		4682F3BB250F4CF7005BDA9E /* HTTPMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPMethod.swift; sourceTree = "<group>"; };
+		4682F3BD250F4D45005BDA9E /* HTTPTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTTPTask.swift; sourceTree = "<group>"; };
+		4682F3BF250F4DE5005BDA9E /* ParameterEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParameterEncoding.swift; sourceTree = "<group>"; };
+		4682F3C1250F4ED9005BDA9E /* URLParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLParameterEncoder.swift; sourceTree = "<group>"; };
+		4682F3C3250F4F59005BDA9E /* JSONParameterEncoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONParameterEncoder.swift; sourceTree = "<group>"; };
+		4682F3C5250F4F9D005BDA9E /* NetworkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRouter.swift; sourceTree = "<group>"; };
+		4682F3C7250F50F2005BDA9E /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		4682F3C9250F5D6F005BDA9E /* HelpDoctorEndPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpDoctorEndPoint.swift; sourceTree = "<group>"; };
+		4682F3CB250F6147005BDA9E /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		4682F3CE250F7757005BDA9E /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		4682F3D0250F778A005BDA9E /* Education.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Education.swift; sourceTree = "<group>"; };
+		4682F3D2250F77A6005BDA9E /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
+		4682F3D4250F77C9005BDA9E /* Specialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Specialization.swift; sourceTree = "<group>"; };
+		4682F3D6250F77FA005BDA9E /* Interest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Interest.swift; sourceTree = "<group>"; };
 		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
 		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
 		46959B5224ED2D0800139A17 /* Universities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Universities.swift; sourceTree = "<group>"; };
@@ -814,6 +844,77 @@
 			path = AddGuests;
 			sourceTree = "<group>";
 		};
+		4682F3B3250F4BEA005BDA9E /* NetworkLayer */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3B4250F4C2A005BDA9E /* Networking */,
+			);
+			path = NetworkLayer;
+			sourceTree = "<group>";
+		};
+		4682F3B4250F4C2A005BDA9E /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3B8250F4C5A005BDA9E /* Encoding */,
+				4682F3B5250F4C3C005BDA9E /* EndPoint */,
+				4682F3B6250F4C44005BDA9E /* Manager */,
+				4682F3B7250F4C53005BDA9E /* Service */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		4682F3B5250F4C3C005BDA9E /* EndPoint */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3C9250F5D6F005BDA9E /* HelpDoctorEndPoint.swift */,
+			);
+			path = EndPoint;
+			sourceTree = "<group>";
+		};
+		4682F3B6250F4C44005BDA9E /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3CB250F6147005BDA9E /* NetworkManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		4682F3B7250F4C53005BDA9E /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3B9250F4C7F005BDA9E /* EndPointType.swift */,
+				4682F3BB250F4CF7005BDA9E /* HTTPMethod.swift */,
+				4682F3BD250F4D45005BDA9E /* HTTPTask.swift */,
+				4682F3C5250F4F9D005BDA9E /* NetworkRouter.swift */,
+				4682F3C7250F50F2005BDA9E /* Router.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		4682F3B8250F4C5A005BDA9E /* Encoding */ = {
+			isa = PBXGroup;
+			children = (
+				4682F3BF250F4DE5005BDA9E /* ParameterEncoding.swift */,
+				4682F3C1250F4ED9005BDA9E /* URLParameterEncoder.swift */,
+				4682F3C3250F4F59005BDA9E /* JSONParameterEncoder.swift */,
+			);
+			path = Encoding;
+			sourceTree = "<group>";
+		};
+		4682F3CD250F772A005BDA9E /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C4CBC3A823D026A900434BFB /* Profile.swift */,
+				4682F3CE250F7757005BDA9E /* User.swift */,
+				4682F3D0250F778A005BDA9E /* Education.swift */,
+				4682F3D2250F77A6005BDA9E /* Job.swift */,
+				4682F3D4250F77C9005BDA9E /* Specialization.swift */,
+				4682F3D6250F77FA005BDA9E /* Interest.swift */,
+				46959B5224ED2D0800139A17 /* Universities.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		46959B4D24ED251700139A17 /* Universities */ = {
 			isa = PBXGroup;
 			children = (
@@ -1133,7 +1234,6 @@
 				46203EE823C443C40072653A /* ScheduleEvents.swift */,
 				46787A74243906D9005C0258 /* Settings.swift */,
 				463010B4243CD817008B9D50 /* UserStatus.swift */,
-				46959B5224ED2D0800139A17 /* Universities.swift */,
 				4682F3AD250741B4005BDA9E /* GetContactList.swift */,
 			);
 			path = API;
@@ -1176,6 +1276,8 @@
 		C48F163423B61733002D04E3 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				4682F3CD250F772A005BDA9E /* Models */,
+				4682F3B3250F4BEA005BDA9E /* NetworkLayer */,
 				46F87EFA23B8C5FE0095264E /* Services */,
 				C48F163523B61739002D04E3 /* Extensions */,
 				46F87F3F23BDEDA60095264E /* Presenter.swift */,
@@ -1377,7 +1479,6 @@
 			isa = PBXGroup;
 			children = (
 				C4CBC3A723D026A900434BFB /* UpdateProfileUser.swift */,
-				C4CBC3A823D026A900434BFB /* Profile.swift */,
 				C4CBC3A923D026A900434BFB /* UpdateProfileInterest.swift */,
 				C4CBC3AA23D026A900434BFB /* UpdateProfileSpec.swift */,
 				C4CBC3AB23D026A900434BFB /* UpdateProfileJob.swift */,
@@ -1545,6 +1646,7 @@
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
 				462A6A1E2500B03100914994 /* SelectRepeatTimeViewController.swift in Sources */,
 				4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */,
+				4682F3CC250F6147005BDA9E /* NetworkManager.swift in Sources */,
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */,
 				46203EFA23C469E30072653A /* GetEventForId.swift in Sources */,
@@ -1571,11 +1673,14 @@
 				46F87F7723C1C33A0095264E /* MedicalSpecializationSearchTextField.swift in Sources */,
 				46203F0223C4DB740072653A /* Session.swift in Sources */,
 				C4CBC3F223E2AAE200434BFB /* CLPlacemark+Extensions.swift in Sources */,
+				4682F3C8250F50F2005BDA9E /* Router.swift in Sources */,
+				4682F3C2250F4ED9005BDA9E /* URLParameterEncoder.swift in Sources */,
 				46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */,
 				4682F3B2250BEDB4005BDA9E /* GetUniversities.swift in Sources */,
 				46203EE923C443C50072653A /* ScheduleEvents.swift in Sources */,
 				4640B6C8240271550023C3A3 /* ChangePasswordPresenter.swift in Sources */,
 				4636B81C24FFE8FC005C4CC8 /* RepeatEventPresenter.swift in Sources */,
+				4682F3D1250F778A005BDA9E /* Education.swift in Sources */,
 				4670347523D4813400AFAA91 /* RepeatNotificationsTableViewCell.swift in Sources */,
 				46F87F1523BB72BA0095264E /* HDButton.swift in Sources */,
 				46F87F5E23BF93BD0095264E /* MedicalSpecializationViewController.swift in Sources */,
@@ -1614,8 +1719,10 @@
 				4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */,
 				46F87F5623BF61B70095264E /* CitiesPresenter.swift in Sources */,
 				4640B6EE2416A7C80023C3A3 /* UITapGestureRecognizer+Extensions.swift in Sources */,
+				4682F3D3250F77A6005BDA9E /* Job.swift in Sources */,
 				C4CBC3F423E2AB1300434BFB /* LocationManager.swift in Sources */,
 				4667C64E246FE1F90032B6C2 /* InviteUserRequest.swift in Sources */,
+				4682F3C4250F4F59005BDA9E /* JSONParameterEncoder.swift in Sources */,
 				469DD6652461313D006DBD30 /* ChangePassword.swift in Sources */,
 				C4CBC3B023D026A900434BFB /* UpdateProfileJob.swift in Sources */,
 				46F87F1B23BB72DA0095264E /* HeaderView.swift in Sources */,
@@ -1640,6 +1747,7 @@
 				C48F162B23B5FE87002D04E3 /* GetDataProfile.swift in Sources */,
 				4640B6BD240194F30023C3A3 /* SettingsCell.swift in Sources */,
 				C48F162123B5FE87002D04E3 /* MedicalOrganization.swift in Sources */,
+				4682F3BC250F4CF7005BDA9E /* HTTPMethod.swift in Sources */,
 				469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */,
 				46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */,
 				4682F3A525023DBE005BDA9E /* GuestCell.swift in Sources */,
@@ -1661,9 +1769,11 @@
 				46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
 				C48F161E23B5FE87002D04E3 /* KeychainItemAccessibility.swift in Sources */,
+				4682F3C6250F4F9D005BDA9E /* NetworkRouter.swift in Sources */,
 				46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */,
 				46F87F4423BE246B0095264E /* UIApplication+Extensions.swift in Sources */,
 				46F87F3A23BDE93B0095264E /* ProfileViewController.swift in Sources */,
+				4682F3C0250F4DE5005BDA9E /* ParameterEncoding.swift in Sources */,
 				46072E2323C267710070F2F6 /* AppointmentAdd.swift in Sources */,
 				C48F161B23B5FE87002D04E3 /* GetRegions.swift in Sources */,
 				C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */,
@@ -1685,6 +1795,7 @@
 				C48F161C23B5FE87002D04E3 /* Regions.swift in Sources */,
 				46F87F4623BE328B0095264E /* EditButton.swift in Sources */,
 				46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */,
+				4682F3D7250F77FA005BDA9E /* Interest.swift in Sources */,
 				46164B9C24EEBA7200879DE4 /* DayCell.swift in Sources */,
 				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
@@ -1692,6 +1803,7 @@
 				4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */,
 				4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
+				4682F3CF250F7757005BDA9E /* User.swift in Sources */,
 				46203F0423C5F59A0072653A /* StartSettingsPresenter.swift in Sources */,
 				46F87F2223BB740D0095264E /* CreateProfileNameViewController.swift in Sources */,
 				4670347123D480E200AFAA91 /* RepeatNotificationsViewController.swift in Sources */,
@@ -1707,6 +1819,7 @@
 				46F87F0923B90CEE0095264E /* RecoveryPasswordViewController.swift in Sources */,
 				46164BC224EFF42E00879DE4 /* TransitionDriver.swift in Sources */,
 				469E0584242B794E00F60A6F /* PickerField.swift in Sources */,
+				4682F3D5250F77C9005BDA9E /* Specialization.swift in Sources */,
 				C48F162423B5FE87002D04E3 /* GetCities.swift in Sources */,
 				46F87EF523B85B860095264E /* RegisterEndPresenter.swift in Sources */,
 				4640B6C324023E4B0023C3A3 /* FeedbackPresenter.swift in Sources */,
@@ -1734,6 +1847,7 @@
 				C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */,
 				C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */,
 				4667C64C246FDE0A0032B6C2 /* Feedback.swift in Sources */,
+				4682F3BE250F4D45005BDA9E /* HTTPTask.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
 				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
@@ -1744,6 +1858,7 @@
 				46F87F4B23BE63150095264E /* RegionsViewController.swift in Sources */,
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				C4CBC3F023E2AAC600434BFB /* MKMapView+Extensions.swift in Sources */,
+				4682F3CA250F5D6F005BDA9E /* HelpDoctorEndPoint.swift in Sources */,
 				46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
 				C48F162C23B5FE87002D04E3 /* ProfileKeyUser.swift in Sources */,
@@ -1751,6 +1866,7 @@
 				469DD65C245ADEF0006DBD30 /* UITextView+Extensions.swift in Sources */,
 				4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */,
 				C4CBC3F723E2AB9500434BFB /* LocationSearchViewController.swift in Sources */,
+				4682F3BA250F4C7F005BDA9E /* EndPointType.swift in Sources */,
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
 				46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */,
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,

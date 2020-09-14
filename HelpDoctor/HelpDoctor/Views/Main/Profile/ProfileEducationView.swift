@@ -18,16 +18,19 @@ class ProfileEducationView: UIView {
     private let leading = 20.f
     private let heightLabel = 15.f
     private let verticalSpacing = 5.f
-    private let university = "Дальневосточный государственный медицинский университет" //TODO: - Удалить
     private var universityDataLabelHeight = 0.f
     
-    convenience init(user: ProfileKeyUser) {
+//    convenience init(user: ProfileKeyUser) {
+    convenience init(education: [Education]) {
         self.init()
-        self.universityDataLabel.text = university //TODO: - Заменить на данные с сервера
-        universityDataLabelHeight = university.height(withConstrainedWidth: Session.width - (2 * leading),
-                                                      font: .systemFontOfSize(size: 14))
-        self.dateOfGraduateDataLabel.text = "2008" //TODO: - Заменить на данные с сервера
-        self.graduateDataLabel.text = "Доцент" //TODO: - Заменить на данные с сервера
+        if education.count != 0 {
+            let university = education[0].education?.educationName ?? ""
+            self.universityDataLabel.text = university
+            universityDataLabelHeight = university.height(withConstrainedWidth: Session.width - (2 * leading),
+                                                          font: .systemFontOfSize(size: 14))
+            self.dateOfGraduateDataLabel.text = "\(education[0].yearEnding ?? 0)"
+            self.graduateDataLabel.text = education[0].academicDegree
+        }
         backgroundColor = .white
         setupUniversityLabel()
         setupUniversityDataLabel()

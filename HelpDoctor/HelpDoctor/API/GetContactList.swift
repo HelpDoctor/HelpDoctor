@@ -19,7 +19,6 @@ func parseJSON_getContactList(for startPoint: [String: AnyObject]?,
     guard let contactsJSON = startPoint["contacts"] as? [AnyObject] else { return ([], nil, nil) }
     
     for obj in contactsJSON {
-        print(obj)
         contacts.append(Contacts(id: obj["id"] as? Int,
                                  first_name: obj["first_name"] as? String,
                                  middle_name: obj["middle_name"] as? String,

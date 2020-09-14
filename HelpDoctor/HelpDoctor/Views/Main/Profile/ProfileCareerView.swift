@@ -135,7 +135,7 @@ extension ProfileCareerView: UITableViewDataSource {
                                                        for: indexPath) as? ProfileJobCell
             else { return UITableViewCell() }
         
-        cell.configure(jobArray[indexPath.section]?.nameShort ?? "")
+        cell.configure(jobArray[indexPath.section]?.organization?.nameShort ?? "")
         return cell
     }
     

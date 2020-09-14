@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ListOfInterests {
+struct ListOfInterests: Codable {
     let id: Int
     let specializationCode: String?
     let name: String?
