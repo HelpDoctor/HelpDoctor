@@ -95,7 +95,6 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     // MARK: - Private methods
     private func setUser() {
-//        phoneTextField.text = Session.instance.user?.phone_number
         phoneTextField.text = Session.instance.user?.phoneNumber
         regionTextField.text = Session.instance.user?.regionName
         cityTextField.text = Session.instance.user?.cityName

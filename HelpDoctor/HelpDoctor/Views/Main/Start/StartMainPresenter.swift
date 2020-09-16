@@ -99,78 +99,18 @@ class StartMainPresenter: StartMainPresenterProtocol {
         }
     }
     
-    /// Загрузка информации о пользователе с сервера
-//    private func getUser() {
-//        let getDataProfile = Profile()
-//
-//        getData(typeOfContent: .getDataFromProfile,
-//                returning: ([String: [AnyObject]], Int?, String?).self,
-//                requestParams: [:]) { [weak self] result in
-//                    let dispathGroup = DispatchGroup()
-//
-//                    getDataProfile.dataFromProfile = result?.0
-//
-//                    dispathGroup.notify(queue: DispatchQueue.main) {
-//                        DispatchQueue.main.async { [weak self]  in
-//                            print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-//                            guard let userData = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser]
-//                                else { return }
-//                            self?.setUser(userData: userData)
-//                            self?.getUserNewMethod()
-//                        }
-//                    }
-//        }
-//    }
-    
     private func getUser() {
         networkManager.getUser { profiles, error in
             if let error = error {
                 self.view.showAlert(message: error)
             }
             if let profiles = profiles {
-                self.setUser(userData: profiles.user)
+                self.session.user = profiles.user
+                self.session.education = profiles.educations
+                self.session.userJob = profiles.job
+                self.session.specialization = profiles.specializations
             }
         }
-    }
-    
-    /// Установка информации о пользователе в форму
-    /// - Parameter userData: информация с сервера
-//    private func setUser(userData: [ProfileKeyUser]) {
-//        Session.instance.user = ProfileKeyUser(id: userData[0].id,
-//                                               first_name: userData[0].first_name,
-//                                               last_name: userData[0].last_name,
-//                                               middle_name: userData[0].middle_name,
-//                                               email: userData[0].email,
-//                                               phone_number: userData[0].phone_number,
-//                                               birthday: userData[0].birthday,
-//                                               city_id: userData[0].city_id,
-//                                               cityName: userData[0].cityName,
-//                                               regionId: userData[0].regionId,
-//                                               regionName: userData[0].regionName,
-//                                               foto: userData[0].foto,
-//                                               gender: userData[0].gender,
-//                                               is_medic_worker: userData[0].is_medic_worker)
-//}
-    private func setUser(userData: User) {
-        var verifiedUser = false
-        if UserDefaults.standard.string(forKey: "userStatus") == "verified" {
-            verifiedUser = true
-        }
-        Session.instance.user = User(id: userData.id,
-                                     firstName: userData.firstName,
-                                     lastName: userData.lastName,
-                                     middleName: userData.middleName,
-                                     gender: userData.gender,
-                                     email: userData.email,
-                                     phoneNumber: userData.phoneNumber,
-                                     birthday: userData.birthday,
-                                     cityId: userData.cityId,
-                                     cityName: userData.cityName,
-                                     regionId: userData.regionId,
-                                     regionName: userData.regionName,
-                                     foto: userData.foto,
-                                     isMedicWorker: userData.isMedicWorker,
-                                     verifiedUser: verifiedUser)
     }
     
     /// Переход на первый экран заполнения профиля

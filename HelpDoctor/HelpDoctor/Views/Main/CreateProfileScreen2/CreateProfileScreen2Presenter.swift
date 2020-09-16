@@ -108,7 +108,6 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             self?.region = getRegions.regions?.first(where: { $0.regionId == idRegion })
-//                            guard let cityId = Session.instance.user?.city_id else { return }
                             guard let cityId = Session.instance.user?.cityId else { return }
                             self?.setCityFromDevice(cityId)
                         }
@@ -199,15 +198,6 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         user?.phone_number = phone
         user?.city_id = city?.id
         if isEdit {
-//            let user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-//                                            last_name: Session.instance.user?.last_name,
-//                                            middle_name: Session.instance.user?.middle_name,
-//                                            phone_number: phone,
-//                                            birthday: strBirthday,
-//                                            city_id: city?.id,
-//                                            foto: Session.instance.user?.foto,
-//                                            gender: Session.instance.user?.gender,
-//                                            is_medic_worker: Session.instance.user?.is_medic_worker)
             let user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
                                             last_name: Session.instance.user?.lastName,
                                             middle_name: Session.instance.user?.middleName,

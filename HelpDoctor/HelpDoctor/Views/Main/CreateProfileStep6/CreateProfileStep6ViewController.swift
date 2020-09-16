@@ -89,7 +89,27 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Private methods
     private func setUser() {
+        guard let education = Session.instance.education,
+            !education.isEmpty else { return }
+        universityTextField.text = education[0].education?.educationName
+        graduateDateTextField.text = "\(education[0].yearEnding ?? 0)"
         
+        switch education[0].academicDegree {
+        case .academic:
+            academicButton.isSelected = true
+        case .candidate:
+            candidateButton.isSelected = true
+        case .docent:
+            docentButton.isSelected = true
+        case .doctor:
+            doctorButton.isSelected = true
+        case .null:
+            nodegreeButton.isSelected = true
+        case .professor:
+            professorButton.isSelected = true
+        case .none:
+            break
+        }
     }
     
     // MARK: - Setup views

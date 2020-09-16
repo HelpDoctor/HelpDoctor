@@ -84,12 +84,12 @@ class RegionsPresenter: RegionsPresenterProtocol {
             }
             let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
-            //swiftlint:disable force_cast
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileScreen2ViewController
+            guard let previous = view.navigationController?.viewControllers.last as? CreateProfileScreen2ViewController
+                else { return }
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
-        } else if sender == "Work" {
+        } /*else if sender == "Work" {
             guard let index = index else {
                     view.showAlert(message: "Выберите один регион")
                     return
@@ -103,7 +103,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
             presenter.regionId = regionId
             presenter.getCities(regionId: regionId)
             view.navigationController?.pushViewController(viewController, animated: true)
-        }
+        }*/
     }
     
     func back() {

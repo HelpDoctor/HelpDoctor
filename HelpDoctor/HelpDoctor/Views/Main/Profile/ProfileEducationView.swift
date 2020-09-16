@@ -20,7 +20,6 @@ class ProfileEducationView: UIView {
     private let verticalSpacing = 5.f
     private var universityDataLabelHeight = 0.f
     
-//    convenience init(user: ProfileKeyUser) {
     convenience init(education: [Education]) {
         self.init()
         if education.count != 0 {
@@ -29,7 +28,7 @@ class ProfileEducationView: UIView {
             universityDataLabelHeight = university.height(withConstrainedWidth: Session.width - (2 * leading),
                                                           font: .systemFontOfSize(size: 14))
             self.dateOfGraduateDataLabel.text = "\(education[0].yearEnding ?? 0)"
-            self.graduateDataLabel.text = education[0].academicDegree
+            self.graduateDataLabel.text = education[0].academicDegree?.label
         }
         backgroundColor = .white
         setupUniversityLabel()

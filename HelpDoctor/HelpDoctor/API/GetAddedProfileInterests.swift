@@ -10,9 +10,9 @@ import Foundation
 
 func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
                                    startPoint2: [AnyObject]?,
-                                   response: URLResponse?) -> ([ListOfInterests], Int?, String?)? {
+                                   response: URLResponse?) -> ([Interest], Int?, String?)? {
     
-    var addInterests: [ListOfInterests] = []
+    var addInterests: [Interest] = []
     var responce: (Int?, String?)?
     
     guard  let httpResponse = response as? HTTPURLResponse
@@ -24,7 +24,7 @@ func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
     case 200:
         guard let startPoint = startPoint else { return ([], nil, nil) }
         guard let intId = startPoint["id"] as? Int else { return ([], nil, nil) }
-        addInterests.append(ListOfInterests(id: intId,
+        addInterests.append(Interest(id: intId,
                                             specializationCode: nil,
                                             name: startPoint["name"] as? String))
     case 409:
@@ -32,7 +32,7 @@ func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
         for finalObj in startPoint2 {
             guard let obj = finalObj as? [String: Any] else { return ([], nil, nil) }
             guard let intId = obj["id"] as? Int else { continue }
-            addInterests.append(ListOfInterests(id: intId,
+            addInterests.append(Interest(id: intId,
                                                 specializationCode: nil,
                                                 name: obj["name"] as? String))
         }

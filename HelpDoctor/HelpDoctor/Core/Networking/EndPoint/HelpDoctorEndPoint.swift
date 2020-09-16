@@ -9,7 +9,9 @@
 import Foundation
 
 public enum HelpDoctorApi {
+    case registration(email: String)
     case getProfile
+    case getListOFInterests(specCode: String?, addSpecCode: String?)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -24,22 +26,38 @@ extension HelpDoctorApi: EndPointType {
     
     var path: String {
         switch self {
+        case .registration:
+            return "public/api/registration"
         case .getProfile:
             return "public/api/profile/get"
+        case .getListOFInterests(specCode: let specCode, addSpecCode: let addSpecCode):
+            guard let specCode = specCode else {
+                return "public/api/profile/sc_interests/"
+            }
+            guard let addSpecCode = addSpecCode else {
+                return "public/api/profile/sc_interests/\(specCode)"
+            }
+            return "public/api/profile/sc_interests/\(specCode)/\(addSpecCode)"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .getProfile:
+        case .registration, .getProfile:
             return .post
+        case .getListOFInterests:
+            return .get
         }
     }
     
     var task: HTTPTask {
         switch self {
+        case .registration(email: let email):
+            return .requestParameters(bodyParameters: ["email": email], urlParameters: nil)
         case .getProfile:
             return .requestParametersAndHeaders(bodyParameters: nil, urlParameters: nil, additionHeaders: headers)
+        case .getListOFInterests:
+            return .request
         }
     }
     
@@ -49,6 +67,8 @@ extension HelpDoctorApi: EndPointType {
         case .getProfile:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
+        default:
+            return nil
         }
     }
 }

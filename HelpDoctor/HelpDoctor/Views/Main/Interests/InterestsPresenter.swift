@@ -28,11 +28,11 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
-    var jobArray: [MedicalOrganization?] = []
-    var specArray: [MedicalSpecialization?] = []
-    var userInterests: [ListOfInterests] = []
-    var arrayInterests: [ListOfInterests]?
-    var filteredArray: [ListOfInterests] = []
+    var jobArray: [Job] = []
+    var specArray: [Specialization] = []
+    var userInterests: [Interest] = []
+    var arrayInterests: [Interest]?
+    var filteredArray: [Interest] = []
     
     // MARK: - Init
     required init(view: InterestsViewController) {
@@ -106,7 +106,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
         view.startActivityIndicator()
         let addInterest = Profile()
         getData(typeOfContent: .addProfileInterest,
-                returning: ([ListOfInterests], Int?, String?).self,
+                returning: ([Interest], Int?, String?).self,
                 requestParams: ["interest": interest]) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -131,7 +131,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     /// Добавление вновь созданного интереса в массив интересов пользователя и обновление таблицы
     /// - Parameter interests: массив интересов с сервера
-    private func callback(interests: [ListOfInterests]) {
+    private func callback(interests: [Interest]) {
         interests.forEach {
             userInterests.append($0.self)
             arrayInterests?.append($0.self)

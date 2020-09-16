@@ -9,7 +9,7 @@
 import Foundation
 
 struct ResultFindedUsers {
-    let user: ProfileKeyUser
-    let job_places: [ProfileKeyJob]?
-    let specializations: [ProfileKeySpec]?
+    let user: User
+    let job_places: [Job]?
+    let specializations: [Specialization]?
 }

@@ -12,7 +12,7 @@ struct Education: Codable {
     let id: Int
     let isMain: Bool?
     let yearEnding: Int?
-    let academicDegree: String?
+    let academicDegree: AcademicDegree?
     let education: University?
     private enum CodingKeys: String, CodingKey {
         case id

@@ -12,7 +12,7 @@ class HeaderView: UIView {
     private let backButton = UIButton()
     private let logoImage = UIImageView()
     let titleLabel = UILabel()
-    private var presenter: Presenter?
+    private weak var presenter: Presenter?
     private var font = UIFont.titleFont(size: 24)
     private var heightHeader = 0.f
     

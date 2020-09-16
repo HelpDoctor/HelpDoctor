@@ -9,9 +9,9 @@
 import Foundation
 
 func parseJSON_getListOfInterests(for startPoint: [String: AnyObject]?,
-                                  response: URLResponse?) -> ([String: [ListOfInterests]], [Int]?, Int?, String?)? {
-    var arrListOfInterests: [ListOfInterests] = []
-    var dictListOfInterests: [String: [ListOfInterests]] = [:]
+                                  response: URLResponse?) -> ([String: [Interest]], [Int]?, Int?, String?)? {
+    var arrListOfInterests: [Interest] = []
+    var dictListOfInterests: [String: [Interest]] = [:]
     var idRelevantInterests: [Int] = []
     
     guard  let httpResponse = response as? HTTPURLResponse
@@ -32,7 +32,7 @@ func parseJSON_getListOfInterests(for startPoint: [String: AnyObject]?,
                 idRelevantInterests.append(interestId)
             } else {
                 guard let id = obj["id"] as? Int else { continue }
-                arrListOfInterests.append(ListOfInterests(id: id,
+                arrListOfInterests.append(Interest(id: id,
                                                           specializationCode: obj["specialization_code"] as? String,
                                                           name: obj["name"] as? String))
             }

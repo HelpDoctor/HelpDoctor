@@ -38,8 +38,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     private let maleButtonLabel = UILabel()
     private let femaleButton = RadioButton()
     private let femaleButtonLabel = UILabel()
-//    private let nosexButton = RadioButton()
-//    private let nosexButtonLabel = UILabel()
     private let hideGenderCheckbox = CheckBox(type: .square)
     private let nextButton = HDButton(title: "Далее")
     private var keyboardHeight = 0.f
@@ -66,8 +64,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         setupFemaleButton()
         setupFemaleButtonLabel()
         setupHideGenderCheckbox()
-//        setupNosexButton()
-//        setupNosexButtonLabel()
         setupNextButton()
         addTapGestureToHideKeyboard()
         configureRadioButtons()
@@ -91,9 +87,6 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Private methods
     /// Установка значений из памяти устройства
     private func setUser() {
-//        surnameTextField.text = Session.instance.user?.last_name
-//        nameTextField.text = Session.instance.user?.first_name
-//        patronymicTextField.text = Session.instance.user?.middle_name
         surnameTextField.text = Session.instance.user?.lastName
         nameTextField.text = Session.instance.user?.firstName
         patronymicTextField.text = Session.instance.user?.middleName
@@ -380,40 +373,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         hideGenderCheckbox.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
         hideGenderCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
-    /*
-    /// Установка радиокнопки
-    private func setupNosexButton() {
-        let leading = 20.f
-        nosexButton.isSelected = false
-        nosexButton.addTarget(self, action: #selector(genderButtonPressed), for: .touchUpInside)
-        scrollView.addSubview(nosexButton)
-        
-        nosexButton.translatesAutoresizingMaskIntoConstraints = false
-        nosexButton.topAnchor.constraint(equalTo: maleButton.bottomAnchor,
-                                         constant: verticalInset).isActive = true
-        nosexButton.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: leading).isActive = true
-        nosexButton.widthAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-        nosexButton.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
-    }
     
-    /// Установка поясняющей надписи к радиокнопке
-    private func setupNosexButtonLabel() {
-        let leading = 5.f
-        let width = Session.width - 20 - 20 - leading - heightRadioButton //20 это leading и trailing у кнопок
-        nosexButtonLabel.text = "Не указывать в профиле"
-        nosexButtonLabel.font = .systemFontOfSize(size: 12)
-        nosexButtonLabel.textColor = .white
-        scrollView.addSubview(nosexButtonLabel)
-        
-        nosexButtonLabel.translatesAutoresizingMaskIntoConstraints = false
-        nosexButtonLabel.topAnchor.constraint(equalTo: nosexButton.topAnchor).isActive = true
-        nosexButtonLabel.leadingAnchor.constraint(equalTo: nosexButton.trailingAnchor,
-                                                  constant: leading).isActive = true
-        nosexButtonLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        nosexButtonLabel.heightAnchor.constraint(equalTo: nosexButton.heightAnchor).isActive = true
-    }
-    */
     /// Установка кнопки перехода к следующему экрану
     private func setupNextButton() {
         let width = 110.f

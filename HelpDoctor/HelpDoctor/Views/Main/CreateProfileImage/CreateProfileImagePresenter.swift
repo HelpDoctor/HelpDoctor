@@ -24,9 +24,9 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
     var isEdit = false
-    var jobArray: [MedicalOrganization?] = []
-    var specArray: [MedicalSpecialization?] = []
-    var userInterests: [ListOfInterests] = []
+    var jobArray: [Job] = []
+    var specArray: [Specialization] = []
+    var userInterests: [Interest] = []
     
     // MARK: - Init
     required init(view: CreateProfileImageViewController) {
@@ -46,15 +46,6 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     }
     
     func setUser() {
-//        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-//                                    last_name: Session.instance.user?.last_name,
-//                                    middle_name: Session.instance.user?.middle_name,
-//                                    phone_number: Session.instance.user?.phone_number,
-//                                    birthday: Session.instance.user?.birthday,
-//                                    city_id: Session.instance.user?.city_id,
-//                                    foto: Session.instance.user?.foto,
-//                                    gender: Session.instance.user?.gender,
-//                                    is_medic_worker: Session.instance.user?.is_medic_worker)
         user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
                                     last_name: Session.instance.user?.lastName,
                                     middle_name: Session.instance.user?.middleName,
@@ -112,12 +103,16 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         if jobArray.count == 0 {
             updateSpec()
         } else {
-            guard let oid = jobArray[0]?.oid else { return }
+            guard let oid = jobArray[0].organization?.oid else { return }
             var updateJob: [[String: Any]] = []
-            let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
+            let job: [String: Any] = ["id": jobArray[0].id as Any,
+                                      "job_oid": oid,
+                                      "is_main": true]
             updateJob.append(job)
             for i in 1 ..< jobArray.count {
-                updateJob.append(["id": 0, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+                updateJob.append(["id": jobArray[i].id as Any,
+                                  "job_oid": jobArray[i].organization?.oid as Any,
+                                  "is_main": false])
             }
             print("Update job: \(updateJob)")
             let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
@@ -146,12 +141,16 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        guard let specId = specArray[0]?.id else { return }
+        guard let specId = specArray[0].specialization?.id else { return }
         var updateSpec: [[String: Any]] = []
-        let spec: [String: Any] = ["id": 0, "spec_id": specId as Any, "is_main": true]
+        let spec: [String: Any] = ["id": specArray[0].id as Any,
+                                   "spec_id": specId as Any,
+                                   "is_main": true]
         updateSpec.append(spec)
         for i in 1 ..< specArray.count {
-            updateSpec.append(["id": 0, "spec_id": specArray[i]?.id as Any, "is_main": false])
+            updateSpec.append(["id": specArray[i].id as Any,
+                               "spec_id": specArray[i].specialization?.id as Any,
+                               "is_main": false])
         }
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
         
@@ -211,15 +210,6 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     /// Обновление информации о пользователе на сервере
     /// - Parameter profile: информация для обновления
     private func updateProfile() {
-//        let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-//                                           last_name: Session.instance.user?.last_name,
-//                                           middle_name: Session.instance.user?.middle_name,
-//                                           phone_number: Session.instance.user?.phone_number,
-//                                           birthday: Session.instance.user?.birthday,
-//                                           city_id: Session.instance.user?.city_id,
-//                                           foto: user?.foto,
-//                                           gender: Session.instance.user?.gender,
-//                                           is_medic_worker: Session.instance.user?.is_medic_worker)
         let profile = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
                                            last_name: Session.instance.user?.lastName,
                                            middle_name: Session.instance.user?.middleName,
@@ -266,11 +256,10 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     
     /// Переход к следующему экрану
     private func next() {
-        
+
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
-        
     }
     
 }

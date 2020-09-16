@@ -91,14 +91,13 @@ class CitiesPresenter: CitiesPresenterProtocol {
     // MARK: - Coordinator
     func next(index: Int?) {
         if sender == nil {
-            guard let index = index/*,
-                let city = arrayCities?[index]*/ else {
+            guard let index = index else {
                     view.showAlert(message: "Выберите один город")
                     return }
             let city = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
-            //swiftlint:disable force_cast
-            let previous = view.navigationController?.viewControllers.last as! CreateProfileScreen2ViewController
+            guard let previous = view.navigationController?.viewControllers.last as? CreateProfileScreen2ViewController
+                else { return }
             let presenter = previous.presenter
             presenter?.setCity(city: city)
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {

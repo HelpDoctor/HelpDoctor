@@ -1,5 +1,5 @@
 //
-//  ListOfInterests.swift
+//  Interest.swift
 //  HelpDoctor
 //
 //  Created by Anton Fomkin on 28.10.2019.
@@ -8,8 +8,13 @@
 
 import Foundation
 
-struct ListOfInterests: Codable {
+struct Interest: Codable {
     let id: Int
     let specializationCode: String?
     let name: String?
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case specializationCode = "specialization_code"
+        case name
+    }
 }

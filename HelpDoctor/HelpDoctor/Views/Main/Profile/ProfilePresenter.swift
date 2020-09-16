@@ -25,11 +25,10 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Constants and variables
     private let session = Session.instance
-//    private var user: ProfileKeyUser?
     private var user: User?
     private var educationArray: [Education] = []
-    private var jobArray: [ProfileKeyJob?] = [nil, nil, nil, nil, nil]
-    private var interestsArray: [ProfileKeyInterests]?
+    private var jobArray: [Job?] = [nil, nil, nil, nil, nil]
+    private var interestsArray: [ProfileInterest]?
     
     required init(view: ProfileViewController) {
         self.view = view
@@ -38,34 +37,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Public methods
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        let getDataProfile = Profile()
-
-        getData(typeOfContent: .getDataFromProfile,
-                returning: ([String: [AnyObject]], Int?, String?).self,
-                requestParams: [:] ) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-
-            getDataProfile.dataFromProfile = result?.0
-
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-//                    if let userData: [ProfileKeyUser] = getDataProfile.dataFromProfile?["user"] as? [ProfileKeyUser] {
-//                        self?.setUser(userData: userData)
-//                    }
-                    if let jobData: [ProfileKeyJob] = getDataProfile.dataFromProfile?["job"] as? [ProfileKeyJob] {
-                        self?.setJob(jobData: jobData)
-                    }
-                    if let specData: [ProfileKeySpec] = getDataProfile.dataFromProfile?["spec"] as? [ProfileKeySpec] {
-                        self?.setSpec(specData: specData)
-                    }
-                    if let interestData: [ProfileKeyInterests] = getDataProfile.dataFromProfile?["interests"]
-                        as? [ProfileKeyInterests] {
-                        self?.setInterests(interestData: interestData)
-                    }
-                }
-            }
-        }
         self.networkManager.getUser { profiles, error in
             if let error = error {
                 self.view.showAlert(message: error)
@@ -73,9 +44,9 @@ class ProfilePresenter: ProfilePresenterProtocol {
             if let profiles = profiles {
                 self.setUser(userData: profiles.user)
                 self.setEducation(education: profiles.educations)
-                //                self.setJob(jobData: profiles.job)
-                //                self.view.setupCareerView()
-                //                self.view.setupInterestsView()
+                self.setJob(jobData: profiles.job)
+                self.setSpec(specData: profiles.specializations)
+                self.setInterests(interestData: profiles.interests)
             }
         }
     }
@@ -116,53 +87,33 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     func logout() {
         let logout = Registration(email: nil, password: nil, token: myToken)
-
+        
         getData(typeOfContent: .logout,
                 returning: (Int?, String?).self,
                 requestParams: logout.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            logout.responce = result
-
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("result=\(String(describing: logout.responce))")
-                    guard let code = logout.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        print("Logout")
-                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                        AppDelegate.shared.rootViewController.switchToLogout()
-                    } else {
-                        self?.view.showAlert(message: logout.responce?.1)
+                    let dispathGroup = DispatchGroup()
+                    logout.responce = result
+                    
+                    dispathGroup.notify(queue: DispatchQueue.main) {
+                        DispatchQueue.main.async { [weak self]  in
+                            print("result=\(String(describing: logout.responce))")
+                            guard let code = logout.responce?.0 else { return }
+                            if responceCode(code: code) {
+                                print("Logout")
+                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                                AppDelegate.shared.rootViewController.switchToLogout()
+                            } else {
+                                self?.view.showAlert(message: logout.responce?.1)
+                            }
+                        }
                     }
-                }
-            }
         }
     }
     
     // MARK: - Private methods
     /// Установка информации о пользователе в форму
     /// - Parameter userData: информация с сервера
-//    private func setUser(userData: [ProfileKeyUser]) {
-//        self.user = ProfileKeyUser(id: userData[0].id,
-//                                   first_name: userData[0].first_name,
-//                                   last_name: userData[0].last_name,
-//                                   middle_name: userData[0].middle_name,
-//                                   email: userData[0].email,
-//                                   phone_number: userData[0].phone_number,
-//                                   birthday: userData[0].birthday,
-//                                   city_id: userData[0].city_id,
-//                                   cityName: userData[0].cityName,
-//                                   regionId: userData[0].regionId,
-//                                   regionName: userData[0].regionName,
-//                                   foto: userData[0].foto,
-//                                   gender: userData[0].gender,
-//                                   is_medic_worker: userData[0].is_medic_worker)
-//    }
     private func setUser(userData: User) {
-        var verifiedUser = false
-        if UserDefaults.standard.string(forKey: "userStatus") == "verified" {
-            verifiedUser = true
-        }
         self.user = User(id: userData.id,
                          firstName: userData.firstName,
                          lastName: userData.lastName,
@@ -177,7 +128,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
                          regionName: userData.regionName,
                          foto: userData.foto,
                          isMedicWorker: userData.isMedicWorker,
-                         verifiedUser: verifiedUser)
+                         verifiedUser: userData.verifiedUser)
         let lastName = user?.lastName ?? ""
         let name = user?.firstName ?? ""
         let middleName = user?.middleName ?? ""
@@ -197,36 +148,35 @@ class ProfilePresenter: ProfilePresenterProtocol {
             self.view.setupEducationView()
         }
     }
-
+    
     /// Установка информации о работе пользователя в форму
     /// - Parameter jobData: информация с сервера
-    private func setJob(jobData: [ProfileKeyJob]) {
+    private func setJob(jobData: [Job]) {
         session.userJob?.removeAll()
         session.userJob = jobData
         jobArray = jobData
-        view.setupCareerView()
+        DispatchQueue.main.async {
+            self.view.setupCareerView()
+        }
     }
-    
-//    private func setJob(jobData: [Job]) {
-//        session.userJob?.removeAll()
-//        session.userJob = jobData
-//        jobArray = jobData
-//        view.setupCareerView()
-//    }
     
     /// Установка информации о специализации пользователя в форму
     /// - Parameter specData: информация с сервера
-    private func setSpec(specData: [ProfileKeySpec]) {
-        guard let indexMainSpec = specData.firstIndex(where: { $0.is_main == true }) else { return }
-        view.setSpec(spec: specData[indexMainSpec].name ?? "")
+    private func setSpec(specData: [Specialization]) {
+        guard let indexMainSpec = specData.firstIndex(where: { $0.isMain == true }) else { return }
+        DispatchQueue.main.async {
+            self.view.setSpec(spec: specData[indexMainSpec].specialization?.name ?? "")
+        }
     }
     
     /// Установка интересов в поле ввода, загрузка интересов в массив интересов по специализации пользователя
     /// - Parameter interestData: данные с сервера
-    private func setInterests(interestData: [ProfileKeyInterests]) {
+    private func setInterests(interestData: [ProfileInterest]) {
         session.userInterests = interestData
         interestsArray = interestData
-        view.setupInterestsView()
+        DispatchQueue.main.async {
+            self.view.setupInterestsView()
+        }
     }
     
     /// Конвертирование формата даты с формы в серверный

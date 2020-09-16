@@ -14,8 +14,8 @@ final class Profile {
     var medicalOrganization: [MedicalOrganization]? = []
     var medicalSpecialization: [MedicalSpecialization]? = []
     var universities: [University]? = []
-    var listOfInterests: [String: [ListOfInterests]]? = [:]
-    var addInterests: [ListOfInterests]? = []
+    var listOfInterests: [String: [Interest]]? = [:]
+    var addInterests: [Interest]? = []
     var dataFromProfile: [String: [AnyObject]]? = [:]
     var responce: (Int?, String?)?
 }
@@ -25,5 +25,5 @@ struct Profiles: Codable {
     let educations: [Education]
     let job: [Job]
     let specializations: [Specialization]
-    let interests: [Interest]
+    let interests: [ProfileInterest]
 }

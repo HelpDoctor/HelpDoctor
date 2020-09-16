@@ -34,13 +34,15 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     var user: UpdateProfileKeyUser?
     var isEdit = false
     var region: Regions?
-    private var jobArray: [MedicalOrganization?] = [nil, nil, nil, nil, nil]
-    private var specArray: [MedicalSpecialization?] = [nil, nil, nil, nil, nil]
+    private var jobArray: [Job] = []
+    private var specArray: [Specialization] = []
     private var jobIndex = 0
     private var specIndex = 0
     
     required init(view: CreateProfileWorkViewController) {
         self.view = view
+        jobArray = Session.instance.userJob ?? []
+        specArray = Session.instance.specialization ?? []
     }
     
     // MARK: - Private methods
@@ -79,16 +81,15 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
-        print(jobArray)
-        if jobArray == [nil, nil, nil, nil, nil] {
+        if jobArray.isEmpty {
             updateSpec()
         } else {
-            guard let oid = jobArray[0]?.oid else { return }
+            guard let oid = jobArray[0].organization?.oid else { return }
             var updateJob: [[String: Any]] = []
             let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
             updateJob.append(job)
             for i in 1 ..< jobArray.count {
-                updateJob.append(["id": i + 1, "job_oid": jobArray[i]?.oid as Any, "is_main": false])
+                updateJob.append(["id": i + 1, "job_oid": jobArray[i].organization?.oid as Any, "is_main": false])
             }
             print("Update job: \(updateJob)")
             let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
@@ -116,12 +117,12 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        guard let specId = specArray[0]?.id else { return }
+        guard let specId = specArray[0].specialization?.id else { return }
         var updateSpec: [[String: Any]] = []
         let spec: [String: Any] = ["id": 1, "spec_id": specId as Any, "is_main": true]
         updateSpec.append(spec)
         for i in 1 ..< specArray.count {
-            updateSpec.append(["id": i + 1, "spec_id": specArray[i]?.id as Any, "is_main": false])
+            updateSpec.append(["id": i + 1, "spec_id": specArray[i].specialization?.id as Any, "is_main": false])
         }
         let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
         
@@ -157,11 +158,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     func jobSearch(_ index: Int) {
         jobIndex = index
         var idRegion: Int?
-//        let viewController = RegionsViewController()
-//        let presenter = RegionsPresenter(view: viewController)
-//        viewController.presenter = presenter
-//        presenter.sender = "Work"
-//        view.navigationController?.pushViewController(viewController, animated: true)
         if isEdit {
             idRegion = Session.instance.user?.regionId
         } else {
@@ -197,7 +193,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         if index + 1 > jobArray.count {
             return ""
         } else {
-            return jobArray[index]?.nameShort ?? ""
+            return jobArray[index].organization?.nameShort ?? ""
         }
     }
     
@@ -205,20 +201,11 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         if index + 1 > specArray.count {
             return ""
         } else {
-            return specArray[index]?.name ?? ""
+            return specArray[index].specialization?.name ?? ""
         }
     }
     
     func setUser() {
-//        user = UpdateProfileKeyUser(first_name: Session.instance.user?.first_name,
-//                                    last_name: Session.instance.user?.last_name,
-//                                    middle_name: Session.instance.user?.middle_name,
-//                                    phone_number: Session.instance.user?.phone_number,
-//                                    birthday: Session.instance.user?.birthday,
-//                                    city_id: Session.instance.user?.city_id,
-//                                    foto: Session.instance.user?.foto,
-//                                    gender: Session.instance.user?.gender,
-//                                    is_medic_worker: Session.instance.user?.is_medic_worker)
         user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
                                     last_name: Session.instance.user?.lastName,
                                     middle_name: Session.instance.user?.middleName,
@@ -237,12 +224,24 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     func setJob(job: MedicalOrganization) {
-        jobArray.insert(job, at: jobIndex)
+        if jobIndex < jobArray.count {
+            let jobId = Session.instance.userJob?[jobIndex].id ?? 0
+            jobArray.remove(at: jobIndex)
+            jobArray.insert(Job(id: jobId, isMain: jobIndex == 0, organization: job), at: jobIndex)
+        } else {
+            jobArray.append(Job(id: 0, isMain: jobIndex == 0, organization: job))
+        }
         view.reloadJobTableView()
     }
     
     func setSpec(spec: MedicalSpecialization) {
-        specArray.insert(spec, at: specIndex)
+        if specIndex < specArray.count {
+            let specId = Session.instance.specialization?[specIndex].id ?? 0
+            specArray.remove(at: specIndex)
+            specArray.insert(Specialization(id: specId, isMain: specIndex == 0, specialization: spec), at: specIndex)
+        } else {
+            specArray.append(Specialization(id: 0, isMain: specIndex == 0, specialization: spec))
+        }
         view.reloadSpecTableView()
     }
     
@@ -252,12 +251,12 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Coordinator
     func next() {
-        guard specArray[0] != nil else {
+        if specArray.isEmpty {
             view.showAlert(message: "Не заполнена основная специализация")
             return
         }
         if user?.is_medic_worker == 1 {
-            guard jobArray[0] != nil else {
+            if jobArray.isEmpty {
                 view.showAlert(message: "Не заполнено основное место работы")
                 return
             }
@@ -270,12 +269,8 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             let presenter = CreateProfileSpecPresenter(view: viewController)
             viewController.presenter = presenter
             presenter.user = user
-            presenter.jobArray = jobArray.filter {
-                $0?.oid != nil
-            }
-            presenter.specArray = specArray.filter {
-                $0?.id != nil
-            }
+            presenter.jobArray = jobArray
+            presenter.specArray = specArray
             view.navigationController?.pushViewController(viewController, animated: true)
         }
         

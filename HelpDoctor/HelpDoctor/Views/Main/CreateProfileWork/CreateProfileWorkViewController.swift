@@ -12,6 +12,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Dependency
     var presenter: CreateProfileWorkPresenterProtocol?
+    let session = Session.instance
     
     // MARK: - Constants
     private let backgroundColor = UIColor.backgroundColor
@@ -21,7 +22,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     private let heightTextField = 30.f
     private let heightTitleLabel = 20.f
     private let heightLabel = 15.f
-    private let heightTableView = 70.f
+    private var heightJobTableView = 70.f
+    private var heightSpecTableView = 70.f
     private let heightRadioButton = 20.f
     private let heightPlusButton = 25.f
     private let heightNextButton = 40.f
@@ -55,10 +57,13 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        jobRowCount = getJobRowCount()
+        specRowCount = getSpecRowCount()
         self.tabBarController?.tabBar.isHidden = true
         view.backgroundColor = backgroundColor
-        let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 3) + (heightTableView * 2)
-            + heightTextField + (heightRadioButton * 2) + (heightPlusButton * 2) + heightNextButton
+        let contentHeight = headerHeight + heightTitleLabel + (heightLabel * 3) + heightJobTableView
+            + heightSpecTableView + heightTextField + (heightRadioButton * 2)
+            + (heightPlusButton * 2) + heightNextButton
         verticalInset = (Session.height - Session.statusBarHeight - contentHeight) / 12
         setupScrollView()
         setupStep7TitleLabel()
@@ -88,6 +93,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
             presenter?.setUser()
         } else {
             setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
+            guard let isMedic = Session.instance.user?.isMedicWorker else { return }
+            setEmployment(isMedic: isMedic == 0 ? false : true)
         }
     }
     
@@ -115,6 +122,27 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
             notMedicalButton.isSelected = true
         }
         employmentButtonPressed()
+    }
+    
+    // MARK: - Private methods
+    private func getSpecRowCount() -> Int {
+        guard let count = presenter?.getCountSpec() else { return 2 }
+        if count < 2 {
+            return 2
+        } else {
+            heightSpecTableView = count.f * 35
+            return count
+        }
+    }
+    
+    private func getJobRowCount() -> Int {
+        guard let count = presenter?.getCountJob() else { return 2 }
+        if count < 2 {
+            return 2
+        } else {
+            heightJobTableView = count.f * 35
+            return count
+        }
     }
     
     // MARK: - Setup views
@@ -167,7 +195,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupSpecTableView() {
-        heightScroll += verticalInset + heightTableView
+        heightScroll += verticalInset + heightSpecTableView
         scrollView.addSubview(specTableView)
         specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
         specTableView.backgroundColor = .clear
@@ -182,7 +210,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                            constant: verticalInset).isActive = true
         specTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         specTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: heightTableView)
+        specTableViewHeight = specTableView.heightAnchor.constraint(equalToConstant: heightSpecTableView)
         specTableViewHeight?.isActive = true
     }
     
@@ -327,7 +355,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     
     /// Установка таблицы с местами работы
     private func setupJobTableView() {
-        heightScroll += verticalInset + heightTableView
+        heightScroll += verticalInset + heightJobTableView
         scrollView.addSubview(jobTableView)
         jobTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
         jobTableView.backgroundColor = .clear
@@ -342,7 +370,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
                                           constant: verticalInset).isActive = true
         jobTableView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         jobTableView.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: heightTableView)
+        jobTableViewHeight = jobTableView.heightAnchor.constraint(equalToConstant: heightJobTableView)
         jobTableViewHeight?.isActive = true
     }
     
@@ -396,8 +424,6 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(positionTextField)
         
         positionTextField.translatesAutoresizingMaskIntoConstraints = false
-        //        positionTextField.topAnchor.constraint(equalTo: workPlusButton.bottomAnchor,
-        //                                               constant: verticalInset).isActive = true
         positionTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         positionTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
         positionTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
@@ -580,17 +606,9 @@ extension CreateProfileWorkViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if tableView == self.jobTableView {
-            if presenter?.getCountJob() ?? 0 < jobRowCount {
-                return jobRowCount
-            } else {
-                return presenter?.getCountJob() ?? jobRowCount
-            }
+            return jobRowCount
         } else {
-            if presenter?.getCountSpec() ?? 0 < specRowCount {
-                return specRowCount
-            } else {
-                return presenter?.getCountSpec() ?? specRowCount
-            }
+            return specRowCount
         }
     }
     

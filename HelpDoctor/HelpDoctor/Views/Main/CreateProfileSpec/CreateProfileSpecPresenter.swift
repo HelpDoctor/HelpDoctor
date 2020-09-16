@@ -18,7 +18,7 @@ protocol CreateProfileSpecPresenterProtocol: Presenter {
     func getInterestFromView()
     func addInterest(index: Int)
     func deleteInterest(index: Int)
-    func setInterests(interests: [ListOfInterests])
+    func setInterests(interests: [Interest])
     func next()
     func toAddInterest()
     func getUser()
@@ -28,15 +28,16 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileSpecViewController
+    let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: UpdateProfileKeyUser?
     var isEdit = false
-    var jobArray: [MedicalOrganization?] = []
-    var specArray: [MedicalSpecialization?] = []
-    var userInterests: [ListOfInterests] = []
-    var arrayOfAllInterests: [ListOfInterests] = []
-    var popularInterests: [ListOfInterests]?
+    var jobArray: [Job] = []
+    var specArray: [Specialization] = []
+    var userInterests: [Interest] = []
+    var arrayOfAllInterests: [Interest] = []
+    var popularInterests: [Interest]?
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -49,7 +50,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         view.startActivityIndicator()
         var mainSpec = "general"
         if specArray.count != 0 {
-            mainSpec = specArray[0]?.code ?? "general"
+            mainSpec = specArray[0].specialization?.code ?? "general"
         }
         if spec != nil {
             mainSpec = spec ?? "general"
@@ -57,7 +58,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         let getListOfInterest = Profile()
         
         getData(typeOfContent: .getListOfInterestsExtOne,
-                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
+                returning: ([String: [Interest]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -65,9 +66,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                     
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
-                            let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                            let interestMainSpec: [Interest]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
                             let idRelevantInterests = result?.1 ?? []
-                            var sliceArray: [ListOfInterests] = []
+                            var sliceArray: [Interest] = []
                             for id in idRelevantInterests {
                                 sliceArray += interestMainSpec?.filter { $0.id == id } ?? []
                             }
@@ -77,6 +78,15 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                         }
                     }
         }
+        //        networkManager.getListOfInterests(specArray[0]?.code,
+        //                                          specArray[1]?.code) { listOfInterests, error in
+        //                                            if let error = error {
+        //                                                self.view.showAlert(message: error)
+        //                                            }
+        //                                            if let listOfInterests = listOfInterests {
+        //                                                print("listOfInterests: \(listOfInterests)")
+        //                                            }
+        //        }
     }
     
     /// Проверка совпадения интересов пользователя с общим списком интересов
@@ -108,7 +118,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         default:
             var isFirst = true
             specArray.forEach { medicalSpecialization in
-                getInterests(mainSpec: medicalSpecialization?.code ?? "general", isFirst: isFirst)
+                getInterests(mainSpec: medicalSpecialization.specialization?.code ?? "general", isFirst: isFirst)
                 isFirst = false
             }
         }
@@ -131,7 +141,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Заполнение массива интересов пользователя из формы списка интересов
     /// - Parameter interests: массив интересов
-    func setInterests(interests: [ListOfInterests]) {
+    func setInterests(interests: [Interest]) {
         self.userInterests = interests
         view.reloadCollectionView()
     }
@@ -143,7 +153,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     private func getInterests(mainSpec: String, isFirst: Bool) {
         let getListOfInterest = Profile()
         getData(typeOfContent: .getListOfInterestsExtOne,
-                returning: ([String: [ListOfInterests]], [Int]?, Int?, String?).self,
+                returning: ([String: [Interest]], [Int]?, Int?, String?).self,
                 requestParams: ["spec_code": "\(mainSpec)"] ) { [weak self] result in
                     let dispathGroup = DispatchGroup()
                     
@@ -152,10 +162,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                     dispathGroup.notify(queue: DispatchQueue.main) {
                         DispatchQueue.main.async { [weak self]  in
                             if isFirst {
-                                let generalSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["general"]
+                                let generalSpec: [Interest]? = getListOfInterest.listOfInterests?["general"]
                                 self?.arrayOfAllInterests += generalSpec ?? []
                             }
-                            let interestMainSpec: [ListOfInterests]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
+                            let interestMainSpec: [Interest]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
                             self?.arrayOfAllInterests += interestMainSpec ?? []
                             self?.view.reloadCollectionView()
                         }
@@ -165,36 +175,25 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        let getDataProfile = Profile()
-        
-        getData(typeOfContent: .getDataFromProfile,
-                returning: ([String: [AnyObject]], Int?, String?).self,
-                requestParams: [:] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getDataProfile.dataFromProfile = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("getDataProfile = \(String(describing: getDataProfile.dataFromProfile))")
-                            guard let specArr = getDataProfile.dataFromProfile?["spec"] as? [ProfileKeySpec]
-                                else {
-                                    self?.view.showAlert(message: "Error")
-                                    return }
-                            self?.loadPopularInterests(specArr[0].code)
-                            switch specArr.count {
-                            case 0:
-                                self?.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
-                            default:
-                                var isFirst = true
-                                specArr.forEach { medicalSpecialization in
-                                    self?.getInterests(mainSpec: medicalSpecialization.code ?? "general",
-                                                       isFirst: isFirst)
-                                    isFirst = false
-                                }
-                            }
-                        }
+        self.networkManager.getUser { profiles, error in
+            if let error = error {
+                self.view.showAlert(message: error)
+            }
+            if let profiles = profiles {
+                let specArr = profiles.specializations
+                self.loadPopularInterests(specArr[0].specialization?.code)
+                switch specArr.count {
+                case 0:
+                    self.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
+                default:
+                    var isFirst = true
+                    specArr.forEach { medicalSpecialization in
+                        self.getInterests(mainSpec: medicalSpecialization.specialization?.code ?? "general",
+                                          isFirst: isFirst)
+                        isFirst = false
                     }
+                }
+            }
         }
     }
     

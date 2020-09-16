@@ -11,13 +11,13 @@ import UIKit
 class ProfileInterestsView: UIView {
     private let interestsLabel = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    private var interestsArray: [ProfileKeyInterests]?
+    private var interestsArray: [ProfileInterest]?
     private let leading = 20.f
     private let heightLabel = 15.f
     private let verticalSpacing = 5.f
     private var size = 18.f
     
-    convenience init(interests: [ProfileKeyInterests]) {
+    convenience init(interests: [ProfileInterest]) {
         self.init()
         self.interestsArray = interests
         backgroundColor = .white
@@ -87,7 +87,7 @@ extension ProfileInterestsView: UICollectionViewDataSource {
         }
         size = 18
         cell.delegate = self
-        cell.configure(interestsArray?[indexPath.item].name ?? "", icon: "Search")
+        cell.configure(interestsArray?[indexPath.item].interest?.name ?? "", icon: "Search")
         return cell
     }
     

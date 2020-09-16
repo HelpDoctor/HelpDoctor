@@ -13,12 +13,12 @@ class ProfileCareerView: UIView {
     private let tableView = UITableView()
     private let employmentLabel = UILabel()
     private let employmentDataLabel = UILabel()
-    private var jobArray: [ProfileKeyJob?] = [nil, nil, nil, nil, nil]
+    private var jobArray: [Job?] = [nil, nil, nil, nil, nil]
     private let leading = 20.f
     private let heightLabel = 15.f
     private let verticalSpacing = 5.f
     
-    convenience init(job: [ProfileKeyJob?]) {
+    convenience init(job: [Job?]) {
         self.init()
         self.jobArray = job
         self.employmentDataLabel.text = "Врач-специалист"

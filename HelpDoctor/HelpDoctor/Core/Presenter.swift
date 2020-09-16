@@ -8,6 +8,6 @@
 
 import UIKit
 
-protocol Presenter {
+protocol Presenter: class {
     func back()
 }

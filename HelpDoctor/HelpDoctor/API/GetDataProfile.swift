@@ -7,76 +7,72 @@
 //
 
 import Foundation
-//swiftlint:disable force_cast
+
 //swiftlint:disable function_body_length
-//swiftlint:disable cyclomatic_complexity
 func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
                                   response: URLResponse?) -> ([String: [AnyObject]], Int?, String?)? {
     
-    var profileKeyUser: [ProfileKeyUser] = []
-    var profileKeyJob: [ProfileKeyJob] = []
-    var profileKeySpec: [ProfileKeySpec] = []
+    var profileKeyUser: [User] = []
+    var profileKeyJob: [Job] = []
+    var profileKeySpec: [Specialization] = []
     var profileKeyInterests: [ProfileKeyInterests] = []
     var dataProfile: [String: [AnyObject]] = [:]
     
-    //let key = "general"
-    guard let httpResponse = response as? HTTPURLResponse
+    guard let httpResponse = response as? HTTPURLResponse,
+        var startPoint = startPoint
         else { return ([:], nil, nil) }
     
-    guard var startPoint = startPoint else { return ([:], nil, nil) }
-    
-    let user = startPoint["user"] as! [String: Any]
-    profileKeyUser.append(ProfileKeyUser(id: user["id"] as? Int,
-                                         first_name: user["first_name"] as? String,
-                                         last_name: user["last_name"] as? String,
-                                         middle_name: user["middle_name"] as? String,
-                                         email: user["email"] as? String,
-                                         phone_number: user["phone_number"] as? String,
-                                         birthday: user["birthday"] as? String,
-                                         city_id: user["city_id"] as? Int,
-                                         cityName: user["cityName"] as? String,
-                                         regionId: user["regionId"] as? Int,
-                                         regionName: user["regionName"] as? String,
-                                         foto: user["foto"] as? String,
-                                         gender: user["gender"] as? String,
-                                         is_medic_worker: user["is_medic_worker"] as? Int))
+    guard let user = startPoint["user"] as? [String: Any],
+        let userId = user["id"] as? Int else { return ([:], nil, nil) }
+    var verifiedUser = false
+    if UserDefaults.standard.string(forKey: "userStatus") == "verified" {
+        verifiedUser = true
+    }
+    profileKeyUser.append(User(id: userId,
+                               firstName: user["first_name"] as? String,
+                               lastName: user["last_name"] as? String,
+                               middleName: user["middle_name"] as? String,
+                               gender: user["gender"] as? String,
+                               email: user["email"] as? String,
+                               phoneNumber: user["phone_number"] as? String,
+                               birthday: user["birthday"] as? String,
+                               cityId: user["city_id"] as? Int,
+                               cityName: user["cityName"] as? String,
+                               regionId: user["regionId"] as? Int,
+                               regionName: user["regionName"] as? String,
+                               foto: user["foto"] as? String,
+                               isMedicWorker: user["is_medic_worker"] as? Int,
+                               verifiedUser: verifiedUser))
     
     dataProfile["user"] = profileKeyUser as [AnyObject]
     startPoint.removeValue(forKey: "user")
     
     for (key, _) in startPoint {
         
-//        let arrItems = startPoint[key] as! [AnyObject]
+        let obj = startPoint[key]
         
-//        for finalObj in arrItems {
-            /*guard*/ let obj = startPoint[key]/* as? [String: Any] else { /*continue*/ return ([:], nil, nil) }*/
-            
-            switch key {
-            case "interests":
-                profileKeyInterests.append(ProfileKeyInterests(interest_id: obj?["interest_id"] as? Int,
-                                                               spec_code: obj?["spec_code"] as? String,
-                                                               name: obj?["name"] as? String))
-            case "job":
-                profileKeyJob.append(ProfileKeyJob(id: obj?["id"] as? Int,
-//                                                   job_oid: obj?["job_oid"] as? String,
-                                                   is_main: obj?["is_main"] as? Bool,
-                                                   organization: obj?["organization"] as? MedicalOrganization))
-//                                                   nameShort: obj?["nameShort"] as? String))
-            case "spec":
-                profileKeySpec.append(ProfileKeySpec(id: obj?["id"] as? Int,
-                                                     spec_id: obj?["spec_id"] as? Int,
-                                                     is_main: obj?["is_main"] as? Bool,
-                                                     code: obj?["code"] as? String,
-                                                     name: obj?["name"] as? String))
-            case "education":
-                print("education")
-            default:
-                continue
-            }
-//        }
-        if key == "interests" { dataProfile[key] = profileKeyInterests as [AnyObject] }
-        if key == "job" { dataProfile[key] = profileKeyJob as [AnyObject] }
-        if key == "spec" { dataProfile[key] = profileKeySpec as [AnyObject] }
+        switch key {
+        case "interests":
+            profileKeyInterests.append(ProfileKeyInterests(interest_id: obj?["interest_id"] as? Int,
+                                                           spec_code: obj?["spec_code"] as? String,
+                                                           name: obj?["name"] as? String))
+            dataProfile[key] = profileKeyInterests as [AnyObject]
+        case "job":
+            profileKeyJob.append(Job(id: obj?["id"] as? Int ?? 0,
+                                     isMain: obj?["is_main"] as? Bool,
+                                     organization: obj?["organization"] as? MedicalOrganization))
+            dataProfile[key] = profileKeyJob as [AnyObject]
+        case "spec":
+            profileKeySpec.append(Specialization(id: obj?["id"] as? Int ?? 0,
+                                                 isMain: obj?["is_main"] as? Bool,
+                                                 specialization: obj?["specialization"] as? MedicalSpecialization))
+            dataProfile[key] = profileKeySpec as [AnyObject]
+        case "education":
+            print("education")
+        default:
+            continue
+        }
+
     }
     
     return (dataProfile, httpResponse.statusCode, nil)
