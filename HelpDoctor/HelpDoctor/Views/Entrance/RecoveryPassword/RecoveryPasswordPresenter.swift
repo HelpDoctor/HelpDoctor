@@ -18,7 +18,8 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     
     // MARK: - Dependency
     let view: RecoveryPasswordViewController
-        
+    private let networkManager = NetworkManager()
+    
     // MARK: - Init
     required init(view: RecoveryPasswordViewController) {
         self.view = view
@@ -28,33 +29,23 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     /// Отправка на сервер запроса по восстановлению пароля
     /// - Parameter email: адрес электронной почты
     func sendButtonTapped(email: String?) {
-        if email == "" {
-            view.showAlert(message: "Заполните E-Mail")
-            return
+        guard let email = email,
+            email != "" else {
+                view.showAlert(message: "Заполните E-Mail")
+                return
         }
         view.startActivityIndicator()
-        let recovery = Registration(email: email, password: nil, token: nil)
-        
-        getData(typeOfContent: .recoveryMail,
-                returning: (Int?, String?).self,
-                requestParams: recovery.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            recovery.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopActivityIndicator()
-                    print("result=\(String(describing: recovery.responce))")
-                    guard let code = recovery.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.send()
-                    } else {
-                        self?.view.showAlert(message: recovery.responce?.1)
-                    }
+        networkManager.recovery(email) { result in
+            DispatchQueue.main.async {
+                self.view.stopActivityIndicator()
+                switch result {
+                case .success(let code):
+                    responceCode(code: code) ? self.send() : nil
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
             }
         }
-        
     }
     
     // MARK: - Coordinator

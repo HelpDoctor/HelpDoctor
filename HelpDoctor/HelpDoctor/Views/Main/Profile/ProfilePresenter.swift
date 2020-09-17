@@ -37,16 +37,16 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Public methods
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        self.networkManager.getUser { profiles, error in
-            if let error = error {
-                self.view.showAlert(message: error)
-            }
-            if let profiles = profiles {
+        networkManager.getUser { result in
+            switch result {
+            case .success(let profiles):
                 self.setUser(userData: profiles.user)
                 self.setEducation(education: profiles.educations)
                 self.setJob(jobData: profiles.job)
                 self.setSpec(specData: profiles.specializations)
                 self.setInterests(interestData: profiles.interests)
+            case .failure(let error):
+                self.view.showAlert(message: error.description)
             }
         }
     }

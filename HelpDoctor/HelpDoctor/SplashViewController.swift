@@ -11,8 +11,6 @@ import UIKit
 class SplashViewController: UIViewController {
     
     private var activityIndicator = ActivityIndicatorView()
-    private let width = UIScreen.main.bounds.width
-    private let height = UIScreen.main.bounds.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,8 +49,8 @@ class SplashViewController: UIViewController {
     
     func startAnimating() {
         let size: CGFloat = 70
-        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (width - size) / 2,
-                                                                y: (height - size) / 2,
+        activityIndicator = ActivityIndicatorView(frame: CGRect(x: (Session.width - size) / 2,
+                                                                y: (Session.height - size) / 2,
                                                                 width: size,
                                                                 height: size))
         view.addSubview(activityIndicator)

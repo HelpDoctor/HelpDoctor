@@ -220,21 +220,33 @@ class StartMainViewController: UIViewController {
     }
     
     @objc private func deleteProfileButtonPressed() {
-        let unRegistration = Registration(email: nil, password: nil, token: nil)
-        getData(typeOfContent: .deleteMail,
-                returning: (Int?, String?).self,
-                requestParams: [:]) { result in
-                    let dispathGroup = DispatchGroup()
-                    unRegistration.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async {
-                            print("result= \(String(describing: unRegistration.responce))")
-                            UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                            AppDelegate.shared.rootViewController.switchToLogout()
-                        }
-                    }
+        let networkManager = NetworkManager()
+        networkManager.deleteUser { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                    AppDelegate.shared.rootViewController.switchToLogout()
+                case .failure(let error):
+                    self.showAlert(message: error.description)
+                }
+            }
         }
+//        let unRegistration = Registration(email: nil, password: nil, token: nil)
+//        getData(typeOfContent: .deleteMail,
+//                returning: (Int?, String?).self,
+//                requestParams: [:]) { result in
+//                    let dispathGroup = DispatchGroup()
+//                    unRegistration.responce = result
+//
+//                    dispathGroup.notify(queue: DispatchQueue.main) {
+//                        DispatchQueue.main.async {
+//                            print("result= \(String(describing: unRegistration.responce))")
+//                            UserDefaults.standard.set("not_verification", forKey: "userStatus")
+//                            AppDelegate.shared.rootViewController.switchToLogout()
+//                        }
+//                    }
+//        }
     }
     
 }

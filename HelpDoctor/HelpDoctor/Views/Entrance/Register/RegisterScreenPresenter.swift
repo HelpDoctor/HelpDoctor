@@ -39,40 +39,16 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     /// - Parameter email: адрес электронной почты
     func registerButtonPressed(email: String) {
         view.stopActivityIndicator()
-//        let register = Registration(email: email, password: nil, token: nil)
-//        
-//        getData(typeOfContent: .registrationMail,
-//                returning: (Int?, String?).self,
-//                requestParams: register.requestParams) { [weak self] result in
-//            let dispathGroup = DispatchGroup()
-//            register.responce = result
-//            
-//            dispathGroup.notify(queue: DispatchQueue.main) {
-//                DispatchQueue.main.async { [weak self]  in
-//                    print("result=\(String(describing: register.responce))")
-//                    self?.view.stopActivityIndicator()
-//                    guard let code = register.responce?.0 else { return }
-//                    if responceCode(code: code) {
-//                        self?.register(email: email)
-//                    } else {
-//                        self?.view.showAlert(message: register.responce?.1)
-//                    }
-//                }
-//            }
-//        }
-        
-        networkManager.registration(email) { status, error in
-            status?.status
-            if let error = error {
-                DispatchQueue.main.async {
-                    self.view.showAlert(message: error)
+        networkManager.registration(email) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let code):
+                    responceCode(code: code) ? self.register(email: email) : nil
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
             }
-            if status != nil {
-                self.register(email: email)
-            }
         }
-
     }
     
     /// Проверка адреса электронной почты

@@ -175,11 +175,9 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        self.networkManager.getUser { profiles, error in
-            if let error = error {
-                self.view.showAlert(message: error)
-            }
-            if let profiles = profiles {
+        networkManager.getUser { result in
+            switch result {
+            case .success(let profiles):
                 let specArr = profiles.specializations
                 self.loadPopularInterests(specArr[0].specialization?.code)
                 switch specArr.count {
@@ -193,6 +191,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                         isFirst = false
                     }
                 }
+            case .failure(let error):
+                self.view.showAlert(message: error.description)
             }
         }
     }

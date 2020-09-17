@@ -11,8 +11,10 @@ import Foundation
 struct ServerResponse: Codable {
     let status: String
     let message: String?
+    let token: String?
     private enum CodingKeys: String, CodingKey {
         case status
         case message
+        case token = "X-Auth-Token"
     }
 }

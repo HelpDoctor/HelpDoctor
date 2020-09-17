@@ -19,6 +19,7 @@ class LoginPresenter: LoginPresenterProtocol {
     
     // MARK: - Dependency
     let view: LoginViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Init
     required init(view: LoginViewController) {
@@ -31,40 +32,28 @@ class LoginPresenter: LoginPresenterProtocol {
     ///   - email: адрес электронной почты
     ///   - password: пароль
     func loginButtonPressed(email: String?, password: String?) {
-        if email == "" {
-            view.showAlert(message: "Заполните E-Mail")
-            return
+        guard let email = email,
+            email != "" else {
+                view.showAlert(message: "Заполните E-Mail")
+                return
         }
-        if password == "" {
-            view.showAlert(message: "Пароль не может быть пустым")
-            return
+        guard let password = password,
+            password != "" else {
+                view.showAlert(message: "Пароль не может быть пустым")
+                return
         }
         view.startActivityIndicator()
-        let getToken = Registration(email: email, password: password, token: nil)
-        
-        getData(typeOfContent: .getToken,
-                returning: (Int?, String?).self,
-                requestParams: getToken.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    getToken.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("result= \(String(describing: getToken.responce))")
-                            let code = getToken.responce?.0
-                            switch code {
-                            case 200:
-                                self?.login()
-                            case 400, 403, 500:
-                                self?.view.showAlert(message: getToken.responce?.1)
-                            case nil:
-                                self?.view.showAlert(message: "Не верный пароль")
-                            default:
-                                self?.view.showAlert(message: "Ошибка, повторите попытку позже")
-                            }
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
+        networkManager.login(email, password) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self.login()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
+            
         }
     }
     

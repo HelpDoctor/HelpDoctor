@@ -19,7 +19,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Dependency
     let view: StartMainViewController
-    let networkManager = NetworkManager()
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -100,15 +100,15 @@ class StartMainPresenter: StartMainPresenterProtocol {
     }
     
     private func getUser() {
-        networkManager.getUser { profiles, error in
-            if let error = error {
-                self.view.showAlert(message: error)
-            }
-            if let profiles = profiles {
+        networkManager.getUser { result in
+            switch result {
+            case .success(let profiles):
                 self.session.user = profiles.user
                 self.session.education = profiles.educations
                 self.session.userJob = profiles.job
                 self.session.specialization = profiles.specializations
+            case .failure(let error):
+                self.view.showAlert(message: error.description)
             }
         }
     }
