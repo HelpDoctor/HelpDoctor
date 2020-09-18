@@ -13,8 +13,15 @@ public enum HelpDoctorApi {
     case recovery(email: String)
     case deleteUser
     case login(email: String, password: String)
+    case logout
+    case checkProfile
     case getProfile
+    case updateProfile(user: [String: Any]?, job: [[String: Any]]?, spec: [[String: Any]]?, interests: [Int]?)
     case getListOFInterests(specCode: String?, addSpecCode: String?)
+    case getRegions
+    case getCities(regionId: Int)
+    case getMedicalOrganization(regionId: Int)
+    case getMedicalSpecialization
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -37,8 +44,14 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/registration/del"
         case .login:
             return "public/api/auth/login"
+        case .logout:
+            return "public/api/auth/logout"
+        case .checkProfile:
+            return "public/api/profile/check"
         case .getProfile:
             return "public/api/profile/get"
+        case .updateProfile:
+            return "public/api/profile/update"
         case .getListOFInterests(specCode: let specCode, addSpecCode: let addSpecCode):
             guard let specCode = specCode else {
                 return "public/api/profile/sc_interests/"
@@ -47,14 +60,22 @@ extension HelpDoctorApi: EndPointType {
                 return "public/api/profile/sc_interests/\(specCode)"
             }
             return "public/api/profile/sc_interests/\(specCode)/\(addSpecCode)"
+        case .getRegions:
+            return "public/api/profile/regions"
+        case .getCities(regionId: let regionId):
+            return "public/api/profile/cities/\(regionId)"
+        case .getMedicalOrganization(regionId: let regionId):
+            return "public/api/profile/works/\(regionId)"
+        case .getMedicalSpecialization:
+            return "public/api/profile/specializations"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .registration, .recovery, .deleteUser, .login, .getProfile:
+        case .registration, .recovery, .deleteUser, .login, .logout, .checkProfile, .getProfile, .updateProfile:
             return .post
-        case .getListOFInterests:
+        case .getListOFInterests, .getRegions, .getCities, .getMedicalOrganization, .getMedicalSpecialization:
             return .get
         }
     }
@@ -68,9 +89,16 @@ extension HelpDoctorApi: EndPointType {
             return .requestParameters(bodyParameters: ["email": email,
                                                        "password": password.toBase64()],
                                       urlParameters: nil)
-        case .deleteUser, .getProfile:
+        case .updateProfile(user: let user, job: let job, spec: let spec, interests: let interests):
+            return .requestParametersAndHeaders(bodyParameters: ["user": user as Any,
+                                                                 "job": job ?? [],
+                                                                 "spec": spec ?? [],
+                                                                 "interests": interests ?? []],
+                                                urlParameters: nil,
+                                                additionHeaders: headers)
+        case .deleteUser, .logout, .checkProfile, .getProfile:
             return .requestParametersAndHeaders(bodyParameters: nil, urlParameters: nil, additionHeaders: headers)
-        case .getListOFInterests:
+        default:
             return .request
         }
     }
@@ -78,7 +106,7 @@ extension HelpDoctorApi: EndPointType {
     var headers: HTTPHeaders? {
         guard let myToken = Auth_Info.instance.token else { return nil }
         switch self {
-        case .deleteUser, .getProfile:
+        case .deleteUser, .logout, .checkProfile, .getProfile, .updateProfile:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
         default:

@@ -5,7 +5,7 @@
 //  Created by Anton Fomkin on 18/10/2019.
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
-
+/*
 import Foundation
 
 final class Registration {
@@ -26,3 +26,4 @@ final class Registration {
     }
     
 }
+*/

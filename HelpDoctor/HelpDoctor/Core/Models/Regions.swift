@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Regions {
+struct Regions: Codable {
     let regionId: Int
     let regionName: String?
 }

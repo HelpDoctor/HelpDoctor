@@ -17,6 +17,7 @@ class Router<EndPoint: EndPointType>: NetworkRouter {
             let request = try self.buildRequest(from: route)
             task = session.dataTask(with: request,
                                     completionHandler: { data, response, error in completion(data, response, error) })
+//            print(request.httpBody?.base64EncodedString())
         } catch {
             completion(nil, nil, error)
         }

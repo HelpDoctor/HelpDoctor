@@ -21,6 +21,7 @@ protocol MedicalOrganizationPresenterProtocol: Presenter {
 class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     var view: MedicalOrganizationViewController
+    private let networkManager = NetworkManager()
     var arrayMedicalOrganizations: [MedicalOrganization]?
     var filteredArray: [MedicalOrganization] = []
     var mainWork: Bool?
@@ -32,23 +33,18 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     func getMedicalOrganization(regionId: Int, mainWork: Bool) {
         view.startActivityIndicator()
-        let getMedicalOrganization = Profile()
         self.mainWork = mainWork
-        
-        getData(typeOfContent: .getMedicalOrganization,
-                returning: ([MedicalOrganization], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getMedicalOrganization.medicalOrganization = result?.0
-            getMedicalOrganization.responce = (result?.1, result?.2)
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    self?.view.stopActivityIndicator()
-                    self?.arrayMedicalOrganizations = getMedicalOrganization.medicalOrganization
-                    self?.filteredArray = getMedicalOrganization.medicalOrganization ?? []
-                    self?.view.tableView.reloadData()
+        networkManager.getMedicalOrganizations(regionId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let medicalOrganizations):
+                    self.arrayMedicalOrganizations = medicalOrganizations
+                    self.filteredArray = medicalOrganizations
+                    self.view.reloadTableView()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
+                self.view.stopActivityIndicator()
             }
         }
     }

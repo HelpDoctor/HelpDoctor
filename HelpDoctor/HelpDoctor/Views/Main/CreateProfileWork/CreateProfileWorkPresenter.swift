@@ -29,9 +29,10 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileWorkViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var isEdit = false
     var region: Regions?
     private var jobArray: [Job] = []
@@ -46,111 +47,44 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     // MARK: - Private methods
-    /// Обновление информации о пользователе на сервере
-    private func updateProfile() {
-        let updateProfile = UpdateProfileKeyUser(first_name: user?.first_name,
-                                                 last_name: user?.last_name,
-                                                 middle_name: user?.middle_name,
-                                                 phone_number: user?.phone_number,
-                                                 birthday: user?.birthday,
-                                                 city_id: user?.city_id,
-                                                 foto: user?.foto,
-                                                 gender: user?.gender,
-                                                 is_medic_worker: user?.is_medic_worker)
-        
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    updateProfile.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateProfile = \(String(describing: updateProfile.responce))")
-                            guard let code = updateProfile.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                self?.updateJob()
-                            } else {
-                                self?.view.showAlert(message: updateProfile.responce?.1)
-                            }
-                        }
-                    }
-        }
-    }
-    
     /// Обновление информации о работе пользователя на сервере
     private func updateJob() {
         if jobArray.isEmpty {
             updateSpec()
         } else {
-            guard let oid = jobArray[0].organization?.oid else { return }
-            var updateJob: [[String: Any]] = []
-            let job: [String: Any] = ["id": 0, "job_oid": oid, "is_main": true]
-            updateJob.append(job)
-            for i in 1 ..< jobArray.count {
-                updateJob.append(["id": i + 1, "job_oid": jobArray[i].organization?.oid as Any, "is_main": false])
-            }
-            print("Update job: \(updateJob)")
-            let updateProfileJob = UpdateProfileKeyJob(arrayJob: updateJob)
-            getData(typeOfContent: .updateProfile,
-                    returning: (Int?, String?).self,
-                    requestParams: ["json": updateProfileJob.jsonData as Any]) { [weak self] result in
-                        let dispathGroup = DispatchGroup()
-                        
-                        updateProfileJob.responce = result
-                        
-                        dispathGroup.notify(queue: DispatchQueue.main) {
-                            DispatchQueue.main.async { [weak self]  in
-                                print("updateJobProfile = \(String(describing: updateProfileJob.responce))")
-                                guard let code = updateProfileJob.responce?.0 else { return }
-                                if responceCode(code: code) {
-                                    self?.updateSpec()
-                                } else {
-                                    self?.view.showAlert(message: updateProfileJob.responce?.1)
-                                }
-                            }
-                        }
+            networkManager.updateUser(nil, jobArray, nil, nil) { result in
+                DispatchQueue.main.async {
+                    switch result {
+                    case .success:
+                        self.updateSpec()
+                    case .failure(let error):
+                        self.view.showAlert(message: error.description)
+                    }
+                    self.view.stopActivityIndicator()
+                }
             }
         }
     }
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        guard let specId = specArray[0].specialization?.id else { return }
-        var updateSpec: [[String: Any]] = []
-        let spec: [String: Any] = ["id": 1, "spec_id": specId as Any, "is_main": true]
-        updateSpec.append(spec)
-        for i in 1 ..< specArray.count {
-            updateSpec.append(["id": i + 1, "spec_id": specArray[i].specialization?.id as Any, "is_main": false])
-        }
-        let updateProfileSpec = UpdateProfileKeySpec(arraySpec: updateSpec)
-        
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateProfileSpec.jsonData as Any]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    updateProfileSpec.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateProfileSpec = \(String(describing: updateProfileSpec.responce))")
-                            guard let code = updateProfileSpec.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                guard let controllers = self?.view.navigationController?.viewControllers else {
-                                    self?.back()
-                                    return
-                                }
-                                for viewControllers in controllers where viewControllers is ProfileViewController {
-                                    self?.view.navigationController?.popToViewController(viewControllers,
-                                                                                         animated: true)
-                                }
-                            } else {
-                                self?.view.showAlert(message: updateProfileSpec.responce?.1)
-                            }
-                        }
+        networkManager.updateUser(nil, nil, specArray, nil) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self.view.navigationController?.viewControllers else {
+                        self.back()
+                        return
                     }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
         }
     }
     
@@ -206,16 +140,8 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     func setUser() {
-        user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
-                                    last_name: Session.instance.user?.lastName,
-                                    middle_name: Session.instance.user?.middleName,
-                                    phone_number: Session.instance.user?.phoneNumber,
-                                    birthday: Session.instance.user?.birthday,
-                                    city_id: Session.instance.user?.cityId,
-                                    foto: Session.instance.user?.foto,
-                                    gender: Session.instance.user?.gender,
-                                    is_medic_worker: Session.instance.user?.isMedicWorker)
-        guard let isMedic = user?.is_medic_worker else { return }
+        user = Session.instance.user
+        guard let isMedic = user?.isMedicWorker else { return }
         if isMedic == 0 {
             view.setEmployment(isMedic: false)
         } else if isMedic == 1 {
@@ -246,7 +172,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     }
     
     func setEmployment(_ employment: Bool) {
-        user?.is_medic_worker = employment ? 1 : 0
+        user?.isMedicWorker = employment ? 1 : 0
     }
     
     // MARK: - Coordinator
@@ -255,7 +181,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             view.showAlert(message: "Не заполнена основная специализация")
             return
         }
-        if user?.is_medic_worker == 1 {
+        if user?.isMedicWorker == 1 {
             if jobArray.isEmpty {
                 view.showAlert(message: "Не заполнено основное место работы")
                 return
@@ -263,7 +189,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         }
         
         if isEdit {
-            updateProfile()
+            updateJob()
         } else {
             let viewController = CreateProfileSpecViewController()
             let presenter = CreateProfileSpecPresenter(view: viewController)

@@ -19,9 +19,10 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileNameViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var gender: String?
     var isEdit = false
     
@@ -32,42 +33,34 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Private methods
     /// Обновление информации о пользователе на сервере
-    private func updateProfile(user: UpdateProfileKeyUser) {
+    private func updateProfile(name: String, lastname: String, middlename: String) {
         view.startActivityIndicator()
-        let updateProfile = UpdateProfileKeyUser(first_name: user.first_name,
-                                                 last_name: user.last_name,
-                                                 middle_name: user.middle_name,
-                                                 phone_number: Session.instance.user?.phoneNumber,
-                                                 birthday: Session.instance.user?.birthday,
-                                                 city_id: Session.instance.user?.cityId,
-                                                 foto: Session.instance.user?.foto,
-                                                 gender: user.gender,
-                                                 is_medic_worker: Session.instance.user?.isMedicWorker)
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    updateProfile.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateProfile = \(String(describing: updateProfile.responce))")
-                            self?.view.stopActivityIndicator()
-                            guard let code = updateProfile.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                guard let controllers = self?.view.navigationController?.viewControllers else {
-                                    self?.back()
-                                    return
-                                }
-                                for viewControllers in controllers where viewControllers is ProfileViewController {
-                                    self?.view.navigationController?.popToViewController(viewControllers,
-                                                                                         animated: true)
-                                }
-                            } else {
-                                self?.view.showAlert(message: updateProfile.responce?.1)
-                            }
-                        }
+        let editedUser = User(firstName: name,
+                              lastName: lastname,
+                              middleName: middlename,
+                              gender: gender,
+                              phoneNumber: Session.instance.user?.phoneNumber,
+                              birthday: Session.instance.user?.birthday,
+                              cityId: Session.instance.user?.cityId,
+                              foto: Session.instance.user?.foto,
+                              isMedicWorker: Session.instance.user?.isMedicWorker)
+        networkManager.updateUser(editedUser, nil, nil, nil) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self.view.navigationController?.viewControllers else {
+                        self.back()
+                        return
                     }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
         }
     }
     
@@ -95,19 +88,17 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
             view.showAlert(message: "Не указан пол")
             return
         }
-        user = UpdateProfileKeyUser(first_name: name,
-                                    last_name: lastname,
-                                    middle_name: middleName,
-                                    phone_number: nil,
-                                    birthday: nil,
-                                    city_id: nil,
-                                    foto: nil,
-                                    gender: gender,
-                                    is_medic_worker: nil)
-        
+        user = User(firstName: name,
+                    lastName: lastname,
+                    middleName: middleName,
+                    gender: gender,
+                    phoneNumber: nil,
+                    birthday: nil,
+                    cityId: nil,
+                    foto: nil,
+                    isMedicWorker: nil)
         if isEdit {
-            guard let user = user else { return }
-            updateProfile(user: user)
+            updateProfile(name: name, lastname: lastname, middlename: middleName)
         } else {
             let viewController = CreateProfileScreen2ViewController()
             let presenter = CreateProfileScreen2Presenter(view: viewController)

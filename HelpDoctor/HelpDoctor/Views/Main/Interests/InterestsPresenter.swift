@@ -27,12 +27,12 @@ class InterestsPresenter: InterestsPresenterProtocol {
     var view: InterestsViewController
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var jobArray: [Job] = []
     var specArray: [Specialization] = []
-    var userInterests: [Interest] = []
-    var arrayInterests: [Interest]?
-    var filteredArray: [Interest] = []
+    var userInterests: [ProfileInterest] = []
+    var arrayInterests: [ProfileInterest]?
+    var filteredArray: [ProfileInterest] = []
     
     // MARK: - Init
     required init(view: InterestsViewController) {
@@ -48,7 +48,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     /// Возврат наименования интереса
     /// - Parameter index: индекс строки
     func getInterestsTitle(index: Int) -> String? {
-        return filteredArray[index].name
+        return filteredArray[index].interest?.name
     }
     
     /// Добавление интереса в массив интересов пользователя
@@ -90,7 +90,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     func filter(searchText: String) {
         guard let arrayInterests = arrayInterests else { return }
         filteredArray = arrayInterests.filter({ interest -> Bool in
-            return (interest.name?.lowercased().contains(searchText.lowercased()) ?? false)
+            return (interest.interest?.name?.lowercased().contains(searchText.lowercased()) ?? false)
         })
         view.reloadTableView()
         selectRows()
@@ -119,7 +119,8 @@ class InterestsPresenter: InterestsPresenterProtocol {
                             print("addInterest \(String(describing: addInterest.addInterests))")
                             guard let code = addInterest.responce?.0 else { return }
                             if responceCode(code: code) {
-                                self?.callback(interests: addInterest.addInterests ?? [])
+                                //TODO: - Разобраться
+//                                self?.callback(interests: addInterest.addInterests ?? [])
                             } else {
                                 self?.view.showAlert(message: addInterest.responce?.1)
                             }
@@ -131,7 +132,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     /// Добавление вновь созданного интереса в массив интересов пользователя и обновление таблицы
     /// - Parameter interests: массив интересов с сервера
-    private func callback(interests: [Interest]) {
+    private func callback(interests: [ProfileInterest]) {
         interests.forEach {
             userInterests.append($0.self)
             arrayInterests?.append($0.self)

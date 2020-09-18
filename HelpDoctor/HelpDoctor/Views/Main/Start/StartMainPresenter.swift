@@ -34,31 +34,21 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func profileCheck() {
         view.startActivityIndicator()
         getUser()
-        let checkProfile = Registration(email: nil, password: nil, token: myToken)
-        
-        getData(typeOfContent: .checkProfile,
-                returning: (Int?, String?).self,
-                requestParams: checkProfile.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    checkProfile.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.view.stopActivityIndicator()
-                            print("result=\(String(describing: checkProfile.responce))")
-                            guard let code = checkProfile.responce?.0,
-                                let status = checkProfile.responce?.1 else { return }
-                            if responceCode(code: code) && status == "True" {
-                                //                        self?.view.hideFillProfileButton()
-                                self?.view.showFillProfileButton()
-                                //                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
-                                self?.getStatusUser()
-                                //                                }
-                            } else {
-                                self?.view.showFillProfileButton()
-                            }
-                        }
+        networkManager.checkProfile { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let status):
+                    if status {
+                        self.view.hideFillProfileButton()
+                        self.getStatusUser()
+                    } else {
+                        self.view.showFillProfileButton()
                     }
+                case .failure:
+                    AppDelegate.shared.rootViewController.switchToLogout()
+                }
+                self.view.stopActivityIndicator()
+            }
         }
     }
     

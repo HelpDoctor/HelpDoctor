@@ -23,6 +23,7 @@ protocol CitiesPresenterProtocol: Presenter {
 class CitiesPresenter: CitiesPresenterProtocol {
         
     var view: CitiesViewController
+    private let networkManager = NetworkManager()
     var arrayCities: [Cities]?
     var filteredArray: [Cities] = []
     var sender: String?
@@ -43,22 +44,17 @@ class CitiesPresenter: CitiesPresenterProtocol {
             view.setTitleButton()
         }
         view.startActivityIndicator()
-        let getCities = Profile()
-        
-        getData(typeOfContent: .getListCities,
-                returning: ([Cities], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getCities.cities = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    self?.view.stopActivityIndicator()
-                    self?.arrayCities = getCities.cities
-                    self?.filteredArray = getCities.cities ?? []
-                    self?.view.reloadTableView()
+        networkManager.getCities(regionId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let cities):
+                    self.arrayCities = cities
+                    self.filteredArray = cities
+                    self.view.reloadTableView()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
+                self.view.stopActivityIndicator()
             }
         }
     }

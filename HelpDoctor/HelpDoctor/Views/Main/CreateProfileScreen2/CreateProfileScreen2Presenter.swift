@@ -25,9 +25,10 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileScreen2ViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var isEdit = false
     private var region: Regions?
     private var city: Cities?
@@ -39,33 +40,34 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     // MARK: - Private methods
     /// Обновление информации о пользователе на сервере
-    private func updateProfile(user: UpdateProfileKeyUser) {
+    private func updateProfile(phone: String, birthday: String?, cityId: Int?) {
         view.startActivityIndicator()
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": user.jsonData as Any] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    user.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateProfile = \(String(describing: user.responce))")
-                            self?.view.stopActivityIndicator()
-                            guard let code = user.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                guard let controllers = self?.view.navigationController?.viewControllers else {
-                                    self?.back()
-                                    return
-                                }
-                                for viewControllers in controllers where viewControllers is ProfileViewController {
-                                    self?.view.navigationController?.popToViewController(viewControllers,
-                                                                                         animated: true)
-                                }
-                            } else {
-                                self?.view.showAlert(message: user.responce?.1)
-                            }
-                        }
+        let editedUser = User(firstName: Session.instance.user?.firstName,
+                              lastName: Session.instance.user?.lastName,
+                              middleName: Session.instance.user?.middleName,
+                              gender: Session.instance.user?.gender,
+                              phoneNumber: phone,
+                              birthday: birthday,
+                              cityId: cityId,
+                              foto: Session.instance.user?.foto,
+                              isMedicWorker: Session.instance.user?.isMedicWorker)
+        networkManager.updateUser(editedUser, nil, nil, nil) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self.view.navigationController?.viewControllers else {
+                        self.back()
+                        return
                     }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self.view.navigationController?.popToViewController(viewControllers,
+                                                                            animated: true)
+                    }
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
         }
     }
     
@@ -96,29 +98,24 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     }
     
     func setRegionFromDevice(_ idRegion: Int) {
-        let getRegions = Profile()
-        
-        getData(typeOfContent: .getRegions,
-                returning: ([Regions], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getRegions.regions = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            self?.region = getRegions.regions?.first(where: { $0.regionId == idRegion })
-                            guard let cityId = Session.instance.user?.cityId else { return }
-                            self?.setCityFromDevice(cityId)
-                        }
-                    }
+        networkManager.getRegions { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let regions):
+                    self.region = regions.first(where: { $0.regionId == idRegion })
+                    guard let cityId = Session.instance.user?.cityId else { return }
+                    self.setCityFromDevice(cityId)
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     
     func setCity(city: Cities) {
         self.city = city
         view.setCity(city: city.cityName ?? "")
-        user?.city_id = city.id
+        user?.cityId = city.id
     }
     
     func setLiveInNotRussia() {
@@ -156,21 +153,16 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     }
     
     private func setCityFromDevice(_ idCity: Int) {
-        let getCities = Profile()
         guard let regionId = region?.regionId else { return }
-        
-        getData(typeOfContent: .getListCities,
-                returning: ([Cities], Int?, String?).self,
-                requestParams: ["region": "\(regionId)"]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getCities.cities = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.city = getCities.cities?.first(where: { $0.id == idCity })
-                        }
-                    }
+        networkManager.getCities(regionId) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let cities):
+                    self.city = cities.first(where: { $0.id == idCity })
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     
@@ -195,19 +187,10 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         let strBirthday = convertDateToServer(birthdate)
         
         user?.birthday = strBirthday
-        user?.phone_number = phone
-        user?.city_id = city?.id
+        user?.phoneNumber = phone
+        user?.cityId = city?.id
         if isEdit {
-            let user = UpdateProfileKeyUser(first_name: Session.instance.user?.firstName,
-                                            last_name: Session.instance.user?.lastName,
-                                            middle_name: Session.instance.user?.middleName,
-                                            phone_number: phone,
-                                            birthday: strBirthday,
-                                            city_id: city?.id,
-                                            foto: Session.instance.user?.foto,
-                                            gender: Session.instance.user?.gender,
-                                            is_medic_worker: Session.instance.user?.isMedicWorker)
-            updateProfile(user: user)
+            updateProfile(phone: phone, birthday: strBirthday, cityId: city?.id)
         } else {
             let viewController = CreateProfileStep6ViewController()
             let presenter = CreateProfileStep6Presenter(view: viewController)

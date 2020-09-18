@@ -23,11 +23,10 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     let view: CreateProfileStep6ViewController
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var isEdit = false
     var region: Regions?
     var university: University?
-    //    private var city: Cities?
     
     // MARK: - Init
     required init(view: CreateProfileStep6ViewController) {

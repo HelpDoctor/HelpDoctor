@@ -86,27 +86,17 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func logout() {
-        let logout = Registration(email: nil, password: nil, token: myToken)
-        
-        getData(typeOfContent: .logout,
-                returning: (Int?, String?).self,
-                requestParams: logout.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    logout.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("result=\(String(describing: logout.responce))")
-                            guard let code = logout.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                print("Logout")
-                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                                AppDelegate.shared.rootViewController.switchToLogout()
-                            } else {
-                                self?.view.showAlert(message: logout.responce?.1)
-                            }
-                        }
-                    }
+        networkManager.logout { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    print("Logout")
+                    UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                    AppDelegate.shared.rootViewController.switchToLogout()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     

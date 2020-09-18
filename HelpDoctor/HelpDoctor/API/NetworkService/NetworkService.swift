@@ -40,27 +40,27 @@ enum TypeOfDate: String {
 
 enum TypeOfRequest: String {
     /*Регистрация*/
-    case registrationMail = "/registration"
-    case recoveryMail = "/recovery"
-    case deleteMail = "/registration/del"
+//    case registrationMail = "/registration"
+//    case recoveryMail = "/recovery"
+//    case deleteMail = "/registration/del"
     
     /* Получение токена*/
-    case getToken = "/auth/login"
+//    case getToken = "/auth/login"
     
     /* Разлогиниться */
-    case logout = "/auth/logout"
+//    case logout = "/auth/logout"
     
-    case getRegions = "/profile/regions"
-    case getListCities = "/profile/cities/"
-    case getMedicalOrganization = "/profile/works/"
-    case getMedicalSpecialization = "/profile/specializations"
+//    case getRegions = "/profile/regions"
+//    case getListCities = "/profile/cities/"
+//    case getMedicalOrganization = "/profile/works/"
+//    case getMedicalSpecialization = "/profile/specializations"
     case getListOfInterests = "/profile/sc_interests/"
     case getListOfInterestsExtOne = "/profile/sc_interests_speccode1/"
     case getListOfInterestsExtTwo = "/profile/sc_interests_speccode2/"
     case getUniversities = "/profile/educations"
-    case checkProfile = "/profile/check"
-    case updateProfile = "/profile/update"
-    case getDataFromProfile = "/profile/get"
+//    case checkProfile = "/profile/check"
+//    case updateProfile = "/profile/update"
+//    case getDataFromProfile = "/profile/get"
     case addProfileInterest = "/profile/sc_interests/add"
     case schedule_CreateOrUpdateEvent = "/event/set"
     case schedule_getEventsForCurrentDate = "/event/date/"
@@ -159,9 +159,9 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
     urlConstructor.host = "demo22.tmweb.ru"//"helpdoctor.tmweb.ru"
     urlConstructor.path = "/public/api" + typeOfContent.rawValue
     
-    if typeOfContent == .getListCities || typeOfContent == .getMedicalOrganization {
-        urlConstructor.path = "/public/api" + typeOfContent.rawValue + (requestParams["region"] as! String)
-    }
+//    if typeOfContent == .getListCities || typeOfContent == .getMedicalOrganization {
+//        urlConstructor.path = "/public/api" + typeOfContent.rawValue + (requestParams["region"] as! String)
+//    }
     
     if typeOfContent == .getListOfInterestsExtOne || typeOfContent == .getListOfInterestsExtTwo {
         urlConstructor.path = "/public/api" + typeOfContent.rawValue + (requestParams["spec_code"] as! String)
@@ -183,27 +183,27 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         urlConstructor.path = "/public/api" + typeOfContent.rawValue + (requestParams["event_id"] as! String)
     }
     
-    if (typeOfContent == .getDataFromProfile) && (requestParams.count > 0) {
-        urlConstructor.path = "/public/api" + typeOfContent.rawValue + "/" + (requestParams["user_id"] as! String)
-    }
+//    if (typeOfContent == .getDataFromProfile) && (requestParams.count > 0) {
+//        urlConstructor.path = "/public/api" + typeOfContent.rawValue + "/" + (requestParams["user_id"] as! String)
+//    }
     var request = URLRequest(url: urlConstructor.url!)
     
     switch typeOfContent {
-    case .registrationMail, .recoveryMail, .getToken, .logout, .checkProfile, .getDataFromProfile, .deleteMail:
-        
-        let jsonData = serializationJSON(obj: requestParams as! [String: String])
-        
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        if typeOfContent == .logout ||
-            typeOfContent == .checkProfile ||
-            typeOfContent == .getDataFromProfile ||
-            typeOfContent == .deleteMail {
-            request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
-        } else {
-            request.httpBody = jsonData
-        }
+//    case .registrationMail, .recoveryMail, .getToken, .logout, .checkProfile, .getDataFromProfile, .deleteMail:
+//
+//        let jsonData = serializationJSON(obj: requestParams as! [String: String])
+//
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//
+//        if typeOfContent == .logout ||
+//          typeOfContent == .checkProfile ||
+//            typeOfContent == .getDataFromProfile ||
+//            typeOfContent == .deleteMail {
+//            request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+//        } else {
+//            request.httpBody = jsonData
+//        }
         
     case .changePassword, .invite:
         let jsonData = serializationJSON(obj: requestParams as! [String: String])
@@ -220,7 +220,7 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         request.httpBody = jsonData
         
-    case .updateProfile, .schedule_CreateOrUpdateEvent, .findUsers, .updateSettings:
+    case /*.updateProfile, */.schedule_CreateOrUpdateEvent, .findUsers, .updateSettings:
         
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -277,12 +277,12 @@ func getData<T>(typeOfContent: TypeOfRequest,
             let responceTrueResult = responceCode(code: httpResponse.statusCode)
             
             switch typeOfContent {
-            case .registrationMail,
+            case /*.registrationMail,
                  .recoveryMail,
                  .deleteMail,
                  .logout,
                  .checkProfile,
-                 .updateProfile,
+                 .updateProfile,*/
                  .schedule_CreateOrUpdateEvent,
                  .schedule_deleteForCurrentEvent,
                  .updateSettings,
@@ -290,11 +290,11 @@ func getData<T>(typeOfContent: TypeOfRequest,
                  .feedback:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
-                
+                /*
             case .getToken:
                 guard let startPoint = json as? [String: AnyObject] else { return }
                 replyReturn = (parseJSON_getToken(for: startPoint, response: response) as? T)
-                
+               
             case .getRegions :
                 
                 if responceTrueResult {
@@ -302,7 +302,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
                     replyReturn = (parseJSON_getRegions(for: startPoint, response: response) as? T)
                 } else {
                     replyReturn = (([], 500, "Данные недоступны") as? T)
-                }
+                }*/
             case .getUniversities :
                 
                 if responceTrueResult {
@@ -311,31 +311,31 @@ func getData<T>(typeOfContent: TypeOfRequest,
                 } else {
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
-            case .getListCities :
+//            case .getListCities :
+//                
+//                if responceTrueResult {
+//                    guard let startPoint = json as? [AnyObject] else { return }
+//                    replyReturn = (parseJSON_getCities(for: startPoint, response: response) as? T)
+//                } else {
+//                    replyReturn = (([], 500, "Данные недоступны") as? T)
+//                }
                 
-                if responceTrueResult {
-                    guard let startPoint = json as? [AnyObject] else { return }
-                    replyReturn = (parseJSON_getCities(for: startPoint, response: response) as? T)
-                } else {
-                    replyReturn = (([], 500, "Данные недоступны") as? T)
-                }
-                
-            case .getMedicalOrganization:
-                
-                if responceTrueResult {
-                    guard let startPoint = json as? [AnyObject] else { return }
-                    replyReturn = (parseJSON_getMedicalOrganization(for: startPoint, response: response) as? T)
-                } else {
-                    replyReturn = (([], 500, "Данные недоступны") as? T)
-                }
-            case .getMedicalSpecialization:
-                
-                if responceTrueResult {
-                    guard let startPoint = json as? [AnyObject] else { return }
-                    replyReturn = (parseJSON_getMedicalSpecialization(for: startPoint, response: response) as? T)
-                } else {
-                    replyReturn = (([], 500, "Данные недоступны") as? T)
-                }
+//            case .getMedicalOrganization:
+//                
+//                if responceTrueResult {
+//                    guard let startPoint = json as? [AnyObject] else { return }
+//                    replyReturn = (parseJSON_getMedicalOrganization(for: startPoint, response: response) as? T)
+//                } else {
+//                    replyReturn = (([], 500, "Данные недоступны") as? T)
+//                }
+//            case .getMedicalSpecialization:
+//                
+//                if responceTrueResult {
+//                    guard let startPoint = json as? [AnyObject] else { return }
+//                    replyReturn = (parseJSON_getMedicalSpecialization(for: startPoint, response: response) as? T)
+//                } else {
+//                    replyReturn = (([], 500, "Данные недоступны") as? T)
+//                }
             case .getListOfInterests, .getListOfInterestsExtOne, .getListOfInterestsExtTwo:
                 
                 if responceTrueResult {
@@ -345,21 +345,21 @@ func getData<T>(typeOfContent: TypeOfRequest,
                     replyReturn = (([], 500, "Данные недоступны") as? T)
                 }
                 
-            case .getDataFromProfile:
-                
-                if responceTrueResult {
-                    guard let startPoint = json as? [String: AnyObject] else { return }
-                    replyReturn = (parseJSON_getDataFromProfile(for: startPoint, response: response) as? T)
-                } else {
-                    
-                    switch httpResponse.statusCode {
-                    case 404:
-                        replyReturn = (([:], httpResponse.statusCode, "user not found") as? T)
-                    default:
-                        replyReturn = (([:], httpResponse.statusCode, "Данные недоступны") as? T)
-                    }
-                    
-                }
+//            case .getDataFromProfile:
+//
+//                if responceTrueResult {
+//                    guard let startPoint = json as? [String: AnyObject] else { return }
+//                    replyReturn = (parseJSON_getDataFromProfile(for: startPoint, response: response) as? T)
+//                } else {
+//
+//                    switch httpResponse.statusCode {
+//                    case 404:
+//                        replyReturn = (([:], httpResponse.statusCode, "user not found") as? T)
+//                    default:
+//                        replyReturn = (([:], httpResponse.statusCode, "Данные недоступны") as? T)
+//                    }
+//
+//                }
                 
             case .schedule_getEventsForCurrentDate:
                 guard let startPoint = json as? [AnyObject] else { return }

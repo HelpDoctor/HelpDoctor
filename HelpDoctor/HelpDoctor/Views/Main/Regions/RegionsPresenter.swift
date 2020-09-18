@@ -21,6 +21,7 @@ protocol RegionsPresenterProtocol: Presenter {
 class RegionsPresenter: RegionsPresenterProtocol {
     
     var view: RegionsViewController
+    private let networkManager = NetworkManager()
     var arrayRegions: [Regions]?
     var filteredArray: [Regions] = []
     var sender: String?
@@ -33,23 +34,17 @@ class RegionsPresenter: RegionsPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-//        view.startActivityIndicator()
-        let getRegions = Profile()
-        
-        getData(typeOfContent: .getRegions,
-                returning: ([Regions], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getRegions.regions = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    self?.arrayRegions = getRegions.regions
-                    self?.filteredArray = getRegions.regions ?? []
-                    self?.view.reloadTableView()
-                    self?.view.stopActivityIndicator()
+        networkManager.getRegions { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let regions):
+                    self.arrayRegions = regions
+                    self.filteredArray = regions
+                    self.view.reloadTableView()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
+                self.view.stopActivityIndicator()
             }
         }
     }
@@ -89,21 +84,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
-        } /*else if sender == "Work" {
-            guard let index = index else {
-                    view.showAlert(message: "Выберите один регион")
-                    return
-            }
-            let region = filteredArray[index]
-            let regionId = filteredArray[index].regionId
-            let viewController = CitiesViewController()
-            let presenter = CitiesPresenter(view: viewController, region: region)
-            viewController.presenter = presenter
-            presenter.sender = sender
-            presenter.regionId = regionId
-            presenter.getCities(regionId: regionId)
-            view.navigationController?.pushViewController(viewController, animated: true)
-        }*/
+        }
     }
     
     func back() {

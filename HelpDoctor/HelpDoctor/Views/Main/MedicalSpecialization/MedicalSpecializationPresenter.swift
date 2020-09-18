@@ -21,6 +21,7 @@ protocol MedicalSpecializationPresenterProtocol: Presenter {
 class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     var view: MedicalSpecializationViewController
+    let networkManager = NetworkManager()
     var arrayMedicalSpecialization: [MedicalSpecialization]?
     var filteredArray: [MedicalSpecialization] = []
     
@@ -30,23 +31,18 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     func getMedicalSpecialization() {
         view.startActivityIndicator()
-        let getMedicalSpecialization = Profile()
-        
-        getData(typeOfContent: .getMedicalSpecialization,
-                returning: ([MedicalSpecialization], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getMedicalSpecialization.medicalSpecialization = result?.0
-                    getMedicalSpecialization.responce = (result?.1, result?.2)
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            self?.view.stopActivityIndicator()
-                            self?.arrayMedicalSpecialization = getMedicalSpecialization.medicalSpecialization
-                            self?.filteredArray = getMedicalSpecialization.medicalSpecialization ?? []
-                            self?.view.tableView.reloadData()
-                        }
-                    }
+        networkManager.getMedicalSpecializations { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let medicalSpecializations):
+                    self.arrayMedicalSpecialization = medicalSpecializations
+                    self.filteredArray = medicalSpecializations
+                    self.view.reloadTableView()
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
         }
     }
     

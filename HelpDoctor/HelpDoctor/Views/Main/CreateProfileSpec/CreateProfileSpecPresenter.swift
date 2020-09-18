@@ -18,7 +18,7 @@ protocol CreateProfileSpecPresenterProtocol: Presenter {
     func getInterestFromView()
     func addInterest(index: Int)
     func deleteInterest(index: Int)
-    func setInterests(interests: [Interest])
+    func setInterests(interests: [ProfileInterest])
     func next()
     func toAddInterest()
     func getUser()
@@ -31,13 +31,13 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
-    var user: UpdateProfileKeyUser?
+    var user: User?
     var isEdit = false
     var jobArray: [Job] = []
     var specArray: [Specialization] = []
-    var userInterests: [Interest] = []
-    var arrayOfAllInterests: [Interest] = []
-    var popularInterests: [Interest]?
+    var userInterests: [ProfileInterest] = []
+    var arrayOfAllInterests: [ProfileInterest] = []
+    var popularInterests: [ProfileInterest]?
     
     // MARK: - Init
     required init(view: CreateProfileSpecViewController) {
@@ -72,7 +72,8 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                             for id in idRelevantInterests {
                                 sliceArray += interestMainSpec?.filter { $0.id == id } ?? []
                             }
-                            self?.popularInterests = Array(sliceArray)
+                            //TODO: - Fix
+//                            self?.popularInterests = Array(sliceArray)
                             self?.view.reloadCollectionView()
                             self?.view.stopActivityIndicator()
                         }
@@ -102,7 +103,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Установка названия в ячейку коллекции
     /// - Parameter index: индекс ячейки
     func getInterestTitle(index: Int) -> String? {
-        return popularInterests?[index].name
+        return popularInterests?[index].interest?.name
     }
     
     /// Подсчет количества ячеек коллекции
@@ -141,7 +142,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     /// Заполнение массива интересов пользователя из формы списка интересов
     /// - Parameter interests: массив интересов
-    func setInterests(interests: [Interest]) {
+    func setInterests(interests: [ProfileInterest]) {
         self.userInterests = interests
         view.reloadCollectionView()
     }
@@ -163,10 +164,12 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                         DispatchQueue.main.async { [weak self]  in
                             if isFirst {
                                 let generalSpec: [Interest]? = getListOfInterest.listOfInterests?["general"]
-                                self?.arrayOfAllInterests += generalSpec ?? []
+                                //TODO: - Fix
+//                                self?.arrayOfAllInterests += generalSpec ?? []
                             }
                             let interestMainSpec: [Interest]? = getListOfInterest.listOfInterests?["\(mainSpec)"]
-                            self?.arrayOfAllInterests += interestMainSpec ?? []
+                            //TODO: - Fix
+//                            self?.arrayOfAllInterests += interestMainSpec ?? []
                             self?.view.reloadCollectionView()
                         }
                     }
@@ -176,62 +179,82 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     /// Загрузка информации о пользователе с сервера
     func getUser() {
         networkManager.getUser { result in
-            switch result {
-            case .success(let profiles):
-                let specArr = profiles.specializations
-                self.loadPopularInterests(specArr[0].specialization?.code)
-                switch specArr.count {
-                case 0:
-                    self.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
-                default:
-                    var isFirst = true
-                    specArr.forEach { medicalSpecialization in
-                        self.getInterests(mainSpec: medicalSpecialization.specialization?.code ?? "general",
-                                          isFirst: isFirst)
-                        isFirst = false
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profiles):
+                    let specArr = profiles.specializations
+                    self.loadPopularInterests(specArr[0].specialization?.code)
+                    switch specArr.count {
+                    case 0:
+                        self.view.showAlert(message: "Ошибка! Не заполнена основная специализация!")
+                    default:
+                        var isFirst = true
+                        specArr.forEach { medicalSpecialization in
+                            self.getInterests(mainSpec: medicalSpecialization.specialization?.code ?? "general",
+                                              isFirst: isFirst)
+                            isFirst = false
+                        }
                     }
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
                 }
-            case .failure(let error):
-                self.view.showAlert(message: error.description)
             }
         }
     }
     
     /// Обновление информации о интересах пользователя на сервере
     private func updateInterests() {
-        var intArray: [Int] = []
-        for i in 0 ..< userInterests.count {
-            intArray.append(userInterests[i].id)
-        }
-        
-        let updateProfile = UpdateProfileKeyInterest(arrayInterest: intArray)
-        
-        getData(typeOfContent: .updateProfile,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    updateProfile.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateInterests = \(String(describing: updateProfile.responce))")
-                            guard let code = updateProfile.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                guard let controllers = self?.view.navigationController?.viewControllers else {
-                                    self?.back()
-                                    return
-                                }
-                                for viewControllers in controllers where viewControllers is ProfileViewController {
-                                    self?.view.navigationController?.popToViewController(viewControllers,
-                                                                                         animated: true)
-                                }
-                            } else {
-                                self?.view.showAlert(message: updateProfile.responce?.1)
-                            }
-                        }
+        networkManager.updateUser(nil, nil, nil, userInterests) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self.view.navigationController?.viewControllers else {
+                        self.back()
+                        return
                     }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
         }
+//        var intArray: [Int] = []
+//        for i in 0 ..< userInterests.count {
+//            intArray.append(userInterests[i].id)
+//        }
+//        
+//        let updateProfile = UpdateProfileKeyInterest(arrayInterest: intArray)
+//        
+//        getData(typeOfContent: .updateProfile,
+//                returning: (Int?, String?).self,
+//                requestParams: ["json": updateProfile.jsonData as Any]) { [weak self] result in
+//                    let dispathGroup = DispatchGroup()
+//                    
+//                    updateProfile.responce = result
+//                    
+//                    dispathGroup.notify(queue: DispatchQueue.main) {
+//                        DispatchQueue.main.async { [weak self]  in
+//                            print("updateInterests = \(String(describing: updateProfile.responce))")
+//                            guard let code = updateProfile.responce?.0 else { return }
+//                            if responceCode(code: code) {
+//                                guard let controllers = self?.view.navigationController?.viewControllers else {
+//                                    self?.back()
+//                                    return
+//                                }
+//                                for viewControllers in controllers where viewControllers is ProfileViewController {
+//                                    self?.view.navigationController?.popToViewController(viewControllers,
+//                                                                                         animated: true)
+//                                }
+//                            } else {
+//                                self?.view.showAlert(message: updateProfile.responce?.1)
+//                            }
+//                        }
+//                    }
+//        }
     }
     
     // MARK: - Coordinator

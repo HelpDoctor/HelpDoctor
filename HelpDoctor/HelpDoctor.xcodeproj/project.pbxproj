@@ -909,6 +909,10 @@
 				46959B5224ED2D0800139A17 /* Universities.swift */,
 				46D086342511DDF3007C367F /* AcademicDegree.swift */,
 				46D0863625122AA8007C367F /* ServerResponse.swift */,
+				C48F160223B5FE85002D04E3 /* Regions.swift */,
+				C48F15FE23B5FE85002D04E3 /* Cities.swift */,
+				C48F160723B5FE86002D04E3 /* MedicalOrganization.swift */,
+				C48F160523B5FE85002D04E3 /* MedicalSpecialization.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -979,6 +983,8 @@
 		46F87EFA23B8C5FE0095264E /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				C48F160423B5FE85002D04E3 /* KeychainItemAccessibility.swift */,
+				C48F161023B5FE86002D04E3 /* KeychainWrapper.swift */,
 				46F87EFB23B8C6060095264E /* AuthValidate */,
 			);
 			path = Services;
@@ -1201,7 +1207,6 @@
 				C4CBC3A323D025D200434BFB /* NetworkService */,
 				C4CBC3A623D026A900434BFB /* Profile */,
 				C4CBC3B123D026D600434BFB /* Registration */,
-				C48F15FE23B5FE85002D04E3 /* Cities.swift */,
 				C48F160923B5FE86002D04E3 /* GetAuthToken.swift */,
 				C48F160A23B5FE86002D04E3 /* GetCities.swift */,
 				46203EF523C469B00072653A /* GetFindedUsers.swift */,
@@ -1214,19 +1219,14 @@
 				46203EFB23C46A4E0072653A /* GetAddedProfileInterests.swift */,
 				C48F160123B5FE85002D04E3 /* GetRegions.swift */,
 				4682F3B1250BEDB4005BDA9E /* GetUniversities.swift */,
-				C48F160423B5FE85002D04E3 /* KeychainItemAccessibility.swift */,
-				C48F161023B5FE86002D04E3 /* KeychainWrapper.swift */,
 				46203EFD23C46A5A0072653A /* FindUsers.swift */,
 				46203EFF23C46A660072653A /* CreateFindUsers.swift */,
 				C48F160F23B5FE86002D04E3 /* Interest.swift */,
-				C48F160723B5FE86002D04E3 /* MedicalOrganization.swift */,
-				C48F160523B5FE85002D04E3 /* MedicalSpecialization.swift */,
 				C48F160B23B5FE86002D04E3 /* ProfileKeyInterests.swift */,
 				C48F160623B5FE85002D04E3 /* ProfileKeyJob.swift */,
 				C48F160823B5FE86002D04E3 /* ProfileKeySpec.swift */,
 				C48F161223B5FE87002D04E3 /* ProfileKeyUser.swift */,
 				C48F160E23B5FE86002D04E3 /* PublicMethod.swift */,
-				C48F160223B5FE85002D04E3 /* Regions.swift */,
 				46203EEF23C443F50072653A /* ResultFindedUsers.swift */,
 				46203EEA23C443E20072653A /* Schedule */,
 				46203EE823C443C40072653A /* ScheduleEvents.swift */,

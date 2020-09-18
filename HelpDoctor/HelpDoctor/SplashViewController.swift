@@ -11,6 +11,7 @@ import UIKit
 class SplashViewController: UIViewController {
     
     private var activityIndicator = ActivityIndicatorView()
+    private let networkManager = NetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,29 +21,15 @@ class SplashViewController: UIViewController {
     
     private func makeServiceCall() {
         startAnimating()
-        
-        let checkProfile = Registration(email: nil, password: nil, token: myToken)
-        
-        getData(typeOfContent: .checkProfile,
-                returning: (Int?, String?).self,
-                requestParams: checkProfile.requestParams) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            checkProfile.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    print("result=\(String(describing: checkProfile.responce))")
-                    self?.stopAnimating()
-                    guard let status = checkProfile.responce?.1 else { return }
-                    switch status {
-                    case "Token id not found":
-                        AppDelegate.shared.rootViewController.switchToLogout()
-                    case "X-Auth-Token required":
-                        AppDelegate.shared.rootViewController.switchToLogout()
-                    default:
-                        AppDelegate.shared.rootViewController.switchToMainScreen()
-                    }
+        networkManager.checkProfile { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    AppDelegate.shared.rootViewController.switchToMainScreen()
+                case .failure:
+                    AppDelegate.shared.rootViewController.switchToLogout()
                 }
+                self.stopAnimating()
             }
         }
     }
