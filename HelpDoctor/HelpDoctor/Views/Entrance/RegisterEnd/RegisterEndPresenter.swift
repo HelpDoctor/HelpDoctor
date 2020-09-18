@@ -43,15 +43,15 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
             return
         }
         view.startActivityIndicator()
-        networkManager.login(email, password) { result in
+        networkManager.login(email, password) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.login()
+                    self?.login()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
             
         }

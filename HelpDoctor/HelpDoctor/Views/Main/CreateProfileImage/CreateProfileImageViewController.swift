@@ -72,7 +72,7 @@ class CreateProfileImageViewController: UIViewController {
     
     private func setupStep9Label() {
         let text =
-        """
+            """
         Добавьте свою фотографию
         """
         let top = 20.f

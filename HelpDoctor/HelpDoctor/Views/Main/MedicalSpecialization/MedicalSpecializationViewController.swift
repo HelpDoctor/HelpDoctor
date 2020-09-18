@@ -139,10 +139,10 @@ extension MedicalSpecializationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { return UITableViewCell() }
-
+        else { return UITableViewCell() }
+        
         cell.configure(presenter?.getMedicalSpecializationTitle(index: indexPath.row) ?? "Specialization not found")
         return cell
     }
-
+    
 }

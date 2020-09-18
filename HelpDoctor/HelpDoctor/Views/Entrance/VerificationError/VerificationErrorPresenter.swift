@@ -31,19 +31,19 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
         view.startActivityIndicator()
         uploadImage(source: src,
                     returning: (Int?, String?).self) { [weak self] result in
-                        let dispathGroup = DispatchGroup()
-                        
-                        dispathGroup.notify(queue: DispatchQueue.main) {
-                            DispatchQueue.main.async { [weak self] in
-                                self?.view.stopActivityIndicator()
-                                guard let code = result?.0 else { return }
-                                if responceCode(code: code) {
-                                    self?.view.authorized()
-                                } else {
-                                    self?.view.showAlert(message: result?.1)
-                                }
-                            }
-                        }
+            let dispathGroup = DispatchGroup()
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    self?.view.stopActivityIndicator()
+                    guard let code = result?.0 else { return }
+                    if responceCode(code: code) {
+                        self?.view.authorized()
+                    } else {
+                        self?.view.showAlert(message: result?.1)
+                    }
+                }
+            }
         }
     }
     

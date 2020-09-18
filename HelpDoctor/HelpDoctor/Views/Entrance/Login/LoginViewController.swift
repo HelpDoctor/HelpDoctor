@@ -328,8 +328,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     
     /// Обработка нажатия кнопки "Войти"
     @objc private func loginButtonPressed() {
-//        guard let email = emailTextField.text,
-//            let password = passwordTextField.text else { return }
+        //        guard let email = emailTextField.text,
+        //            let password = passwordTextField.text else { return }
         hideKeyboard()
         presenter?.loginButtonPressed(email: emailTextField.text, password: passwordTextField.text)
     }

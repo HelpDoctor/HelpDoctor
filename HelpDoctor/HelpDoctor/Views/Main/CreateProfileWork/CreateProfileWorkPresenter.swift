@@ -52,15 +52,15 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         if jobArray.isEmpty {
             updateSpec()
         } else {
-            networkManager.updateUser(nil, jobArray, nil, nil) { result in
+            networkManager.updateUser(nil, jobArray, nil, nil) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
-                        self.updateSpec()
+                        self?.updateSpec()
                     case .failure(let error):
-                        self.view.showAlert(message: error.description)
+                        self?.view.showAlert(message: error.description)
                     }
-                    self.view.stopActivityIndicator()
+                    self?.view.stopActivityIndicator()
                 }
             }
         }
@@ -68,22 +68,22 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        networkManager.updateUser(nil, nil, specArray, nil) { result in
+        networkManager.updateUser(nil, nil, specArray, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    guard let controllers = self.view.navigationController?.viewControllers else {
-                        self.back()
+                    guard let controllers = self?.view.navigationController?.viewControllers else {
+                        self?.back()
                         return
                     }
                     for viewControllers in controllers where viewControllers is ProfileViewController {
-                        self.view.navigationController?.popToViewController(viewControllers,
+                        self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }

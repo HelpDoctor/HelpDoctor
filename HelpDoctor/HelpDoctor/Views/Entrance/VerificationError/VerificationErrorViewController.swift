@@ -69,7 +69,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text = "На рассмотрении"
         label.text =
-        """
+            """
         Спасибо за предоставленную информацию!\n
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
@@ -230,7 +230,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text =
-        """
+            """
         Пожалуйста, учтите рекомендации администраторов приложения, \
         указанные в поле ниже, и направьте свои документы на повторную проверку в этом же окне
         """

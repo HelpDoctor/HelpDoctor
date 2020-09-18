@@ -29,7 +29,7 @@ class ProfilePopoverButton: UIView {
         icon.translatesAutoresizingMaskIntoConstraints = false
         icon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         icon.leadingAnchor.constraint(equalTo: self.leadingAnchor,
-                                          constant: leading).isActive = true
+                                      constant: leading).isActive = true
         icon.widthAnchor.constraint(equalToConstant: width).isActive = true
         icon.heightAnchor.constraint(equalToConstant: width).isActive = true
     }
@@ -43,9 +43,9 @@ class ProfilePopoverButton: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         label.leadingAnchor.constraint(equalTo: icon.trailingAnchor,
-                                          constant: leading).isActive = true
+                                       constant: leading).isActive = true
         label.trailingAnchor.constraint(equalTo: self.trailingAnchor,
-                                            constant: -leading).isActive = true
+                                        constant: -leading).isActive = true
         label.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
     }
     

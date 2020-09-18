@@ -149,7 +149,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text =
-        "Чтобы восстановить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа"
+            "Чтобы восстановить пароль введите, пожалуйста, свой E-mail. На него будет выслан новый пароль для входа"
         label.textAlignment = .left
         label.numberOfLines = 0
         scrollView.addSubview(label)
@@ -228,7 +228,7 @@ class RecoveryPasswordViewController: UIViewController, UIScrollViewDelegate {
         
         mailButton.translatesAutoresizingMaskIntoConstraints = false
         mailButton.topAnchor.constraint(equalTo: sendButton.bottomAnchor,
-                                         constant: top).isActive = true
+                                        constant: top).isActive = true
         mailButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         mailButton.widthAnchor.constraint(equalToConstant: width).isActive = true
         mailButton.heightAnchor.constraint(equalToConstant: height).isActive = true

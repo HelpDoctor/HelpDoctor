@@ -83,7 +83,7 @@ extension ProfileInterestsView: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
                                                             for: indexPath) as? InterestCollectionViewCell else {
-                                                                return UICollectionViewCell()
+            return UICollectionViewCell()
         }
         size = 18
         cell.delegate = self

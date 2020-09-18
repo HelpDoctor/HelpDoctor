@@ -31,17 +31,17 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     func getMedicalSpecialization() {
         view.startActivityIndicator()
-        networkManager.getMedicalSpecializations { result in
+        networkManager.getMedicalSpecializations { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let medicalSpecializations):
-                    self.arrayMedicalSpecialization = medicalSpecializations
-                    self.filteredArray = medicalSpecializations
-                    self.view.reloadTableView()
+                    self?.arrayMedicalSpecialization = medicalSpecializations
+                    self?.filteredArray = medicalSpecializations
+                    self?.view.reloadTableView()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }

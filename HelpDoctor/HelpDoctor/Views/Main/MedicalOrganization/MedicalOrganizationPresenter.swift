@@ -34,17 +34,17 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     func getMedicalOrganization(regionId: Int, mainWork: Bool) {
         view.startActivityIndicator()
         self.mainWork = mainWork
-        networkManager.getMedicalOrganizations(regionId) { result in
+        networkManager.getMedicalOrganizations(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let medicalOrganizations):
-                    self.arrayMedicalOrganizations = medicalOrganizations
-                    self.filteredArray = medicalOrganizations
-                    self.view.reloadTableView()
+                    self?.arrayMedicalOrganizations = medicalOrganizations
+                    self?.filteredArray = medicalOrganizations
+                    self?.view.reloadTableView()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }
@@ -85,11 +85,6 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
             presenter?.setJob(job: medicalOrganization)
             view.navigationController?.popToViewController(viewControllers, animated: true)
         }
-        
-//        let previous = view.navigationController?.viewControllers[4] as! CreateProfileWorkViewController
-//        let presenter = previous.presenter
-//        presenter?.setJob(job: medicalOrganization)
-//        view.navigationController?.popToViewController(previous, animated: true)
     }
     
     func back() {

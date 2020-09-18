@@ -97,7 +97,7 @@ class RegionsViewController: UIViewController {
         okButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         okButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
-
+    
     // MARK: - Navigation
     @objc private func okButtonPressed() {
         presenter?.next(index: tableView.indexPathForSelectedRow?.item)
@@ -148,10 +148,10 @@ extension RegionsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { fatalError("Could not dequeue a cell") }
-
+        else { fatalError("Could not dequeue a cell") }
+        
         cell.configure(presenter?.getRegionTitle(index: indexPath.row) ?? "Region not found")
         return cell
     }
-
+    
 }

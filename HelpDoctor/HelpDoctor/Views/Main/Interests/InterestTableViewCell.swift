@@ -30,7 +30,7 @@ class InterestTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
@@ -80,5 +80,5 @@ class InterestTableViewCell: UITableViewCell {
     func configure(_ title: String) {
         interestTitle.text = title
     }
-
+    
 }

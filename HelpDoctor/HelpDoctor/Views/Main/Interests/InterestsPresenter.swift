@@ -99,35 +99,37 @@ class InterestsPresenter: InterestsPresenterProtocol {
     /// Добавление нового интереса
     /// - Parameter interest: новый интерес из поля ввода
     func createInterest(interest: String?) {
-        guard let interest = interest else {
-            view.showAlert(message: "Заполните поле интереса")
-            return
-        }
-        view.startActivityIndicator()
-        let addInterest = Profile()
-        getData(typeOfContent: .addProfileInterest,
-                returning: ([Interest], Int?, String?).self,
-                requestParams: ["interest": interest]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    addInterest.addInterests = result?.0
-                    addInterest.responce = (result?.1, result?.2)
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("addInterestResponce = \(String(describing: addInterest.responce))")
-                            print("addInterest \(String(describing: addInterest.addInterests))")
-                            guard let code = addInterest.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                //TODO: - Разобраться
-//                                self?.callback(interests: addInterest.addInterests ?? [])
-                            } else {
-                                self?.view.showAlert(message: addInterest.responce?.1)
-                            }
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
-        }
+        //        guard let interest = interest else {
+        //            view.showAlert(message: "Заполните поле интереса")
+        //            return
+        //        }
+        //TODO: - Fix
+        /*
+         view.startActivityIndicator()
+         let addInterest = Profile()
+         getData(typeOfContent: .addProfileInterest,
+         returning: ([Interest], Int?, String?).self,
+         requestParams: ["interest": interest]) { [weak self] result in
+         let dispathGroup = DispatchGroup()
+         
+         addInterest.addInterests = result?.0
+         addInterest.responce = (result?.1, result?.2)
+         
+         dispathGroup.notify(queue: DispatchQueue.main) {
+         DispatchQueue.main.async { [weak self]  in
+         print("addInterestResponce = \(String(describing: addInterest.responce))")
+         print("addInterest \(String(describing: addInterest.addInterests))")
+         guard let code = addInterest.responce?.0 else { return }
+         if responceCode(code: code) {
+         self?.callback(interests: addInterest.addInterests ?? [])
+         } else {
+         self?.view.showAlert(message: addInterest.responce?.1)
+         }
+         self?.view.stopActivityIndicator()
+         }
+         }
+         }
+         */
     }
     
     /// Добавление вновь созданного интереса в массив интересов пользователя и обновление таблицы
@@ -147,7 +149,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
         let prevVC = view.navigationController?.viewControllers.last
         if prevVC is CreateProfileSpecViewController {
             guard let previous = view.navigationController?.viewControllers.last as? CreateProfileSpecViewController
-                else { return }
+            else { return }
             let presenter = previous.presenter
             presenter?.setInterests(interests: userInterests)
         } 

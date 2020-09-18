@@ -175,7 +175,7 @@ class VerificationOkViewController: UIViewController {
         label.font = .systemFontOfSize(size: 14)
         label.textColor = .white
         label.text =
-        """
+            """
         Поздравляем! Теперь Вы можете воспользоваться расширенными функциями сервиса HelpDoctor, \
         например, найти своих давних коллег и возобновить общение. А также многое другое!
         """

@@ -101,7 +101,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupStep8Label() {
         let text =
-        """
+            """
         Сообщите коллегам о своих научных интересах\n
         Ниже представлены интересы, часто выбираемые в Вашей специализации\n
         """
@@ -124,7 +124,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     
     private func setupSubscriptLabel() {
         let text =
-        """
+            """
         (Чтобы выбрать нужный интерес, нажмите на него)
         """
         let height = text.height(withConstrainedWidth: contentWidth, font: .italicSystemFontOfSize(size: 14))
@@ -145,9 +145,6 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
     private func setupCollectionView() {
         let top = 10.f
         let height = 227.f
-        //        let customSuperLayout = InterestCollectionViewLayout()
-        //        customSuperLayout.delegate = self
-        //        collectionView.setCollectionViewLayout(customSuperLayout, animated: true)
         view.addSubview(collectionView)
         collectionView.register(InterestCollectionViewCell.self, forCellWithReuseIdentifier: "InterestCell")
         collectionView.backgroundColor = .clear
@@ -252,7 +249,7 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "InterestCell",
                                                             for: indexPath) as? InterestCollectionViewCell else {
-                                                                return UICollectionViewCell()
+            return UICollectionViewCell()
         }
         size = 18
         cell.delegate = self
@@ -261,27 +258,7 @@ extension CreateProfileSpecViewController: UICollectionViewDataSource {
     }
     
 }
-/*
- extension CreateProfileSpecViewController: InterestCollectionViewLayoutDelegate {
- 
- func width(forItemAt indexPath: IndexPath) -> CGFloat {
- let cellHeight = 44.f
- let font = UIFont.systemFontOfSize(size: 14)
- var constraintRect = CGSize(width: contentWidth / 3, height: cellHeight)
- let data = " \(presenter?.getInterestTitle(index: indexPath.row) ?? " ") "
- let newWidth = data.width(withConstrainedHeight: cellHeight, font: font, minimumTextWrapWidth: 45)
- if newWidth > constraintRect.width {
- constraintRect = CGSize(width: contentWidth / 1, height: cellHeight)
- }
- let box = data.boundingRect(with: constraintRect,
- options: NSStringDrawingOptions.usesLineFragmentOrigin,
- attributes: [NSAttributedString.Key.font: font],
- context: nil)
- return box.width
- }
- 
- }
- */
+
 extension CreateProfileSpecViewController: InterestCollectionViewCellDelegate {
     
     func fontSize(interest: String) -> CGFloat {

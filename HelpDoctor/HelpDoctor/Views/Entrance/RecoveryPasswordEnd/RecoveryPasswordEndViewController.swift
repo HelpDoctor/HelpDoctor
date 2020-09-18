@@ -104,7 +104,7 @@ class RecoveryPasswordEndViewController: UIViewController {
         textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
-        """
+            """
         Новый пароль был выслан на Ваш E-mail\n
         Пожалуйста, войдите с новыми учетными данными
         """
@@ -114,7 +114,7 @@ class RecoveryPasswordEndViewController: UIViewController {
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                      constant: top).isActive = true
+                                       constant: top).isActive = true
         textLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: widthLabel).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true

@@ -34,17 +34,17 @@ class RegionsPresenter: RegionsPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-        networkManager.getRegions { result in
+        networkManager.getRegions { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let regions):
-                    self.arrayRegions = regions
-                    self.filteredArray = regions
-                    self.view.reloadTableView()
+                    self?.arrayRegions = regions
+                    self?.filteredArray = regions
+                    self?.view.reloadTableView()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }
@@ -80,7 +80,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
             let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             guard let previous = view.navigationController?.viewControllers.last as? CreateProfileScreen2ViewController
-                else { return }
+            else { return }
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()

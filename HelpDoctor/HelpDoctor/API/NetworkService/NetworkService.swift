@@ -264,7 +264,7 @@ func getData<T>(typeOfContent: TypeOfRequest,
     let request = currentSession.1
     var replyReturn: T?
     
-    _ = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
+    session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
         guard let data = data, error == nil else { return }
         
         DispatchQueue.global().async {

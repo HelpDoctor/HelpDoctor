@@ -51,22 +51,22 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
                               cityId: cityId,
                               foto: Session.instance.user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil) { result in
+        networkManager.updateUser(editedUser, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    guard let controllers = self.view.navigationController?.viewControllers else {
-                        self.back()
+                    guard let controllers = self?.view.navigationController?.viewControllers else {
+                        self?.back()
                         return
                     }
                     for viewControllers in controllers where viewControllers is ProfileViewController {
-                        self.view.navigationController?.popToViewController(viewControllers,
-                                                                            animated: true)
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
                     }
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }
@@ -74,9 +74,9 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     // MARK: - Public methods
     func citySearch() {
         guard let regionId = region?.regionId,
-            let region = region else {
-                view.showAlert(message: "Сначала необходимо выбрать регион")
-                return }
+              let region = region else {
+            view.showAlert(message: "Сначала необходимо выбрать регион")
+            return }
         let viewController = CitiesViewController()
         let presenter = CitiesPresenter(view: viewController, region: region)
         viewController.presenter = presenter
@@ -98,15 +98,15 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     }
     
     func setRegionFromDevice(_ idRegion: Int) {
-        networkManager.getRegions { result in
+        networkManager.getRegions { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let regions):
-                    self.region = regions.first(where: { $0.regionId == idRegion })
+                    self?.region = regions.first(where: { $0.regionId == idRegion })
                     guard let cityId = Session.instance.user?.cityId else { return }
-                    self.setCityFromDevice(cityId)
+                    self?.setCityFromDevice(cityId)
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
@@ -154,13 +154,13 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     private func setCityFromDevice(_ idCity: Int) {
         guard let regionId = region?.regionId else { return }
-        networkManager.getCities(regionId) { result in
+        networkManager.getCities(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let cities):
-                    self.city = cities.first(where: { $0.id == idCity })
+                    self?.city = cities.first(where: { $0.id == idCity })
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }

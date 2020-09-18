@@ -5,10 +5,9 @@
 //  Created by Anton Fomkin on 03.11.2019.
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
-
+/*
 import Foundation
 
-//swiftlint:disable function_body_length
 func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
                                   response: URLResponse?) -> ([String: [AnyObject]], Int?, String?)? {
     
@@ -77,3 +76,4 @@ func parseJSON_getDataFromProfile(for startPoint: [String: AnyObject]?,
     
     return (dataProfile, httpResponse.statusCode, nil)
 }
+*/

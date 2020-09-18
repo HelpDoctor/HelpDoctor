@@ -503,7 +503,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
         guard let phone = phoneTextField.text,
-            let birthdate = birthDateTextField.text else { return }
+              let birthdate = birthDateTextField.text else { return }
         presenter?.next(phone: phone, birthdate: birthdate)
     }
 }

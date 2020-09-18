@@ -33,24 +33,27 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-        let getUniversities = Profile()
-        
-        getData(typeOfContent: .getUniversities,
-                returning: ([University], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    getUniversities.universities = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            self?.arrayUniversities = getUniversities.universities
-                            self?.filteredArray = getUniversities.universities ?? []
-                            self?.view.reloadTableView()
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
-        }
+        //TODO: - Fix
+        /*
+         let getUniversities = Profile()
+         
+         getData(typeOfContent: .getUniversities,
+         returning: ([University], Int?, String?).self,
+         requestParams: [:]) { [weak self] result in
+         let dispathGroup = DispatchGroup()
+         
+         getUniversities.universities = result?.0
+         
+         dispathGroup.notify(queue: DispatchQueue.main) {
+         DispatchQueue.main.async { [weak self]  in
+         self?.arrayUniversities = getUniversities.universities
+         self?.filteredArray = getUniversities.universities ?? []
+         self?.view.reloadTableView()
+         self?.view.stopActivityIndicator()
+         }
+         }
+         }
+         */
     }
     
     

@@ -21,7 +21,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Dependency
     let view: ProfileViewController
-    let networkManager = NetworkManager()
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -37,16 +37,16 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Public methods
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        networkManager.getUser { result in
+        networkManager.getUser { [weak self] result in
             switch result {
             case .success(let profiles):
-                self.setUser(userData: profiles.user)
-                self.setEducation(education: profiles.educations)
-                self.setJob(jobData: profiles.job)
-                self.setSpec(specData: profiles.specializations)
-                self.setInterests(interestData: profiles.interests)
+                self?.setUser(userData: profiles.user)
+                self?.setEducation(education: profiles.educations)
+                self?.setJob(jobData: profiles.job)
+                self?.setSpec(specData: profiles.specializations)
+                self?.setInterests(interestData: profiles.interests)
             case .failure(let error):
-                self.view.showAlert(message: error.description)
+                self?.view.showAlert(message: error.description)
             }
         }
     }
@@ -57,44 +57,43 @@ class ProfilePresenter: ProfilePresenterProtocol {
         getData(typeOfContent: .userStatus,
                 returning: ([Verification], Int?, String?).self,
                 requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    userStatus.verification = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self] in
-                            print("result=\(String(describing: userStatus.verification))")
-                            guard let status = userStatus.verification?[0].status else { return }
-                            switch status {
-                            case "denied":
-                                UserDefaults.standard.set("denied", forKey: "userStatus")
-                                self?.toErrorVerification(userStatus.verification?[0].message)
-                            case "not_verification":
-                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                                self?.toVerification()
-                            case "processing":
-                                UserDefaults.standard.set("processing", forKey: "userStatus")
-                                self?.toEndVerification()
-                            case "verified":
-                                self?.toOkVerification()
-                                UserDefaults.standard.set("verified", forKey: "userStatus")
-                            default:
-                                break
-                            }
-                        }
+            let dispathGroup = DispatchGroup()
+            userStatus.verification = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("result=\(String(describing: userStatus.verification))")
+                    guard let status = userStatus.verification?[0].status else { return }
+                    switch status {
+                    case "denied":
+                        UserDefaults.standard.set("denied", forKey: "userStatus")
+                        self?.toErrorVerification(userStatus.verification?[0].message)
+                    case "not_verification":
+                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                        self?.toVerification()
+                    case "processing":
+                        UserDefaults.standard.set("processing", forKey: "userStatus")
+                        self?.toEndVerification()
+                    case "verified":
+                        self?.toOkVerification()
+                        UserDefaults.standard.set("verified", forKey: "userStatus")
+                    default:
+                        break
                     }
+                }
+            }
         }
     }
     
     func logout() {
-        networkManager.logout { result in
+        networkManager.logout { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    print("Logout")
                     UserDefaults.standard.set("not_verification", forKey: "userStatus")
                     AppDelegate.shared.rootViewController.switchToLogout()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
@@ -104,21 +103,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Установка информации о пользователе в форму
     /// - Parameter userData: информация с сервера
     private func setUser(userData: User) {
-        self.user = User(id: userData.id,
-                         firstName: userData.firstName,
-                         lastName: userData.lastName,
-                         middleName: userData.middleName,
-                         gender: userData.gender,
-                         email: userData.email,
-                         phoneNumber: userData.phoneNumber,
-                         birthday: userData.birthday,
-                         cityId: userData.cityId,
-                         cityName: userData.cityName,
-                         regionId: userData.regionId,
-                         regionName: userData.regionName,
-                         foto: userData.foto,
-                         isMedicWorker: userData.isMedicWorker,
-                         verifiedUser: userData.verifiedUser)
+        self.user = userData
         let lastName = user?.lastName ?? ""
         let name = user?.firstName ?? ""
         let middleName = user?.middleName ?? ""

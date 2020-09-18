@@ -135,7 +135,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
-        """
+            """
         Регистрация пройдена! \n
         Пароль для входа в приложение был выслан на указанный Вами E-mail \n
         Теперь Вы можете войти, используя адрес почтового ящика и пароль
@@ -146,7 +146,7 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
         
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         textLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                      constant: top).isActive = true
+                                       constant: top).isActive = true
         textLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
         textLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
         textLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
@@ -267,9 +267,9 @@ class RegisterEndViewController: UIViewController, UIScrollViewDelegate {
     /// Обработка нажатия кнопки "Войти"
     @objc private func loginButtonPressed() {
         guard let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
+              let password = passwordTextField.text else { return }
         hideKeyboard()
         presenter?.loginButtonPressed(email: email, password: password)
     }
-
+    
 }

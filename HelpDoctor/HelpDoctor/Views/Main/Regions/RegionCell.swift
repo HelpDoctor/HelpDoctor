@@ -67,5 +67,5 @@ class RegionCell: UITableViewCell {
             icon.isHidden = isSelected ? false : true
         }
     }
-
+    
 }

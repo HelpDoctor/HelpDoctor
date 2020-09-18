@@ -44,22 +44,22 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
                               cityId: Session.instance.user?.cityId,
                               foto: Session.instance.user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil) { result in
+        networkManager.updateUser(editedUser, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    guard let controllers = self.view.navigationController?.viewControllers else {
-                        self.back()
+                    guard let controllers = self?.view.navigationController?.viewControllers else {
+                        self?.back()
                         return
                     }
                     for viewControllers in controllers where viewControllers is ProfileViewController {
-                        self.view.navigationController?.popToViewController(viewControllers,
+                        self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }

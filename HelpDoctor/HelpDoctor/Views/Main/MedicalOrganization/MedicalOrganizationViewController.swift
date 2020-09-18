@@ -122,8 +122,8 @@ extension MedicalOrganizationViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { return UITableViewCell() }
-
+        else { return UITableViewCell() }
+        
         cell.configure(presenter?.getMedicalOrganizationTitle(index: indexPath.row) ?? "Medical organization not found")
         return cell
     }
@@ -142,5 +142,5 @@ extension MedicalOrganizationViewController: UITableViewDataSource {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = false
     }
-
+    
 }

@@ -19,7 +19,6 @@ class InterestCollectionViewCell: UICollectionViewCell {
     private let cellLabel = UILabel()
     private let plusIcon = UIImageView()
     private let unSelectedColor = UIColor(red: 0.118, green: 0.588, blue: 0.988, alpha: 1)
-//    var iconName = "Plus_Symbol"
     
     override init(frame: CGRect) {
         super.init(frame: frame)

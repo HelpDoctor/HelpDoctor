@@ -278,9 +278,9 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
         
         policyTextView.translatesAutoresizingMaskIntoConstraints = false
         policyTextView.topAnchor.constraint(equalTo: registerButton.bottomAnchor,
-                                         constant: top).isActive = true
+                                            constant: top).isActive = true
         policyTextView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                             constant: leading).isActive = true
+                                                constant: leading).isActive = true
         policyTextView.widthAnchor.constraint(equalToConstant: width).isActive = true
         policyTextView.heightAnchor.constraint(equalToConstant: height).isActive = true
     }

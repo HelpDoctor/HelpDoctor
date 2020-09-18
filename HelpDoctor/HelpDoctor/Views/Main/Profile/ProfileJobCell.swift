@@ -40,5 +40,5 @@ class ProfileJobCell: UITableViewCell {
     func configure(_ title: String) {
         titleLabel.text = title
     }
-
+    
 }

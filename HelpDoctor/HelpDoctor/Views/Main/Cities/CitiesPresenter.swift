@@ -21,7 +21,7 @@ protocol CitiesPresenterProtocol: Presenter {
 }
 
 class CitiesPresenter: CitiesPresenterProtocol {
-        
+    
     var view: CitiesViewController
     private let networkManager = NetworkManager()
     var arrayCities: [Cities]?
@@ -44,17 +44,17 @@ class CitiesPresenter: CitiesPresenterProtocol {
             view.setTitleButton()
         }
         view.startActivityIndicator()
-        networkManager.getCities(regionId) { result in
+        networkManager.getCities(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let cities):
-                    self.arrayCities = cities
-                    self.filteredArray = cities
-                    self.view.reloadTableView()
+                    self?.arrayCities = cities
+                    self?.filteredArray = cities
+                    self?.view.reloadTableView()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }
@@ -88,12 +88,12 @@ class CitiesPresenter: CitiesPresenterProtocol {
     func next(index: Int?) {
         if sender == nil {
             guard let index = index else {
-                    view.showAlert(message: "Выберите один город")
-                    return }
+                view.showAlert(message: "Выберите один город")
+                return }
             let city = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             guard let previous = view.navigationController?.viewControllers.last as? CreateProfileScreen2ViewController
-                else { return }
+            else { return }
             let presenter = previous.presenter
             presenter?.setCity(city: city)
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {

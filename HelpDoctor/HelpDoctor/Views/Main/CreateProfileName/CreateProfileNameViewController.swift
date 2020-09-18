@@ -138,7 +138,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         topLabel.font = .systemFontOfSize(size: 14)
         topLabel.textColor = .white
         topLabel.text =
-        """
+            """
         Для создания профиля нужно внести данные о себе. Поля, отмеченные звездочкой (*), обязательны для заполнения
         """
         topLabel.textAlignment = .left
@@ -367,9 +367,9 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         
         hideGenderCheckbox.translatesAutoresizingMaskIntoConstraints = false
         hideGenderCheckbox.topAnchor.constraint(equalTo: maleButton.bottomAnchor,
-                                                  constant: verticalInset).isActive = true
+                                                constant: verticalInset).isActive = true
         hideGenderCheckbox.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor,
-                                                      constant: leading).isActive = true
+                                                    constant: leading).isActive = true
         hideGenderCheckbox.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
         hideGenderCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
@@ -459,8 +459,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     /// Действие при нажатии кнопки далее
     @objc private func nextButtonPressed() {
         guard let name = nameTextField.text,
-            let lastname = surnameTextField.text,
-            let middleName = patronymicTextField.text else { return }
+              let lastname = surnameTextField.text,
+              let middleName = patronymicTextField.text else { return }
         presenter?.next(name: name, lastname: lastname, middleName: middleName)
     }
     

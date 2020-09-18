@@ -97,7 +97,7 @@ class UniversitiesViewController: UIViewController {
         okButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
         okButton.widthAnchor.constraint(equalToConstant: 110).isActive = true
     }
-
+    
     // MARK: - Navigation
     @objc private func okButtonPressed() {
         presenter?.next(index: tableView.indexPathForSelectedRow?.item)
@@ -148,10 +148,10 @@ extension UniversitiesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { return UITableViewCell() }
-
+        else { return UITableViewCell() }
+        
         cell.configure(presenter?.getUniversityTitle(index: indexPath.row) ?? "University not found")
         return cell
     }
-
+    
 }

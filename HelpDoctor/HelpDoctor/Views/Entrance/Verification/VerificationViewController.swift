@@ -52,7 +52,7 @@ class VerificationViewController: UIViewController {
         let width = 110.f
         let font = UIFont.systemFontOfSize(size: 14)
         let text =
-        """
+            """
         Спасибо за предоставленную информацию!\n
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты
@@ -169,7 +169,7 @@ class VerificationViewController: UIViewController {
         attachment.image = iconImage
         let attachmentString = NSAttributedString(attachment: attachment)
         let text =
-        """
+            """
         Чтобы получить доступ к полному функционалу приложения, \
         Вам необходимо предоставить копию документа, \
         подтверждающего вашу квалификацию - диплом о среднем или высшем медицинском образовании 

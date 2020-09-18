@@ -150,7 +150,7 @@ class StartMainViewController: UIViewController {
         bottomLabel.font = UIFont.systemFontOfSize(size: 12)
         bottomLabel.textColor = .white
         bottomLabel.text =
-        """
+            """
         Для того чтобы стать частью медицинского сообщества HelpDoctor нужно указать информацию о себе, заполнив профиль
         """
         bottomLabel.textAlignment = .left
@@ -232,21 +232,6 @@ class StartMainViewController: UIViewController {
                 }
             }
         }
-//        let unRegistration = Registration(email: nil, password: nil, token: nil)
-//        getData(typeOfContent: .deleteMail,
-//                returning: (Int?, String?).self,
-//                requestParams: [:]) { result in
-//                    let dispathGroup = DispatchGroup()
-//                    unRegistration.responce = result
-//
-//                    dispathGroup.notify(queue: DispatchQueue.main) {
-//                        DispatchQueue.main.async {
-//                            print("result= \(String(describing: unRegistration.responce))")
-//                            UserDefaults.standard.set("not_verification", forKey: "userStatus")
-//                            AppDelegate.shared.rootViewController.switchToLogout()
-//                        }
-//                    }
-//        }
     }
     
 }

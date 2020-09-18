@@ -133,7 +133,7 @@ extension ProfileCareerView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileJobCell",
                                                        for: indexPath) as? ProfileJobCell
-            else { return UITableViewCell() }
+        else { return UITableViewCell() }
         
         cell.configure(jobArray[indexPath.section]?.organization?.nameShort ?? "")
         return cell

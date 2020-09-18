@@ -39,13 +39,13 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     /// - Parameter email: адрес электронной почты
     func registerButtonPressed(email: String) {
         view.stopActivityIndicator()
-        networkManager.registration(email) { result in
+        networkManager.registration(email) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let code):
-                    responceCode(code: code) ? self.register(email: email) : nil
+                    responceCode(code: code) ? self?.register(email: email) : nil
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }

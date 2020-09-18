@@ -30,19 +30,19 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     /// - Parameter email: адрес электронной почты
     func sendButtonTapped(email: String?) {
         guard let email = email,
-            email != "" else {
-                view.showAlert(message: "Заполните E-Mail")
-                return
+              email != "" else {
+            view.showAlert(message: "Заполните E-Mail")
+            return
         }
         view.startActivityIndicator()
-        networkManager.recovery(email) { result in
+        networkManager.recovery(email) { [weak self] result in
             DispatchQueue.main.async {
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
                 switch result {
                 case .success(let code):
-                    responceCode(code: code) ? self.send() : nil
+                    responceCode(code: code) ? self?.send() : nil
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }

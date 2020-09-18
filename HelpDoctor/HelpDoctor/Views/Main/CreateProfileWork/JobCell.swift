@@ -18,6 +18,7 @@ class JobCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.backgroundColor = .backgroundColor
         setupSeparatorView()
         setupStackView()
         setupJobTextLabel()
@@ -54,7 +55,7 @@ class JobCell: UITableViewCell {
     }
     
     private func setupSeparatorView() {
-        separatorView.backgroundColor = .clear
+        separatorView.backgroundColor = .backgroundColor
         contentView.addSubview(separatorView)
         
         separatorView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,5 +74,5 @@ class JobCell: UITableViewCell {
         jobTextLabel.textColor = UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.3)
         jobTextLabel.attributedText = title
     }
-
+    
 }

@@ -88,7 +88,7 @@ class VerificationEndViewController: UIViewController {
         titleLabel.font = .boldSystemFontOfSize(size: 18)
         titleLabel.textColor = .white
         titleLabel.text =
-        """
+            """
         Верификация
         """
         titleLabel.textAlignment = .center
@@ -110,7 +110,7 @@ class VerificationEndViewController: UIViewController {
         subtitleLabel.font = .mediumSystemFontOfSize(size: 14)
         subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text =
-        """
+            """
         На рассмотрении
         """
         subtitleLabel.textAlignment = .center
@@ -119,7 +119,7 @@ class VerificationEndViewController: UIViewController {
         
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                        constant: top).isActive = true
+                                           constant: top).isActive = true
         subtitleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         subtitleLabel.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         subtitleLabel.heightAnchor.constraint(equalToConstant: height).isActive = true
@@ -132,7 +132,7 @@ class VerificationEndViewController: UIViewController {
         textLabel.font = .systemFontOfSize(size: 14)
         textLabel.textColor = .white
         textLabel.text =
-        """
+            """
         Спасибо за предоставленную информацию!\n
         Пожалуйста, дождитесь результатов верификации. \
         Мы уведомим Вас о завершении процедуры проверки по указанному Вами адресу электронной почты

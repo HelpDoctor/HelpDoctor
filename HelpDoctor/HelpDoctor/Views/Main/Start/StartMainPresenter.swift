@@ -34,20 +34,20 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func profileCheck() {
         view.startActivityIndicator()
         getUser()
-        networkManager.checkProfile { result in
+        networkManager.checkProfile { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let status):
                     if status {
-                        self.view.hideFillProfileButton()
-                        self.getStatusUser()
+                        self?.view.hideFillProfileButton()
+                        self?.getStatusUser()
                     } else {
-                        self.view.showFillProfileButton()
+                        self?.view.showFillProfileButton()
                     }
                 case .failure:
                     AppDelegate.shared.rootViewController.switchToLogout()
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
         }
     }
@@ -59,46 +59,46 @@ class StartMainPresenter: StartMainPresenterProtocol {
         getData(typeOfContent: .userStatus,
                 returning: ([Verification], Int?, String?).self,
                 requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    userStatus.verification = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self] in
-                            print("result=\(String(describing: userStatus.verification))")
-                            guard let status = userStatus.verification?[0].status else { return }
-                            switch status {
-                            case "denied":
-                                UserDefaults.standard.set("denied", forKey: "userStatus")
-                                self?.toErrorVerification(userStatus.verification?[0].message)
-                            case "not_verification":
-                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                                self?.toVerification()
-                            case "processing":
-                                UserDefaults.standard.set("processing", forKey: "userStatus")
-                                self?.toEndVerification()
-                            case "verified":
-                                if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
-                                    self?.toOkVerification()
-                                }
-                                UserDefaults.standard.set("verified", forKey: "userStatus")
-                            default:
-                                break
-                            }
+            let dispathGroup = DispatchGroup()
+            userStatus.verification = result?.0
+            
+            dispathGroup.notify(queue: DispatchQueue.main) {
+                DispatchQueue.main.async { [weak self] in
+                    print("result=\(String(describing: userStatus.verification))")
+                    guard let status = userStatus.verification?[0].status else { return }
+                    switch status {
+                    case "denied":
+                        UserDefaults.standard.set("denied", forKey: "userStatus")
+                        self?.toErrorVerification(userStatus.verification?[0].message)
+                    case "not_verification":
+                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                        self?.toVerification()
+                    case "processing":
+                        UserDefaults.standard.set("processing", forKey: "userStatus")
+                        self?.toEndVerification()
+                    case "verified":
+                        if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
+                            self?.toOkVerification()
                         }
+                        UserDefaults.standard.set("verified", forKey: "userStatus")
+                    default:
+                        break
                     }
+                }
+            }
         }
     }
     
     private func getUser() {
-        networkManager.getUser { result in
+        networkManager.getUser { [weak self] result in
             switch result {
             case .success(let profiles):
-                self.session.user = profiles.user
-                self.session.education = profiles.educations
-                self.session.userJob = profiles.job
-                self.session.specialization = profiles.specializations
+                self?.session.user = profiles.user
+                self?.session.education = profiles.educations
+                self?.session.userJob = profiles.job
+                self?.session.specialization = profiles.specializations
             case .failure(let error):
-                self.view.showAlert(message: error.description)
+                self?.view.showAlert(message: error.description)
             }
         }
     }

@@ -90,7 +90,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Private methods
     private func setUser() {
         guard let education = Session.instance.education,
-            !education.isEmpty else { return }
+              !education.isEmpty else { return }
         universityTextField.text = education[0].education?.educationName
         graduateDateTextField.text = "\(education[0].yearEnding ?? 0)"
         

@@ -320,7 +320,7 @@ extension InterestsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "InterestTableViewCell",
                                                        for: indexPath) as? InterestTableViewCell
-            else { return UITableViewCell() }
+        else { return UITableViewCell() }
         
         cell.configure(presenter?.getInterestsTitle(index: indexPath.row) ?? "Not found")
         return cell

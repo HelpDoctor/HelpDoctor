@@ -18,11 +18,11 @@ class ProfilePopoverController: UIViewController {
     
     weak var delegate: ProfilePopoverDelegate?
     private let editProfileButton = ProfilePopoverButton(text: "Редактировать профиль",
-                                                 image: UIImage(named: "EditProfile"))
+                                                         image: UIImage(named: "EditProfile"))
     private let verificateProfileButton = ProfilePopoverButton(text: "Верифицировать профиль",
                                                                image: UIImage(named: "VerificationMarkPopover"))
     private let exitProfileButton = ProfilePopoverButton(text: "Выйти из профиля",
-                                                 image: UIImage(named: "ExitProfile"))
+                                                         image: UIImage(named: "ExitProfile"))
     
     override func viewDidLoad() {
         super.viewDidLoad()

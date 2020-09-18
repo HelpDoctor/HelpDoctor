@@ -154,8 +154,8 @@ extension CitiesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "RegionCell",
                                                        for: indexPath) as? RegionCell
-            else { return UITableViewCell() }
-
+        else { return UITableViewCell() }
+        
         cell.configure(presenter?.getCityTitle(index: indexPath.row) ?? "City not found")
         return cell
     }
@@ -174,5 +174,5 @@ extension CitiesViewController: UITableViewDataSource {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         cell.isSelected = false
     }
-
+    
 }

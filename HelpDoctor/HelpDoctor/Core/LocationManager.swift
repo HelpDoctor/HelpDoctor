@@ -64,12 +64,12 @@ final class LocationManager: NSObject {
         case .denied:
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!,
                                       options: [:]) { [weak self] _ in
-                                        switch CLLocationManager.authorizationStatus() {
-                                        case .authorizedAlways, .authorizedWhenInUse:
-                                            self?.locationManager.requestLocation()
-                                        default:
-                                            break
-                                        }
+                switch CLLocationManager.authorizationStatus() {
+                case .authorizedAlways, .authorizedWhenInUse:
+                    self?.locationManager.requestLocation()
+                default:
+                    break
+                }
             }
         default:
             break

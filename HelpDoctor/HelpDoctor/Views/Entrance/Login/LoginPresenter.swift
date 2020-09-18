@@ -33,25 +33,25 @@ class LoginPresenter: LoginPresenterProtocol {
     ///   - password: пароль
     func loginButtonPressed(email: String?, password: String?) {
         guard let email = email,
-            email != "" else {
-                view.showAlert(message: "Заполните E-Mail")
-                return
+              email != "" else {
+            view.showAlert(message: "Заполните E-Mail")
+            return
         }
         guard let password = password,
-            password != "" else {
-                view.showAlert(message: "Пароль не может быть пустым")
-                return
+              password != "" else {
+            view.showAlert(message: "Пароль не может быть пустым")
+            return
         }
         view.startActivityIndicator()
-        networkManager.login(email, password) { result in
+        networkManager.login(email, password) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self.login()
+                    self?.login()
                 case .failure(let error):
-                    self.view.showAlert(message: error.description)
+                    self?.view.showAlert(message: error.description)
                 }
-                self.view.stopActivityIndicator()
+                self?.view.stopActivityIndicator()
             }
             
         }

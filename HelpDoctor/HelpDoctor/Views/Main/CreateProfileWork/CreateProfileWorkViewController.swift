@@ -198,7 +198,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         heightScroll += verticalInset + heightSpecTableView
         scrollView.addSubview(specTableView)
         specTableView.register(JobCell.self, forCellReuseIdentifier: "JobCell")
-        specTableView.backgroundColor = .clear
+        specTableView.backgroundColor = .backgroundColor
         specTableView.dataSource = self
         specTableView.delegate = self
         specTableView.separatorStyle = .none
@@ -616,7 +616,7 @@ extension CreateProfileWorkViewController: UITableViewDataSource {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "JobCell",
                                                        for: indexPath) as? JobCell
-            else { return UITableViewCell() }
+        else { return UITableViewCell() }
         
         if tableView == self.jobTableView {
             let job = presenter?.getJob(indexPath.row) ?? "Место работы"
