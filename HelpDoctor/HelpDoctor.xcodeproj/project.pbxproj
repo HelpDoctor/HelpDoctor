@@ -133,6 +133,10 @@
 		46959B4F24ED255500139A17 /* UniversitiesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */; };
 		46959B5124ED256200139A17 /* UniversitiesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5024ED256200139A17 /* UniversitiesViewController.swift */; };
 		46959B5324ED2D0800139A17 /* Universities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46959B5224ED2D0800139A17 /* Universities.swift */; };
+		469C70E7251A3B8400C655FC /* RecentContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70E5251A3B8400C655FC /* RecentContactsCell.swift */; };
+		469C70EB251A3BBD00C655FC /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70EA251A3BBD00C655FC /* Contacts.swift */; };
+		469C70EE251A3BC700C655FC /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70ED251A3BC700C655FC /* Event.swift */; };
+		469C70F2251A3C2C00C655FC /* ContactsSortPopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70F1251A3C2C00C655FC /* ContactsSortPopoverController.swift */; };
 		469DD6562459463F006DBD30 /* CreateProfileStep6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */; };
 		469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */; };
 		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
@@ -410,6 +414,10 @@
 		46959B4E24ED255500139A17 /* UniversitiesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesPresenter.swift; sourceTree = "<group>"; };
 		46959B5024ED256200139A17 /* UniversitiesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversitiesViewController.swift; sourceTree = "<group>"; };
 		46959B5224ED2D0800139A17 /* Universities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Universities.swift; sourceTree = "<group>"; };
+		469C70E5251A3B8400C655FC /* RecentContactsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecentContactsCell.swift; sourceTree = "<group>"; };
+		469C70EA251A3BBD00C655FC /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
+		469C70ED251A3BC700C655FC /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
+		469C70F1251A3C2C00C655FC /* ContactsSortPopoverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsSortPopoverController.swift; sourceTree = "<group>"; };
 		469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6ViewController.swift; sourceTree = "<group>"; };
 		469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6Presenter.swift; sourceTree = "<group>"; };
 		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -919,6 +927,8 @@
 				C48F160723B5FE86002D04E3 /* MedicalOrganization.swift */,
 				C48F160523B5FE85002D04E3 /* MedicalSpecialization.swift */,
 				C48F160F23B5FE86002D04E3 /* Interest.swift */,
+				469C70EA251A3BBD00C655FC /* Contacts.swift */,
+				469C70ED251A3BC700C655FC /* Event.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -955,6 +965,8 @@
 			children = (
 				46DF8F1825166BBA00459DC3 /* ContactsViewController.swift */,
 				46DF8F1C25166BC700459DC3 /* ContactsPresenter.swift */,
+				469C70F1251A3C2C00C655FC /* ContactsSortPopoverController.swift */,
+				469C70E5251A3B8400C655FC /* RecentContactsCell.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -1670,11 +1682,13 @@
 				46F87F2423BB79460095264E /* RootViewController.swift in Sources */,
 				4682F3AA2502503A005BDA9E /* AddGuestsPresenter.swift in Sources */,
 				46F87F2023BB74090095264E /* CreateProfileNamePresenter.swift in Sources */,
+				469C70E7251A3B8400C655FC /* RecentContactsCell.swift in Sources */,
 				462A6A1B2500A91000914994 /* RepeatButtons.swift in Sources */,
 				46203F2B23CB2A240072653A /* ActivityIndicatorView.swift in Sources */,
 				46203F2523CB04F10072653A /* OtherTimeNotifyPresenter.swift in Sources */,
 				469DD65E245AEBFF006DBD30 /* InfoView.swift in Sources */,
 				46164BB724EFEEC300879DE4 /* PanelTransition.swift in Sources */,
+				469C70EE251A3BC700C655FC /* Event.swift in Sources */,
 				4640B6CB24027C4E0023C3A3 /* InviteViewController.swift in Sources */,
 				C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */,
 				46F87F2D23BC95510095264E /* SearchButton.swift in Sources */,
@@ -1814,6 +1828,7 @@
 				4640B6D024028F030023C3A3 /* FAQViewController.swift in Sources */,
 				46F87F5B23BF7FCC0095264E /* MedicalOrganizationPresenter.swift in Sources */,
 				46203F0A23C761880072653A /* EventAddPresenter.swift in Sources */,
+				469C70EB251A3BBD00C655FC /* Contacts.swift in Sources */,
 				4640B6D224028F0F0023C3A3 /* FAQPresenter.swift in Sources */,
 				4682F3A325022864005BDA9E /* SelectNotifyPresenter.swift in Sources */,
 				C48F161F23B5FE87002D04E3 /* MedicalSpecialization.swift in Sources */,
@@ -1827,6 +1842,7 @@
 				C48F161923B5FE87002D04E3 /* Cities.swift in Sources */,
 				46203F1C23C9CC810072653A /* ViewEventViewController.swift in Sources */,
 				C4CBC3AE23D026A900434BFB /* UpdateProfileInterest.swift in Sources */,
+				469C70F2251A3C2C00C655FC /* ContactsSortPopoverController.swift in Sources */,
 				46203F1723C8EA460072653A /* InterestCollectionViewCell.swift in Sources */,
 				46072E1323C228E80070F2F6 /* TodayEventCell.swift in Sources */,
 				4640B6E524166D480023C3A3 /* VerificationPresenter.swift in Sources */,

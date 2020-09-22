@@ -38,15 +38,17 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Загрузка информации о пользователе с сервера
     func getUser() {
         networkManager.getUser { [weak self] result in
-            switch result {
-            case .success(let profiles):
-                self?.setUser(userData: profiles.user)
-                self?.setEducation(education: profiles.educations)
-                self?.setJob(jobData: profiles.job)
-                self?.setSpec(specData: profiles.specializations)
-                self?.setInterests(interestData: profiles.interests)
-            case .failure(let error):
-                self?.view.showAlert(message: error.description)
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let profiles):
+                    self?.setUser(userData: profiles.user)
+                    self?.setEducation(education: profiles.educations)
+                    self?.setJob(jobData: profiles.job)
+                    self?.setSpec(specData: profiles.specializations)
+                    self?.setInterests(interestData: profiles.interests)
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
             }
         }
     }
