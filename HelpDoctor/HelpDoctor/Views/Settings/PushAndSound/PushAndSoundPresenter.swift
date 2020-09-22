@@ -17,6 +17,7 @@ protocol PushAndSoundPresenterProtocol: Presenter {
 class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     
     var view: PushAndSoundViewController
+    private let networkManager = NetworkManager()
     
     required init(view: PushAndSoundViewController) {
         self.view = view
@@ -26,23 +27,23 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
         var userSettings = Session.instance.userSettings
         switch key {
         case "push_notification":
-            userSettings?.push_notification = value
+            userSettings?.pushNotification = value
         case "message_friend":
-            userSettings?.message_friend = value
+            userSettings?.messageFriend = value
         case "add_friend":
-            userSettings?.add_friend = value
+            userSettings?.addFriend = value
         default:
             break
         }
         
         let updateSettings = UpdateSettings(id: userSettings?.id,
-                                            push_notification: userSettings?.push_notification,
-                                            message_friend: userSettings?.message_friend,
-                                            add_friend: userSettings?.add_friend,
-                                            message_group: userSettings?.message_group,
-                                            email_notification: userSettings?.email_notification,
+                                            push_notification: userSettings?.pushNotification,
+                                            message_friend: userSettings?.messageFriend,
+                                            add_friend: userSettings?.addFriend,
+                                            message_group: userSettings?.messageGroup,
+                                            email_notification: userSettings?.emailNotification,
                                             periodicity: userSettings?.periodicity,
-                                            invite_pharmcompany: userSettings?.invite_pharmcompany,
+                                            invite_pharmcompany: userSettings?.invitePharmcompany,
                                             consultation: userSettings?.consultation,
                                             vacancy: userSettings?.vacancy)
         
@@ -68,25 +69,23 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     }
     
     private func loadSettings() {
-        let getSettings = SettingsResponse()
-        getData(typeOfContent: .getSettings,
-                returning: ([Settings], Int?, String?).self,
-                requestParams: [:]) { result in
-                    let dispathGroup = DispatchGroup()
-                    getSettings.settings = result?.0
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async {
-                            Session.instance.userSettings = getSettings.settings?[0]
-                        }
-                    }
+        networkManager.getSettings { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let settings):
+                    Session.instance.userSettings = settings
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     
     func setSettingsOnView() {
         guard let settings = Session.instance.userSettings else { return }
-        settings.push_notification == 1 ? view.setValueOnSwitch(true) : view.setValueOnSwitch(false)
-        settings.add_friend == 1 ? view.setContactsCheckbox(true) : view.setContactsCheckbox(false)
-        settings.message_friend == 1 ? view.setMessagesCheckbox(true) : view.setMessagesCheckbox(false)
+        settings.pushNotification == 1 ? view.setValueOnSwitch(true) : view.setValueOnSwitch(false)
+        settings.addFriend == 1 ? view.setContactsCheckbox(true) : view.setContactsCheckbox(false)
+        settings.messageFriend == 1 ? view.setMessagesCheckbox(true) : view.setMessagesCheckbox(false)
     }
     
     // MARK: - Coordinator

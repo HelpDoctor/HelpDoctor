@@ -5,7 +5,7 @@
 //  Created by Anton Fomkin on 15.11.2019.
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
-
+/*
 import Foundation
 
 class CreateOrUpdateEvent {
@@ -48,3 +48,4 @@ class CreateOrUpdateEvent {
         self.jsonData = todoJSON(obj: jsonModel)
     }
 }
+*/

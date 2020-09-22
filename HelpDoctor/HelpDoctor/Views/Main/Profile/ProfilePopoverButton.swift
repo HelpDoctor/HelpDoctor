@@ -35,6 +35,7 @@ class ProfilePopoverButton: UIView {
     }
     
     private func setupEditLabel() {
+        label.numberOfLines = 0
         label.textColor = .white
         label.textAlignment = .left
         label.font = .systemFontOfSize(size: 12)
@@ -42,8 +43,13 @@ class ProfilePopoverButton: UIView {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        label.leadingAnchor.constraint(equalTo: icon.trailingAnchor,
-                                       constant: leading).isActive = true
+        if icon.image == nil {
+            label.leadingAnchor.constraint(equalTo: self.leadingAnchor,
+                                           constant: leading).isActive = true
+        } else {
+            label.leadingAnchor.constraint(equalTo: icon.trailingAnchor,
+                                           constant: leading).isActive = true
+        }
         label.trailingAnchor.constraint(equalTo: self.trailingAnchor,
                                         constant: -leading).isActive = true
         label.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true

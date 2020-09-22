@@ -5,7 +5,7 @@
 //  Created by Anton Fomkin on 16.11.2019.
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
-
+/*
 import Foundation
 
 func parseJSON_getEventForId(for startPoint: [String: Any]?,
@@ -36,3 +36,4 @@ func parseJSON_getEventForId(for startPoint: [String: Any]?,
     
     return ([event], httpResponse.statusCode, nil)
 }
+*/

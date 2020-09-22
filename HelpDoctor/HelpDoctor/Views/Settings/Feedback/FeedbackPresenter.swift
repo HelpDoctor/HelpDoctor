@@ -16,17 +16,18 @@ protocol FeedbackPresenterProtocol: Presenter {
 class FeedbackPresenter: FeedbackPresenterProtocol {
     
     var view: FeedbackViewController
+    private let networkManager = NetworkManager()
     
     required init(view: FeedbackViewController) {
         self.view = view
     }
     
     func sendFeedback(feedback: String?) {
-        guard let text = feedback else {
+        guard let text = feedback else { return }
+        if text == "" || text == "Введите, пожалуйста, своё сообщение (максимально 300 символов)" {
             view.showAlert(message: "Отзыв не может быть пустым")
             return
         }
-        
         if text.count > 300 {
             view.showAlert(message:
                 """
@@ -37,28 +38,17 @@ class FeedbackPresenter: FeedbackPresenterProtocol {
         }
         
         view.startActivityIndicator()
-        let sendFeedback = Feedback(text: text)
-        
-        getData(typeOfContent: .feedback,
-                returning: (Int?, String?).self,
-                requestParams: sendFeedback.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    sendFeedback.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("result= \(String(describing: sendFeedback.responce))")
-                            let code = sendFeedback.responce?.0
-                            switch code {
-                            case 200:
-                                self?.view.clearTextFields()
-                                self?.view.showSaved(message: "Отзыв отправлен")
-                            default:
-                                self?.view.showAlert(message: sendFeedback.responce?.1)
-                            }
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
+        networkManager.feedback(text) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.view.clearTextFields()
+                    self?.view.showSaved(message: "Отзыв отправлен")
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
         }
     }
     

@@ -1,31 +1,32 @@
 //
-//  AddGuestsViewController.swift
+//  ContactsViewController.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 04.09.2020.
+//  Created by Mikhail Semerikov on 19.09.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-class AddGuestsViewController: UIViewController {
+class ContactsViewController: UIViewController {
     
     // MARK: - Dependency
-    var presenter: AddGuestsPresenterProtocol?
+    var presenter: ContactsPresenterProtocol?
     
     // MARK: - Constants
     private let headerHeight = 40.f
-    private let heightCollectionView = 70.f
+    private let heightCollectionView = 60.f
     private let verticalInset = 10.f
     private let searchBar = UISearchBar()
     private let topView = UIView()
-    private let selectedGuestsLabel = UILabel()
+    private let recentContactsLabel = UILabel()
     private let centralView = UIView()
-    private let guestCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let contactsLabel = UILabel()
-    private let inviteButton = UIButton()
+    private let bottomView = UIView()
+    private let guestCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let contactsCountLabel = UILabel()
+    private let sortButton = UIButton()
     private let tableView = UITableView()
-    private let saveButton = HDButton()
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -34,17 +35,18 @@ class AddGuestsViewController: UIViewController {
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
                         presenter: presenter,
-                        title: "Добавить участников",
+                        title: "Мои контакты",
                         font: .boldSystemFontOfSize(size: 14))
         setupSearchBar()
         setupTopView()
         setupSelectedGuestsLabel()
-        setupCentralView()
         setupGuestCollectionView()
+        setupCentralView()
         setupContactsLabel()
-        setupInviteButton()
+        setupBottomView()
+        setupContactsCountLabel()
+        setupSortButton()
         setupTableView()
-        setupSaveButton()
         presenter?.getContactList()
     }
     
@@ -62,11 +64,10 @@ class AddGuestsViewController: UIViewController {
     
     func reloadCollectionView() {
         guestCollectionView.reloadData()
-        selectedGuestsLabel.text = "Выбрано участников: \(presenter?.getCountSelectedContacts() ?? 0)"
     }
     
     func setCountContactList(contactsCount: Int) {
-        contactsLabel.text = "Контактов: \(contactsCount)"
+        contactsCountLabel.text = "Контактов: \(contactsCount)"
     }
     
     func setSelected(index: Int) {
@@ -103,79 +104,106 @@ class AddGuestsViewController: UIViewController {
     }
     
     private func setupSelectedGuestsLabel() {
-        selectedGuestsLabel.font = .mediumSystemFontOfSize(size: 12)
-        selectedGuestsLabel.textColor = .black
-        selectedGuestsLabel.text = "Выбрано участников: \(presenter?.getCountSelectedContacts() ?? 0)"
-        selectedGuestsLabel.textAlignment = .left
-        selectedGuestsLabel.numberOfLines = 1
-        topView.addSubview(selectedGuestsLabel)
+        recentContactsLabel.font = .boldSystemFontOfSize(size: 12)
+        recentContactsLabel.textColor = .black
+        recentContactsLabel.text = "Недавние контакты"
+        recentContactsLabel.textAlignment = .left
+        recentContactsLabel.numberOfLines = 1
+        topView.addSubview(recentContactsLabel)
         
-        selectedGuestsLabel.translatesAutoresizingMaskIntoConstraints = false
-        selectedGuestsLabel.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
-        selectedGuestsLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor,
+        recentContactsLabel.translatesAutoresizingMaskIntoConstraints = false
+        recentContactsLabel.topAnchor.constraint(equalTo: topView.topAnchor).isActive = true
+        recentContactsLabel.leadingAnchor.constraint(equalTo: topView.leadingAnchor,
                                                      constant: verticalInset).isActive = true
-        selectedGuestsLabel.widthAnchor.constraint(equalToConstant: Session.width - (verticalInset * 2)).isActive = true
-        selectedGuestsLabel.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
-    }
-    
-    private func setupCentralView() {
-        centralView.backgroundColor = .searchBarTintColor
-        view.addSubview(centralView)
-        
-        centralView.translatesAutoresizingMaskIntoConstraints = false
-        centralView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
-        centralView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        centralView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
-        centralView.heightAnchor.constraint(equalToConstant: 110).isActive = true
+        recentContactsLabel.widthAnchor.constraint(equalToConstant: Session.width - (verticalInset * 2)).isActive = true
+        recentContactsLabel.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
     private func setupGuestCollectionView() {
-        guestCollectionView.backgroundColor = .white
+        guestCollectionView.backgroundColor = .backgroundColor
         guestCollectionView.layer.cornerRadius = 5
-        guestCollectionView.register(GuestCell.self, forCellWithReuseIdentifier: "GuestCell")
+        guestCollectionView.register(RecentContactsCell.self, forCellWithReuseIdentifier: "RecentContactsCell")
         guestCollectionView.dataSource = self
         guestCollectionView.delegate = self
-        centralView.addSubview(guestCollectionView)
+        view.addSubview(guestCollectionView)
         
         guestCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        guestCollectionView.topAnchor.constraint(equalTo: centralView.topAnchor,
-                                                 constant: verticalInset).isActive = true
-        guestCollectionView.centerXAnchor.constraint(equalTo: centralView.centerXAnchor).isActive = true
-        guestCollectionView.widthAnchor.constraint(equalTo: centralView.widthAnchor).isActive = true
+        guestCollectionView.topAnchor.constraint(equalTo: topView.bottomAnchor).isActive = true
+        guestCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        guestCollectionView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
         guestCollectionView.heightAnchor.constraint(equalToConstant: heightCollectionView).isActive = true
     }
     
+    private func setupCentralView() {
+        centralView.backgroundColor = .white
+        view.addSubview(centralView)
+        
+        centralView.translatesAutoresizingMaskIntoConstraints = false
+        centralView.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor).isActive = true
+        centralView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        centralView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        centralView.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
+    }
+    
     private func setupContactsLabel() {
-        contactsLabel.font = .mediumSystemFontOfSize(size: 12)
-        contactsLabel.textColor = .white
-        contactsLabel.text = "Контактов:"
+        contactsLabel.font = .boldSystemFontOfSize(size: 12)
+        contactsLabel.textColor = .black
+        contactsLabel.text = "Контакты"
         contactsLabel.textAlignment = .left
         contactsLabel.numberOfLines = 1
         centralView.addSubview(contactsLabel)
         
         contactsLabel.translatesAutoresizingMaskIntoConstraints = false
-        contactsLabel.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor).isActive = true
+        contactsLabel.topAnchor.constraint(equalTo: centralView.topAnchor).isActive = true
         contactsLabel.leadingAnchor.constraint(equalTo: centralView.leadingAnchor,
                                                constant: verticalInset).isActive = true
-        contactsLabel.widthAnchor.constraint(equalToConstant: (Session.width / 2) - (verticalInset * 2)).isActive = true
-        contactsLabel.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
+        contactsLabel.widthAnchor.constraint(equalToConstant: Session.width - (verticalInset * 2)).isActive = true
+        contactsLabel.heightAnchor.constraint(equalToConstant: Session.heightTextField).isActive = true
     }
     
-    private func setupInviteButton() {
-        inviteButton.addTarget(self, action: #selector(inviteButtonPressed), for: .touchUpInside)
-        inviteButton.setImage(UIImage(named: "InviteGuest"), for: .normal)
-        inviteButton.setTitle(" Пригласить коллег", for: .normal)
-        inviteButton.titleLabel?.font = .mediumSystemFontOfSize(size: 12)
-        inviteButton.titleLabel?.textColor = .white
-        inviteButton.contentHorizontalAlignment = .right
-        centralView.addSubview(inviteButton)
+    private func setupBottomView() {
+        bottomView.backgroundColor = .searchBarTintColor
+        view.addSubview(bottomView)
         
-        inviteButton.translatesAutoresizingMaskIntoConstraints = false
-        inviteButton.topAnchor.constraint(equalTo: guestCollectionView.bottomAnchor).isActive = true
-        inviteButton.trailingAnchor.constraint(equalTo: centralView.trailingAnchor,
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        bottomView.topAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
+        bottomView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        bottomView.widthAnchor.constraint(equalToConstant: Session.width).isActive = true
+        bottomView.heightAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
+    private func setupContactsCountLabel() {
+        let width = (Session.width / 2) - (verticalInset * 2)
+        contactsCountLabel.font = .mediumSystemFontOfSize(size: 12)
+        contactsCountLabel.textColor = .white
+        contactsCountLabel.text = "Контактов:"
+        contactsCountLabel.textAlignment = .left
+        contactsCountLabel.numberOfLines = 1
+        bottomView.addSubview(contactsCountLabel)
+        
+        contactsCountLabel.translatesAutoresizingMaskIntoConstraints = false
+        contactsCountLabel.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
+        contactsCountLabel.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor,
+                                                    constant: verticalInset).isActive = true
+        contactsCountLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
+        contactsCountLabel.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor).isActive = true
+    }
+    
+    private func setupSortButton() {
+        sortButton.addTarget(self, action: #selector(sortButtonPressed), for: .touchUpInside)
+        sortButton.setImage(UIImage(named: "SortIcon"), for: .normal)
+        sortButton.setTitle(" Сортировать", for: .normal)
+        sortButton.titleLabel?.font = .mediumSystemFontOfSize(size: 10)
+        sortButton.titleLabel?.textColor = .white
+        sortButton.contentHorizontalAlignment = .right
+        bottomView.addSubview(sortButton)
+        
+        sortButton.translatesAutoresizingMaskIntoConstraints = false
+        sortButton.topAnchor.constraint(equalTo: bottomView.topAnchor).isActive = true
+        sortButton.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor,
                                                constant: -verticalInset).isActive = true
-        inviteButton.widthAnchor.constraint(equalToConstant: (Session.width / 2) - (verticalInset * 2)).isActive = true
-        inviteButton.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
+        sortButton.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        sortButton.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor).isActive = true
     }
     
     private func setupTableView() {
@@ -189,7 +217,7 @@ class AddGuestsViewController: UIViewController {
         tableView.allowsMultipleSelection = true
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.topAnchor.constraint(equalTo: centralView.bottomAnchor,
+        tableView.topAnchor.constraint(equalTo: bottomView.bottomAnchor,
                                        constant: verticalInset).isActive = true
         tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor,
@@ -198,34 +226,47 @@ class AddGuestsViewController: UIViewController {
                                             constant: -verticalInset).isActive = true
     }
     
-    private func setupSaveButton() {
-        saveButton.layer.cornerRadius = 22
-        saveButton.setImage(UIImage(named: "SaveButton"), for: .normal)
-        saveButton.addTarget(self, action: #selector(okButtonPressed), for: .touchUpInside)
-        view.addSubview(saveButton)
-        
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
-        saveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor,
-                                           constant: -verticalInset).isActive = true
-        saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor,
-                                             constant: -verticalInset).isActive = true
-        saveButton.widthAnchor.constraint(equalToConstant: 44).isActive = true
-        saveButton.heightAnchor.constraint(equalToConstant: 44).isActive = true
-    }
-    
     // MARK: - Buttons methods
-    @objc private func inviteButtonPressed() {
-        presenter?.toInviteFriend()
-    }
-    
-    @objc private func okButtonPressed() {
-        presenter?.saveGuests()
+    @objc private func sortButtonPressed() {
+        let popoverContentController = ContactsSortPopoverController()
+        popoverContentController.modalPresentationStyle = .popover
+        popoverContentController.preferredContentSize = CGSize(width: 180, height: 100)
+        popoverContentController.delegate = self
+        if let ppc = popoverContentController.popoverPresentationController {
+            ppc.delegate = self
+        }
+        self.present(popoverContentController, animated: true, completion: nil)
     }
     
 }
 
+// MARK: - UIPopoverPresentationControllerDelegate
+extension ContactsViewController: UIPopoverPresentationControllerDelegate {
+    
+    func prepareForPopoverPresentation(_ popoverPresentationController: UIPopoverPresentationController) {
+        popoverPresentationController.permittedArrowDirections = .any
+        popoverPresentationController.sourceView = sortButton
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
+    }
+    
+}
+
+// MARK: - ProfilePopoverDelegate
+extension ContactsViewController: ContactsSortPopoverDelegate {
+    func sortByName() {
+        presenter?.sortByName()
+    }
+    
+    func sortBySpec() {
+        presenter?.sortBySpec()
+    }
+}
+
 // MARK: - Collection view
-extension AddGuestsViewController: UICollectionViewDelegate {
+extension ContactsViewController: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //        presenter?.addInterest(index: indexPath.item)
@@ -237,30 +278,30 @@ extension AddGuestsViewController: UICollectionViewDelegate {
     
 }
 
-extension AddGuestsViewController: UICollectionViewDataSource {
+extension ContactsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter?.getCountSelectedContacts() ?? 0
+        return presenter?.getCountRecentContacts() ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "GuestCell",
-                                                            for: indexPath) as? GuestCell else {
-                                                                return UICollectionViewCell()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RecentContactsCell",
+                                                            for: indexPath) as? RecentContactsCell else {
+            return UICollectionViewCell()
         }
-        cell.configure(contact: (presenter?.getSelectedContact(index: indexPath.item)))
+        cell.configure(contact: (presenter?.getRecentContact(index: indexPath.item)))
         return cell
     }
     
 }
 
-extension AddGuestsViewController: UICollectionViewDelegateFlowLayout {
+extension ContactsViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: ((Session.width - 40) / 2), height: 20)
+        return CGSize(width: 45, height: 45)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -272,7 +313,7 @@ extension AddGuestsViewController: UICollectionViewDelegateFlowLayout {
 }
 
 // MARK: - UISearchBarDelegate
-extension AddGuestsViewController: UISearchBarDelegate {
+extension ContactsViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard !searchText.isEmpty else {
@@ -285,25 +326,25 @@ extension AddGuestsViewController: UISearchBarDelegate {
 }
 
 // MARK: - UITableViewDelegate
-extension AddGuestsViewController: UITableViewDelegate {
+extension ContactsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 10
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.cellForRow(at: indexPath)?.isSelected = true
-        presenter?.addToSelected(index: indexPath.section)
-        searchBar.searchTextField.resignFirstResponder()
+//        tableView.cellForRow(at: indexPath)?.isSelected = true
+//        presenter?.addToSelected(index: indexPath.section)
+//        searchBar.searchTextField.resignFirstResponder()
     }
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteContact = UIContextualAction(style: .destructive,
                                                title: "") {  (_, _, completion) in
-                                                self.presenter?.deleteFromSelected(index: indexPath.section)
-                                                tableView.cellForRow(at: indexPath)?.isSelected = false
-                                                completion(true)
+            self.presenter?.deleteFromSelected(index: indexPath.section)
+            tableView.cellForRow(at: indexPath)?.isSelected = false
+            completion(true)
         }
         deleteContact.backgroundColor = .hdButtonColor
         deleteContact.image = UIImage(named: "Trash Icon")
@@ -311,7 +352,7 @@ extension AddGuestsViewController: UITableViewDelegate {
         
         return swipeActions
     }
-
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = .clear
@@ -321,7 +362,7 @@ extension AddGuestsViewController: UITableViewDelegate {
 }
 
 // MARK: - UITableViewDataSource
-extension AddGuestsViewController: UITableViewDataSource {
+extension ContactsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -334,7 +375,7 @@ extension AddGuestsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "ContactTableViewCell",
                                                        for: indexPath) as? ContactTableViewCell
-            else { return UITableViewCell() }
+        else { return UITableViewCell() }
         
         cell.configure(contact: (presenter?.getContact(index: indexPath.section)))
         

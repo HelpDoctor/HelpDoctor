@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 11.09.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import Foundation
 
 func parseJSON_getUniversities (for startPoint: [AnyObject]?,
@@ -25,3 +25,4 @@ func parseJSON_getUniversities (for startPoint: [AnyObject]?,
     }
     return (arrUniversities, httpResponse.statusCode, nil)
 }
+*/

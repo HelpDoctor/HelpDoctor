@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum EventType: String {
+enum EventType: String, Codable {
     case reception = "reception"
     case administrative = "administrative"
     case science = "scientific"

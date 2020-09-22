@@ -19,6 +19,7 @@ protocol ChangePasswordPresenterProtocol: Presenter {
 class ChangePasswordPresenter: ChangePasswordPresenterProtocol {
     
     var view: ChangePasswordViewController
+    private let networkManager = NetworkManager()
     private var oldPassword = ""
     private var newPassword = ""
     private var confirmPassword = ""
@@ -69,28 +70,17 @@ class ChangePasswordPresenter: ChangePasswordPresenterProtocol {
     
     func changeButtonButtonPressed() {
         view.startActivityIndicator()
-        let changePassword = ChangePassword(password: oldPassword, new_password: newPassword)
-        
-        getData(typeOfContent: .changePassword,
-                returning: (Int?, String?).self,
-                requestParams: changePassword.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    changePassword.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("result= \(String(describing: changePassword.responce))")
-                            let code = changePassword.responce?.0
-                            switch code {
-                            case 200:
-                                self?.view.clearTextFields()
-                                self?.view.showSaved(message: "Пароль изменен")
-                            default:
-                                self?.view.showAlert(message: changePassword.responce?.1)
-                            }
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
+        networkManager.changePassword(oldPassword, newPassword) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.view.clearTextFields()
+                    self?.view.showSaved(message: "Пароль изменен")
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
         }
     }
     

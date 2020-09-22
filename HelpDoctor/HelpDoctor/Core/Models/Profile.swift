@@ -7,19 +7,7 @@
 //
 
 import Foundation
-/*
-final class Profile {
-    var regions: [Regions]? = []
-    var cities: [Cities]? = []
-    var medicalOrganization: [MedicalOrganization]? = []
-    var medicalSpecialization: [MedicalSpecialization]? = []
-    var universities: [University]? = []
-    var listOfInterests: [String: [ProfileInterest]]? = [:]
-    var addInterests: [ProfileInterest]? = []
-    var dataFromProfile: [String: [AnyObject]]? = [:]
-    var responce: (Int?, String?)?
-}
-*/
+
 struct Profiles: Codable {
     let user: User
     let educations: [Education]

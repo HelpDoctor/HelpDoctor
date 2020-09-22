@@ -24,6 +24,7 @@ protocol StartSettingsPresenterProtocol: Presenter {
 class StartSettingsPresenter: StartSettingsPresenterProtocol {
     
     var view: StartSettingsViewController
+    private let networkManager = NetworkManager()
     
     required init(view: StartSettingsViewController) {
         self.view = view
@@ -31,18 +32,15 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     
     // MARK: - Public methods
     func loadSettings() {
-        let getSettings = SettingsResponse()
-        getData(typeOfContent: .getSettings,
-                returning: ([Settings], Int?, String?).self,
-                requestParams: [:]) { result in
-                    let dispathGroup = DispatchGroup()
-                    getSettings.settings = result?.0
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async {
-                            print("getSettings =\(String(describing: getSettings.settings))")
-                            Session.instance.userSettings = getSettings.settings?[0]
-                        }
-                    }
+        networkManager.getSettings { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let settings):
+                    Session.instance.userSettings = settings
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     
@@ -54,36 +52,31 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     }
     
     func verificationRow() {
-        let userStatus = VerificationResponse()
-        
-        getData(typeOfContent: .userStatus,
-                returning: ([Verification], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    userStatus.verification = result?.0
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self] in
-                            print("result=\(String(describing: userStatus.verification))")
-                            guard let status = userStatus.verification?[0].status else { return }
-                            switch status {
-                            case "denied":
-                                UserDefaults.standard.set("denied", forKey: "userStatus")
-                                self?.toErrorVerification(userStatus.verification?[0].message)
-                            case "not_verification":
-                                UserDefaults.standard.set("not_verification", forKey: "userStatus")
-                                self?.toVerification()
-                            case "processing":
-                                UserDefaults.standard.set("processing", forKey: "userStatus")
-                                self?.toEndVerification()
-                            case "verified":
-                                self?.toOkVerification()
-                                UserDefaults.standard.set("verified", forKey: "userStatus")
-                            default:
-                                break
-                            }
-                        }
+        networkManager.getUserStatus { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let serverResponse):
+                    let status = serverResponse.status
+                    switch status {
+                    case "denied":
+                        UserDefaults.standard.set("denied", forKey: "userStatus")
+                        self?.toErrorVerification(serverResponse.message)
+                    case "not_verification":
+                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                        self?.toVerification()
+                    case "processing":
+                        UserDefaults.standard.set("processing", forKey: "userStatus")
+                        self?.toEndVerification()
+                    case "verified":
+                        self?.toOkVerification()
+                        UserDefaults.standard.set("verified", forKey: "userStatus")
+                    default:
+                        break
                     }
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     

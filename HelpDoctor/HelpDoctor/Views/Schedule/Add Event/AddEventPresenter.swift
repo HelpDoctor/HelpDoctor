@@ -29,6 +29,7 @@ protocol AddEventPresenterProtocol: Presenter {
 class AddEventPresenter: AddEventPresenterProtocol {
     
     let view: AddEventViewController
+    private let networkManager = NetworkManager()
     private let transition = PanelTransition()
     private var idEvent: Int?
     private var eventType: EventType?
@@ -108,52 +109,33 @@ class AddEventPresenter: AddEventPresenterProtocol {
     
     func getEvent() {
         guard let idEvent = idEvent else { return }
-        let getEvents = Schedule()
-        getData(typeOfContent: .schedule_getEventsForCurrentId,
-                returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            getEvents.events = result?.0
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self]  in
-                    print("getEvents =\(String(describing: getEvents.events))")
-                    guard let events = getEvents.events else { return }
-                    self?.setEventType(events[0].event_type)
-                    self?.startDate = events[0].start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.endDate = events[0].end_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.notifyDate = events[0].notify_date?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.createGuestList(participants: events[0].participants ?? [])
-                    self?.view.setEventOnView(event: events[0])
+        networkManager.getEventForId(idEvent) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let event):
+                    self?.eventType = event.eventType
+                    self?.startDate = event.startDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.endDate = event.endDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.notifyDate = event.notifyDate?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self?.createGuestList(participants: event.participants ?? [])
+                    self?.view.setEventOnView(event: event)
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
     }
     
-    private func createGuestList(participants: [AnyObject]) {
+    private func createGuestList(participants: [Event.Participant]) {
         for guest in participants {
-            guestList.append(Contacts(id: guest["user_id"] as? Int,
-                                      first_name: guest["full_name"] as? String,
-                                      middle_name: nil,
-                                      last_name: nil,
+            guestList.append(Contacts(id: guest.id,
+                                      firstName: guest.fullName,
+                                      middleName: nil,
+                                      lastName: nil,
                                       foto: nil,
                                       specialization: nil))
         }
         view.reloadCollectionView()
-    }
-    
-    private func setEventType(_ eventTypeString: String) {
-        switch eventTypeString {
-        case "reception":
-            eventType = .reception
-        case "administrative":
-            eventType = .administrative
-        case "scientific":
-            eventType = .science
-        case "another":
-            eventType = .other
-        default:
-            eventType = nil
-        }
     }
     
     func getCountContacts() -> Int {
@@ -186,49 +168,28 @@ class AddEventPresenter: AddEventPresenterProtocol {
             view.showAlert(message: "Выберите тип события")
             return
         }
-        let participants: [Int] = guestList.compactMap({ $0.id })
-            
-        let currentEvent = ScheduleEvents(id: idEvent,
-                                          start_date: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
-                                          end_date: endDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
-                                          notify_date: notifyDate?.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
-                                          title: title,
-                                          description: nil,
-                                          is_major: isMajor,
-                                          event_place: location,
-                                          event_type: eventType.rawValue,
-                                          participants: participants as [AnyObject])
-        
-        let createEvent = CreateOrUpdateEvent(events: currentEvent)
-        getData(typeOfContent: .schedule_CreateOrUpdateEvent,
-                returning: (Int?, String?).self,
-                requestParams: ["json": createEvent.jsonData as Any] ) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            createEvent.responce = result
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async {
-                    print("createEvent = \(String(describing: createEvent.responce))")
-                    guard let self = self,
-                        let code = createEvent.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self.back()
-//                        self.delegate?.callback(newDate: startDate)
-//                        guard let title = title,
-//                            let notifyDate = self.notifyDate else { return }
-//                        for day in self.repeatArray {
-//                            self.notification.scheduleNotification(identifier: UUID().uuidString,
-//                                                                   title: self.getEventTitle(),
-//                                                                    body: desc,
-//                                                                    description: title,
-//                                                                    notifyDate: notifyDate,
-//                                                                    repeatDay: day)
-//                        }
-                        
-                    } else {
-                        self.view.showAlert(message: createEvent.responce?.1)
-                    }
+        var participants: [Event.Participant] = []
+        guestList.forEach {
+            participants.append(Event.Participant(id: $0.id, fullName: $0.fullName))
+        }
+
+        let newEvent = Event(id: idEvent,
+                             startDate: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
+                             endDate: endDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
+                             notifyDate: notifyDate?.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
+                             title: title,
+                             description: nil,
+                             isMajor: isMajor,
+                             eventPlace: location,
+                             eventType: eventType,
+                             participants: participants)
+        networkManager.setEvent(newEvent) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.back()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
@@ -236,22 +197,13 @@ class AddEventPresenter: AddEventPresenterProtocol {
     
     func deleteEvent() {
         guard let idEvent = idEvent else { return }
-        let resultDeleteEvents = Schedule()
-        getData(typeOfContent: .schedule_deleteForCurrentEvent,
-                returning: (Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            resultDeleteEvents.responce = result
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    print("getEvents =\(String(describing: resultDeleteEvents.responce))")
-                    guard let code = resultDeleteEvents.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.back()
-                    } else {
-                        self?.view.showAlert(message: resultDeleteEvents.responce?.1)
-                    }
+        networkManager.deleteEent(idEvent) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.back()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }

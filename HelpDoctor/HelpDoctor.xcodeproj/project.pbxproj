@@ -144,6 +144,8 @@
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
 		46D086352511DDF3007C367F /* AcademicDegree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D086342511DDF3007C367F /* AcademicDegree.swift */; };
 		46D0863725122AA8007C367F /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D0863625122AA8007C367F /* ServerResponse.swift */; };
+		46DF8F1925166BBA00459DC3 /* ContactsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DF8F1825166BBA00459DC3 /* ContactsViewController.swift */; };
+		46DF8F1D25166BC700459DC3 /* ContactsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46DF8F1C25166BC700459DC3 /* ContactsPresenter.swift */; };
 		46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */; };
 		46EFF4D5243339D4004B9558 /* ProfileEducationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */; };
 		46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4D624334654004B9558 /* ProfileCareerView.swift */; };
@@ -419,6 +421,8 @@
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
 		46D086342511DDF3007C367F /* AcademicDegree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcademicDegree.swift; sourceTree = "<group>"; };
 		46D0863625122AA8007C367F /* ServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
+		46DF8F1825166BBA00459DC3 /* ContactsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsViewController.swift; sourceTree = "<group>"; };
+		46DF8F1C25166BC700459DC3 /* ContactsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsPresenter.swift; sourceTree = "<group>"; };
 		46EFF4D22432FA8F004B9558 /* ProfileGeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileGeneralView.swift; sourceTree = "<group>"; };
 		46EFF4D4243339D4004B9558 /* ProfileEducationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileEducationView.swift; sourceTree = "<group>"; };
 		46EFF4D624334654004B9558 /* ProfileCareerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCareerView.swift; sourceTree = "<group>"; };
@@ -684,6 +688,7 @@
 		46203F2C23CCC71C0072653A /* Members */ = {
 			isa = PBXGroup;
 			children = (
+				46DF8F1725166BA000459DC3 /* Contacts */,
 				46203F2D23CCC7280072653A /* AddMembers */,
 			);
 			path = Members;
@@ -943,6 +948,15 @@
 				469DD662245EB934006DBD30 /* EditProfilePresenter.swift */,
 			);
 			path = EditProfile;
+			sourceTree = "<group>";
+		};
+		46DF8F1725166BA000459DC3 /* Contacts */ = {
+			isa = PBXGroup;
+			children = (
+				46DF8F1825166BBA00459DC3 /* ContactsViewController.swift */,
+				46DF8F1C25166BC700459DC3 /* ContactsPresenter.swift */,
+			);
+			path = Contacts;
 			sourceTree = "<group>";
 		};
 		46EFF4DE24359ED4004B9558 /* VerificationError */ = {
@@ -1737,6 +1751,7 @@
 				46F87EFF23B8C6170095264E /* ValidateManager.swift in Sources */,
 				4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */,
 				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
+				46DF8F1925166BBA00459DC3 /* ContactsViewController.swift in Sources */,
 				C48F162223B5FE87002D04E3 /* ProfileKeySpec.swift in Sources */,
 				4682F3A82502502E005BDA9E /* AddGuestsViewController.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
@@ -1836,6 +1851,7 @@
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,
 				4640B6D72402B0710023C3A3 /* EmailPresenter.swift in Sources */,
 				46F87F3723BCDF730095264E /* ImagePicker.swift in Sources */,
+				46DF8F1D25166BC700459DC3 /* ContactsPresenter.swift in Sources */,
 				46D086352511DDF3007C367F /* AcademicDegree.swift in Sources */,
 				4640B6B9240139420023C3A3 /* JobCell.swift in Sources */,
 				46072E0F23C20E390070F2F6 /* DateCell.swift in Sources */,

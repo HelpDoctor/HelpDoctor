@@ -88,7 +88,6 @@ class ContactTableViewCell: UITableViewCell {
         nameLabel.textAlignment = .left
         nameLabel.font = .mediumSystemFontOfSize(size: 12)
         nameLabel.textColor = .black
-        nameLabel.text = "Горин Петр Игоревич"
         topView.addSubview(nameLabel)
         
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +103,6 @@ class ContactTableViewCell: UITableViewCell {
         specLabel.textAlignment = .left
         specLabel.font = .mediumSystemFontOfSize(size: 12)
         specLabel.textColor = .countColor
-        specLabel.text = "Уролог"
         topView.addSubview(specLabel)
         
         specLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +115,7 @@ class ContactTableViewCell: UITableViewCell {
     
     func configure(contact: Contacts?) {
         guard let contact = contact else { return }
-        nameLabel.text = "\(contact.last_name ?? "") \(contact.first_name ?? "") \(contact.middle_name ?? "")"
+        nameLabel.text = contact.fullName
         cellImage.image = contact.foto?.toImage()
         specLabel.text = contact.specialization
     }

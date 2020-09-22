@@ -17,6 +17,7 @@ protocol EmailPresenterProtocol: Presenter {
 class EmailPresenter: EmailPresenterProtocol {
     
     var view: EmailViewController
+    private let networkManager = NetworkManager()
     
     required init(view: EmailViewController) {
         self.view = view
@@ -26,11 +27,11 @@ class EmailPresenter: EmailPresenterProtocol {
         var userSettings = Session.instance.userSettings
         switch key {
         case "email_notification":
-            userSettings?.email_notification = value
+            userSettings?.emailNotification = value
         case "periodicity":
             userSettings?.periodicity = value
         case "invite_pharmcompany":
-            userSettings?.invite_pharmcompany = value
+            userSettings?.invitePharmcompany = value
         case "consultation":
             userSettings?.consultation = value
         default:
@@ -38,13 +39,13 @@ class EmailPresenter: EmailPresenterProtocol {
         }
         
         let updateSettings = UpdateSettings(id: userSettings?.id,
-                                            push_notification: userSettings?.push_notification,
-                                            message_friend: userSettings?.message_friend,
-                                            add_friend: userSettings?.add_friend,
-                                            message_group: userSettings?.message_group,
-                                            email_notification: userSettings?.email_notification,
+                                            push_notification: userSettings?.pushNotification,
+                                            message_friend: userSettings?.messageFriend,
+                                            add_friend: userSettings?.addFriend,
+                                            message_group: userSettings?.messageGroup,
+                                            email_notification: userSettings?.emailNotification,
                                             periodicity: userSettings?.periodicity,
-                                            invite_pharmcompany: userSettings?.invite_pharmcompany,
+                                            invite_pharmcompany: userSettings?.invitePharmcompany,
                                             consultation: userSettings?.consultation,
                                             vacancy: userSettings?.vacancy)
         
@@ -70,31 +71,29 @@ class EmailPresenter: EmailPresenterProtocol {
     }
     
     private func loadSettings() {
-        let getSettings = SettingsResponse()
-        getData(typeOfContent: .getSettings,
-                returning: ([Settings], Int?, String?).self,
-                requestParams: [:]) { result in
-                    let dispathGroup = DispatchGroup()
-                    getSettings.settings = result?.0
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async {
-                            Session.instance.userSettings = getSettings.settings?[0]
-                        }
-                    }
+        networkManager.getSettings { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let settings):
+                    Session.instance.userSettings = settings
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     
     func setSettingsOnView() {
         guard let settings = Session.instance.userSettings else { return }
         
-        if settings.email_notification == 1 {
+        if settings.emailNotification == 1 {
             view.setValueOnSwitch(true)
             setPeriodicityOnView()
         } else {
             view.setValueOnSwitch(false)
         }
         
-        settings.invite_pharmcompany == 1 ? view.setValueOnCompanyCheckbox(true) : view.setValueOnCompanyCheckbox(false)
+        settings.invitePharmcompany == 1 ? view.setValueOnCompanyCheckbox(true) : view.setValueOnCompanyCheckbox(false)
         settings.consultation == 1 ? view.setValueOnPatientsCheckbox(true) : view.setValueOnPatientsCheckbox(false)
     }
     

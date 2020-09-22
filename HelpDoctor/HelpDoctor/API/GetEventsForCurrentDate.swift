@@ -5,7 +5,7 @@
 //  Created by Anton Fomkin on 15.11.2019.
 //  Copyright © 2019 Anton Fomkin. All rights reserved.
 //
-
+/*
 import Foundation
 
 func parseJSON_getEventsForCurrentDate(for startPoint: [AnyObject]?,
@@ -39,3 +39,4 @@ func parseJSON_getEventsForCurrentDate(for startPoint: [AnyObject]?,
     }
     return (arrEvents, httpResponse.statusCode, nil)
 }
+*/

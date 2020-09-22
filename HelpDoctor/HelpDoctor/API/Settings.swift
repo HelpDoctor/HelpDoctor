@@ -13,31 +13,30 @@ final class SettingsResponse {
     var responce: (Int?, String?)?
 }
 
-struct Settings {
+struct Settings: Codable {
     var id: Int?
-    var push_notification: Int?
-    var message_friend: Int?
-    var add_friend: Int?
-    var message_group: Int?
-    var email_notification: Int?
+    var pushNotification: Int?
+    var messageFriend: Int?
+    var addFriend: Int?
+    var messageGroup: Int?
+    var emailNotification: Int?
     var periodicity: Int?
-    var invite_pharmcompany: Int?
+    var invitePharmcompany: Int?
     var consultation: Int?
     var vacancy: Int?
     
-    init(_ dictionary: [String: Any]) {
-        self.id = dictionary["id"] as? Int
-        self.push_notification = dictionary["push_notification"] as? Int
-        self.message_friend = dictionary["message_friend"] as? Int
-        self.add_friend = dictionary["add_friend"] as? Int
-        self.message_group = dictionary["message_group"] as? Int
-        self.email_notification = dictionary["email_notification"] as? Int
-        self.periodicity = dictionary["periodicity"] as? Int
-        self.invite_pharmcompany = dictionary["invite_pharmcompany"] as? Int
-        self.consultation = dictionary["consultation"] as? Int
-        self.vacancy = dictionary["vacancy"] as? Int
+    private enum CodingKeys: String, CodingKey {
+        case id
+        case pushNotification = "push_notification"
+        case messageFriend = "message_friend"
+        case addFriend = "add_friend"
+        case messageGroup = "message_group"
+        case emailNotification = "email_notification"
+        case periodicity
+        case invitePharmcompany = "invite_pharmcompany"
+        case consultation
+        case vacancy
     }
-
 }
 
 class UpdateSettings {
@@ -95,7 +94,7 @@ class UpdateSettings {
     }
     
 }
-
+/*
 func parseJSON_getSettings(for startPoint: [String: Any]?,
                            response: URLResponse?) -> ([Settings], Int?, String?)? {
     
@@ -108,3 +107,4 @@ func parseJSON_getSettings(for startPoint: [String: Any]?,
     
     return ([settings], httpResponse.statusCode, nil)
 }
+*/

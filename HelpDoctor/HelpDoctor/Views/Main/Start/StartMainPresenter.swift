@@ -13,6 +13,7 @@ protocol StartMainPresenterProtocol: Presenter {
     func profileCheck()
     func fillProfile()
     func toProfile()
+    func toContacts()
 }
 
 class StartMainPresenter: StartMainPresenterProtocol {
@@ -54,22 +55,15 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Private methods
     private func getStatusUser() {
-        let userStatus = VerificationResponse()
-        
-        getData(typeOfContent: .userStatus,
-                returning: ([Verification], Int?, String?).self,
-                requestParams: [:]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            userStatus.verification = result?.0
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    print("result=\(String(describing: userStatus.verification))")
-                    guard let status = userStatus.verification?[0].status else { return }
+        networkManager.getUserStatus { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let networkResponse):
+                    let status = networkResponse.status
                     switch status {
                     case "denied":
                         UserDefaults.standard.set("denied", forKey: "userStatus")
-                        self?.toErrorVerification(userStatus.verification?[0].message)
+                        self?.toErrorVerification(networkResponse.message)
                     case "not_verification":
                         UserDefaults.standard.set("not_verification", forKey: "userStatus")
                         self?.toVerification()
@@ -84,6 +78,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                     default:
                         break
                     }
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
@@ -140,6 +136,12 @@ class StartMainPresenter: StartMainPresenterProtocol {
         let viewController = VerificationOkViewController()
         viewController.presenter = VerificationOkPresenter(view: viewController)
         view.present(viewController, animated: true, completion: nil)
+    }
+    
+    func toContacts() {
+        let viewController = ContactsViewController()
+        viewController.presenter = ContactsPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func back() {

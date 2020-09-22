@@ -28,7 +28,8 @@ protocol StartSchedulePresenterProtocol: Presenter {
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     let view: StartScheduleViewController
-    private var arrayEvents: [ScheduleEvents]?
+    private let networkManager = NetworkManager()
+    private var arrayEvents: [Event]?
     
     // MARK: - Init
     required init(view: StartScheduleViewController) {
@@ -55,21 +56,17 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     }
     
     func getEvents(newDate: Date) {
-        let getEvents = Schedule()
         let anyDate = newDate.toString(withFormat: "yyyy-MM-dd")
-        getData(typeOfContent: .schedule_getEventsForCurrentDate,
-                returning: ([ScheduleEvents], Int?, String?).self,
-                requestParams: ["AnyDate": anyDate]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            getEvents.events = result?.0
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    print("getEvents =\(String(describing: getEvents.events))")
+        networkManager.getEventForDate(anyDate) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let events):
                     self?.view.setDate(date: newDate)
                     self?.arrayEvents = []
-                    self?.arrayEvents = getEvents.events
+                    self?.arrayEvents = events
                     self?.view.reloadTableView()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }
@@ -107,52 +104,50 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     }
     
     func getCountPatients() -> Int? {
-        let filteredArray = arrayEvents?.filter { (event: ScheduleEvents) -> Bool in
-            return event.event_type == "reception"
+        let filteredArray = arrayEvents?.filter { (event: Event) -> Bool in
+            return event.eventType?.rawValue == "reception"
         }
         return filteredArray?.count
     }
     
     func getCountMajorEvents() -> Int? {
-        let filteredArray = arrayEvents?.filter { (event: ScheduleEvents) -> Bool in
-            return event.is_major == true
+        let filteredArray = arrayEvents?.filter { (event: Event) -> Bool in
+            return event.isMajor == true
         }
         return filteredArray?.count
     }
     
     func getStartTimeEvent(index: Int) -> String? {
-        guard let startDate = arrayEvents?[index].start_date else { return nil }
+        guard let startDate = arrayEvents?[index].startDate else { return nil }
         return "\(startDate[11 ..< 16])"
     }
     
     func getEndTimeEvent(index: Int) -> String? {
-        guard let endDate = arrayEvents?[index].end_date else { return nil }
+        guard let endDate = arrayEvents?[index].endDate else { return nil }
         return "\(endDate[11 ..< 16])"
     }
     
     func getEventColor(index: Int) -> UIColor? {
-        guard let eventType = arrayEvents?[index].event_type else { return nil }
+        guard let eventType = arrayEvents?[index].eventType else { return nil }
         switch eventType {
-        case "reception":
+        case .reception:
             return .receptionEventColor
-        case "administrative":
+        case .administrative:
             return .administrativeEventColor
-        case "scientific":
+        case .science:
             return .scientificEventColor
-        case "another":
+        case .other:
             return .anotherEventColor
-        default:
-            return .clear
         }
     }
     
     func getMajorFlag(index: Int) -> Bool? {
-        return arrayEvents?[index].is_major
+        return arrayEvents?[index].isMajor
     }
     
     func getTitleEvent(index: Int) -> String? {
         guard let title = arrayEvents?[index].title else { return nil }
-        if arrayEvents?[index].event_type == "reception" {
+        if arrayEvents?[index].eventType?.rawValue == "reception" {
             return "Прием пациента: \n\(title)"
         } else {
             return title
@@ -161,23 +156,14 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     func deleteEvent(index: Int) {
         guard let idEvent = arrayEvents?[index].id else { return }
-        let resultDeleteEvents = Schedule()
-        getData(typeOfContent: .schedule_deleteForCurrentEvent,
-                returning: (Int?, String?).self,
-                requestParams: ["event_id": String(idEvent)]) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            resultDeleteEvents.responce = result
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    print("getEvents =\(String(describing: resultDeleteEvents.responce))")
-                    guard let code = resultDeleteEvents.responce?.0 else { return }
-                    if responceCode(code: code) {
-                        guard let newDate = self?.view.getDate() else { return }
-                        self?.getEvents(newDate: newDate)
-                    } else {
-                        self?.view.showAlert(message: resultDeleteEvents.responce?.1)
-                    }
+        networkManager.deleteEent(idEvent) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let newDate = self?.view.getDate() else { return }
+                    self?.getEvents(newDate: newDate)
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
             }
         }

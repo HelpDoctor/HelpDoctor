@@ -14,34 +14,21 @@ class StartMainViewController: UIViewController {
     var presenter: StartMainPresenterProtocol?
     
     // MARK: - Constants
-    private let backgroundColor = UIColor.backgroundColor
     private let headerHeight = 60.f
-    private let newUserLabel = UILabel()
-    private let topLine = UIView()
-    private let userView = UIView() //Temporary
-    private let newEventLabel = UILabel()
-    private let bottomLine = UIView()
-    private let eventView = UIView() //Temporary
-    private let bottomLabel = UILabel()
+    private let contactsButton = HDButton(title: "Контакты", fontSize: 14)
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
-    private let profileButton = HDButton(title: "Профиль", fontSize: 14) //Temporary
-    private let deleteProfileButton = HDButton(title: "Удалить профиль", fontSize: 14) //Temporary
+    private let profileButton = HDButton(title: "Профиль", fontSize: 14)
+    private let deleteProfileButton = HDButton(title: "Удалить профиль", fontSize: 14)
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupBackground()
-        setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
-        setupNewUserLabel()
-        setupTopLine()
-        setupUserView() //Temporary
-        setupNewEventLabel()
-        setupBottomLine()
-        setupEventView() //Temporary
-        setupBottomLabel()
+        view.backgroundColor = .backgroundColor
+        setupHeaderView(color: .backgroundColor, height: headerHeight, presenter: presenter)
+        setupContactsButton()
         setupFillProfileButton()
-        setupProfileButton() //Temporary
-        setupDeleteProfileButton() //Temporary
+        setupProfileButton()
+        setupDeleteProfileButton()
         presenter?.profileCheck()
     }
     
@@ -54,118 +41,27 @@ class StartMainViewController: UIViewController {
     
     // MARK: - Public methods
     func hideFillProfileButton() {
-        bottomLabel.isHidden = true
         fillProfileButton.isHidden = true
     }
     
     func showFillProfileButton() {
-        bottomLabel.isHidden = false
         fillProfileButton.isHidden = false
     }
     
     // MARK: - Setup views
-    /// Установка заголовка "Новые пользователи"
-    private func setupNewUserLabel() {
-        newUserLabel.font = UIFont.boldSystemFontOfSize(size: 14)
-        newUserLabel.textColor = .white
-        newUserLabel.text = "Новые пользователи"
-        newUserLabel.textAlignment = .center
-        view.addSubview(newUserLabel)
+    private func setupContactsButton() {
+        contactsButton.addTarget(self, action: #selector(contactsButtonPressed), for: .touchUpInside)
+        contactsButton.isEnabled = true
+        view.addSubview(contactsButton)
         
-        newUserLabel.translatesAutoresizingMaskIntoConstraints = false
-        newUserLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 63).isActive = true
-        newUserLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        newUserLabel.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        newUserLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
+        contactsButton.translatesAutoresizingMaskIntoConstraints = false
+        contactsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                            constant: headerHeight + 10).isActive = true
+        contactsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        contactsButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        contactsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
-    /// Установка линии под заголовком
-    private func setupTopLine() {
-        topLine.backgroundColor = .hdLinkColor
-        view.addSubview(topLine)
-        
-        topLine.translatesAutoresizingMaskIntoConstraints = false
-        topLine.topAnchor.constraint(equalTo: newUserLabel.bottomAnchor, constant: 3).isActive = true
-        topLine.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        topLine.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        topLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
-    }
-    
-    /// Временная View
-    private func setupUserView() {
-        let width = Session.width - 40
-        userView.backgroundColor = .white
-        view.addSubview(userView)
-        
-        userView.translatesAutoresizingMaskIntoConstraints = false
-        userView.topAnchor.constraint(equalTo: topLine.bottomAnchor, constant: 10).isActive = true
-        userView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        userView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        userView.heightAnchor.constraint(equalToConstant: 170).isActive = true
-    }
-    
-    /// Установка заголовка новые события
-    private func setupNewEventLabel() {
-        newEventLabel.font = UIFont.boldSystemFontOfSize(size: 14)
-        newEventLabel.textColor = .white
-        newEventLabel.text = "Новые события"
-        newEventLabel.textAlignment = .center
-        view.addSubview(newEventLabel)
-        
-        newEventLabel.translatesAutoresizingMaskIntoConstraints = false
-        newEventLabel.topAnchor.constraint(equalTo: userView.bottomAnchor, constant: 11).isActive = true
-        newEventLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        newEventLabel.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        newEventLabel.heightAnchor.constraint(equalToConstant: 15).isActive = true
-    }
-    
-    /// Установка линии под заголовком
-    private func setupBottomLine() {
-        bottomLine.backgroundColor = .hdLinkColor
-        view.addSubview(bottomLine)
-        
-        bottomLine.translatesAutoresizingMaskIntoConstraints = false
-        bottomLine.topAnchor.constraint(equalTo: newEventLabel.bottomAnchor, constant: 3).isActive = true
-        bottomLine.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLine.widthAnchor.constraint(equalToConstant: 140).isActive = true
-        bottomLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
-    }
-    
-    /// Временная View
-    private func setupEventView() {
-        let width = Session.width - 40
-        eventView.backgroundColor = .white
-        view.addSubview(eventView)
-        
-        eventView.translatesAutoresizingMaskIntoConstraints = false
-        eventView.topAnchor.constraint(equalTo: bottomLine.bottomAnchor, constant: 10).isActive = true
-        eventView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        eventView.widthAnchor.constraint(equalToConstant: width).isActive = true
-        eventView.heightAnchor.constraint(equalToConstant: 68).isActive = true
-    }
-    
-    /// Установка подписи под формой с новыми событиями
-    private func setupBottomLabel() {
-        let width = Session.width - 42
-        bottomLabel.font = UIFont.systemFontOfSize(size: 12)
-        bottomLabel.textColor = .white
-        bottomLabel.text =
-            """
-        Для того чтобы стать частью медицинского сообщества HelpDoctor нужно указать информацию о себе, заполнив профиль
-        """
-        bottomLabel.textAlignment = .left
-        bottomLabel.numberOfLines = 0
-        bottomLabel.isHidden = true
-        view.addSubview(bottomLabel)
-        
-        bottomLabel.translatesAutoresizingMaskIntoConstraints = false
-        bottomLabel.topAnchor.constraint(equalTo: eventView.bottomAnchor, constant: 9).isActive = true
-        bottomLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        bottomLabel.widthAnchor.constraint(equalToConstant: width).isActive = true
-        bottomLabel.heightAnchor.constraint(equalToConstant: 45).isActive = true
-    }
-    
-    /// Установка кнопки Заполнить профиль
     private func setupFillProfileButton() {
         fillProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
         fillProfileButton.isEnabled = true
@@ -173,7 +69,7 @@ class StartMainViewController: UIViewController {
         view.addSubview(fillProfileButton)
         
         fillProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        fillProfileButton.topAnchor.constraint(equalTo: bottomLabel.bottomAnchor, constant: 10).isActive = true
+        fillProfileButton.topAnchor.constraint(equalTo: contactsButton.bottomAnchor, constant: 10).isActive = true
         fillProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         fillProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         fillProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -205,6 +101,10 @@ class StartMainViewController: UIViewController {
     }
     
     // MARK: - Buttons methods
+    @objc private func contactsButtonPressed() {
+        presenter?.toContacts()
+    }
+    
     /// Отработка нажатия кнопки Заполнить профиль
     @objc private func fillProfileButtonPressed() {
         presenter?.fillProfile()
@@ -212,7 +112,6 @@ class StartMainViewController: UIViewController {
     
     /// Отработка нажатия кнопки Профиль
     @objc private func profileButtonPressed() {
-        //        presenter?.toProfile()
         let viewController = ProfileViewController()
         let presenter = ProfilePresenter(view: viewController)
         viewController.presenter = presenter
@@ -221,14 +120,14 @@ class StartMainViewController: UIViewController {
     
     @objc private func deleteProfileButtonPressed() {
         let networkManager = NetworkManager()
-        networkManager.deleteUser { result in
+        networkManager.deleteUser { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
                     UserDefaults.standard.set("not_verification", forKey: "userStatus")
                     AppDelegate.shared.rootViewController.switchToLogout()
                 case .failure(let error):
-                    self.showAlert(message: error.description)
+                    self?.showAlert(message: error.description)
                 }
             }
         }

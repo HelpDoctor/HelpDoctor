@@ -1,32 +1,34 @@
 //
-//  AddGuestsPresenter.swift
+//  ContactsPresenter.swift
 //  HelpDoctor
 //
-//  Created by Mikhail Semerikov on 04.09.2020.
+//  Created by Mikhail Semerikov on 19.09.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
 import UIKit
 
-protocol AddGuestsPresenterProtocol: Presenter {
-    init(view: AddGuestsViewController)
+protocol ContactsPresenterProtocol: Presenter {
+    init(view: ContactsViewController)
     func getContactList()
     func getCountContacts() -> Int
-    func getCountSelectedContacts() -> Int
     func getContact(index: Int) -> Contacts?
-    func getSelectedContact(index: Int) -> Contacts?
+    func getCountRecentContacts() -> Int
+    func getRecentContact(index: Int) -> Contacts?
     func addToSelected(index: Int)
     func deleteFromSelected(index: Int)
     func searchTextIsEmpty()
     func filter(searchText: String)
+    func sortByName()
+    func sortBySpec()
     func toInviteFriend()
     func saveGuests()
 }
 
-class AddGuestsPresenter: AddGuestsPresenterProtocol {
+class ContactsPresenter: ContactsPresenterProtocol {
 
     // MARK: - Dependency
-    let view: AddGuestsViewController
+    let view: ContactsViewController
     private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
@@ -35,7 +37,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
     private var selectedContacts: [Contacts] = []
     
     // MARK: - Init
-    required init(view: AddGuestsViewController) {
+    required init(view: ContactsViewController) {
         self.view = view
     }
     
@@ -48,6 +50,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
                     self?.filteredArray = contacts
                     self?.view.setCountContactList(contactsCount: self?.contactList.count ?? 0)
                     self?.view.reloadTableView()
+                    self?.view.reloadCollectionView()
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -59,16 +62,16 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
         return filteredArray.count
     }
     
-    func getCountSelectedContacts() -> Int {
-        return selectedContacts.count
-    }
-    
     func getContact(index: Int) -> Contacts? {
         return filteredArray[index]
     }
     
-    func getSelectedContact(index: Int) -> Contacts? {
-        return selectedContacts[index]
+    func getCountRecentContacts() -> Int {
+        return filteredArray.count // TODO: - Заменить на нормальную функцию
+    }
+    
+    func getRecentContact(index: Int) -> Contacts? {
+        return filteredArray[index] // TODO: - Заменить на нормальную функцию
     }
     
     func addToSelected(index: Int) {
@@ -107,6 +110,16 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
             guard let index = filteredArray.firstIndex(where: { $0.id == value.id }) else { continue }
             view.setSelected(index: index)
         }
+    }
+    
+    func sortByName() {
+        filteredArray = filteredArray.sorted(by: { $0.fullName < $1.fullName })
+        view.reloadTableView()
+    }
+    
+    func sortBySpec() {
+        filteredArray = filteredArray.sorted(by: { $0.specialization ?? "" < $1.specialization ?? "" })
+        view.reloadTableView()
     }
     
     func toInviteFriend() {

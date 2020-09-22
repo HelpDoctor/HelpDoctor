@@ -11,6 +11,7 @@ import Foundation
 struct NetworkManager {
     private let router = Router<HelpDoctorApi>()
     
+    // MARK: - Registration methods
     func registration(_ email: String,
                       completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
         router.request(.registration(email: email)) { data, response, error in
@@ -144,6 +145,39 @@ struct NetworkManager {
                 switch result {
                 case .success:
                     completion(.success(response.statusCode))
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Profile methods
+    func getUserStatus(completion: @escaping (Result<ServerResponse, NetworkResponse>) -> Void) {
+        router.request(.getUserStatus) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                let result = self.handleNetworkResponse(response)
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
                 case .failure(let networkFailureError):
                     do {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
@@ -412,6 +446,309 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getContactList(completion: @escaping (Result<[Contacts], NetworkResponse>) -> Void) {
+        router.request(.getContactList) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ContactsList.self, from: responseData)
+                        completion(.success(apiResponse.contacts))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Schedule methods
+    func setEvent(_ event: Event,
+                  completion: @escaping (Result<String, NetworkResponse>) -> Void) {
+        router.request(.setEvent(event: event)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.status))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getEventForDate(_ date: String,
+                         completion: @escaping (Result<[Event], NetworkResponse>) -> Void) {
+        router.request(.getEventForDate(date: date)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode([Event].self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getEventForId(_ id: Int,
+                       completion: @escaping (Result<Event, NetworkResponse>) -> Void) {
+        router.request(.getEvenyForId(id: id)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(Event.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func deleteEent(_ id: Int,
+                    completion: @escaping (Result<String, NetworkResponse>) -> Void) {
+        router.request(.deleteEvent(id: id)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.status))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    // MARK: - Settings methods
+    func feedback(_ feedback: String,
+                  completion: @escaping (Result<String, NetworkResponse>) -> Void) {
+        router.request(.feedback(feedback: feedback)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.status))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func invite(_ email: String,
+                _ firstName: String,
+                _ lastName: String?,
+                completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
+        router.request(.invite(email: email, firstName: firstName, lastName: lastName)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    completion(.success(response.statusCode))
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func changePassword(_ password: String,
+                        _ newPassword: String,
+                        completion: @escaping (Result<String, NetworkResponse>) -> Void) {
+        router.request(.changePassword(password: password, newPassword: newPassword)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.status))
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getSettings(completion: @escaping (Result<Settings, NetworkResponse>) -> Void) {
+        router.request(.getSettings) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(Settings.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
                     } catch {
                         completion(.failure(.unableToDecode))
                     }

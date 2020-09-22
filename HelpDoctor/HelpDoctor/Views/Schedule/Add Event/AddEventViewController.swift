@@ -130,35 +130,34 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         timerTextField.text = notifyTime
     }
     
-    func setEventOnView(event: ScheduleEvents) {
+    func setEventOnView(event: Event) {
         let headerView = view.viewWithTag(996) as? HeaderView
         headerView?.titleLabel.text = "Редактирование события"
-        let eventType = event.event_type
-        switch eventType {
-        case "reception":
+        switch event.eventType {
+        case .reception:
             setEventType(eventType: "Приём пациентов", color: .receptionEventColor)
-        case "administrative":
+        case .administrative:
             setEventType(eventType: "Административная деятельность", color: .administrativeEventColor)
-        case "scientific":
+        case .science:
             setEventType(eventType: "Научная деятельность", color: .scientificEventColor)
-        case "another":
+        case .other:
             setEventType(eventType: "Другое", color: .anotherEventColor)
         default:
             self.showAlert(message: "Не верный тип события")
         }
-        startDateTextField.text = presenter?.convertDate(date: event.start_date) ?? event.start_date
+        startDateTextField.text = presenter?.convertDate(date: event.startDate) ?? event.startDate
         startDateTextField.leftView = setupDefaultLeftView()
-        endDateTextField.text = presenter?.convertDate(date: event.end_date) ?? event.end_date
+        endDateTextField.text = presenter?.convertDate(date: event.endDate) ?? event.endDate
         endDateTextField.leftView = setupDefaultLeftView()
         titleTextField.text = event.title
         titleTextField.leftView = setupDefaultLeftView()
-        locationTextField.text = event.event_place
-        if event.is_major ?? false {
+        locationTextField.text = event.eventPlace
+        if event.isMajor ?? false {
             majorSwitch.isOn = true
             majorSwitch.thumbTintColor = UIColor.majorEventColor
         }
-        guard let notifyDate = event.notify_date else { return }
-        guard let startDate = event.start_date.toDate(withFormat: "yyyy-MM-dd HH:mm:ss"),
+        guard let notifyDate = event.notifyDate else { return }
+        guard let startDate = event.startDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss"),
             let notify = notifyDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss") else { return }
         guard let dateDiff = Calendar.current.dateComponents([.minute],
                                                              from: notify,

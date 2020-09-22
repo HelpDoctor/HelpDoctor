@@ -52,15 +52,10 @@ class GuestCell: UICollectionViewCell {
         cellLabel.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 6).isActive = true
         cellLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -6).isActive = true
     }
-    
-    func configure(_ guestName: String, _ guestImage: UIImage) {
-        cellLabel.text = guestName
-        cellImage.image = guestImage
-    }
-    
+
     func configure(contact: Contacts?) {
         guard let contact = contact else { return }
-        cellLabel.text = "\(contact.last_name ?? "") \(contact.first_name ?? "") \(contact.middle_name ?? "")"
+        cellLabel.text = contact.fullName
         cellImage.image = contact.foto?.toImage()
     }
     

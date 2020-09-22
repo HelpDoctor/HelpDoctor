@@ -24,6 +24,10 @@ struct User: Codable {
     var foto: String?
     var isMedicWorker: Int?
     let verifiedUser: Bool
+    var fullName: String? {
+        return "\(lastName ?? "") \(firstName ?? "") \(middleName ?? "")"
+    }
+    
     private enum CodingKeys: String, CodingKey {
         case id
         case firstName = "first_name"

@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 07.04.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import Foundation
 
 final class VerificationResponse {
@@ -36,3 +36,4 @@ func parseJSON_getVerification(for startPoint: [String: Any]?,
     
     return ([verification], httpResponse.statusCode, nil)
 }
+*/

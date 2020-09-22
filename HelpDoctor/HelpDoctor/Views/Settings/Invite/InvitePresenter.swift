@@ -16,6 +16,7 @@ protocol InvitePresenterProtocol: Presenter {
 class InvitePresenter: InvitePresenterProtocol {
     
     var view: InviteViewController
+    private let networkManager = NetworkManager()
     
     required init(view: InviteViewController) {
         self.view = view
@@ -31,27 +32,17 @@ class InvitePresenter: InvitePresenterProtocol {
         }
         
         view.startActivityIndicator()
-        let invite = InviteUserRequest(email: email, first_name: name, last_name: lastname)
-        
-        getData(typeOfContent: .invite,
-                returning: (Int?, String?).self,
-                requestParams: invite.requestParams) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    invite.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            let code = invite.responce?.0
-                            switch code {
-                            case nil:
-                                self?.view.clearTextFields()
-                                self?.view.showSaved(message: "Отправлено")
-                            default:
-                                self?.view.showAlert(message: invite.responce?.1)
-                            }
-                            self?.view.stopActivityIndicator()
-                        }
-                    }
+        networkManager.invite(email, name, lastname) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.view.clearTextFields()
+                    self?.view.showSaved(message: "Отправлено")
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
         }
     }
     
