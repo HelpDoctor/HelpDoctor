@@ -14,6 +14,7 @@ protocol StartMainPresenterProtocol: Presenter {
     func fillProfile()
     func toProfile()
     func toContacts()
+    func toSearchContacts()
 }
 
 class StartMainPresenter: StartMainPresenterProtocol {
@@ -141,6 +142,12 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func toContacts() {
         let viewController = ContactsViewController()
         viewController.presenter = ContactsPresenter(view: viewController)
+        view.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    func toSearchContacts() {
+        let viewController = StartSearchUserViewController()
+        viewController.presenter = StartSearchUserPresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     

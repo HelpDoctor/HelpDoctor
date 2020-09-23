@@ -16,7 +16,7 @@ func parseJSONPublicMethod(for startPoint: [String: AnyObject]?, response: URLRe
     
     return (httpResponse.statusCode, status)
 }
-
+/*
 func parseJSONStatusMethod(for startPoint: [String: AnyObject]?, response: URLResponse?) -> (Int?, String?, String?)? {
     
     guard let status = startPoint?["status"] as? String,
@@ -27,3 +27,4 @@ func parseJSONStatusMethod(for startPoint: [String: AnyObject]?, response: URLRe
     
     return (httpResponse.statusCode, status, message)
 }
+*/

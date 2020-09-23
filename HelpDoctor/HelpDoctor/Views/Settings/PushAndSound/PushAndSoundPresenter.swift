@@ -35,36 +35,16 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
         default:
             break
         }
-        
-        let updateSettings = UpdateSettings(id: userSettings?.id,
-                                            push_notification: userSettings?.pushNotification,
-                                            message_friend: userSettings?.messageFriend,
-                                            add_friend: userSettings?.addFriend,
-                                            message_group: userSettings?.messageGroup,
-                                            email_notification: userSettings?.emailNotification,
-                                            periodicity: userSettings?.periodicity,
-                                            invite_pharmcompany: userSettings?.invitePharmcompany,
-                                            consultation: userSettings?.consultation,
-                                            vacancy: userSettings?.vacancy)
-        
-        getData(typeOfContent: .updateSettings,
-                returning: (Int?, String?).self,
-                requestParams: ["json": updateSettings.jsonData as Any] ) { [weak self] result in
-                    let dispathGroup = DispatchGroup()
-                    
-                    updateSettings.responce = result
-                    
-                    dispathGroup.notify(queue: DispatchQueue.main) {
-                        DispatchQueue.main.async { [weak self]  in
-                            print("updateSettings = \(String(describing: updateSettings.responce))")
-                            guard let code = updateSettings.responce?.0 else { return }
-                            if responceCode(code: code) {
-                                self?.loadSettings()
-                            } else {
-                                self?.view.showAlert(message: updateSettings.responce?.1)
-                            }
-                        }
-                    }
+        guard let settings = userSettings else { return }
+        networkManager.updateSettings(settings) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.loadSettings()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
         }
     }
     

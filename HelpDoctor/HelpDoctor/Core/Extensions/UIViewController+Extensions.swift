@@ -42,7 +42,7 @@ extension UIViewController {
                                     height: height,
                                     presenter: presenter,
                                     font: font)
-        headerView.tag = 996
+        headerView.tag = Session.tagHeaderView
         view.addSubview(headerView)
         
         headerView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,8 +67,8 @@ extension UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideAlert))
         let alertView = UIView()
         let alert = AlertView(message: message ?? "Ошибка")
-        view.viewWithTag(999)?.removeFromSuperview()
-        alertView.tag = 999
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
+        alertView.tag = Session.tagAlertView
         alertView.addGestureRecognizer(tap)
         view.addSubview(alertView)
         alertView.translatesAutoresizingMaskIntoConstraints = false
@@ -86,9 +86,9 @@ extension UIViewController {
     }
     
     func showSaved(message: String?) {
-        view.viewWithTag(998)?.removeFromSuperview()
+        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
         let savedView = SavedView(message: message ?? "Сохранено")
-        savedView.tag = 998
+        savedView.tag = Session.tagSavedView
         view.addSubview(savedView)
         savedView.translatesAutoresizingMaskIntoConstraints = false
         savedView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -15).isActive = true
@@ -122,12 +122,12 @@ extension UIViewController {
         activityView.frame = view.bounds
         activityView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         activityView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.5)
-        activityView.tag = 997
+        activityView.tag = Session.tagBlurView
         view.addSubview(activityView)
     }
     
     func removeBlurEffect() {
-        view.viewWithTag(997)?.removeFromSuperview()
+        view.viewWithTag(Session.tagBlurView)?.removeFromSuperview()
     }
     
     func startActivityIndicator() {
@@ -146,7 +146,7 @@ extension UIViewController {
     }
     
     @objc func hideAlert() {
-        view.viewWithTag(999)?.removeFromSuperview()
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
     }
     
     func setupDefaultLeftView() -> UIView {

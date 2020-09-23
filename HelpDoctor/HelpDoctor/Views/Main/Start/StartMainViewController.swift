@@ -16,6 +16,7 @@ class StartMainViewController: UIViewController {
     // MARK: - Constants
     private let headerHeight = 60.f
     private let contactsButton = HDButton(title: "Контакты", fontSize: 14)
+    private let findUsers = HDButton(title: "Поиск коллег", fontSize: 14)
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     private let profileButton = HDButton(title: "Профиль", fontSize: 14)
     private let deleteProfileButton = HDButton(title: "Удалить профиль", fontSize: 14)
@@ -26,6 +27,7 @@ class StartMainViewController: UIViewController {
         view.backgroundColor = .backgroundColor
         setupHeaderView(color: .backgroundColor, height: headerHeight, presenter: presenter)
         setupContactsButton()
+        setupFindUsersButton()
         setupFillProfileButton()
         setupProfileButton()
         setupDeleteProfileButton()
@@ -62,6 +64,18 @@ class StartMainViewController: UIViewController {
         contactsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
+    private func setupFindUsersButton() {
+        findUsers.addTarget(self, action: #selector(findUsersButtonPressed), for: .touchUpInside)
+        findUsers.isEnabled = true
+        view.addSubview(findUsers)
+        
+        findUsers.translatesAutoresizingMaskIntoConstraints = false
+        findUsers.topAnchor.constraint(equalTo: contactsButton.bottomAnchor, constant: 10).isActive = true
+        findUsers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        findUsers.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        findUsers.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
     private func setupFillProfileButton() {
         fillProfileButton.addTarget(self, action: #selector(fillProfileButtonPressed), for: .touchUpInside)
         fillProfileButton.isEnabled = true
@@ -69,7 +83,7 @@ class StartMainViewController: UIViewController {
         view.addSubview(fillProfileButton)
         
         fillProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        fillProfileButton.topAnchor.constraint(equalTo: contactsButton.bottomAnchor, constant: 10).isActive = true
+        fillProfileButton.topAnchor.constraint(equalTo: findUsers.bottomAnchor, constant: 10).isActive = true
         fillProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         fillProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         fillProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -103,6 +117,10 @@ class StartMainViewController: UIViewController {
     // MARK: - Buttons methods
     @objc private func contactsButtonPressed() {
         presenter?.toContacts()
+    }
+    
+    @objc private func findUsersButtonPressed() {
+        presenter?.toSearchContacts()
     }
     
     /// Отработка нажатия кнопки Заполнить профиль

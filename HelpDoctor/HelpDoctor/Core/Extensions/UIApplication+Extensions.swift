@@ -12,16 +12,9 @@ extension UIApplication {
     
     func setStatusBarBackgroundColor(color: UIColor) {
         UIApplication.statusBarUIView?.backgroundColor = color
-        
-//        let sharedApplication = UIApplication.shared.delegate
-//        let frame = sharedApplication?.window??.windowScene?.statusBarManager?.statusBarFrame ?? .zero
-//        let statusBar = UIView(frame: frame)
-//        statusBar.backgroundColor = color
-        
     }
 
     class var statusBarUIView: UIView? {
-        
         let tag = 987654321
         let sharedApplication = UIApplication.shared.delegate
         let frame = sharedApplication?.window??.windowScene?.statusBarManager?.statusBarFrame ?? .zero

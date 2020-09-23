@@ -131,7 +131,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func setEventOnView(event: Event) {
-        let headerView = view.viewWithTag(996) as? HeaderView
+        let headerView = view.viewWithTag(Session.tagHeaderView) as? HeaderView
         headerView?.titleLabel.text = "Редактирование события"
         switch event.eventType {
         case .reception:

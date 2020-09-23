@@ -11,7 +11,83 @@ import Foundation
 struct NetworkManager {
     private let router = Router<HelpDoctorApi>()
     
-    // MARK: - Registration methods
+    // MARK: - Private methods
+    fileprivate func prepareUserForRequest(_ user: User?) -> [String: Any] {
+        return [
+            "first_name": user?.firstName as Any,
+            "last_name": user?.lastName as Any,
+            "middle_name": user?.middleName as Any,
+            "phone_number": user?.phoneNumber as Any,
+            "birthday": user?.birthday as Any,
+            "city_id": user?.cityId as Any,
+            "foto": user?.foto as Any,
+            "gender": user?.gender as Any,
+            "is_medic_worker": user?.isMedicWorker as Any
+        ]
+    }
+    
+    fileprivate func prepareJobForRequest(_ job: [Job]?) -> [[String: Any]] {
+        var jobRequest: [[String: Any]] = []
+        job?.forEach {
+            jobRequest.append(["id": $0.id,
+                               "job_oid": $0.organization?.oid as Any,
+                               "is_main": $0.isMain as Any])
+        }
+        return jobRequest
+    }
+    
+    fileprivate func prepareSpecForRequest(_ spec: [Specialization]?) -> [[String: Any]] {
+        var specRequest: [[String: Any]] = []
+        spec?.forEach {
+            specRequest.append(["id": $0.id,
+                                "spec_id": $0.specialization?.id as Any,
+                                "is_main": $0.isMain as Any])
+        }
+        return specRequest
+    }
+    
+    fileprivate func prepareInterestsForRequest(_ interests: [ProfileInterest]?) -> [Int] {
+        var interestsRequest: [Int] = []
+        interests?.forEach {
+            interestsRequest.append($0.interest?.id ?? 0)
+        }
+        return interestsRequest
+    }
+    
+    fileprivate func handleDecodingError(_ error: DecodingError) {
+        switch error {
+        case .dataCorrupted(let context):
+            print(DecodingError.dataCorrupted(context))
+        case .keyNotFound(let key, let context):
+            print(DecodingError.keyNotFound(key, context))
+        case .typeMismatch(let type, let context):
+            print(DecodingError.typeMismatch(type, context))
+        case .valueNotFound(let value, let context):
+            print(DecodingError.valueNotFound(value, context))
+        default:
+            print(NetworkResponse.unableToDecode.description)
+        }
+    }
+    
+    fileprivate func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<Int, NetworkResponse> {
+        switch response.statusCode {
+        case 200...299:
+            return .success(response.statusCode)
+        case 401...500:
+            return .failure(.authenticationError)
+        case 501...599:
+            return .failure(.badRequest)
+        case 600:
+            return .failure(.outdated)
+        default:
+            return .failure(.failed)
+        }
+    }
+    
+}
+
+// MARK: - Registration methods extension
+extension NetworkManager {
     func registration(_ email: String,
                       completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
         router.request(.registration(email: email)) { data, response, error in
@@ -156,8 +232,10 @@ struct NetworkManager {
             }
         }
     }
-    
-    // MARK: - Profile methods
+}
+
+// MARK: - Profile methods extension
+extension NetworkManager {
     func getUserStatus(completion: @escaping (Result<ServerResponse, NetworkResponse>) -> Void) {
         router.request(.getUserStatus) { data, response, error in
             if error != nil {
@@ -175,6 +253,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -206,6 +286,8 @@ struct NetworkManager {
                     do {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
                         completion(.success(apiResponse.status == "True" ? true : false))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -446,6 +528,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -494,8 +578,10 @@ struct NetworkManager {
             }
         }
     }
-    
-    // MARK: - Schedule methods
+}
+
+// MARK: - Schedule methods extension
+extension NetworkManager {
     func setEvent(_ event: Event,
                   completion: @escaping (Result<String, NetworkResponse>) -> Void) {
         router.request(.setEvent(event: event)) { data, response, error in
@@ -514,6 +600,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -548,6 +636,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode([Event].self,
                                                                    from: responseData)
                         completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -582,6 +672,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(Event.self,
                                                                    from: responseData)
                         completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -616,6 +708,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -631,8 +725,10 @@ struct NetworkManager {
             }
         }
     }
-    
-    // MARK: - Settings methods
+}
+
+// MARK: - Settings methods extension
+extension NetworkManager {
     func feedback(_ feedback: String,
                   completion: @escaping (Result<String, NetworkResponse>) -> Void) {
         router.request(.feedback(feedback: feedback)) { data, response, error in
@@ -651,6 +747,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -716,6 +814,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self,
                                                                    from: responseData)
                         completion(.success(apiResponse.status))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -749,6 +849,8 @@ struct NetworkManager {
                         let apiResponse = try JSONDecoder().decode(Settings.self,
                                                                    from: responseData)
                         completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
@@ -765,79 +867,73 @@ struct NetworkManager {
         }
     }
     
-    // MARK: - Private methods
-    fileprivate func prepareUserForRequest(_ user: User?) -> [String: Any] {
-        return [
-            "first_name": user?.firstName as Any,
-            "last_name": user?.lastName as Any,
-            "middle_name": user?.middleName as Any,
-            "phone_number": user?.phoneNumber as Any,
-            "birthday": user?.birthday as Any,
-            "city_id": user?.cityId as Any,
-            "foto": user?.foto as Any,
-            "gender": user?.gender as Any,
-            "is_medic_worker": user?.isMedicWorker as Any
-        ]
-    }
-    
-    fileprivate func prepareJobForRequest(_ job: [Job]?) -> [[String: Any]] {
-        var jobRequest: [[String: Any]] = []
-        job?.forEach {
-            jobRequest.append(["id": $0.id,
-                               "job_oid": $0.organization?.oid as Any,
-                               "is_main": $0.isMain as Any])
-        }
-        return jobRequest
-    }
-    
-    fileprivate func prepareSpecForRequest(_ spec: [Specialization]?) -> [[String: Any]] {
-        var specRequest: [[String: Any]] = []
-        spec?.forEach {
-            specRequest.append(["id": $0.id,
-                                "spec_id": $0.specialization?.id as Any,
-                                "is_main": $0.isMain as Any])
-        }
-        return specRequest
-    }
-    
-    fileprivate func prepareInterestsForRequest(_ interests: [ProfileInterest]?) -> [Int] {
-        var interestsRequest: [Int] = []
-        interests?.forEach {
-            interestsRequest.append($0.interest?.id ?? 0)
-        }
-        return interestsRequest
-    }
-    
-    fileprivate func handleDecodingError(_ error: DecodingError) {
-        switch error {
-        case .dataCorrupted(let context):
-            print(DecodingError.dataCorrupted(context))
-        case .keyNotFound(let key, let context):
-            print(DecodingError.keyNotFound(key, context))
-        case .typeMismatch(let type, let context):
-            print(DecodingError.typeMismatch(type, context))
-        case .valueNotFound(let value, let context):
-            print(DecodingError.valueNotFound(value, context))
-        default:
-            print(NetworkResponse.unableToDecode.description)
+    func updateSettings(_ settings: Settings,
+                        completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
+        router.request(.updateSettings(settings: settings)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    completion(.success(response.statusCode))
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
         }
     }
-    
-    fileprivate func handleNetworkResponse(_ response: HTTPURLResponse) -> Result<Int, NetworkResponse> {
-        switch response.statusCode {
-        case 200...299:
-            return .success(response.statusCode)
-        case 401...500:
-            return .failure(.authenticationError)
-        case 501...599:
-            return .failure(.badRequest)
-        case 600:
-            return .failure(.outdated)
-        default:
-            return .failure(.failed)
+}
+
+// MARK: - Contacts methods extension
+extension NetworkManager {
+    func findUsers(_ query: Profiles,
+                   completion: @escaping (Result<[Profiles], NetworkResponse>) -> Void) {
+        router.request(.findUsers(query: query)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                print(responseData.base64EncodedString())
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ProfilesList.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.users))
+                    } catch let decodingError as DecodingError {
+                        handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
         }
     }
-    
 }
 
 enum NetworkResponse: Error {

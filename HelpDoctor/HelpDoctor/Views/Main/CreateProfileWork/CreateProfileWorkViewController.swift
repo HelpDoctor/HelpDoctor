@@ -102,8 +102,8 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .clear)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
+        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
     }
     
     // MARK: - Public methods

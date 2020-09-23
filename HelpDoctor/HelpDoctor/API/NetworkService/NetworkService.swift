@@ -69,7 +69,7 @@ enum TypeOfRequest: String {
 //    case findUsers = "/seach/users"
 //    case userStatus = "/profile/user_status"
 //    case getSettings = "/profile/settings"
-    case updateSettings = "/profile/settings/update"
+//    case updateSettings = "/profile/settings/update"
 //    case changePassword = "/profile/change_password"
 //    case feedback = "/support/feedback"
 //    case invite = "/registration/invite"
@@ -219,13 +219,13 @@ func getCurrentSession (typeOfContent: TypeOfRequest,
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
         request.httpBody = jsonData
-        
-    case /*.updateProfile, .schedule_CreateOrUpdateEvent, .findUsers,*/ .updateSettings:
-        
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
-        request.httpBody = requestParams["json"] as? Data
+//
+//    case .updateProfile, .schedule_CreateOrUpdateEvent, .findUsers, .updateSettings:
+//
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue(myToken, forHTTPHeaderField: "X-Auth-Token")
+//        request.httpBody = requestParams["json"] as? Data
 //
 //    case .schedule_getEventsForCurrentDate, .schedule_getEventsForCurrentId, .schedule_deleteForCurrentEvent:
 //        
@@ -277,19 +277,19 @@ func getData<T>(typeOfContent: TypeOfRequest,
             let responceTrueResult = responceCode(code: httpResponse.statusCode)
             
             switch typeOfContent {
-            case /*.registrationMail,
-                 .recoveryMail,
-                 .deleteMail,
-                 .logout,
-                 .checkProfile,
-                 .updateProfile,
-                 .schedule_CreateOrUpdateEvent,
-                 .schedule_deleteForCurrentEvent,*/
-                 .updateSettings/*,
-                 .changePassword,
-                 .feedback*/:
-                guard let startPoint = json as? [String: AnyObject] else { return }
-                replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
+//            case .registrationMail,
+//                 .recoveryMail,
+//                 .deleteMail,
+//                 .logout,
+//                 .checkProfile,
+//                 .updateProfile,
+//                 .schedule_CreateOrUpdateEvent,
+//                 .schedule_deleteForCurrentEvent,
+//                 .updateSettings,
+//                 .changePassword,
+//                 .feedback:
+//                guard let startPoint = json as? [String: AnyObject] else { return }
+//                replyReturn = (parseJSONPublicMethod(for: startPoint, response: response) as? T)
 //
 //            case .getToken:
 //                guard let startPoint = json as? [String: AnyObject] else { return }
@@ -412,7 +412,7 @@ func responceCode(code: Int) -> Bool {
 //        return false
 //    }
 }
-
+//
 //func prepareRequestParams(email: String?,
 //                          password: String?,
 //                          token: String?) -> [String: String] {
@@ -422,11 +422,11 @@ func responceCode(code: Int) -> Bool {
 //    requestParams["X-Auth-Token"] = token
 //    return requestParams
 //}
-
-func todoJSON(obj: [String: Any]) -> Data? {
-    return try? JSONSerialization.data(withJSONObject: obj)
-}
-
+//
+//func todoJSON(obj: [String: Any]) -> Data? {
+//    return try? JSONSerialization.data(withJSONObject: obj)
+//}
+//
 //func todoJSONAny(obj: Any) -> Data? {
 //    return try? JSONSerialization.data(withJSONObject: obj)
 //}
@@ -434,7 +434,7 @@ func todoJSON(obj: [String: Any]) -> Data? {
 //func todoJSON_Array(obj: [String: [Any]]) -> Data? {
 //    return try? JSONSerialization.data(withJSONObject: obj)
 //}
-
+//
 // MARK: - Примеры вызова
 /*
  let getToken = Registration.init(email: "test@yandex.ru", password: "zNyF9Tts3r", token: nil)

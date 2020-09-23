@@ -15,3 +15,8 @@ struct Profiles: Codable {
     let specializations: [Specialization]
     let interests: [ProfileInterest]
 }
+
+struct ProfilesList: Codable {
+    var users: [Profiles] = []
+    var size: Int = 0
+}

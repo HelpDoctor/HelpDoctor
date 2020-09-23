@@ -40,6 +40,11 @@ class Session {
         return 30
     }
     
+    static let tagAlertView: Int = 999
+    static let tagSavedView: Int = 998
+    static let tagBlurView: Int = 997
+    static let tagHeaderView: Int = 996
+    
     var user: User?
     var education: [Education]?
     var specialization: [Specialization]?

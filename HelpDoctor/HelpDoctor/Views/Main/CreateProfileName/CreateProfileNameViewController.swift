@@ -195,10 +195,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         surnameTextField.autocorrectionType = .no
         surnameTextField.backgroundColor = .white
         surnameTextField.layer.cornerRadius = 5
-        surnameTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                         y: 0,
-                                                         width: 8,
-                                                         height: surnameTextField.frame.height))
+        surnameTextField.leftView = setupDefaultLeftView()
         surnameTextField.leftViewMode = .always
         scrollView.addSubview(surnameTextField)
         
@@ -219,10 +216,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         nameTextField.autocorrectionType = .no
         nameTextField.backgroundColor = .white
         nameTextField.layer.cornerRadius = 5
-        nameTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: nameTextField.frame.height))
+        nameTextField.leftView = setupDefaultLeftView()
         nameTextField.leftViewMode = .always
         scrollView.addSubview(nameTextField)
         
@@ -243,10 +237,7 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
         patronymicTextField.autocorrectionType = .no
         patronymicTextField.backgroundColor = .white
         patronymicTextField.layer.cornerRadius = 5
-        patronymicTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                            y: 0,
-                                                            width: 8,
-                                                            height: patronymicTextField.frame.height))
+        patronymicTextField.leftView = setupDefaultLeftView()
         patronymicTextField.leftViewMode = .always
         scrollView.addSubview(patronymicTextField)
         
@@ -417,8 +408,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
+        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
     }
     
     @objc func keyboardWasShown​(notification: Notification) {
@@ -426,8 +417,8 @@ class CreateProfileNameViewController: UIViewController, UIScrollViewDelegate {
             assertionFailure()
             return
         }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
         let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
         keyboardHeight = kbSize.height
         scrollView.contentInset = contentInsets

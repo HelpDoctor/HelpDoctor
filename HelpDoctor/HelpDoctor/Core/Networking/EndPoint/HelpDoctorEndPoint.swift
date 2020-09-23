@@ -32,6 +32,8 @@ enum HelpDoctorApi {
     case invite(email: String, firstName: String, lastName: String?)
     case changePassword(password: String, newPassword: String)
     case getSettings
+    case updateSettings(settings: Settings)
+    case findUsers(query: Profiles)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -96,6 +98,10 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/profile/change_password"
         case .getSettings:
             return "public/api/profile/settings"
+        case .updateSettings:
+            return "public/api/profile/settings/update"
+        case .findUsers:
+            return "public/api/seach/users"
         }
     }
     
@@ -112,7 +118,9 @@ extension HelpDoctorApi: EndPointType {
              .setEvent,
              .feedback,
              .invite,
-             .changePassword:
+             .changePassword,
+             .updateSettings,
+             .findUsers:
             return .post
         case .getUserStatus,
              .getListOFInterests,
@@ -175,6 +183,32 @@ extension HelpDoctorApi: EndPointType {
                                                                  "new_password": newPassword.toBase64()],
                                                 urlParameters: nil,
                                                 additionHeaders: headers)
+        case .updateSettings(settings: let settings):
+            return .requestParametersAndHeaders(bodyParameters: ["settings": [
+                                                                    "add_friend": settings.addFriend,
+                                                                    "consultation": settings.consultation,
+                                                                    "email_notification": settings.emailNotification,
+                                                                    "invite_pharmcompany": settings.invitePharmcompany,
+                                                                    "message_friend": settings.messageFriend,
+                                                                    "message_group": settings.messageGroup,
+                                                                    "periodicity": settings.periodicity,
+                                                                    "push_notification": settings.pushNotification,
+                                                                    "vacancy": settings.vacancy]],
+                                                urlParameters: nil,
+                                                additionHeaders: headers)
+        case .findUsers(query: let profile):
+            let jobs = profile.job.compactMap({ $0.organization?.oid })
+            let specializations = profile.specializations.compactMap({ $0.specialization?.id })
+            return .requestParametersAndHeaders(bodyParameters: ["first_name": profile.user.firstName as Any,
+                                                                 "middle_name": profile.user.middleName as Any,
+                                                                 "last_name": profile.user.lastName as Any,
+                                                                 "city_id": profile.user.cityId as Any,
+                                                                 "job_places": jobs,
+                                                                 "specializations": specializations,
+                                                                 "page": 1,
+                                                                 "limit": 20],
+                                                urlParameters: nil,
+                                                additionHeaders: headers)
         case .deleteUser,
              .logout,
              .getUserStatus,
@@ -207,7 +241,9 @@ extension HelpDoctorApi: EndPointType {
              .deleteEvent,
              .feedback,
              .changePassword,
-             .getSettings:
+             .getSettings,
+             .updateSettings,
+             .findUsers:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
         default:

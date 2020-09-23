@@ -293,8 +293,8 @@ class LoginViewController: UIViewController, UIScrollViewDelegate {
     /// Скрытие клавиатуры
     @objc func hideKeyboard() {
         scrollView.endEditing(true)
-        view.viewWithTag(998)?.removeFromSuperview()
-        view.viewWithTag(999)?.removeFromSuperview()
+        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
     }
     
     /// Изменение размера ScrollView при появлении клавиатуры
