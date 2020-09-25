@@ -25,6 +25,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     private let widthDateLabel = 50.f
     private var widthDateTextField = 0.f
     private let widthTextField = Session.width - 40
+    private var keyboardHeight: CGFloat = 0
     private let scrollView = UIScrollView()
     private let titleTextField = UITextField()
     private let eventTypeTextField = UITextField()
@@ -81,6 +82,7 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         setupTimerTextField()
         setupDeleteButton()
         setupSaveButton()
+        addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
     }
     
@@ -633,6 +635,51 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
         return view
     }
     
+    private func addTapGestureToHideKeyboard() {
+        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
+                                                         action: #selector(hideKeyboard))
+        scrollView.addGestureRecognizer(hideKeyboardGesture)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWasShown​),
+                                               name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardWillBeHidden(notification:)),
+                                               name: UIResponder.keyboardWillHideNotification,
+                                               object: nil)
+    }
+    
+    @objc func hideKeyboard() {
+        scrollView.endEditing(true)
+        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
+        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
+    }
+    
+    /// Изменение размера ScrollView при появлении клавиатуры
+    /// - Parameter notification: событие появления клавиатуры
+    @objc func keyboardWasShown​(notification: Notification) {
+        guard let info = notification.userInfo else {
+            assertionFailure()
+            return
+        }
+        guard let keyboardFrame = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        let kbSize = keyboardFrame.cgRectValue.size
+        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
+        keyboardHeight = kbSize.height
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    /// Изменение размера ScrollView при скрытии клавиатуры
+    /// - Parameter notification: событие скрытия клавиатуры
+    @objc func keyboardWillBeHidden(notification: Notification) {
+        let contentInsets = UIEdgeInsets.zero
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
     /// Добавляет свайп влево для перехода назад
     private func addSwipeGestureToBack() {
         let swipeLeft = UISwipeGestureRecognizer()
@@ -642,11 +689,9 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     }
     
     func handleSwitchOn(_ sender: UISwitch) {
-        
         if sender.isOn {
             presenter?.repeatChoice()
         }
-        
     }
     
     // MARK: - Buttons methods
@@ -705,17 +750,16 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
     
 }
 
+// MARK: - MapKitSearchDelegate
 extension AddEventViewController: MapKitSearchDelegate {
-    
     func mapKitSearch(_ locationSearchViewController: LocationSearchViewController, mapItem: MKMapItem) {
         locationTextField.text = mapItem.name
         locationTextField.leftView = setupDefaultLeftView()
     }
-    
 }
 
+// MARK: - UITextFieldDelegate
 extension AddEventViewController: UITextFieldDelegate {
-    
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if textField == titleTextField {
             titleTextField.leftView = setupDefaultLeftView()
@@ -729,14 +773,10 @@ extension AddEventViewController: UITextFieldDelegate {
             }
         }
     }
-    
-    
-    
 }
 
-// MARK: - Collection view
+// MARK: - UICollectionViewDelegate
 extension AddEventViewController: UICollectionViewDelegate {
-    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //        presenter?.addInterest(index: indexPath.item)
     }
@@ -744,11 +784,10 @@ extension AddEventViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         //        presenter?.deleteInterest(index: indexPath.item)
     }
-    
 }
 
+// MARK: - UICollectionViewDataSource
 extension AddEventViewController: UICollectionViewDataSource {
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return presenter?.getCountContacts() ?? 0
     }
@@ -762,11 +801,10 @@ extension AddEventViewController: UICollectionViewDataSource {
         cell.configure(contact: (presenter?.getContact(index: indexPath.item)))
         return cell
     }
-    
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension AddEventViewController: UICollectionViewDelegateFlowLayout {
-    
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -778,5 +816,4 @@ extension AddEventViewController: UICollectionViewDelegateFlowLayout {
                         insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
-    
 }

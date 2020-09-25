@@ -10,6 +10,7 @@ import UIKit
 
 protocol AddGuestsPresenterProtocol: Presenter {
     init(view: AddGuestsViewController)
+    func setSelectedContact(_ guestList: [Contacts])
     func getContactList()
     func getCountContacts() -> Int
     func getCountSelectedContacts() -> Int
@@ -39,6 +40,11 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
         self.view = view
     }
     
+    func setSelectedContact(_ guestList: [Contacts]) {
+        selectedContacts = guestList
+        view.reloadCollectionView()
+    }
+    
     func getContactList() {
         networkManager.getContactList { [weak self] result in
             DispatchQueue.main.async {
@@ -48,6 +54,7 @@ class AddGuestsPresenter: AddGuestsPresenterProtocol {
                     self?.filteredArray = contacts
                     self?.view.setCountContactList(contactsCount: self?.contactList.count ?? 0)
                     self?.view.reloadTableView()
+                    self?.selectRows()
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }

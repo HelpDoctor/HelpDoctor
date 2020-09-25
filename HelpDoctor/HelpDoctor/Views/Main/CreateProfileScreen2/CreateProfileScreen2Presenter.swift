@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
+protocol CreateProfileScreen2PresenterProtocol: Presenter {
     init(view: CreateProfileScreen2ViewController)
     var isEdit: Bool { get }
     func citySearch()
@@ -17,7 +17,6 @@ protocol CreateProfileScreen2PresenterProtocol: Presenter, PickerFieldDelegate {
     func setRegionFromDevice(_ idRegion: Int)
     func setCity(city: Cities)
     func setLiveInNotRussia()
-    func convertDateFromServer(_ birthDate: String) -> String?
     func next(phone: String, birthdate: String)
 }
 
@@ -122,24 +121,11 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
         region = nil
         city = nil
     }
-    
-    /// Конвертация даты из формата yyyy-MM-dd в формат dd.MM.yyyy
-    /// - Parameter birthDate: дата в формте yyyy-MM-dd
-    /// - Returns: дата в формате dd.MM.yyyy
-    func convertDateFromServer(_ birthDate: String) -> String? {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        dateFormatter.locale = Locale.current
-        guard let birthday = dateFormatter.date(from: birthDate) else { return nil }
-        dateFormatter.dateFormat = "dd.MM.yyyy"
-        return dateFormatter.string(from: birthday)
-    }
-    
+
     /// Конвертация даты из формата dd.MM.yyyy в формат yyyy-MM-dd
     /// - Parameter birthdate: дата в формте dd.MM.yyyy
     /// - Returns: дата в формате yyyy-MM-dd
-    func convertDateToServer(_ birthdate: String) -> String? {
+    private func convertDateToServer(_ birthdate: String) -> String? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy"
         dateFormatter.timeZone = TimeZone(identifier: "UTC")
@@ -204,22 +190,6 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     func back() {
         view.navigationController?.popViewController(animated: true)
-    }
-    
-}
-
-// MARK: - PickerFieldDelegate
-extension CreateProfileScreen2Presenter {
-    
-    func pickerField(didOKClick pickerField: PickerField) {
-        if pickerField.type == .datePicker {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "dd.MM.yyyy"
-            guard let datePicker = pickerField.datePicker else { return }
-            let date = dateFormatter.string(from: datePicker.date)
-            pickerField.text =  "\(date)"
-        }
-        
     }
     
 }

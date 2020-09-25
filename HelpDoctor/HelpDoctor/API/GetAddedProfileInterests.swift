@@ -22,8 +22,8 @@ func parseJSON_addProfileInterests(startPoint: [String: AnyObject]?,
     
     switch httpResponse.statusCode {
     case 200:
-        guard let startPoint = startPoint else { return ([], nil, nil) }
-        guard let intId = startPoint["id"] as? Int else { return ([], nil, nil) }
+        guard let startPoint = startPoint,
+              let intId = startPoint["id"] as? Int else { return ([], nil, nil) }
         addInterests.append(Interest(id: intId,
                                             specializationCode: nil,
                                             name: startPoint["name"] as? String))

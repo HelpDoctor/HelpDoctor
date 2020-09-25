@@ -43,7 +43,6 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         } else {
             updateUser()
         }
-        
     }
     
     func setUser() {
@@ -59,41 +58,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Private methods
     /// Обновление информации о пользователе на сервере
     private func updateUser() {
-        networkManager.updateUser(user, nil, nil, nil) { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success:
-                    self?.updateJob()
-                case .failure(let error):
-                    self?.view.showAlert(message: error.description)
-                }
-                self?.view.stopActivityIndicator()
-            }
-        }
-    }
-    // TODO: - Попробовать объединить все методы обновления пользователя
-    /// Обновление информации о работе пользователя на сервере
-    private func updateJob() {
-        if jobArray.count == 0 {
-            updateSpec()
-        } else {
-            networkManager.updateUser(nil, jobArray, nil, nil) { [weak self] result in
-                DispatchQueue.main.async {
-                    switch result {
-                    case .success:
-                        self?.updateSpec()
-                    case .failure(let error):
-                        self?.view.showAlert(message: error.description)
-                    }
-                    self?.view.stopActivityIndicator()
-                }
-            }
-        }
-    }
-    
-    /// Обновление информации о специализации пользователя на сервере
-    private func updateSpec() {
-        networkManager.updateUser(nil, nil, specArray, nil) { [weak self] result in
+        networkManager.updateUser(user, jobArray, specArray, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

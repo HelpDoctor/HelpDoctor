@@ -22,6 +22,7 @@ protocol SelectDatePresenterProtocol: Presenter {
     func selectTodayRow() -> Int
     func getCurrentDayOfWeek(date: Date) -> String
     func getCurrentDate(date: Date) -> String
+    func setSelectDate()
     func saveDate(indexDate: Int?, indexHours: Int?, indexMinutes: Int?)
 }
 
@@ -33,6 +34,7 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
     
     // MARK: - Constants and variables
     var startDate: Date
+    var selectedDate: Date?
     var isStart: Bool
     private var datesArray: [Date] = []
     private let hoursArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
@@ -107,6 +109,20 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
         return dateFormatter.string(from: date)
     }
     
+    func setSelectDate() {
+        guard let selectedDate = selectedDate else { return }
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: selectedDate)
+        let minute = calendar.component(.minute, from: selectedDate)
+        let index = datesArray.firstIndex(where: {calendar.compare(selectedDate,
+                                                                   to: $0,
+                                                                   toGranularity: .day).rawValue == 0 ? true : false})
+        view.setSelectDate(IndexPath(row: index ?? 0, section: 0),
+                           IndexPath(row: hour, section: 0),
+                           IndexPath(row: minute, section: 0))
+    }
+    
+    // MARK: - Private methods
     private func generateDateRange(fromDate: String = "2020 01 01", toDate: String = "2030 12 31") -> [Date] {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy MM dd"

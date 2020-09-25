@@ -34,6 +34,7 @@ enum HelpDoctorApi {
     case getSettings
     case updateSettings(settings: Settings)
     case findUsers(query: Profiles)
+    case verification(source: URL)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -102,6 +103,8 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/profile/settings/update"
         case .findUsers:
             return "public/api/seach/users"
+        case .verification:
+            return "public/api/profile/verification"
         }
     }
     
@@ -120,7 +123,8 @@ extension HelpDoctorApi: EndPointType {
              .invite,
              .changePassword,
              .updateSettings,
-             .findUsers:
+             .findUsers,
+             .verification:
             return .post
         case .getUserStatus,
              .getListOFInterests,
@@ -218,7 +222,8 @@ extension HelpDoctorApi: EndPointType {
              .getEventForDate,
              .getEvenyForId,
              .deleteEvent,
-             .getSettings:
+             .getSettings,
+             .verification:
             return .requestParametersAndHeaders(bodyParameters: nil, urlParameters: nil, additionHeaders: headers)
         default:
             return .request
@@ -246,8 +251,26 @@ extension HelpDoctorApi: EndPointType {
              .findUsers:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
+        case .verification:
+            return ["Content-Type": "multipart/form-data; boundary=\(Session.instance.boundary)",
+                    "X-Auth-Token": myToken]
         default:
             return nil
         }
     }
+    
+    var taskMethod: TaskMethods {
+        switch self {
+        case .verification(source: let source):
+            return .upload(source: source)
+        default:
+            return .data
+        }
+    }
+}
+
+enum TaskMethods {
+    case data
+    case upload(source: URL)
+    case download
 }

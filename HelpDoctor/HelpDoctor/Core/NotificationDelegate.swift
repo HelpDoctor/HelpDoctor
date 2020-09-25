@@ -23,7 +23,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         }
     }
     
-    func scheduleNotification(identifier: String,
+    func scheduleNotification(identifier: Int,
                               title: String,
                               body: String?,
                               description: String?,
@@ -55,7 +55,7 @@ class NotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: components, repeats: repeats)
 //        let identifier = "Local Notification"
-        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        let request = UNNotificationRequest(identifier: identifier.description, content: content, trigger: trigger)
         
         notificationCenter.add(request) { (error) in
             if let error = error {

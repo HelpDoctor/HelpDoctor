@@ -578,6 +578,34 @@ extension NetworkManager {
             }
         }
     }
+    
+    func verification(_ source: URL,
+                      completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
+        Session.instance.boundary = "Boundary-\(UUID().uuidString)"
+        router.request(.verification(source: source)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    completion(.success(response.statusCode))
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
 }
 
 // MARK: - Schedule methods extension

@@ -24,7 +24,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     private let heightRadioButton = 20.f
     private let heightNextButton = 40.f
     private let scrollView = UIScrollView()
-    private let birthDateTextField = PickerField()
+    private let birthDateDatePicker = UIDatePicker()
     private let step3TitleLabel = UILabel()
     private let step3Label = UILabel()
     private let hideBirthdayCheckbox = CheckBox(type: .square)
@@ -50,7 +50,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         setupScrollView()
         setupStep3TitleLabel()
         setupStep3Label()
-        setupBirthDateTextField()
+        setupBirthDateDatePicker()
         setupHideBirthdayCheckbox()
         setupStep4TitleLabel()
         setupStep4Label()
@@ -101,7 +101,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         guard let regionId = Session.instance.user?.regionId else { return }
         presenter?.setRegionFromDevice(regionId)
         guard let birthday = Session.instance.user?.birthday else { return }
-        birthDateTextField.text = presenter?.convertDateFromServer(birthday)
+        birthDateDatePicker.setDate(birthday.toDate(withFormat: "yyyy-MM-dd") ?? Date(), animated: true)
     }
     
     // MARK: - Setup views
@@ -151,31 +151,20 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     }
     
     /// Установка поля ввода даты рождения
-    private func setupBirthDateTextField() {
-        birthDateTextField.titleLabel?.text = "Укажите дату рождения"
-        birthDateTextField.backgroundColor = .white
-        birthDateTextField.layer.cornerRadius = 5
-        birthDateTextField.font = .systemFontOfSize(size: 14)
-        birthDateTextField.textColor = .textFieldTextColor
-        birthDateTextField.type = .datePicker
-        birthDateTextField.placeholder = "__.__.____*"
-        birthDateTextField.pickerFieldDelegate = presenter
-        birthDateTextField.datePicker?.datePickerMode = .date
-        birthDateTextField.datePicker?.maximumDate = Date()
-        birthDateTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                           y: 0,
-                                                           width: 8,
-                                                           height: birthDateTextField.frame.height))
-        birthDateTextField.leftViewMode = .always
-        birthDateTextField.rightImageView.image = UIImage(named: "calendar")
-        scrollView.addSubview(birthDateTextField)
+    private func setupBirthDateDatePicker() {
+        birthDateDatePicker.tintColor = .hdButtonColor
+        birthDateDatePicker.locale = Locale(identifier: "ru_RU")
+        birthDateDatePicker.datePickerMode = .date
+        birthDateDatePicker.backgroundColor = .white
+        birthDateDatePicker.layer.cornerRadius = 5
+        scrollView.addSubview(birthDateDatePicker)
         
-        birthDateTextField.translatesAutoresizingMaskIntoConstraints = false
-        birthDateTextField.topAnchor.constraint(equalTo: step3Label.bottomAnchor,
-                                                constant: verticalInset).isActive = true
-        birthDateTextField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        birthDateTextField.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
-        birthDateTextField.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
+        birthDateDatePicker.translatesAutoresizingMaskIntoConstraints = false
+        birthDateDatePicker.topAnchor.constraint(equalTo: step3Label.bottomAnchor,
+                                                 constant: verticalInset).isActive = true
+        birthDateDatePicker.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
+        birthDateDatePicker.widthAnchor.constraint(equalToConstant: textFieldWidth).isActive = true
+        birthDateDatePicker.heightAnchor.constraint(equalToConstant: heightTextField).isActive = true
     }
     
     /// Установка чекбокса скрытия даты рождения в профиле
@@ -190,11 +179,11 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         scrollView.addSubview(hideBirthdayCheckbox)
         
         hideBirthdayCheckbox.translatesAutoresizingMaskIntoConstraints = false
-        hideBirthdayCheckbox.topAnchor.constraint(equalTo: birthDateTextField.bottomAnchor,
+        hideBirthdayCheckbox.topAnchor.constraint(equalTo: birthDateDatePicker.bottomAnchor,
                                                   constant: verticalInset).isActive = true
-        hideBirthdayCheckbox.leadingAnchor.constraint(equalTo: birthDateTextField.leadingAnchor,
+        hideBirthdayCheckbox.leadingAnchor.constraint(equalTo: birthDateDatePicker.leadingAnchor,
                                                       constant: leading).isActive = true
-        hideBirthdayCheckbox.trailingAnchor.constraint(equalTo: birthDateTextField.trailingAnchor,
+        hideBirthdayCheckbox.trailingAnchor.constraint(equalTo: birthDateDatePicker.trailingAnchor,
                                                        constant: -leading).isActive = true
         hideBirthdayCheckbox.heightAnchor.constraint(equalToConstant: heightRadioButton).isActive = true
     }
@@ -502,8 +491,8 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
     
     // MARK: - Navigation
     @objc private func nextButtonPressed() {
-        guard let phone = phoneTextField.text,
-              let birthdate = birthDateTextField.text else { return }
+        guard let phone = phoneTextField.text else { return }
+        let birthdate = birthDateDatePicker.date.toString(withFormat: "dd.MM.yyyy")
         presenter?.next(phone: phone, birthdate: birthdate)
     }
 }

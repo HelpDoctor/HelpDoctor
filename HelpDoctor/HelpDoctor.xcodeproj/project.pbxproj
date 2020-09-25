@@ -112,6 +112,8 @@
 		469C70EB251A3BBD00C655FC /* Contacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70EA251A3BBD00C655FC /* Contacts.swift */; };
 		469C70EE251A3BC700C655FC /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70ED251A3BC700C655FC /* Event.swift */; };
 		469C70F2251A3C2C00C655FC /* ContactsSortPopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70F1251A3C2C00C655FC /* ContactsSortPopoverController.swift */; };
+		469C70F8251E22C500C655FC /* SelectYearViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70F6251E22C500C655FC /* SelectYearViewController.swift */; };
+		469C70F9251E22C500C655FC /* SelectYearPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469C70F7251E22C500C655FC /* SelectYearPresenter.swift */; };
 		469DD6562459463F006DBD30 /* CreateProfileStep6ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */; };
 		469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */; };
 		469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */; };
@@ -346,6 +348,8 @@
 		469C70EA251A3BBD00C655FC /* Contacts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Contacts.swift; sourceTree = "<group>"; };
 		469C70ED251A3BC700C655FC /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		469C70F1251A3C2C00C655FC /* ContactsSortPopoverController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContactsSortPopoverController.swift; sourceTree = "<group>"; };
+		469C70F6251E22C500C655FC /* SelectYearViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectYearViewController.swift; sourceTree = "<group>"; };
+		469C70F7251E22C500C655FC /* SelectYearPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectYearPresenter.swift; sourceTree = "<group>"; };
 		469DD6552459463F006DBD30 /* CreateProfileStep6ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6ViewController.swift; sourceTree = "<group>"; };
 		469DD65724594651006DBD30 /* CreateProfileStep6Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileStep6Presenter.swift; sourceTree = "<group>"; };
 		469DD659245ADAD0006DBD30 /* AttachmentTapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentTapGestureRecognizer.swift; sourceTree = "<group>"; };
@@ -814,6 +818,15 @@
 			path = Universities;
 			sourceTree = "<group>";
 		};
+		469C70F5251E22C500C655FC /* SelectYear */ = {
+			isa = PBXGroup;
+			children = (
+				469C70F6251E22C500C655FC /* SelectYearViewController.swift */,
+				469C70F7251E22C500C655FC /* SelectYearPresenter.swift */,
+			);
+			path = SelectYear;
+			sourceTree = "<group>";
+		};
 		469DD65424594612006DBD30 /* CreateProfileStep6 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1250,6 +1263,7 @@
 		C48F167E23BA0586002D04E3 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				469C70F5251E22C500C655FC /* SelectYear */,
 				46959B4D24ED251700139A17 /* Universities */,
 				46F87F6123BFC0710095264E /* Interests */,
 				46F87F5C23BF93AC0095264E /* MedicalSpecialization */,
@@ -1520,6 +1534,7 @@
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
 				4640B6D92402C5B20023C3A3 /* PeriodicButton.swift in Sources */,
 				46D0863725122AA8007C367F /* ServerResponse.swift in Sources */,
+				469C70F8251E22C500C655FC /* SelectYearViewController.swift in Sources */,
 				C48F167323B9D524002D04E3 /* RecoveryPasswordEndViewController.swift in Sources */,
 				469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */,
 				46F87F6723C063AD0095264E /* EditTextView.swift in Sources */,
@@ -1639,6 +1654,7 @@
 				4694E1BA251B5D9400F7B696 /* SearchResultViewController.swift in Sources */,
 				4682F3BE250F4D45005BDA9E /* HTTPTask.swift in Sources */,
 				46F87F3023BCA3D80095264E /* PlusButton.swift in Sources */,
+				469C70F9251E22C500C655FC /* SelectYearPresenter.swift in Sources */,
 				C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */,
 				4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */,
 				46787A75243906D9005C0258 /* Settings.swift in Sources */,

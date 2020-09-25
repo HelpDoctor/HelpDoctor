@@ -45,6 +45,8 @@ class Session {
     static let tagBlurView: Int = 997
     static let tagHeaderView: Int = 996
     
+    var boundary = "Boundary-\(UUID().uuidString)"
+    
     var user: User?
     var education: [Education]?
     var specialization: [Specialization]?

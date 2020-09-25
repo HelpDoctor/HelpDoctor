@@ -5,7 +5,7 @@
 //  Created by Mikhail Semerikov on 25.03.2020.
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
-
+/*
 import UIKit
 
 public protocol PickerFieldDelegate: class {
@@ -447,3 +447,4 @@ public class PickerField: UITextField, UITextFieldDelegate {
     }
     
 }
+*/

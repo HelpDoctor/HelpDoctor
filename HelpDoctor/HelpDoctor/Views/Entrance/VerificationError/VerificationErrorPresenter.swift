@@ -17,6 +17,7 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
     
     // MARK: - Dependency
     let view: VerificationErrorViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var email: String?
@@ -29,20 +30,15 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
     /// Переход к экрану входа
     func send(src: URL) {
         view.startActivityIndicator()
-        uploadImage(source: src,
-                    returning: (Int?, String?).self) { [weak self] result in
-            let dispathGroup = DispatchGroup()
-            
-            dispathGroup.notify(queue: DispatchQueue.main) {
-                DispatchQueue.main.async { [weak self] in
-                    self?.view.stopActivityIndicator()
-                    guard let code = result?.0 else { return }
-                    if responceCode(code: code) {
-                        self?.view.authorized()
-                    } else {
-                        self?.view.showAlert(message: result?.1)
-                    }
+        networkManager.verification(src) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.view.authorized()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
                 }
+                self?.view.stopActivityIndicator()
             }
         }
     }

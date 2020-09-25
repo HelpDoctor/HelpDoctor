@@ -8,19 +8,21 @@
 
 import UIKit
 
-protocol CreateProfileStep6PresenterProtocol: Presenter, PickerFieldDelegate {
+protocol CreateProfileStep6PresenterProtocol: Presenter {
     init(view: CreateProfileStep6ViewController)
     var isEdit: Bool { get }
     func convertDate(_ birthDate: String) -> String?
     func setUniversity(university: University)
     func universitySearch()
     func next()
+    func dateChoice()
 }
 
 class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileStep6ViewController
+    private let transition = PanelTransition()
     
     // MARK: - Constants and variables
     var user: User?
@@ -83,24 +85,30 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
         
     }
     
+    func dateChoice() {
+        let viewController = SelectYearViewController()
+        let presenter = SelectYearPresenter(view: viewController)
+        viewController.presenter = presenter
+        presenter.delegate = self
+        presenter.selectedDate = view.getDate()
+        transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
+                                                                y: Session.height - 356,
+                                                                width: view.view.bounds.width,
+                                                                height: 356)
+        viewController.transitioningDelegate = transition
+        viewController.modalPresentationStyle = .custom
+        view.present(viewController, animated: true)
+    }
+    
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
 }
 
-// MARK: - PickerFieldDelegate
-extension CreateProfileStep6Presenter {
-    
-    func pickerField(didOKClick pickerField: PickerField) {
-        if pickerField.type == .datePicker {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy"
-            guard let datePicker = pickerField.datePicker else { return }
-            let date = dateFormatter.string(from: datePicker.date)
-            pickerField.text =  "\(date)"
-        }
-        
+// MARK: - SelectYearControllerDelegate
+extension CreateProfileStep6Presenter: SelectYearControllerDelegate {
+    func callbackDate(newDate: String) {
+        view.setDate(date: newDate)
     }
-    
 }

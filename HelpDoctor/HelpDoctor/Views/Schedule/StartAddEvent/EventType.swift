@@ -13,4 +13,17 @@ enum EventType: String, Codable {
     case administrative = "administrative"
     case science = "scientific"
     case other = "another"
+    
+    var description: String {
+        switch self {
+        case .reception:
+            return "Прием пациентов"
+        case .administrative:
+            return "Административная деятельность"
+        case .science:
+            return "Научная деятельность"
+        case .other:
+            return "Другое"
+        }
+    }
 }

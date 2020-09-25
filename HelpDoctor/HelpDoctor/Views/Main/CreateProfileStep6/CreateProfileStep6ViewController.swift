@@ -28,7 +28,7 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     private let universityLabel = UILabel()
     private let universityTextField = UITextField()
     private let graduateDateLabel = UILabel()
-    private let graduateDateTextField = PickerField()
+    private let graduateDateTextField = UITextField()
     private let graduateTitleLabel = UILabel()
     private let graduateLabel = UILabel()
     private let academicButton = RadioButton()
@@ -85,6 +85,14 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Public methods
     func setUniversity(university: String) {
         universityTextField.text = university
+    }
+    
+    func setDate(date: String) {
+        graduateDateTextField.text = date
+    }
+    
+    func getDate() -> String? {
+        return graduateDateTextField.text
     }
     
     // MARK: - Private methods
@@ -211,18 +219,16 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     }
     
     private func setupGraduateDateTextField() {
-        graduateDateTextField.titleLabel?.text = "Укажите год выпуска"
+        let tap = UITapGestureRecognizer(target: self,
+                                         action: #selector(startDateButtonPressed))
+        graduateDateTextField.placeholder = "Укажите год выпуска"
         graduateDateTextField.backgroundColor = .white
         graduateDateTextField.layer.cornerRadius = 5
         graduateDateTextField.font = .systemFontOfSize(size: 14)
         graduateDateTextField.textColor = .textFieldTextColor
-        graduateDateTextField.type = .datePicker
-        graduateDateTextField.placeholder = "____*"
-        graduateDateTextField.pickerFieldDelegate = presenter
-        graduateDateTextField.datePicker?.datePickerMode = .date
-        graduateDateTextField.datePicker?.maximumDate = Date()
         graduateDateTextField.leftView = setupDefaultLeftView()
         graduateDateTextField.leftViewMode = .always
+        graduateDateTextField.addGestureRecognizer(tap)
         scrollView.addSubview(graduateDateTextField)
         
         graduateDateTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -456,6 +462,10 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
     // MARK: - Buttons methods
     @objc private func universitySearchButtonPressed() {
         presenter?.universitySearch()
+    }
+    
+    @objc private func startDateButtonPressed() {
+        presenter?.dateChoice()
     }
     
     // MARK: - Navigation

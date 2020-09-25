@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol CreateProfileNamePresenterProtocol: Presenter, PickerFieldDelegate {
+protocol CreateProfileNamePresenterProtocol: Presenter {
     init(view: CreateProfileNameViewController)
     var isEdit: Bool { get }
     func setGender(_ gender: String)

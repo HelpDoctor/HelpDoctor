@@ -47,7 +47,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     // MARK: - Public methods
     /// Загрузка с сервера первых 10 интересов по основной специализации
     func loadPopularInterests(_ spec: String?) {
-        view.startActivityIndicator()
+//        view.startActivityIndicator()
         //TODO: - Fix
         /*
          var mainSpec = "general"

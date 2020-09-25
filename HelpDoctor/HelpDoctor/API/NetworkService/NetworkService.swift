@@ -9,8 +9,7 @@
 import UIKit
 //swiftlint:disable type_name
 //swiftlint:disable force_cast
-//swiftlint:disable function_body_length
-//swiftlint:disable cyclomatic_complexity
+
 class Auth_Info {
     
     static let instance = Auth_Info()
@@ -84,7 +83,7 @@ enum NetworkMimeType: String {
     case pdf = "application/pdf"
     
 }
-
+/*
 func uploadImage<T>(source: URL,
                     returning: T.Type,
                     completionBlock: @escaping (T?) -> Void) {
@@ -147,7 +146,7 @@ func uploadImage<T>(source: URL,
     }.resume()
     
 }
-
+*/
 func getCurrentSession (typeOfContent: TypeOfRequest,
                         requestParams: [String: Any]) -> (URLSession, URLRequest) {
     

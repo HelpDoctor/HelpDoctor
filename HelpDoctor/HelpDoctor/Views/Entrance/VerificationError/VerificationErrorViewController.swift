@@ -30,6 +30,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     private var sourceFile: URL?
     private var keyboardHeight = 0.f
     private var heightCloudImage = 0.f
+    private var widthButton = 148.f
     
     private var topConstraintImage: NSLayoutConstraint?
     private var widthConstraintImage: NSLayoutConstraint?
@@ -64,7 +65,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     
     // MARK: - Public methods
     func authorized() {
-        let width = 110.f
+        widthButton = 110.f
         titleLabel.textColor = .white
         subtitleLabel.textColor = .hdButtonColor
         subtitleLabel.text = "На рассмотрении"
@@ -84,7 +85,7 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         setupVerificationEndImage()
         
         sendButtonWidth?.isActive = false
-        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: width)
+        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: widthButton)
         sendButtonWidth?.isActive = true
     }
     
@@ -317,7 +318,6 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
     /// Установка кнопки "Отправить"
     private func setupSendButton() {
         let top = 20.f
-        let width = 148.f
         let height = 44.f
         sendButton.addTarget(self, action: #selector(registerButtonPressed), for: .touchUpInside)
         sendButton.update(isEnabled: true)
@@ -328,8 +328,10 @@ class VerificationErrorViewController: UIViewController, UIScrollViewDelegate {
         
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor).isActive = true
-        sendButton.widthAnchor.constraint(equalToConstant: width).isActive = true
+//        sendButton.widthAnchor.constraint(equalToConstant: widthButton).isActive = true
         sendButton.heightAnchor.constraint(equalToConstant: height).isActive = true
+        sendButtonWidth = sendButton.widthAnchor.constraint(equalToConstant: widthButton)
+        sendButtonWidth?.isActive = true
         topConstraintSendButton = sendButton.topAnchor.constraint(equalTo: addFileTextField.bottomAnchor,
                                                                   constant: top)
         topConstraintSendButton?.isActive = true

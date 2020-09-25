@@ -46,6 +46,7 @@ class SelectDateViewController: UIViewController {
         setupHoursTableView()
         setupMinutesTableView()
         setupSaveButton()
+        presenter?.setSelectDate()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,6 +54,13 @@ class SelectDateViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    // MARK: - Public methods
+    func setSelectDate(_ date: IndexPath, _ hours: IndexPath, _ minutes: IndexPath) {
+        datesTableView.selectRow(at: date, animated: true, scrollPosition: .top)
+        hoursTableView.selectRow(at: hours, animated: true, scrollPosition: .top)
+        minutesTableView.selectRow(at: minutes, animated: true, scrollPosition: .top)
     }
     
     // MARK: - Setup views

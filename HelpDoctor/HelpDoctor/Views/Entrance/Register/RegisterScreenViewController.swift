@@ -382,8 +382,8 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
 }
 
+// MARK: -UITextViewDelegate
 extension RegisterScreenViewController: UITextViewDelegate {
-    
     func textView(_ textView: UITextView,
                   shouldInteractWith URL: URL,
                   in characterRange: NSRange,
@@ -391,5 +391,4 @@ extension RegisterScreenViewController: UITextViewDelegate {
         UIApplication.shared.open(URL)
         return false
     }
-    
 }

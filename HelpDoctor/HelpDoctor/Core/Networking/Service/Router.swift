@@ -6,20 +6,35 @@
 //  Copyright © 2020 Mikhail Semerikov. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class Router<EndPoint: EndPointType>: NetworkRouter {
     private var task: URLSessionTask?
     
     func request(_ route: EndPoint, completion: @escaping NetworkRouterCompletion) {
         let session = URLSession.shared
-        do {
-            let request = try self.buildRequest(from: route)
-            task = session.dataTask(with: request,
-                                    completionHandler: { data, response, error in completion(data, response, error) })
-//            print(request.httpBody?.base64EncodedString())
-        } catch {
-            completion(nil, nil, error)
+        switch route.taskMethod {
+        case .upload(source: let source):
+            do {
+                let request = try self.buildRequest(from: route)
+                task = session.uploadTask(with: request,
+                                          from: self.createData(source),
+                                          completionHandler: { data, response, error in
+                                            completion(data, response, error) })
+//                print(self.createData(source)?.base64EncodedString())
+            } catch {
+                completion(nil, nil, error)
+            }
+        default:
+            do {
+                let request = try self.buildRequest(from: route)
+                task = session.dataTask(with: request,
+                                        completionHandler: { data, response, error in
+                                            completion(data, response, error) })
+                //            print(request.httpBody?.base64EncodedString())
+            } catch {
+                completion(nil, nil, error)
+            }
         }
         self.task?.resume()
     }
@@ -74,5 +89,46 @@ class Router<EndPoint: EndPointType>: NetworkRouter {
             request.setValue(value, forHTTPHeaderField: key)
         }
     }
-
+    
+    fileprivate func createData(_ source: URL) -> Data? {
+        do {
+            let data = try Data(contentsOf: source)
+            let fileName = source.path
+            var mimeType: NetworkMimeType?
+            switch source.pathExtension.lowercased() {
+            case "heic":
+                mimeType = .heic
+            case "jpeg":
+                mimeType = .jpeg
+            case "jpg":
+                mimeType = .jpg
+            case "png":
+                mimeType = .png
+            case "pdf":
+                mimeType = .pdf
+            default:
+                break
+            }
+            let boundary = Session.instance.boundary
+            var body = Data()
+            let encoding: UInt = String.Encoding.utf8.rawValue
+            guard let fileType = mimeType?.rawValue else { return nil }
+            if let boundaryStartData = "--\(boundary)\r\n".data(using: String.Encoding(rawValue: encoding)),
+               let fileNameData = "Content-Disposition:form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: String.Encoding(rawValue: encoding)),
+               let contentTypeData = "Content-Type: \(fileType)\r\n\r\n".data(using: String.Encoding(rawValue: encoding)),
+               let endLineData = "\r\n".data(using: String.Encoding(rawValue: encoding)),
+               let boundaryEndData = "--\(boundary)--\r\n".data(using: String.Encoding(rawValue: encoding)) {
+                body.append(boundaryStartData)
+                body.append(fileNameData)
+                body.append(contentTypeData)
+                body.append(data)
+                body.append(endLineData)
+                body.append(boundaryEndData)
+            }
+            return body
+        } catch {
+            return nil
+        }
+    }
+    
 }

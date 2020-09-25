@@ -30,6 +30,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     
     let view: AddEventViewController
     private let networkManager = NetworkManager()
+    private let notification = NotificationDelegate()
     private let transition = PanelTransition()
     private var idEvent: Int?
     private var eventType: EventType?
@@ -66,6 +67,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
         let presenter = SelectDatePresenter(view: viewController, startDate: fromDate, isStart: isStart)
         viewController.presenter = presenter
         presenter.delegate = self
+        presenter.selectedDate = isStart ? startDate : endDate
         transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
                                                                 y: Session.height - 356,
                                                                 width: view.view.bounds.width,
@@ -188,6 +190,15 @@ class AddEventPresenter: AddEventPresenterProtocol {
                 switch result {
                 case .success:
                     self?.back()
+                    guard let idEvent = self?.idEvent,
+                          let notifyDate = self?.notifyDate else { return }
+                    self?.notification.scheduleNotification(identifier: idEvent,
+                                                            title: eventType.description,
+                                                            body: nil,
+                                                            description: title,
+                                                            notifyDate: notifyDate,
+                                                            repeatDay: nil)
+                    
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -237,6 +248,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     func toAddGuests() {
         let viewController = AddGuestsViewController()
         viewController.presenter = AddGuestsPresenter(view: viewController)
+        viewController.presenter?.setSelectedContact(guestList)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
@@ -264,8 +276,8 @@ extension AddEventPresenter: StartAddEventControllerDelegate {
     
 }
 
+// MARK: - SelectDateControllerDelegate
 extension AddEventPresenter: SelectDateControllerDelegate {
-    
     func callbackStartDate(newDate: String) {
         view.setStartDate(startDate: convertDate(date: newDate) ?? "")
         startDate = newDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
@@ -275,11 +287,10 @@ extension AddEventPresenter: SelectDateControllerDelegate {
         view.setEndDate(endDate: convertDate(date: newDate) ?? "")
         endDate = newDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
     }
-    
 }
 
+// MARK: - RepeatEventControllerDelegate
 extension AddEventPresenter: RepeatEventControllerDelegate {
-    
     func callbackDayRepeat() {
         view.setRepeatLabel(repeatText: "Каждый день")
     }
@@ -307,11 +318,10 @@ extension AddEventPresenter: RepeatEventControllerDelegate {
         viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: false)
     }
-    
 }
 
+// MARK: - SelectRepeatTimeControllerDelegate
 extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
-    
     func callbackNoTime() {
         view.setNeverRepeat()
     }
@@ -319,15 +329,13 @@ extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
     func callbackTime() {
         view.setRepeatLabel(repeatText: "Польз. настройки")
     }
-    
 }
 
+// MARK: - SelectNotifyControllerDelegate
 extension AddEventPresenter: SelectNotifyControllerDelegate {
-    
     func callback(notifyTime: Double) {
         view.setNotifyTime(notifyTime: "Уведомить за \(Int(notifyTime)) минут")
         guard let startDate = startDate else { return }
         notifyDate = startDate - (60 * notifyTime)
     }
-    
 }
