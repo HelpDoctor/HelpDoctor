@@ -11,7 +11,6 @@ import UIKit
 class SplashViewController: UIViewController {
     
     private var activityIndicator = ActivityIndicatorView()
-    private let networkManager = NetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +20,7 @@ class SplashViewController: UIViewController {
     
     private func makeServiceCall() {
         startAnimating()
-        networkManager.checkProfile { result in
+        NetworkManager.shared.checkProfile { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -29,7 +29,6 @@ class ContactsPresenter: ContactsPresenterProtocol {
 
     // MARK: - Dependency
     let view: ContactsViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private var contactList: [Contacts] = []
@@ -42,7 +41,7 @@ class ContactsPresenter: ContactsPresenterProtocol {
     }
     
     func getContactList() {
-        networkManager.getContactList { [weak self] result in
+        NetworkManager.shared.getContactList { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let contacts):

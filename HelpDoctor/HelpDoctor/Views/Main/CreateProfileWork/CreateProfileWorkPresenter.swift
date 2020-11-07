@@ -29,7 +29,6 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileWorkViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -53,7 +52,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         if jobArray.isEmpty {
             updateSpec()
         } else {
-            networkManager.updateUser(nil, jobArray, nil, nil, nil) { [weak self] result in
+            NetworkManager.shared.updateUser(nil, jobArray, nil, nil, nil) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
@@ -69,7 +68,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        networkManager.updateUser(nil, nil, specArray, nil, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(nil, nil, specArray, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

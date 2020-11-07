@@ -18,7 +18,6 @@ protocol RegisterEndPresenterProtocol {
 class RegisterEndPresenter: RegisterEndPresenterProtocol {
     
     let view: RegisterEndViewController
-    private let networkManager = NetworkManager()
     var email: String?
     
     required init(view: RegisterEndViewController) {
@@ -43,7 +42,7 @@ class RegisterEndPresenter: RegisterEndPresenterProtocol {
             return
         }
         view.startActivityIndicator()
-        networkManager.login(email, password) { [weak self] result in
+        NetworkManager.shared.login(email, password) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -21,7 +21,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
     
     // MARK: - Dependency
     let view: ProfileViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -37,7 +36,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     // MARK: - Public methods
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        networkManager.getUser { [weak self] result in
+        NetworkManager.shared.getUser { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profiles):
@@ -54,7 +53,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func getStatusUser() {
-        networkManager.getUserStatus { [weak self] result in
+        NetworkManager.shared.getUserStatus { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let serverResponse):
@@ -83,7 +82,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func logout() {
-        networkManager.logout { [weak self] result in
+        NetworkManager.shared.logout { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

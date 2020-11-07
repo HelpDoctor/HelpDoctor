@@ -17,7 +17,6 @@ protocol PushAndSoundPresenterProtocol: Presenter {
 class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     
     var view: PushAndSoundViewController
-    private let networkManager = NetworkManager()
     
     required init(view: PushAndSoundViewController) {
         self.view = view
@@ -36,7 +35,7 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
             break
         }
         guard let settings = userSettings else { return }
-        networkManager.updateSettings(settings) { [weak self] result in
+        NetworkManager.shared.updateSettings(settings) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -49,7 +48,7 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
     }
     
     private func loadSettings() {
-        networkManager.getSettings { [weak self] result in
+        NetworkManager.shared.getSettings { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let settings):

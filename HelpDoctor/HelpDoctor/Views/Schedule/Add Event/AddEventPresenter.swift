@@ -29,7 +29,6 @@ protocol AddEventPresenterProtocol: Presenter {
 class AddEventPresenter: AddEventPresenterProtocol {
     
     let view: AddEventViewController
-    private let networkManager = NetworkManager()
     private let notification = NotificationDelegate()
     private let transition = PanelTransition()
     private var idEvent: Int?
@@ -111,7 +110,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     
     func getEvent() {
         guard let idEvent = idEvent else { return }
-        networkManager.getEventForId(idEvent) { [weak self] result in
+        NetworkManager.shared.getEventForId(idEvent) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let event):
@@ -185,7 +184,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
                              eventPlace: location,
                              eventType: eventType,
                              participants: participants)
-        networkManager.setEvent(newEvent) { [weak self] result in
+        NetworkManager.shared.setEvent(newEvent) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -208,7 +207,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     
     func deleteEvent() {
         guard let idEvent = idEvent else { return }
-        networkManager.deleteEent(idEvent) { [weak self] result in
+        NetworkManager.shared.deleteEent(idEvent) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

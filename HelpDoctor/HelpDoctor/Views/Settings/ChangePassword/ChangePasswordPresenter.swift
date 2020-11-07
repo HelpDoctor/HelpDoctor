@@ -19,7 +19,6 @@ protocol ChangePasswordPresenterProtocol: Presenter {
 class ChangePasswordPresenter: ChangePasswordPresenterProtocol {
     
     var view: ChangePasswordViewController
-    private let networkManager = NetworkManager()
     private var oldPassword = ""
     private var newPassword = ""
     private var confirmPassword = ""
@@ -70,7 +69,7 @@ class ChangePasswordPresenter: ChangePasswordPresenterProtocol {
     
     func changeButtonButtonPressed() {
         view.startActivityIndicator()
-        networkManager.changePassword(oldPassword, newPassword) { [weak self] result in
+        NetworkManager.shared.changePassword(oldPassword, newPassword) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -25,7 +25,6 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     // MARK: - Dependency
     var view: InterestsViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -135,7 +134,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     }
     
     private func updateInterests() {
-        networkManager.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

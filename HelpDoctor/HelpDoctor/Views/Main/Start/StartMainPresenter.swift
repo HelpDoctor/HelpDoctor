@@ -21,7 +21,6 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Dependency
     let view: StartMainViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let session = Session.instance
@@ -36,7 +35,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
     func profileCheck() {
         view.startActivityIndicator()
         getUser()
-        networkManager.checkProfile { [weak self] result in
+        NetworkManager.shared.checkProfile { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let status):
@@ -57,7 +56,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
     
     // MARK: - Private methods
     private func getStatusUser() {
-        networkManager.getUserStatus { [weak self] result in
+        NetworkManager.shared.getUserStatus { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let networkResponse):
@@ -88,7 +87,7 @@ class StartMainPresenter: StartMainPresenterProtocol {
     }
     
     private func getUser() {
-        networkManager.getUser { [weak self] result in
+        NetworkManager.shared.getUser { [weak self] result in
             switch result {
             case .success(let profiles):
                 self?.session.user = profiles.user

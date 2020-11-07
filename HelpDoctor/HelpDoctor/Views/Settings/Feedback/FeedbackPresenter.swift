@@ -16,7 +16,6 @@ protocol FeedbackPresenterProtocol: Presenter {
 class FeedbackPresenter: FeedbackPresenterProtocol {
     
     var view: FeedbackViewController
-    private let networkManager = NetworkManager()
     
     required init(view: FeedbackViewController) {
         self.view = view
@@ -38,7 +37,7 @@ class FeedbackPresenter: FeedbackPresenterProtocol {
         }
         
         view.startActivityIndicator()
-        networkManager.feedback(text) { [weak self] result in
+        NetworkManager.shared.feedback(text) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

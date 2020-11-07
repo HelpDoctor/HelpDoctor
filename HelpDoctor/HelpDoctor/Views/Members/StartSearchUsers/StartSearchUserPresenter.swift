@@ -18,7 +18,6 @@ class StartSearchUserPresenter: StartSearchUserPresenterProtocol {
 
     // MARK: - Dependency
     let view: StartSearchUserViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     

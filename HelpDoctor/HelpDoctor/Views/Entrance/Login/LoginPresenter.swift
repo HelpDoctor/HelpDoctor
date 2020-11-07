@@ -19,7 +19,6 @@ class LoginPresenter: LoginPresenterProtocol {
     
     // MARK: - Dependency
     let view: LoginViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Init
     required init(view: LoginViewController) {
@@ -43,7 +42,7 @@ class LoginPresenter: LoginPresenterProtocol {
             return
         }
         view.startActivityIndicator()
-        networkManager.login(email, password) { [weak self] result in
+        NetworkManager.shared.login(email, password) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -17,7 +17,6 @@ protocol EmailPresenterProtocol: Presenter {
 class EmailPresenter: EmailPresenterProtocol {
     
     var view: EmailViewController
-    private let networkManager = NetworkManager()
     
     required init(view: EmailViewController) {
         self.view = view
@@ -38,7 +37,7 @@ class EmailPresenter: EmailPresenterProtocol {
             break
         }
         guard let settings = userSettings else { return }
-        networkManager.updateSettings(settings) { [weak self] result in
+        NetworkManager.shared.updateSettings(settings) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -51,7 +50,7 @@ class EmailPresenter: EmailPresenterProtocol {
     }
     
     private func loadSettings() {
-        networkManager.getSettings { [weak self] result in
+        NetworkManager.shared.getSettings { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let settings):

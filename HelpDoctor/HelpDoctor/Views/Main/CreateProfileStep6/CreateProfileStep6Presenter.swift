@@ -22,7 +22,6 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileStep6ViewController
-    private let networkManager = NetworkManager()
     private let transition = PanelTransition()
     
     // MARK: - Constants and variables
@@ -74,7 +73,7 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
                                         academicDegree: view.getDegree(),
                                         education: university))
         
-        networkManager.updateUser(nil, nil, nil, nil, educationArray) { [weak self] result in
+        NetworkManager.shared.updateUser(nil, nil, nil, nil, educationArray) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

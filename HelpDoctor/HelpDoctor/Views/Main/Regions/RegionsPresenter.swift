@@ -21,7 +21,6 @@ protocol RegionsPresenterProtocol: Presenter {
 class RegionsPresenter: RegionsPresenterProtocol {
     
     var view: RegionsViewController
-    private let networkManager = NetworkManager()
     var arrayRegions: [Regions]?
     var filteredArray: [Regions] = []
     var sender: String?
@@ -34,7 +33,7 @@ class RegionsPresenter: RegionsPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-        networkManager.getRegions { [weak self] result in
+        NetworkManager.shared.getRegions { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let regions):

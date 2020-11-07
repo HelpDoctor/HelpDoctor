@@ -28,7 +28,6 @@ protocol StartSchedulePresenterProtocol: Presenter {
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     let view: StartScheduleViewController
-    private let networkManager = NetworkManager()
     private var arrayEvents: [Event]?
     
     // MARK: - Init
@@ -57,7 +56,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     func getEvents(newDate: Date) {
         let anyDate = newDate.toString(withFormat: "yyyy-MM-dd")
-        networkManager.getEventForDate(anyDate) { [weak self] result in
+        NetworkManager.shared.getEventForDate(anyDate) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let events):
@@ -156,7 +155,7 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
     
     func deleteEvent(index: Int) {
         guard let idEvent = arrayEvents?[index].id else { return }
-        networkManager.deleteEent(idEvent) { [weak self] result in
+        NetworkManager.shared.deleteEent(idEvent) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

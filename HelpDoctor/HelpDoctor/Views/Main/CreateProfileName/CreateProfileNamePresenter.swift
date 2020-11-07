@@ -19,7 +19,6 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileNameViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -44,7 +43,7 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
                               cityId: Session.instance.user?.cityId,
                               foto: Session.instance.user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

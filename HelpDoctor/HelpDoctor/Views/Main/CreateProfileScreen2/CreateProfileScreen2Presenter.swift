@@ -24,7 +24,6 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileScreen2ViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -50,7 +49,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
                               cityId: cityId,
                               foto: Session.instance.user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -97,7 +96,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     }
     
     func setRegionFromDevice(_ idRegion: Int) {
-        networkManager.getRegions { [weak self] result in
+        NetworkManager.shared.getRegions { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let regions):
@@ -140,7 +139,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
     
     private func setCityFromDevice(_ idCity: Int) {
         guard let regionId = region?.regionId else { return }
-        networkManager.getCities(regionId) { [weak self] result in
+        NetworkManager.shared.getCities(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let cities):

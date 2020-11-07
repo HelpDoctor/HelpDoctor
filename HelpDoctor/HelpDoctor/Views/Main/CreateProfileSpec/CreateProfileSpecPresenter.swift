@@ -28,7 +28,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileSpecViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -48,7 +47,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     // MARK: - Public methods
     /// Загрузка информации о пользователе с сервера
     func getUser() {
-        networkManager.getUser { [weak self] result in
+        NetworkManager.shared.getUser { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let profiles):
@@ -69,7 +68,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         if specs.isEmpty {
             specs.append("general")
         }
-        networkManager.getListOfInterests(specs) { [weak self] result in
+        NetworkManager.shared.getListOfInterests(specs) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let interestResponse):
@@ -137,7 +136,7 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     // MARK: - Private methods
     /// Обновление информации о интересах пользователя на сервере
     private func updateInterests() {
-        networkManager.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

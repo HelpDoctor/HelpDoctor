@@ -20,7 +20,6 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileImageViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
@@ -59,7 +58,11 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Private methods
     /// Обновление информации о пользователе на сервере
     private func updateUser() {
-        networkManager.updateUser(user, jobArray, specArray, userInterests, educationArray) { [weak self] result in
+        NetworkManager.shared.updateUser(user,
+                                         jobArray,
+                                         specArray,
+                                         userInterests,
+                                         educationArray) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -126,7 +129,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                               cityId: Session.instance.user?.cityId,
                               foto: user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
+        NetworkManager.shared.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

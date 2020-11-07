@@ -16,7 +16,6 @@ protocol InvitePresenterProtocol: Presenter {
 class InvitePresenter: InvitePresenterProtocol {
     
     var view: InviteViewController
-    private let networkManager = NetworkManager()
     
     required init(view: InviteViewController) {
         self.view = view
@@ -32,7 +31,7 @@ class InvitePresenter: InvitePresenterProtocol {
         }
         
         view.startActivityIndicator()
-        networkManager.invite(email, name, lastname) { [weak self] result in
+        NetworkManager.shared.invite(email, name, lastname) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

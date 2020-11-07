@@ -25,7 +25,6 @@ protocol StartSettingsPresenterProtocol: Presenter {
 class StartSettingsPresenter: StartSettingsPresenterProtocol {
     
     var view: StartSettingsViewController
-    private let networkManager = NetworkManager()
     
     required init(view: StartSettingsViewController) {
         self.view = view
@@ -33,7 +32,7 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     
     // MARK: - Public methods
     func loadSettings() {
-        networkManager.getSettings { [weak self] result in
+        NetworkManager.shared.getSettings { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let settings):
@@ -53,7 +52,7 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     }
     
     func verificationRow() {
-        networkManager.getUserStatus { [weak self] result in
+        NetworkManager.shared.getUserStatus { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let serverResponse):

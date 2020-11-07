@@ -20,7 +20,6 @@ protocol UniversitiesPresenterProtocol: Presenter {
 
 class UniversitiesPresenter: UniversitiesPresenterProtocol {
     
-    private let networkManager = NetworkManager()
     var view: UniversitiesViewController
     var arrayUniversities: [University]?
     var filteredArray: [University] = []
@@ -35,7 +34,7 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
             view.setTitleButton()
         }
         
-        networkManager.getUniversities { [weak self] result in
+        NetworkManager.shared.getUniversities { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let universities):

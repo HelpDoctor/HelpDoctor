@@ -23,7 +23,6 @@ protocol CitiesPresenterProtocol: Presenter {
 class CitiesPresenter: CitiesPresenterProtocol {
     
     var view: CitiesViewController
-    private let networkManager = NetworkManager()
     var arrayCities: [Cities]?
     var filteredArray: [Cities] = []
     var sender: String?
@@ -44,7 +43,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             view.setTitleButton()
         }
         view.startActivityIndicator()
-        networkManager.getCities(regionId) { [weak self] result in
+        NetworkManager.shared.getCities(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let cities):

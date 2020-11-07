@@ -17,7 +17,6 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
     
     // MARK: - Dependency
     let view: VerificationErrorViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var email: String?
@@ -30,7 +29,7 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
     /// Переход к экрану входа
     func send(src: URL) {
         view.startActivityIndicator()
-        networkManager.verification(src) { [weak self] result in
+        NetworkManager.shared.verification(src) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -137,8 +137,7 @@ class StartMainViewController: UIViewController {
     }
     
     @objc private func deleteProfileButtonPressed() {
-        let networkManager = NetworkManager()
-        networkManager.deleteUser { [weak self] result in
+        NetworkManager.shared.deleteUser { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -21,7 +21,6 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     
     // MARK: - Dependency
     let view: RegisterScreenViewController
-    let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     private let validateManager = ValidateManager()
@@ -39,7 +38,7 @@ class RegisterScreenPresenterImplementation: RegisterScreenPresenter {
     /// - Parameter email: адрес электронной почты
     func registerButtonPressed(email: String) {
         view.stopActivityIndicator()
-        networkManager.registration(email) { [weak self] result in
+        NetworkManager.shared.registration(email) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let code):

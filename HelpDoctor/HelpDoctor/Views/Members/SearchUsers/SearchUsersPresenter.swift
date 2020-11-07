@@ -17,7 +17,6 @@ class SearchUsersPresenter: SearchUsersPresenterProtocol {
 
     // MARK: - Dependency
     let view: SearchUsersViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     

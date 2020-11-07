@@ -18,7 +18,6 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
     
     // MARK: - Dependency
     let view: RecoveryPasswordViewController
-    private let networkManager = NetworkManager()
     
     // MARK: - Init
     required init(view: RecoveryPasswordViewController) {
@@ -35,7 +34,7 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
             return
         }
         view.startActivityIndicator()
-        networkManager.recovery(email) { [weak self] result in
+        NetworkManager.shared.recovery(email) { [weak self] result in
             DispatchQueue.main.async {
                 self?.view.stopActivityIndicator()
                 switch result {

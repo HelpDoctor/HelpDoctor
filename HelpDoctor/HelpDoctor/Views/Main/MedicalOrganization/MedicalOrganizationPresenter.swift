@@ -21,7 +21,6 @@ protocol MedicalOrganizationPresenterProtocol: Presenter {
 class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     
     var view: MedicalOrganizationViewController
-    private let networkManager = NetworkManager()
     var arrayMedicalOrganizations: [MedicalOrganization]?
     var filteredArray: [MedicalOrganization] = []
     var mainWork: Bool?
@@ -34,7 +33,7 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
     func getMedicalOrganization(regionId: Int, mainWork: Bool) {
         view.startActivityIndicator()
         self.mainWork = mainWork
-        networkManager.getMedicalOrganizations(regionId) { [weak self] result in
+        NetworkManager.shared.getMedicalOrganizations(regionId) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let medicalOrganizations):
