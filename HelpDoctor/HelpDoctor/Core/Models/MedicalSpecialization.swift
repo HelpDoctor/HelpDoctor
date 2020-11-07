@@ -12,5 +12,4 @@ struct MedicalSpecialization: Codable {
     let id: Int
     let code: String?
     let name: String?
-    let parent_id: Int?
 }

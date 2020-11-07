@@ -41,7 +41,8 @@ class StartMainPresenter: StartMainPresenterProtocol {
                 switch result {
                 case .success(let status):
                     if status {
-                        self?.view.hideFillProfileButton()
+//                        self?.view.hideFillProfileButton()
+                        self?.view.showFillProfileButton()
                         self?.getStatusUser()
                     } else {
                         self?.view.showFillProfileButton()

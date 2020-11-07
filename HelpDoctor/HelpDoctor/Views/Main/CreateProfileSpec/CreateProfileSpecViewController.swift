@@ -44,7 +44,7 @@ class CreateProfileSpecViewController: UIViewController, UIScrollViewDelegate {
             setupHeaderView(height: headerHeight, presenter: presenter)
             nextButton.setTitle("Готово", for: .normal)
         } else {
-            presenter?.loadPopularInterests(nil)
+            presenter?.loadPopularInterests()
             setupHeaderView(color: backgroundColor, height: headerHeight, presenter: presenter)
             presenter?.getInterestFromView()
         }

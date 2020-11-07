@@ -20,4 +20,5 @@ enum SettingsRow: String {
     case help = "Помощь HelpDoctor"
     case push = "Настройки уведомлений"
     case sound = "Звук уведомлений"
+    case blockedUsers = "Заблокированные пользователи"
 }

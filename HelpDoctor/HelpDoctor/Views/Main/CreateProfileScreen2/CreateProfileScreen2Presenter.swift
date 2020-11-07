@@ -50,7 +50,7 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
                               cityId: cityId,
                               foto: Session.instance.user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil) { [weak self] result in
+        networkManager.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

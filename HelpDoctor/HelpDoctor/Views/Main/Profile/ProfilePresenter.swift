@@ -28,7 +28,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     private var user: User?
     private var educationArray: [Education] = []
     private var jobArray: [Job?] = [nil, nil, nil, nil, nil]
-    private var interestsArray: [ProfileInterest]?
+    private var interestsArray: [Interest]?
     
     required init(view: ProfileViewController) {
         self.view = view
@@ -135,6 +135,8 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// Установка информации о специализации пользователя в форму
     /// - Parameter specData: информация с сервера
     private func setSpec(specData: [Specialization]) {
+        session.specialization?.removeAll()
+        session.specialization = specData
         guard let indexMainSpec = specData.firstIndex(where: { $0.isMain == true }) else { return }
         DispatchQueue.main.async {
             self.view.setSpec(spec: specData[indexMainSpec].specialization?.name ?? "")
@@ -145,7 +147,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
     /// - Parameter interestData: данные с сервера
     private func setInterests(interestData: [ProfileInterest]) {
         session.userInterests = interestData
-        interestsArray = interestData
+        interestsArray = interestData.compactMap({ $0.interest })
         DispatchQueue.main.async {
             self.view.setupInterestsView()
         }

@@ -31,7 +31,8 @@ class Router<EndPoint: EndPointType>: NetworkRouter {
                 task = session.dataTask(with: request,
                                         completionHandler: { data, response, error in
                                             completion(data, response, error) })
-                //            print(request.httpBody?.base64EncodedString())
+//                print(request.httpBody?.base64EncodedString())
+//                print(request.url)
             } catch {
                 completion(nil, nil, error)
             }

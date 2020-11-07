@@ -31,5 +31,20 @@ struct Contacts: Codable {
 
 struct ContactsList: Codable {
     var contacts: [Contacts] = []
-    var contacts_count: Int = 0
+    var contactsCount: Int = 0
+    
+    private enum CodingKeys: String, CodingKey {
+        case contacts
+        case contactsCount = "contacts_count"
+    }
+}
+
+struct BlockedList: Codable {
+    var blockedUsers: [Contacts] = []
+    var blockedCount: Int = 0
+    
+    private enum CodingKeys: String, CodingKey {
+        case blockedUsers = "blocked_users"
+        case blockedCount = "blocked_count"
+    }
 }

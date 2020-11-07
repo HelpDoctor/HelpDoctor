@@ -25,14 +25,16 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     // MARK: - Dependency
     var view: InterestsViewController
+    private let networkManager = NetworkManager()
     
     // MARK: - Constants and variables
     var user: User?
+    var isEdit = false
     var jobArray: [Job] = []
     var specArray: [Specialization] = []
-    var userInterests: [ProfileInterest] = []
-    var arrayInterests: [ProfileInterest]?
-    var filteredArray: [ProfileInterest] = []
+    var userInterests: [Interest] = []
+    var arrayInterests: [Interest]?
+    var filteredArray: [Interest] = []
     
     // MARK: - Init
     required init(view: InterestsViewController) {
@@ -48,7 +50,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     /// Возврат наименования интереса
     /// - Parameter index: индекс строки
     func getInterestsTitle(index: Int) -> String? {
-        return filteredArray[index].interest?.name
+        return filteredArray[index].name
     }
     
     /// Добавление интереса в массив интересов пользователя
@@ -90,7 +92,7 @@ class InterestsPresenter: InterestsPresenterProtocol {
     func filter(searchText: String) {
         guard let arrayInterests = arrayInterests else { return }
         filteredArray = arrayInterests.filter({ interest -> Bool in
-            return (interest.interest?.name?.lowercased().contains(searchText.lowercased()) ?? false)
+            return (interest.name?.lowercased().contains(searchText.lowercased()) ?? false)
         })
         view.reloadTableView()
         selectRows()
@@ -132,9 +134,30 @@ class InterestsPresenter: InterestsPresenterProtocol {
          */
     }
     
+    private func updateInterests() {
+        networkManager.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self?.view.navigationController?.viewControllers else {
+                        self?.back()
+                        return
+                    }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
+        }
+    }
+    
     /// Добавление вновь созданного интереса в массив интересов пользователя и обновление таблицы
     /// - Parameter interests: массив интересов с сервера
-    private func callback(interests: [ProfileInterest]) {
+    private func callback(interests: [Interest]) {
         interests.forEach {
             userInterests.append($0.self)
             arrayInterests?.append($0.self)
@@ -157,14 +180,18 @@ class InterestsPresenter: InterestsPresenterProtocol {
     
     /// Переход к следующему экрану
     func next() {
-        let viewController = CreateProfileImageViewController()
-        let presenter = CreateProfileImagePresenter(view: viewController)
-        viewController.presenter = presenter
-        presenter.user = user
-        presenter.jobArray = jobArray
-        presenter.specArray = specArray
-        presenter.userInterests = userInterests
-        view.navigationController?.pushViewController(viewController, animated: true)
+        if isEdit {
+            updateInterests()
+        } else {
+            let viewController = CreateProfileImageViewController()
+            let presenter = CreateProfileImagePresenter(view: viewController)
+            viewController.presenter = presenter
+            presenter.user = user
+            presenter.jobArray = jobArray
+            presenter.specArray = specArray
+            presenter.userInterests = userInterests
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
     
 }

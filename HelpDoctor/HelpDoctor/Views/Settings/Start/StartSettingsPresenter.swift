@@ -13,6 +13,7 @@ protocol StartSettingsPresenterProtocol: Presenter {
     func loadSettings()
     func userRow()
     func verificationRow()
+    func blockedRow()
     func securityRow()
     func feedbackRow()
     func inviteRow()
@@ -78,6 +79,13 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
                 }
             }
         }
+    }
+    
+    func blockedRow() {
+        let viewController = BlockedUsersViewController()
+        let presenter = BlockedUsersPresenter(view: viewController)
+        viewController.presenter = presenter
+        view.navigationController?.pushViewController(viewController, animated: true)
     }
     
     func feedbackRow() {

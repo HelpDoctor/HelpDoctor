@@ -35,6 +35,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     var user: User?
     var isEdit = false
     var region: Regions?
+    var educationArray: [Education] = []
     private var jobArray: [Job] = []
     private var specArray: [Specialization] = []
     private var jobIndex = 0
@@ -52,7 +53,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         if jobArray.isEmpty {
             updateSpec()
         } else {
-            networkManager.updateUser(nil, jobArray, nil, nil) { [weak self] result in
+            networkManager.updateUser(nil, jobArray, nil, nil, nil) { [weak self] result in
                 DispatchQueue.main.async {
                     switch result {
                     case .success:
@@ -68,7 +69,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
     
     /// Обновление информации о специализации пользователя на сервере
     private func updateSpec() {
-        networkManager.updateUser(nil, nil, specArray, nil) { [weak self] result in
+        networkManager.updateUser(nil, nil, specArray, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -197,6 +198,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             presenter.user = user
             presenter.jobArray = jobArray
             presenter.specArray = specArray
+            presenter.educationArray = educationArray
             view.navigationController?.pushViewController(viewController, animated: true)
         }
         

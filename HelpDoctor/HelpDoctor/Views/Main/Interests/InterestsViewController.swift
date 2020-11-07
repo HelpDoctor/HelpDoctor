@@ -46,7 +46,6 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         setupAddTextField()
         setupTableView()
         selectRows()
-        addTapGestureToHideKeyboard()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -214,50 +213,6 @@ class InterestsViewController: UIViewController, UIScrollViewDelegate {
         nextButton.widthAnchor.constraint(equalToConstant: width).isActive = true
     }
     
-    /// Добавление распознавания касания экрана
-    private func addTapGestureToHideKeyboard() {
-        let hideKeyboardGesture = UITapGestureRecognizer(target: self,
-                                                         action: #selector(hideKeyboard))
-        scrollView.addGestureRecognizer(hideKeyboardGesture)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWasShown​),
-                                               name: UIResponder.keyboardWillShowNotification,
-                                               object: nil)
-        
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardWillBeHidden(notification:)),
-                                               name: UIResponder.keyboardWillHideNotification,
-                                               object: nil)
-    }
-    
-    // MARK: - IBActions
-    /// Скрытие клавиатуры
-    @objc func hideKeyboard() {
-        scrollView.endEditing(true)
-        view.viewWithTag(Session.tagSavedView)?.removeFromSuperview()
-        view.viewWithTag(Session.tagAlertView)?.removeFromSuperview()
-    }
-    
-    @objc func keyboardWasShown​(notification: Notification) {
-        guard let info = notification.userInfo else {
-            assertionFailure()
-            return
-        }
-        //swiftlint:disable force_cast
-        let kbSize = (info[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue.size
-        let contentInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: kbSize.height, right: 0.0)
-        keyboardHeight = kbSize.height
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
-    @objc func keyboardWillBeHidden(notification: Notification) {
-        let contentInsets = UIEdgeInsets.zero
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-    }
-    
     // MARK: - Buttons methods
     @objc private func buttonPressed() {
         button.isHidden = true
@@ -301,6 +256,7 @@ extension InterestsViewController: UITableViewDelegate {
         tableView.cellForRow(at: indexPath)?.isSelected = true
         presenter?.appendIndexArray(index: indexPath.item)
         searchBar.searchTextField.resignFirstResponder()
+        print("select")
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

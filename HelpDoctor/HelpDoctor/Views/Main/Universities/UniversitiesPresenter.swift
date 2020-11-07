@@ -20,6 +20,7 @@ protocol UniversitiesPresenterProtocol: Presenter {
 
 class UniversitiesPresenter: UniversitiesPresenterProtocol {
     
+    private let networkManager = NetworkManager()
     var view: UniversitiesViewController
     var arrayUniversities: [University]?
     var filteredArray: [University] = []
@@ -33,27 +34,20 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         if sender != nil {
             view.setTitleButton()
         }
-        //TODO: - Fix
-        /*
-         let getUniversities = Profile()
-         
-         getData(typeOfContent: .getUniversities,
-         returning: ([University], Int?, String?).self,
-         requestParams: [:]) { [weak self] result in
-         let dispathGroup = DispatchGroup()
-         
-         getUniversities.universities = result?.0
-         
-         dispathGroup.notify(queue: DispatchQueue.main) {
-         DispatchQueue.main.async { [weak self]  in
-         self?.arrayUniversities = getUniversities.universities
-         self?.filteredArray = getUniversities.universities ?? []
-         self?.view.reloadTableView()
-         self?.view.stopActivityIndicator()
-         }
-         }
-         }
-         */
+        
+        networkManager.getUniversities { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let universities):
+                    self?.arrayUniversities = universities
+                    self?.filteredArray = universities
+                    self?.view.reloadTableView()
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
+        }
     }
     
     
@@ -86,11 +80,12 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         }
         let university = filteredArray[index]
         view.navigationController?.popViewController(animated: true)
-        //swiftlint:disable force_cast
-        let previous = view.navigationController?.viewControllers.last as! CreateProfileStep6ViewController
-        let presenter = previous.presenter
+        guard let prev = view.navigationController?.viewControllers.last as? CreateProfileStep6ViewController else {
+            return
+        }
+        let presenter = prev.presenter
         presenter?.setUniversity(university: university)
-        previous.view.layoutIfNeeded()
+        prev.view.layoutIfNeeded()
     }
     
     func back() {

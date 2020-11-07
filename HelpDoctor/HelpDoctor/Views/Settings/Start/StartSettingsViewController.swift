@@ -22,7 +22,7 @@ class StartSettingsViewController: UIViewController {
     private let settingsArray = [
         [SettingsRow.user,
          SettingsRow.verification,
-         SettingsRow.generalSettings,
+         SettingsRow.blockedUsers,
          SettingsRow.securitySettings,
          SettingsRow.addFriends],
         [SettingsRow.notificationSettings,
@@ -141,6 +141,8 @@ extension StartSettingsViewController: UITableViewDelegate {
                 presenter?.userRow()
             case 1:
                 presenter?.verificationRow()
+            case 2:
+                presenter?.blockedRow()
             case 3:
                 presenter?.securityRow()
             case 4:
@@ -186,11 +188,11 @@ extension StartSettingsViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell",
                                                        for: indexPath) as? SettingsCell
             else { return UITableViewCell() }
-        if indexPath.section == 0 && indexPath.row == 2 {
-            cell.configureDisabled(settingsRow: settingsArray[indexPath.section][indexPath.row])
-        } else {
+//        if indexPath.section == 0 && indexPath.row == 2 {
+//            cell.configureDisabled(settingsRow: settingsArray[indexPath.section][indexPath.row])
+//        } else {
             cell.configure(settingsRow: settingsArray[indexPath.section][indexPath.row])
-        }
+//        }
         cell.backgroundColor = .clear
         return cell
     }

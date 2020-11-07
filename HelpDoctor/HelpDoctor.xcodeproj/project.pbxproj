@@ -99,6 +99,9 @@
 		4682F3D3250F77A6005BDA9E /* Job.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D2250F77A6005BDA9E /* Job.swift */; };
 		4682F3D5250F77C9005BDA9E /* Specialization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D4250F77C9005BDA9E /* Specialization.swift */; };
 		4682F3D7250F77FA005BDA9E /* ProfileInterest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4682F3D6250F77FA005BDA9E /* ProfileInterest.swift */; };
+		468A97C3255673870031BF6A /* BlockedUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468A97C2255673870031BF6A /* BlockedUsersViewController.swift */; };
+		468A97C6255673950031BF6A /* BlockedUsersPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 468A97C5255673950031BF6A /* BlockedUsersPresenter.swift */; };
+		469020D0252F17CE00625FC5 /* NetworkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469020CF252F17CE00625FC5 /* NetworkResponse.swift */; };
 		4694E1AA251B0B7A00F7B696 /* StartSearchUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4694E1A9251B0B7A00F7B696 /* StartSearchUserViewController.swift */; };
 		4694E1AE251B0B8900F7B696 /* StartSearchUserPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4694E1AD251B0B8900F7B696 /* StartSearchUserPresenter.swift */; };
 		4694E1B2251B284F00F7B696 /* SearchUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4694E1B1251B284F00F7B696 /* SearchUsersViewController.swift */; };
@@ -335,6 +338,9 @@
 		4682F3D2250F77A6005BDA9E /* Job.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Job.swift; sourceTree = "<group>"; };
 		4682F3D4250F77C9005BDA9E /* Specialization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Specialization.swift; sourceTree = "<group>"; };
 		4682F3D6250F77FA005BDA9E /* ProfileInterest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileInterest.swift; sourceTree = "<group>"; };
+		468A97C2255673870031BF6A /* BlockedUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersViewController.swift; sourceTree = "<group>"; };
+		468A97C5255673950031BF6A /* BlockedUsersPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedUsersPresenter.swift; sourceTree = "<group>"; };
+		469020CF252F17CE00625FC5 /* NetworkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkResponse.swift; sourceTree = "<group>"; };
 		4694E1A9251B0B7A00F7B696 /* StartSearchUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSearchUserViewController.swift; sourceTree = "<group>"; };
 		4694E1AD251B0B8900F7B696 /* StartSearchUserPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSearchUserPresenter.swift; sourceTree = "<group>"; };
 		4694E1B1251B284F00F7B696 /* SearchUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUsersViewController.swift; sourceTree = "<group>"; };
@@ -744,6 +750,7 @@
 				4682F3BD250F4D45005BDA9E /* HTTPTask.swift */,
 				4682F3C5250F4F9D005BDA9E /* NetworkRouter.swift */,
 				4682F3C7250F50F2005BDA9E /* Router.swift */,
+				469020CF252F17CE00625FC5 /* NetworkResponse.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -780,6 +787,15 @@
 				46787A74243906D9005C0258 /* Settings.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		468A97C1255673670031BF6A /* BlockedUsers */ = {
+			isa = PBXGroup;
+			children = (
+				468A97C2255673870031BF6A /* BlockedUsersViewController.swift */,
+				468A97C5255673950031BF6A /* BlockedUsersPresenter.swift */,
+			);
+			path = BlockedUsers;
 			sourceTree = "<group>";
 		};
 		4694E1A8251B0B5700F7B696 /* StartSearchUsers */ = {
@@ -1309,6 +1325,7 @@
 		C48F168123BA05DC002D04E3 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				468A97C1255673670031BF6A /* BlockedUsers */,
 				469DD65F245EB8FA006DBD30 /* EditProfile */,
 				46787A762439A6BC005C0258 /* PushAndSound */,
 				4640B6D32402B02A0023C3A3 /* Email */,
@@ -1485,6 +1502,7 @@
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				4694E1BD251B5D9D00F7B696 /* SearchResultPresenter.swift in Sources */,
+				468A97C6255673950031BF6A /* BlockedUsersPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
 				462A6A1E2500B03100914994 /* SelectRepeatTimeViewController.swift in Sources */,
 				4640B6C124023E3F0023C3A3 /* FeedbackViewController.swift in Sources */,
@@ -1587,6 +1605,7 @@
 				C4CBC3FE23E2AC0300434BFB /* SearchCompletionTableViewCell.swift in Sources */,
 				46EFF4D32432FA8F004B9558 /* ProfileGeneralView.swift in Sources */,
 				46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */,
+				468A97C3255673870031BF6A /* BlockedUsersViewController.swift in Sources */,
 				C48F161E23B5FE87002D04E3 /* KeychainItemAccessibility.swift in Sources */,
 				4682F3C6250F4F9D005BDA9E /* NetworkRouter.swift in Sources */,
 				46F87F6323BFC0910095264E /* InterestsViewController.swift in Sources */,
@@ -1636,6 +1655,7 @@
 				46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */,
 				462A6A202500B03C00914994 /* SelectRepeatTimePresenter.swift in Sources */,
 				46072E1A23C23FF20070F2F6 /* StartAddEventViewController.swift in Sources */,
+				469020D0252F17CE00625FC5 /* NetworkResponse.swift in Sources */,
 				46072E0A23C1F4D80070F2F6 /* StartSchedulePresenter.swift in Sources */,
 				46F87F4223BE11450095264E /* TabBarController.swift in Sources */,
 				46F87F4F23BE65D50095264E /* RegionCell.swift in Sources */,

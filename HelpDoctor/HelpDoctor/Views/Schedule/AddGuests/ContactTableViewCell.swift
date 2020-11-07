@@ -16,6 +16,8 @@ class ContactTableViewCell: UITableViewCell {
     private let specLabel = UILabel()
     private let cellImage = UIImageView()
     private let verificationImage = UIImageView()
+    private let rightButton = HDButton()
+    var unlockButtonAction: (() -> ())?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,6 +27,7 @@ class ContactTableViewCell: UITableViewCell {
         setupVerificationImage()
         setupNameLabel()
         setupSpecLabel()
+        setupRightButton()
     }
     
     required init?(coder: NSCoder) {
@@ -113,11 +116,32 @@ class ContactTableViewCell: UITableViewCell {
         specLabel.trailingAnchor.constraint(equalTo: topView.trailingAnchor).isActive = true
     }
     
+    private func setupRightButton() {
+        rightButton.isHidden = true
+        rightButton.setImage(UIImage(named: "UnlockIcon"), for: .normal)
+        rightButton.addTarget(self, action: #selector(unlockButtonTapped), for: .touchUpInside)
+        topView.addSubview(rightButton)
+        
+        rightButton.translatesAutoresizingMaskIntoConstraints = false
+        rightButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor,
+                                              constant: -10).isActive = true
+        rightButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
+        rightButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        rightButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
     func configure(contact: Contacts?) {
         guard let contact = contact else { return }
         nameLabel.text = contact.fullName
         cellImage.image = contact.foto?.toImage()
         specLabel.text = contact.specialization
     }
-
+    
+    func blockedUsersCell() {
+        rightButton.isHidden = false
+    }
+    
+    @objc private func unlockButtonTapped() {
+        unlockButtonAction?()
+    }
 }

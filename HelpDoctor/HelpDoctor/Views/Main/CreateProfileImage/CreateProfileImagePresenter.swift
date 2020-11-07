@@ -25,9 +25,10 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Constants and variables
     var user: User?
     var isEdit = false
+    var educationArray: [Education] = []
     var jobArray: [Job] = []
     var specArray: [Specialization] = []
-    var userInterests: [ProfileInterest] = []
+    var userInterests: [Interest] = []
     
     // MARK: - Init
     required init(view: CreateProfileImageViewController) {
@@ -58,11 +59,11 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     // MARK: - Private methods
     /// Обновление информации о пользователе на сервере
     private func updateUser() {
-        networkManager.updateUser(user, jobArray, specArray, nil) { [weak self] result in
+        networkManager.updateUser(user, jobArray, specArray, userInterests, educationArray) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
-                    self?.updateInterests()
+                    self?.next()
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -70,10 +71,10 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
             }
         }
     }
-    
+    /*
     /// Обновление информации о интересах пользователя на сервере
     private func updateInterests() {
-        networkManager.updateUser(nil, nil, nil, userInterests) { [weak self] result in
+        networkManager.updateUser(nil, nil, nil, userInterests, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:
@@ -112,7 +113,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
         //                    }
         //        }
     }
-    
+    */
     /// Обновление информации о пользователе на сервере
     /// - Parameter profile: информация для обновления
     private func updateProfile() {
@@ -125,7 +126,7 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                               cityId: Session.instance.user?.cityId,
                               foto: user?.foto,
                               isMedicWorker: Session.instance.user?.isMedicWorker)
-        networkManager.updateUser(editedUser, nil, nil, nil) { [weak self] result in
+        networkManager.updateUser(editedUser, nil, nil, nil, nil) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success:

@@ -17,13 +17,19 @@ enum HelpDoctorApi {
     case getUserStatus
     case checkProfile
     case getProfile
-    case updateProfile(user: [String: Any]?, job: [[String: Any]]?, spec: [[String: Any]]?, interests: [Int]?)
-    case getListOFInterests(specCode: String?, addSpecCode: String?)
+    case updateProfile(user: [String: Any]?,
+                       job: [[String: Any]]?,
+                       spec: [[String: Any]]?,
+                       interests: [Int]?,
+                       education: [[String: Any]]?)
+    case getListOFInterests(specCode: [String])
     case getRegions
     case getCities(regionId: Int)
+    case getUniversities
     case getMedicalOrganization(regionId: Int)
     case getMedicalSpecialization
     case getContactList
+    case getBlockedUsers
     case setEvent(event: Event)
     case getEventForDate(date: String)
     case getEvenyForId(id: Int)
@@ -35,6 +41,7 @@ enum HelpDoctorApi {
     case updateSettings(settings: Settings)
     case findUsers(query: Profiles)
     case verification(source: URL)
+    case removeFromBlockList(id: Int)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -67,24 +74,22 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/profile/get"
         case .updateProfile:
             return "public/api/profile/update"
-        case .getListOFInterests(specCode: let specCode, addSpecCode: let addSpecCode):
-            guard let specCode = specCode else {
-                return "public/api/profile/sc_interests/"
-            }
-            guard let addSpecCode = addSpecCode else {
-                return "public/api/profile/sc_interests/\(specCode)"
-            }
-            return "public/api/profile/sc_interests/\(specCode)/\(addSpecCode)"
+        case .getListOFInterests:
+            return "public/api/profile/sc_interests"
         case .getRegions:
             return "public/api/profile/regions"
         case .getCities(regionId: let regionId):
             return "public/api/profile/cities/\(regionId)"
+        case .getUniversities:
+            return "public/api/profile/educations"
         case .getMedicalOrganization(regionId: let regionId):
             return "public/api/profile/works/\(regionId)"
         case .getMedicalSpecialization:
             return "public/api/profile/specializations"
         case .getContactList:
             return "public/api/contact_list/get"
+        case .getBlockedUsers:
+            return "public/api/block_list/get"
         case .setEvent:
             return "public/api/event/set"
         case .getEventForDate(date: let date):
@@ -105,6 +110,8 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/seach/users"
         case .verification:
             return "public/api/profile/verification"
+        case .removeFromBlockList(id: let id):
+            return "public/api/block_list/del/\(id)"
         }
     }
     
@@ -130,13 +137,16 @@ extension HelpDoctorApi: EndPointType {
              .getListOFInterests,
              .getRegions,
              .getCities,
+             .getUniversities,
              .getMedicalOrganization,
              .getMedicalSpecialization,
              .getContactList,
              .getEventForDate,
              .getEvenyForId,
              .deleteEvent,
-             .getSettings:
+             .getSettings,
+             .getBlockedUsers,
+             .removeFromBlockList:
             return .get
         }
     }
@@ -150,13 +160,35 @@ extension HelpDoctorApi: EndPointType {
             return .requestParameters(bodyParameters: ["email": email,
                                                        "password": password.toBase64()],
                                       urlParameters: nil)
-        case .updateProfile(user: let user, job: let job, spec: let spec, interests: let interests):
+        case .updateProfile(user: let user,
+                            job: let job,
+                            spec: let spec,
+                            interests: let interests,
+                            education: let education):
             return .requestParametersAndHeaders(bodyParameters: ["user": user as Any,
                                                                  "job": job ?? [],
                                                                  "spec": spec ?? [],
-                                                                 "interests": interests ?? []],
+                                                                 "interests": interests ?? [],
+                                                                 "education": education ?? []],
                                                 urlParameters: nil,
                                                 additionHeaders: headers)
+        case .getListOFInterests(specCode: let specCode):
+            var urlParameters = ""
+            switch specCode.count {
+            case 1:
+                urlParameters = "\(specCode[0])"
+            case 2:
+                urlParameters = "\(specCode[0])&sc_interests[]=\(specCode[1])"
+            case 3:
+                urlParameters = "\(specCode[0])&sc_interests[]=\(specCode[1])&sc_interests[]=\(specCode[2])"
+            case 4:
+                urlParameters = "\(specCode[0])&sc_interests[]=\(specCode[1])&sc_interests[]=\(specCode[2])&sc_interests[]=\(specCode[3])"
+            case 5:
+                urlParameters = "\(specCode[0])&sc_interests[]=\(specCode[1])&sc_interests[]=\(specCode[2])&sc_interests[]=\(specCode[3])&sc_interests[]=\(specCode[4])"
+            default:
+                urlParameters = ""
+            }
+            return .requestParameters(bodyParameters: nil, urlParameters: ["sc_interests[]": urlParameters])
         case .setEvent(event: let event):
             let participants: [Int]? = event.participants?.compactMap({ $0.id })
             return .requestParametersAndHeaders(bodyParameters: ["event": [
@@ -223,7 +255,9 @@ extension HelpDoctorApi: EndPointType {
              .getEvenyForId,
              .deleteEvent,
              .getSettings,
-             .verification:
+             .verification,
+             .getBlockedUsers,
+             .removeFromBlockList:
             return .requestParametersAndHeaders(bodyParameters: nil, urlParameters: nil, additionHeaders: headers)
         default:
             return .request
@@ -248,7 +282,9 @@ extension HelpDoctorApi: EndPointType {
              .changePassword,
              .getSettings,
              .updateSettings,
-             .findUsers:
+             .findUsers,
+             .getBlockedUsers,
+             .removeFromBlockList:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
         case .verification:

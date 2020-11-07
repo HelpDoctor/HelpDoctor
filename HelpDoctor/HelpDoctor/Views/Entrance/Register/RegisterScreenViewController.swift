@@ -382,7 +382,7 @@ class RegisterScreenViewController: UIViewController, UIScrollViewDelegate {
     
 }
 
-// MARK: -UITextViewDelegate
+// MARK: - UITextViewDelegate
 extension RegisterScreenViewController: UITextViewDelegate {
     func textView(_ textView: UITextView,
                   shouldInteractWith URL: URL,

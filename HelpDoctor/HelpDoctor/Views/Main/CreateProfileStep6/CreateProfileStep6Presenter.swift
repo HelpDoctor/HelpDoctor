@@ -22,17 +22,20 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
     
     // MARK: - Dependency
     let view: CreateProfileStep6ViewController
+    private let networkManager = NetworkManager()
     private let transition = PanelTransition()
     
     // MARK: - Constants and variables
     var user: User?
     var isEdit = false
     var region: Regions?
-    var university: University?
+    private var university: University?
+    private var educationArray: [Education] = []
     
     // MARK: - Init
     required init(view: CreateProfileStep6ViewController) {
         self.view = view
+        educationArray = Session.instance.education ?? []
     }
     
     // MARK: - Public methods
@@ -62,24 +65,53 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
         view.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    private func updateEducation() {
+        let educationId = Session.instance.education?[0].id ?? 0
+        educationArray.removeAll()
+        educationArray.append(Education(id: educationId,
+                                        isMain: true,
+                                        yearEnding: view.getDate(),
+                                        academicDegree: view.getDegree(),
+                                        education: university))
+        
+        networkManager.updateUser(nil, nil, nil, nil, educationArray) { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    guard let controllers = self?.view.navigationController?.viewControllers else {
+                        self?.back()
+                        return
+                    }
+                    for viewControllers in controllers where viewControllers is ProfileViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers, animated: true)
+                    }
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+                self?.view.stopActivityIndicator()
+            }
+        }
+    }
+    
     // MARK: - Coordinator
     func next() {
         
         if isEdit {
-            print("Пока нет методов обновления информации об образовании")
-            guard let controllers = self.view.navigationController?.viewControllers else {
-                self.back()
-                return
-            }
-            for viewControllers in controllers where viewControllers is ProfileViewController {
-                self.view.navigationController?.popToViewController(viewControllers, animated: true)
-            }
+            updateEducation()
         } else {
+            educationArray.removeAll()
+            educationArray.append(Education(id: 0,
+                                            isMain: true,
+                                            yearEnding: view.getDate(),
+                                            academicDegree: view.getDegree(),
+                                            education: university))
+            
             let viewController = CreateProfileWorkViewController()
             let presenter = CreateProfileWorkPresenter(view: viewController)
             viewController.presenter = presenter
             presenter.user = user
             presenter.region = region
+            presenter.educationArray = educationArray
             view.navigationController?.pushViewController(viewController, animated: true)
         }
         

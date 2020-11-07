@@ -95,6 +95,31 @@ class CreateProfileStep6ViewController: UIViewController, UIScrollViewDelegate {
         return graduateDateTextField.text
     }
     
+    func getDate() -> Int? {
+        guard let date = graduateDateTextField.text else {
+            return nil
+        }
+        return Int(date)
+    }
+    
+    func getDegree() -> AcademicDegree? {
+        if academicButton.isSelected {
+            return .academic
+        } else if candidateButton.isSelected {
+            return .candidate
+        } else if docentButton.isSelected {
+            return .docent
+        } else if doctorButton.isSelected {
+            return .doctor
+        } else if nodegreeButton.isSelected {
+            return .null
+        } else if professorButton.isSelected {
+            return .professor
+        } else {
+            return nil
+        }
+    }
+    
     // MARK: - Private methods
     private func setUser() {
         guard let education = Session.instance.education,

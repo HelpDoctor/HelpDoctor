@@ -18,16 +18,6 @@ struct ProfileInterest: Codable {
 }
 
 struct ListOfInterests: Codable {
-    
-    struct RelevantInterest: Codable {
-        let interestId: Int
-        private enum CodingKeys: String, CodingKey {
-            case interestId = "interest_id"
-        }
-    }
-    
-    let general: [Interest]
-    let relevant: [RelevantInterest]?
-    let relevantAdd: [RelevantInterest]?
-    
+    let interests: [Interest]
+    let relevant: [Interest]?
 }
