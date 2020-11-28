@@ -19,6 +19,7 @@ class StartMainViewController: UIViewController {
     private let findUsers = HDButton(title: "Поиск коллег", fontSize: 14)
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     private let profileButton = HDButton(title: "Профиль", fontSize: 14)
+    private let searchButton = HDButton(title: "Поиск коллег", fontSize: 14)
     private let deleteProfileButton = HDButton(title: "Удалить профиль", fontSize: 14)
     
     // MARK: - Lifecycle ViewController
@@ -30,6 +31,7 @@ class StartMainViewController: UIViewController {
         setupFindUsersButton()
         setupFillProfileButton()
         setupProfileButton()
+        setupSearchButton()
         setupDeleteProfileButton()
         presenter?.profileCheck()
     }
@@ -101,6 +103,18 @@ class StartMainViewController: UIViewController {
         profileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     
+    private func setupSearchButton() {
+        searchButton.addTarget(self, action: #selector(searchButtonPressed), for: .touchUpInside)
+        searchButton.isEnabled = true
+        view.addSubview(searchButton)
+        
+        searchButton.translatesAutoresizingMaskIntoConstraints = false
+        searchButton.topAnchor.constraint(equalTo: profileButton.bottomAnchor, constant: 10).isActive = true
+        searchButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        searchButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
+        searchButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+    }
+    
     private func setupDeleteProfileButton() {
         deleteProfileButton.addTarget(self, action: #selector(deleteProfileButtonPressed), for: .touchUpInside)
         deleteProfileButton.isEnabled = true
@@ -108,7 +122,7 @@ class StartMainViewController: UIViewController {
         view.addSubview(deleteProfileButton)
         
         deleteProfileButton.translatesAutoresizingMaskIntoConstraints = false
-        deleteProfileButton.topAnchor.constraint(equalTo: profileButton.bottomAnchor, constant: 10).isActive = true
+        deleteProfileButton.topAnchor.constraint(equalTo: searchButton.bottomAnchor, constant: 10).isActive = true
         deleteProfileButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         deleteProfileButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
         deleteProfileButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -132,6 +146,13 @@ class StartMainViewController: UIViewController {
     @objc private func profileButtonPressed() {
         let viewController = ProfileViewController()
         let presenter = ProfilePresenter(view: viewController)
+        viewController.presenter = presenter
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    @objc private func searchButtonPressed() {
+        let viewController = StartSearchViewController()
+        let presenter = StartSearchPresenter(view: viewController)
         viewController.presenter = presenter
         navigationController?.pushViewController(viewController, animated: true)
     }

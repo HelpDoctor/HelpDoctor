@@ -25,7 +25,7 @@ struct Contacts: Codable {
         case middleName = "middle_name"
         case lastName = "last_name"
         case foto
-        case specialization
+        case specialization = "specialization_name"
     }
 }
 

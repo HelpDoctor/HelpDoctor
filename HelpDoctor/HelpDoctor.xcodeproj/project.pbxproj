@@ -69,6 +69,12 @@
 		4640B6EA2416714C0023C3A3 /* VerificationEndPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */; };
 		4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */; };
 		4640B6F324237B270023C3A3 /* CreateProfileScreen2Presenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */; };
+		46485E20256E5118004B02D6 /* StartSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E1F256E5118004B02D6 /* StartSearchViewController.swift */; };
+		46485E24256E512A004B02D6 /* StartSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E23256E512A004B02D6 /* StartSearchPresenter.swift */; };
+		46485E28256F6F56004B02D6 /* ResultSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E27256F6F56004B02D6 /* ResultSearchViewController.swift */; };
+		46485E2B256F6F65004B02D6 /* ResultSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E2A256F6F65004B02D6 /* ResultSearchPresenter.swift */; };
+		46485E2F256FA19D004B02D6 /* FilterSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E2E256FA19D004B02D6 /* FilterSearchViewController.swift */; };
+		46485E33256FA1B1004B02D6 /* FilterSearchPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46485E32256FA1B1004B02D6 /* FilterSearchPresenter.swift */; };
 		4667C6502470F5B20032B6C2 /* ProfileJobCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4667C64F2470F5B20032B6C2 /* ProfileJobCell.swift */; };
 		4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670346623D4178A00AFAA91 /* NotificationDelegate.swift */; };
 		4670347D23DD705200AFAA91 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4670347C23DD705200AFAA91 /* SelectDateViewController.swift */; };
@@ -308,6 +314,12 @@
 		4640B6E92416714C0023C3A3 /* VerificationEndPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationEndPresenter.swift; sourceTree = "<group>"; };
 		4640B6F024237B130023C3A3 /* CreateProfileScreen2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2ViewController.swift; sourceTree = "<group>"; };
 		4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileScreen2Presenter.swift; sourceTree = "<group>"; };
+		46485E1F256E5118004B02D6 /* StartSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSearchViewController.swift; sourceTree = "<group>"; };
+		46485E23256E512A004B02D6 /* StartSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSearchPresenter.swift; sourceTree = "<group>"; };
+		46485E27256F6F56004B02D6 /* ResultSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultSearchViewController.swift; sourceTree = "<group>"; };
+		46485E2A256F6F65004B02D6 /* ResultSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResultSearchPresenter.swift; sourceTree = "<group>"; };
+		46485E2E256FA19D004B02D6 /* FilterSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSearchViewController.swift; sourceTree = "<group>"; };
+		46485E32256FA1B1004B02D6 /* FilterSearchPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterSearchPresenter.swift; sourceTree = "<group>"; };
 		4667C64F2470F5B20032B6C2 /* ProfileJobCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileJobCell.swift; sourceTree = "<group>"; };
 		4670346623D4178A00AFAA91 /* NotificationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDelegate.swift; sourceTree = "<group>"; };
 		4670347C23DD705200AFAA91 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
@@ -675,6 +687,43 @@
 				4640B6F224237B270023C3A3 /* CreateProfileScreen2Presenter.swift */,
 			);
 			path = CreateProfileScreen2;
+			sourceTree = "<group>";
+		};
+		46485E1D256E50AD004B02D6 /* SearchUsers */ = {
+			isa = PBXGroup;
+			children = (
+				46485E2D256FA185004B02D6 /* FilterSearch */,
+				46485E26256F6F03004B02D6 /* ResultSearch */,
+				46485E1E256E50F7004B02D6 /* StartSearchScreen */,
+			);
+			path = SearchUsers;
+			sourceTree = "<group>";
+		};
+		46485E1E256E50F7004B02D6 /* StartSearchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				46485E1F256E5118004B02D6 /* StartSearchViewController.swift */,
+				46485E23256E512A004B02D6 /* StartSearchPresenter.swift */,
+			);
+			path = StartSearchScreen;
+			sourceTree = "<group>";
+		};
+		46485E26256F6F03004B02D6 /* ResultSearch */ = {
+			isa = PBXGroup;
+			children = (
+				46485E27256F6F56004B02D6 /* ResultSearchViewController.swift */,
+				46485E2A256F6F65004B02D6 /* ResultSearchPresenter.swift */,
+			);
+			path = ResultSearch;
+			sourceTree = "<group>";
+		};
+		46485E2D256FA185004B02D6 /* FilterSearch */ = {
+			isa = PBXGroup;
+			children = (
+				46485E2E256FA19D004B02D6 /* FilterSearchViewController.swift */,
+				46485E32256FA1B1004B02D6 /* FilterSearchPresenter.swift */,
+			);
+			path = FilterSearch;
 			sourceTree = "<group>";
 		};
 		4670347B23DD703300AFAA91 /* SelectDate */ = {
@@ -1137,6 +1186,7 @@
 		C48F162E23B61467002D04E3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				46485E1D256E50AD004B02D6 /* SearchUsers */,
 				46F87F1323BB72A90095264E /* Common */,
 				46203F2C23CCC71C0072653A /* Members */,
 				C48F168123BA05DC002D04E3 /* Settings */,
@@ -1502,6 +1552,7 @@
 				46F87F6523BFC0A50095264E /* InterestsPresenter.swift in Sources */,
 				46F87F0423B8F92A0095264E /* LoginPresenter.swift in Sources */,
 				4694E1BD251B5D9D00F7B696 /* SearchResultPresenter.swift in Sources */,
+				46485E33256FA1B1004B02D6 /* FilterSearchPresenter.swift in Sources */,
 				468A97C6255673950031BF6A /* BlockedUsersPresenter.swift in Sources */,
 				C48F163323B614C8002D04E3 /* FirstScreenViewController.swift in Sources */,
 				462A6A1E2500B03100914994 /* SelectRepeatTimeViewController.swift in Sources */,
@@ -1547,6 +1598,7 @@
 				46EFF4E224359F05004B9558 /* VerificationErrorPresenter.swift in Sources */,
 				C48F162523B5FE87002D04E3 /* ProfileKeyInterests.swift in Sources */,
 				4640B6F124237B130023C3A3 /* CreateProfileScreen2ViewController.swift in Sources */,
+				46485E24256E512A004B02D6 /* StartSearchPresenter.swift in Sources */,
 				46EFF4DD2434EA11004B9558 /* ProfilePopoverButton.swift in Sources */,
 				46EFF4E9243797B3004B9558 /* CreateProfileImageViewController.swift in Sources */,
 				46F87F2623BB79B30095264E /* SplashViewController.swift in Sources */,
@@ -1581,6 +1633,7 @@
 				4609F4372441AD7D00F17E45 /* VerificationOkViewController.swift in Sources */,
 				4640B6CD24027C6F0023C3A3 /* InvitePresenter.swift in Sources */,
 				46DF8F1925166BBA00459DC3 /* ContactsViewController.swift in Sources */,
+				46485E20256E5118004B02D6 /* StartSearchViewController.swift in Sources */,
 				4682F3A82502502E005BDA9E /* AddGuestsViewController.swift in Sources */,
 				46F87F5123BEFCD80095264E /* UIViewController+Extensions.swift in Sources */,
 				46164BB924EFEF3300879DE4 /* PresentationController.swift in Sources */,
@@ -1685,6 +1738,7 @@
 				46F87F0223B8F91B0095264E /* LoginViewController.swift in Sources */,
 				C4CBC3F023E2AAC600434BFB /* MKMapView+Extensions.swift in Sources */,
 				4682F3CA250F5D6F005BDA9E /* HelpDoctorEndPoint.swift in Sources */,
+				46485E28256F6F56004B02D6 /* ResultSearchViewController.swift in Sources */,
 				46EFF4D724334654004B9558 /* ProfileCareerView.swift in Sources */,
 				46072E1123C21E040070F2F6 /* AppointmentCell.swift in Sources */,
 				46F87F4D23BE63210095264E /* RegionsPresenter.swift in Sources */,
@@ -1694,10 +1748,12 @@
 				C4CBC3F723E2AB9500434BFB /* LocationSearchViewController.swift in Sources */,
 				4682F3BA250F4C7F005BDA9E /* EndPointType.swift in Sources */,
 				46F87F0B23B90CFC0095264E /* RecoveryPasswordPresenter.swift in Sources */,
+				46485E2F256FA19D004B02D6 /* FilterSearchViewController.swift in Sources */,
 				46072E2523C3446D0070F2F6 /* RadioButton.swift in Sources */,
 				46072E1C23C240160070F2F6 /* StartAddEventPresenter.swift in Sources */,
 				469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */,
 				46F87F4023BDEDA60095264E /* Presenter.swift in Sources */,
+				46485E2B256F6F65004B02D6 /* ResultSearchPresenter.swift in Sources */,
 				C48F162823B5FE87002D04E3 /* PublicMethod.swift in Sources */,
 				46164BBD24EFF13C00879DE4 /* PresentAnimation.swift in Sources */,
 				4640B6E82416713E0023C3A3 /* VerificationEndViewController.swift in Sources */,

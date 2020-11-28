@@ -79,12 +79,21 @@ class UniversitiesPresenter: UniversitiesPresenterProtocol {
         }
         let university = filteredArray[index]
         view.navigationController?.popViewController(animated: true)
-        guard let prev = view.navigationController?.viewControllers.last as? CreateProfileStep6ViewController else {
-            return
+        switch sender {
+        case FilterSearchViewController.identifier:
+            guard let prev = view.navigationController?.viewControllers.last as? FilterSearchViewController else {
+                return
+            }
+            let presenter = prev.presenter
+            presenter?.setUniversity(university: university)
+        default:
+            guard let prev = view.navigationController?.viewControllers.last as? CreateProfileStep6ViewController else {
+                return
+            }
+            let presenter = prev.presenter
+            presenter?.setUniversity(university: university)
+            prev.view.layoutIfNeeded()
         }
-        let presenter = prev.presenter
-        presenter?.setUniversity(university: university)
-        prev.view.layoutIfNeeded()
     }
     
     func back() {

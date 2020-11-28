@@ -17,6 +17,7 @@ class ContactTableViewCell: UITableViewCell {
     private let cellImage = UIImageView()
     private let verificationImage = UIImageView()
     private let rightButton = HDButton()
+    private let messageButton = HDButton()
     var unlockButtonAction: (() -> ())?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -28,6 +29,7 @@ class ContactTableViewCell: UITableViewCell {
         setupNameLabel()
         setupSpecLabel()
         setupRightButton()
+        setupMessageButton()
     }
     
     required init?(coder: NSCoder) {
@@ -130,6 +132,20 @@ class ContactTableViewCell: UITableViewCell {
         rightButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
     }
     
+    private func setupMessageButton() {
+        messageButton.isHidden = true
+        messageButton.setImage(UIImage(named: "MessagesIcon"), for: .normal)
+        messageButton.addTarget(self, action: #selector(messageButtonTapped), for: .touchUpInside)
+        topView.addSubview(messageButton)
+        
+        messageButton.translatesAutoresizingMaskIntoConstraints = false
+        messageButton.trailingAnchor.constraint(equalTo: topView.trailingAnchor,
+                                              constant: -10).isActive = true
+        messageButton.centerYAnchor.constraint(equalTo: topView.centerYAnchor).isActive = true
+        messageButton.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        messageButton.widthAnchor.constraint(equalToConstant: 30).isActive = true
+    }
+    
     func configure(contact: Contacts?) {
         guard let contact = contact else { return }
         nameLabel.text = contact.fullName
@@ -141,7 +157,15 @@ class ContactTableViewCell: UITableViewCell {
         rightButton.isHidden = false
     }
     
+    func messageUsersCell() {
+        messageButton.isHidden = false
+    }
+    
     @objc private func unlockButtonTapped() {
         unlockButtonAction?()
+    }
+    
+    @objc private func messageButtonTapped() {
+//        unlockButtonAction?()
     }
 }

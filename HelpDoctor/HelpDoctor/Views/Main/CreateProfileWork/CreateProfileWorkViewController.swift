@@ -15,6 +15,7 @@ class CreateProfileWorkViewController: UIViewController, UIScrollViewDelegate {
     let session = Session.instance
     
     // MARK: - Constants
+    static let identifier = "CreateProfileWorkViewController"
     private let backgroundColor = UIColor.backgroundColor
     private var verticalInset = 0.f
     private let headerHeight = 60.f

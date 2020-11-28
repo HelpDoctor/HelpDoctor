@@ -1069,4 +1069,80 @@ extension NetworkManager {
             }
         }
     }
+    
+    func searchUsers(_ query: String,
+                     _ limit: Int,
+                     _ page: Int,
+                     completion: @escaping (Result<SearchUserResponseList, NetworkResponse>) -> Void) {
+        router.request(.searchUsers(searchString: query, limit: limit, page: page)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(SearchUserResponseList.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        self.handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func searchUsers(_ query: SearchQuery,
+                     _ limit: Int,
+                     _ page: Int,
+                     completion: @escaping (Result<SearchUserResponseList, NetworkResponse>) -> Void) {
+        router.request(.searchUsersWithFilters(query: query, limit: limit, page: page)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(SearchUserResponseList.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        self.handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
 }

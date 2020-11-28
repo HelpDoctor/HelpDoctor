@@ -356,10 +356,7 @@ class CreateProfileScreen2ViewController: UIViewController, UIScrollViewDelegate
         cityTextField.textAlignment = .left
         cityTextField.backgroundColor = .white
         cityTextField.layer.cornerRadius = 5
-        cityTextField.leftView = UIView(frame: CGRect(x: 0,
-                                                      y: 0,
-                                                      width: 8,
-                                                      height: cityTextField.frame.height))
+        cityTextField.leftView = setupDefaultLeftView()
         cityTextField.leftViewMode = .always
         cityTextField.placeholder = "Город / район*"
         cityTextField.addGestureRecognizer(tap)

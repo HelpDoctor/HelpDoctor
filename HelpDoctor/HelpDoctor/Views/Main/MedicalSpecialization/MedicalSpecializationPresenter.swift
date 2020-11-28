@@ -21,6 +21,7 @@ protocol MedicalSpecializationPresenterProtocol: Presenter {
 class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
     
     var view: MedicalSpecializationViewController
+    var sender: String?
     var arrayMedicalSpecialization: [MedicalSpecialization]?
     var filteredArray: [MedicalSpecialization] = []
     
@@ -74,11 +75,22 @@ class MedicalSpecializationPresenter: MedicalSpecializationPresenterProtocol {
         }
         let medicalSpecialization = filteredArray[index]
         view.navigationController?.popViewController(animated: true)
-        guard let previous = view.navigationController?.viewControllers.last as? CreateProfileWorkViewController else {
+        switch sender {
+        case FilterSearchViewController.identifier:
+            guard let previous = view.navigationController?.viewControllers.last as? FilterSearchViewController else {
+                return
+            }
+            let presenter = previous.presenter
+            presenter?.setSpec(spec: medicalSpecialization)
+        case CreateProfileWorkViewController.identifier:
+            guard let prev = view.navigationController?.viewControllers.last as? CreateProfileWorkViewController else {
+                return
+            }
+            let presenter = prev.presenter
+            presenter?.setSpec(spec: medicalSpecialization)
+        default:
             return
         }
-        let presenter = previous.presenter
-        presenter?.setSpec(spec: medicalSpecialization)
     }
     
     func back() {

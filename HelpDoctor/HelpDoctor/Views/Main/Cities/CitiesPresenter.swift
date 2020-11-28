@@ -95,6 +95,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             else { return }
             let presenter = previous.presenter
             presenter?.setCity(city: city)
+                /*
         } else if sender == "MainWork" || sender == "AddWork" || sender == "ThirdWork" {
             guard let regionId = regionId else {
                 view.showAlert(message: "Сначала необходимо выбрать регион")
@@ -105,6 +106,7 @@ class CitiesPresenter: CitiesPresenterProtocol {
             presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
             presenter.sender = sender
             view.navigationController?.pushViewController(viewController, animated: true)
+ */
         } else if sender == "Work" {
             guard let regionId = regionId else {
                 view.showAlert(message: "Сначала необходимо выбрать регион")
@@ -115,6 +117,20 @@ class CitiesPresenter: CitiesPresenterProtocol {
             presenter.getMedicalOrganization(regionId: regionId, mainWork: true)
             presenter.sender = sender
             view.navigationController?.pushViewController(viewController, animated: true)
+        } else if sender == FilterSearchViewController.identifier {
+            guard let index = index else {
+                view.showAlert(message: "Выберите один город")
+                return }
+            let city = filteredArray[index]
+            
+            
+            guard let controllers = view.navigationController?.viewControllers else { return }
+            for viewControllers in controllers where viewControllers is FilterSearchViewController {
+                guard let previous = viewControllers as? FilterSearchViewController else { return }
+                let presenter = previous.presenter
+                presenter?.setCity(city: city)
+                view.navigationController?.popToViewController(viewControllers, animated: true)
+            }
         }
     }
     

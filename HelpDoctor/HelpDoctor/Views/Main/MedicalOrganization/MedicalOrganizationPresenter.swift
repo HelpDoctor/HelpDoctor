@@ -76,13 +76,22 @@ class MedicalOrganizationPresenter: MedicalOrganizationPresenterProtocol {
             return
         }
         let medicalOrganization = filteredArray[index]
-        
         guard let controllers = view.navigationController?.viewControllers else { return }
-        for viewControllers in controllers where viewControllers is CreateProfileWorkViewController {
-            guard let previous = viewControllers as? CreateProfileWorkViewController else { return }
-            let presenter = previous.presenter
-            presenter?.setJob(job: medicalOrganization)
-            view.navigationController?.popToViewController(viewControllers, animated: true)
+        switch sender {
+        case "Region for job in filter search":
+            for viewControllers in controllers where viewControllers is FilterSearchViewController {
+                guard let previous = viewControllers as? FilterSearchViewController else { return }
+                let presenter = previous.presenter
+                presenter?.setJob(job: medicalOrganization)
+                view.navigationController?.popToViewController(viewControllers, animated: true)
+            }
+        default:
+            for viewControllers in controllers where viewControllers is CreateProfileWorkViewController {
+                guard let previous = viewControllers as? CreateProfileWorkViewController else { return }
+                let presenter = previous.presenter
+                presenter?.setJob(job: medicalOrganization)
+                view.navigationController?.popToViewController(viewControllers, animated: true)
+            }
         }
     }
     

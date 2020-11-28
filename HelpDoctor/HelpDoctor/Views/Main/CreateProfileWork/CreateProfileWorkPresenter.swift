@@ -110,6 +110,7 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
         specIndex = index
         let viewController = MedicalSpecializationViewController()
         let presenter = MedicalSpecializationPresenter(view: viewController)
+        presenter.sender = CreateProfileWorkViewController.identifier
         viewController.presenter = presenter
         presenter.getMedicalSpecialization()
         view.navigationController?.pushViewController(viewController, animated: true)

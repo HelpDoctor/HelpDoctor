@@ -71,23 +71,36 @@ class RegionsPresenter: RegionsPresenterProtocol {
     
     // MARK: - Coordinator
     func next(index: Int?) {
+        guard let index = index else {
+            view.showAlert(message: "Выберите один регион")
+            return
+        }
+        let region = filteredArray[index]
         if sender == nil {
-            guard let index = index else {
-                view.showAlert(message: "Выберите один регион")
-                return
-            }
-            let region = filteredArray[index]
             view.navigationController?.popViewController(animated: true)
             guard let previous = view.navigationController?.viewControllers.last as? CreateProfileScreen2ViewController
             else { return }
             let presenter = previous.presenter
             presenter?.setRegion(region: region)
             previous.view.layoutIfNeeded()
+        } else if sender == FilterSearchViewController.identifier {
+            let viewController = CitiesViewController()
+            let presenter = CitiesPresenter(view: viewController, region: region)
+            presenter.sender = sender
+            viewController.presenter = presenter
+            presenter.getCities(regionId: region.regionId)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else if sender == "Region for job in filter search" {
+            let viewController = MedicalOrganizationViewController()
+            let presenter = MedicalOrganizationPresenter(view: viewController)
+            presenter.sender = sender
+            viewController.presenter = presenter
+            presenter.getMedicalOrganization(regionId: region.regionId, mainWork: true)
+            view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
-    
 }

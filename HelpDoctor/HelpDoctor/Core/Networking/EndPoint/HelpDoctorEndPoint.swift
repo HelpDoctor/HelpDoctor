@@ -42,6 +42,8 @@ enum HelpDoctorApi {
     case findUsers(query: Profiles)
     case verification(source: URL)
     case removeFromBlockList(id: Int)
+    case searchUsers(searchString: String, limit: Int, page: Int)
+    case searchUsersWithFilters(query: SearchQuery, limit: Int, page: Int)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -112,6 +114,10 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/profile/verification"
         case .removeFromBlockList(id: let id):
             return "public/api/block_list/del/\(id)"
+        case .searchUsers:
+            return "public/api/seach/users"
+        case .searchUsersWithFilters:
+            return "public/api/seach/users/filters"
         }
     }
     
@@ -131,7 +137,9 @@ extension HelpDoctorApi: EndPointType {
              .changePassword,
              .updateSettings,
              .findUsers,
-             .verification:
+             .verification,
+             .searchUsers,
+             .searchUsersWithFilters:
             return .post
         case .getUserStatus,
              .getListOFInterests,
@@ -245,6 +253,27 @@ extension HelpDoctorApi: EndPointType {
                                                                  "limit": 20],
                                                 urlParameters: nil,
                                                 additionHeaders: headers)
+        case .searchUsers(searchString: let searchString, limit: let limit, page: let page):
+            return .requestParametersAndHeaders(bodyParameters: ["search_string": searchString,
+                                                                 "limit": limit,
+                                                                 "page": page],
+                                                urlParameters: nil,
+                                                additionHeaders: headers)
+        case .searchUsersWithFilters(query: let query, limit: let limit, page: let page):
+            return .requestParametersAndHeaders(bodyParameters: ["first_name": query.firstName ?? "",
+                                                                 "middle_name": query.middleName ?? "",
+                                                                 "last_name": query.lastName ?? "",
+                                                                 "age_from": query.ageFrom as Any,
+                                                                 "age_to": query.ageTo as Any,
+                                                                 "city_id": query.cityId as Any,
+                                                                 "job": query.job ?? "",
+                                                                 "specialization": query.specialization as Any,
+                                                                 "education": query.education as Any,
+                                                                 "education_year_ending": query.yearEnding as Any,
+                                                                 "page": page,
+                                                                 "limit": limit],
+                                                urlParameters: nil,
+                                                additionHeaders: headers)
         case .deleteUser,
              .logout,
              .getUserStatus,
@@ -284,7 +313,9 @@ extension HelpDoctorApi: EndPointType {
              .updateSettings,
              .findUsers,
              .getBlockedUsers,
-             .removeFromBlockList:
+             .removeFromBlockList,
+             .searchUsers,
+             .searchUsersWithFilters:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
         case .verification:
