@@ -87,6 +87,7 @@ class ProfilePresenter: ProfilePresenterProtocol {
                 switch result {
                 case .success:
                     UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                    self?.session.userCheck = false
                     AppDelegate.shared.rootViewController.switchToLogout()
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
@@ -172,11 +173,6 @@ class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    /// Переход на предыдущую форму
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-    }
-    
     func toVerification() {
         let viewController = VerificationViewController()
         viewController.presenter = VerificationPresenter(view: viewController)
@@ -207,5 +203,13 @@ class ProfilePresenter: ProfilePresenterProtocol {
         viewController.presenter = EditProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+}
+
+// MARK: - Presenter
+extension ProfilePresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
     
+    func toProfile() { }
 }

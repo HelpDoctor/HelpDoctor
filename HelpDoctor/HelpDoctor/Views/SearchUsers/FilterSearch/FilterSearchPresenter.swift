@@ -10,7 +10,7 @@ import UIKit
 
 protocol FilterSearchPresenterProtocol: Presenter {
     init(view: FilterSearchViewController)
-    func searchUsers(_ query: SearchQuery, _ limit: Int, _ page: Int, _ queryDescription: String)
+    func searchUsers(_ query: SearchQuery, _ queryDescription: String)
     func specSearch()
     func setSpec(spec: MedicalSpecialization)
     func getSpecId() -> Int?
@@ -42,11 +42,9 @@ class FilterSearchPresenter: FilterSearchPresenterProtocol {
     
     // MARK: - Public methods
     func searchUsers(_ query: SearchQuery,
-                     _ limit: Int,
-                     _ page: Int,
                      _ queryDescription: String) {
         view.startActivityIndicator()
-        NetworkManager.shared.searchUsers(query, limit, page) { [weak self] result in
+        NetworkManager.shared.searchUsers(query, 20, 1) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -55,6 +53,7 @@ class FilterSearchPresenter: FilterSearchPresenterProtocol {
                     let presenter = ResultSearchPresenter(view: viewController)
                     viewController.presenter = presenter
                     viewController.filterParams = queryDescription
+                    presenter.searchQuery = query
                     do {
                         presenter.usersList = try result.get().users
                         presenter.usersCount = try result.get().count
@@ -141,8 +140,23 @@ class FilterSearchPresenter: FilterSearchPresenterProtocol {
     func getUniversityId() -> Int? {
         return university?.educationId
     }
-    
+}
+
+// MARK: - Presenter
+extension FilterSearchPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
+    }
+    
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
 }

@@ -141,8 +141,6 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func back() { }
-    
     func saveDate(indexDate: Int?, indexHours: Int?, indexMinutes: Int?) {
         guard let indexDate = indexDate else {
             view.showAlert(message: "Выберите день")
@@ -170,5 +168,21 @@ class SelectDatePresenter: SelectDatePresenterProtocol {
             delegate?.callbackEndDate(newDate: newDate)
         }
     }
+}
+
+// MARK: - Presenter
+extension SelectDatePresenter {
+    func back() { }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

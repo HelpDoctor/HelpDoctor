@@ -148,6 +148,10 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
                         self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -190,11 +194,6 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
     }
     
     // MARK: - Coordinator
-    /// Переход к предыдущему экрану
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-    }
-    
     /// Переход к следующему экрану
     func next() {
         
@@ -228,4 +227,13 @@ class CreateProfileSpecPresenter: CreateProfileSpecPresenterProtocol {
         presenter.filteredArray = arrayOfAllInterests
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+}
+
+// MARK: - Presenter
+extension CreateProfileSpecPresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func toProfile() { }
 }

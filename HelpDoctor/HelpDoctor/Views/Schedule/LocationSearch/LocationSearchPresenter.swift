@@ -28,16 +28,27 @@ class LocationSearchPresenter: LocationSearchPresenterProtocol {
         self.view = view
     }
     
-    // MARK: - Public methods
-
-    
     // MARK: - Coordinator
+    func backToRoot() {
+        view.navigationController?.popToRootViewController(animated: true)
+    }
+}
+
+// MARK: - Presenter
+extension LocationSearchPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
-    func backToRoot() {
-        view.navigationController?.popToRootViewController(animated: true)
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
     }
-    
 }

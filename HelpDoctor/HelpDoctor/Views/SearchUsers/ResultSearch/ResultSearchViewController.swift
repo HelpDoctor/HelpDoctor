@@ -57,7 +57,7 @@ class ResultSearchViewController: UIViewController {
     // MARK: - Public methods
     func reloadTableView() {
         tableView.reloadData()
-        contactsLabel.text = "Найдено: \(presenter?.getCountContacts() ?? 0)"
+        contactsLabel.text = "Найдено: \(presenter?.getCountAllContacts() ?? 0)"
     }
     
     // MARK: - Setup views
@@ -139,7 +139,7 @@ class ResultSearchViewController: UIViewController {
     }
     
     private func setupContactsLabel() {
-        let count = presenter?.getCountContacts()
+        let count = presenter?.getCountAllContacts()
         contactsLabel.font = .mediumSystemFontOfSize(size: 12)
         contactsLabel.textColor = .white
         contactsLabel.text = "Найдено: \(count ?? 0)"
@@ -220,7 +220,7 @@ class ResultSearchViewController: UIViewController {
     
     @objc private func closeButtonPressed() {
         searchBar.text = ""
-        presenter?.searchUsers(searchBar.text ?? "", 0, 1)
+        presenter?.newSearch()
     }
     
 }
@@ -238,6 +238,14 @@ extension ResultSearchViewController: UITableViewDelegate {
         return headerView
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let contact = presenter?.getContact(index: indexPath.section) else { return }
+        let viewController = UserViewController()
+        let vcPresenter = UserPresenter(view: viewController)
+        viewController.presenter = vcPresenter
+        viewController.userId = contact.id
+        navigationController?.pushViewController(viewController, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -257,6 +265,11 @@ extension ResultSearchViewController: UITableViewDataSource {
             else { return UITableViewCell() }
         cell.configure(contact: (presenter?.getContact(index: indexPath.section)))
         cell.messageUsersCell()
+        
+        guard let count = presenter?.getCountContacts() else { return cell }
+        if indexPath.section == count - 1 {
+            presenter?.nextPage()
+        }
         return cell
     }
     

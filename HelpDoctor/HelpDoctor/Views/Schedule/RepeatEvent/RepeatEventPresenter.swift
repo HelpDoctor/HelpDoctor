@@ -33,12 +33,6 @@ class RepeatEventPresenter: RepeatEventPresenterProtocol {
         self.view = view
     }
     
-    // MARK: - Public methods
-
-    
-    // MARK: - Coordinator
-    func back() { }
-    
     func buttonTapped(_ button: RepeatButtons) {
         view.dismiss(animated: true, completion: nil)
         switch button {
@@ -55,7 +49,22 @@ class RepeatEventPresenter: RepeatEventPresenterProtocol {
         case .time:
             delegate?.callbackTimeRepeat()
         }
-        
     }
+}
+
+// MARK: - Presenter
+extension RepeatEventPresenter {
+    func back() { }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

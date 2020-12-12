@@ -10,7 +10,7 @@ import UIKit
 
 protocol StartSearchPresenterProtocol: Presenter {
     init(view: StartSearchViewController)
-    func searchUsers(_ query: String, _ limit: Int, _ page: Int)
+    func searchUsers(_ query: String)
     func toFilter()
 }
 
@@ -19,19 +19,14 @@ class StartSearchPresenter: StartSearchPresenterProtocol {
     // MARK: - Dependency
     let view: StartSearchViewController
     
-    // MARK: - Constants and variables
-    private let session = Session.instance
-    
     // MARK: - Init
     required init(view: StartSearchViewController) {
         self.view = view
     }
     
-    func searchUsers(_ query: String,
-                     _ limit: Int = 0,
-                     _ page: Int = 1) {
+    func searchUsers(_ query: String) {
         view.startActivityIndicator()
-        NetworkManager.shared.searchUsers(query, limit, page) { [weak self] result in
+        NetworkManager.shared.searchUsers(query, 20, 1) { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
                 switch result {
@@ -40,6 +35,7 @@ class StartSearchPresenter: StartSearchPresenterProtocol {
                     let presenter = ResultSearchPresenter(view: viewController)
                     viewController.presenter = presenter
                     viewController.filterParams = query
+                    presenter.searchString = query
                     do {
                         presenter.usersList = try result.get().users
                         presenter.usersCount = try result.get().count
@@ -61,9 +57,23 @@ class StartSearchPresenter: StartSearchPresenterProtocol {
         viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+}
+
+// MARK: - Presenter
+extension StartSearchPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

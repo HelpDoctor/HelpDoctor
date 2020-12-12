@@ -83,6 +83,7 @@ class HeaderView: UIView {
     }
     
     private func setupLogo() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(tapLogo))
         let trailing = heightHeader * 0.2
         let height = heightHeader * 0.75
         let logoImageName = "Logo.pdf"
@@ -90,7 +91,9 @@ class HeaderView: UIView {
             assertionFailure("Missing ​​\(logoImageName) asset")
             return
         }
+        logoImage.addGestureRecognizer(tap)
         logoImage.image = image
+        logoImage.isUserInteractionEnabled = true
         self.addSubview(logoImage)
         
         logoImage.translatesAutoresizingMaskIntoConstraints = false
@@ -101,8 +104,11 @@ class HeaderView: UIView {
         logoImage.heightAnchor.constraint(equalToConstant: height).isActive = true
     }
     
+    @objc private func tapLogo() {
+        presenter?.toProfile()
+    }
+    
     @objc private func backButtonPressed() {
         presenter?.back()
     }
-    
 }

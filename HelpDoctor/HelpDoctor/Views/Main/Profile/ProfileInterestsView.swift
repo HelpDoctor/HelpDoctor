@@ -8,7 +8,12 @@
 
 import UIKit
 
+protocol ProfileInterestsViewDelegate: class {
+    func findByInterest(_ interest: ProfileInterest)
+}
+
 class ProfileInterestsView: UIView {
+    weak var delegate: ProfileInterestsViewDelegate?
     private let interestsLabel = UILabel()
     private let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private var interestsArray: [ProfileInterest]?
@@ -64,7 +69,8 @@ class ProfileInterestsView: UIView {
 extension ProfileInterestsView: UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        //        presenter?.addInterest(index: indexPath.item)
+        guard let interest = interestsArray?[indexPath.item] else { return }
+        delegate?.findByInterest(interest)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

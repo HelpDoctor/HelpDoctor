@@ -66,10 +66,23 @@ class PushAndSoundPresenter: PushAndSoundPresenterProtocol {
         settings.addFriend == 1 ? view.setContactsCheckbox(true) : view.setContactsCheckbox(false)
         settings.messageFriend == 1 ? view.setMessagesCheckbox(true) : view.setMessagesCheckbox(false)
     }
-    
-    // MARK: - Coordinator
+}
+
+// MARK: - Presenter
+extension PushAndSoundPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

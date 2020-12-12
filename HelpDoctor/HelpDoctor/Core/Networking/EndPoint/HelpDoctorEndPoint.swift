@@ -17,6 +17,7 @@ enum HelpDoctorApi {
     case getUserStatus
     case checkProfile
     case getProfile
+    case getProfileById(id: Int)
     case updateProfile(user: [String: Any]?,
                        job: [[String: Any]]?,
                        spec: [[String: Any]]?,
@@ -44,6 +45,8 @@ enum HelpDoctorApi {
     case removeFromBlockList(id: Int)
     case searchUsers(searchString: String, limit: Int, page: Int)
     case searchUsersWithFilters(query: SearchQuery, limit: Int, page: Int)
+    case addContact(id: Int)
+    case addToBlockList(id: Int)
 }
 
 extension HelpDoctorApi: EndPointType {
@@ -74,6 +77,8 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/profile/check"
         case .getProfile:
             return "public/api/profile/get"
+        case .getProfileById(id: let id):
+            return "public/api/profile/get/\(id)"
         case .updateProfile:
             return "public/api/profile/update"
         case .getListOFInterests:
@@ -112,12 +117,16 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/seach/users"
         case .verification:
             return "public/api/profile/verification"
+        case .addToBlockList(id: let id):
+            return "public/api/block_list/add/\(id)"
         case .removeFromBlockList(id: let id):
             return "public/api/block_list/del/\(id)"
         case .searchUsers:
             return "public/api/seach/users"
         case .searchUsersWithFilters:
             return "public/api/seach/users/filters"
+        case .addContact(id: let id):
+            return "public/api/contact_list/add/\(id)"
         }
     }
     
@@ -130,6 +139,7 @@ extension HelpDoctorApi: EndPointType {
              .logout,
              .checkProfile,
              .getProfile,
+             .getProfileById,
              .updateProfile,
              .setEvent,
              .feedback,
@@ -154,7 +164,9 @@ extension HelpDoctorApi: EndPointType {
              .deleteEvent,
              .getSettings,
              .getBlockedUsers,
-             .removeFromBlockList:
+             .removeFromBlockList,
+             .addContact,
+             .addToBlockList:
             return .get
         }
     }
@@ -279,6 +291,7 @@ extension HelpDoctorApi: EndPointType {
              .getUserStatus,
              .checkProfile,
              .getProfile,
+             .getProfileById,
              .getContactList,
              .getEventForDate,
              .getEvenyForId,
@@ -286,7 +299,9 @@ extension HelpDoctorApi: EndPointType {
              .getSettings,
              .verification,
              .getBlockedUsers,
-             .removeFromBlockList:
+             .removeFromBlockList,
+             .addContact,
+             .addToBlockList:
             return .requestParametersAndHeaders(bodyParameters: nil, urlParameters: nil, additionHeaders: headers)
         default:
             return .request
@@ -301,6 +316,7 @@ extension HelpDoctorApi: EndPointType {
              .getUserStatus,
              .checkProfile,
              .getProfile,
+             .getProfileById,
              .updateProfile,
              .getContactList,
              .setEvent,
@@ -315,7 +331,9 @@ extension HelpDoctorApi: EndPointType {
              .getBlockedUsers,
              .removeFromBlockList,
              .searchUsers,
-             .searchUsersWithFilters:
+             .searchUsersWithFilters,
+             .addContact,
+             .addToBlockList:
             return ["Content-Type": "application/json",
                     "X-Auth-Token": myToken]
         case .verification:

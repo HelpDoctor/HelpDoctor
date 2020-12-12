@@ -27,10 +27,6 @@ class EditProfilePresenter: EditProfilePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-    }
-    
     func toChangeName() {
         let viewController = CreateProfileNameViewController()
         let presenter = CreateProfileNamePresenter(view: viewController)
@@ -78,5 +74,23 @@ class EditProfilePresenter: EditProfilePresenterProtocol {
         presenter.isEdit = true
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+}
+
+// MARK: - Presenter
+extension EditProfilePresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

@@ -19,9 +19,6 @@ class StartSearchUserPresenter: StartSearchUserPresenterProtocol {
     // MARK: - Dependency
     let view: StartSearchUserViewController
     
-    // MARK: - Constants and variables
-    
-    
     // MARK: - Init
     required init(view: StartSearchUserViewController) {
         self.view = view
@@ -40,9 +37,23 @@ class StartSearchUserPresenter: StartSearchUserPresenterProtocol {
         viewController.presenter = presenter
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
+}
+
+// MARK: - Presenter
+extension StartSearchUserPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

@@ -23,7 +23,8 @@ class SplashViewController: UIViewController {
         NetworkManager.shared.checkProfile { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success:
+                case .success(let status):
+                    Session.instance.userCheck = status
                     AppDelegate.shared.rootViewController.switchToMainScreen()
                 case .failure:
                     AppDelegate.shared.rootViewController.switchToLogout()

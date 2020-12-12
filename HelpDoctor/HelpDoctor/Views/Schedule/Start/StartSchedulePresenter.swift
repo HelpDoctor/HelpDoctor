@@ -15,6 +15,7 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getEvents(newDate: Date)
     func getCountEvents() -> Int?
     func getCurrentDate(date: Date) -> String
+    func getCurrentMonth(date: Date) -> String
     func getCountPatients() -> Int?
     func getCountMajorEvents() -> Int?
     func getStartTimeEvent(index: Int) -> String?
@@ -102,6 +103,43 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         return "\(weekdayString)"
     }
     
+    func getCurrentMonth(date: Date) -> String {
+        let dateFormatter: DateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let calendar = Calendar.current
+        let month = calendar.component(.month, from: date)
+        var monthString = ""
+        switch month {
+        case 1:
+            monthString = "Янв"
+        case 2:
+            monthString = "Фев"
+        case 3:
+            monthString = "Мар"
+        case 4:
+            monthString = "Апр"
+        case 5:
+            monthString = "Май"
+        case 6:
+            monthString = "Июн"
+        case 7:
+            monthString = "Июл"
+        case 8:
+            monthString = "Авг"
+        case 9:
+            monthString = "Сен"
+        case 10:
+            monthString = "Окт"
+        case 11:
+            monthString = "Ноя"
+        case 12:
+            monthString = "Дек"
+        default:
+            monthString = ""
+        }
+        return "\(monthString)"
+    }
+    
     func getCountPatients() -> Int? {
         let filteredArray = arrayEvents?.filter { (event: Event) -> Bool in
             return event.eventType?.rawValue == "reception"
@@ -167,8 +205,21 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
             }
         }
     }
-    
-    // MARK: - PresenterProtocol
+}
+
+// MARK: - Presenter
+extension StartSchedulePresenter {
     func back() { }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

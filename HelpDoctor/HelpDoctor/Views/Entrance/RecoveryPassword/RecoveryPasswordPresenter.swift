@@ -56,10 +56,13 @@ class RecoveryPasswordPresenter: RecoveryPasswordPresenterProtocol {
         presenter.email = view.getEmailText()
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    /// Переход к предыдущему экрану
+}
+
+// MARK: - Presenter
+extension RecoveryPasswordPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() { }
 }

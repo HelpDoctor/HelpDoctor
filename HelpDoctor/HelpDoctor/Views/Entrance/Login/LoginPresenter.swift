@@ -70,10 +70,13 @@ class LoginPresenter: LoginPresenterProtocol {
         viewController.setEmail(email: view.getEmailText())
         view.navigationController?.pushViewController(viewController, animated: true)
     }
-    
-    /// Переход на предыдущий экран
+}
+
+// MARK: - Presenter
+extension LoginPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() { }
 }

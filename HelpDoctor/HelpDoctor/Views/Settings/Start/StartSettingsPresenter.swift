@@ -130,8 +130,6 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func back() { }
-    
     func toVerification() {
         let viewController = VerificationViewController()
         viewController.presenter = VerificationPresenter(view: viewController)
@@ -156,5 +154,21 @@ class StartSettingsPresenter: StartSettingsPresenterProtocol {
         viewController.presenter = VerificationOkPresenter(view: viewController)
         view.present(viewController, animated: true, completion: nil)
     }
+}
+
+// MARK: - Presenter
+extension StartSettingsPresenter {
+    func back() { }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

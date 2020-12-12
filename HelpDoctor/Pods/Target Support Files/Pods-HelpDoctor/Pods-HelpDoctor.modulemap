@@ -1,0 +1,6 @@
+framework module Pods_HelpDoctor {
+  umbrella header "Pods-HelpDoctor-umbrella.h"
+
+  export *
+  module * { export * }
+}

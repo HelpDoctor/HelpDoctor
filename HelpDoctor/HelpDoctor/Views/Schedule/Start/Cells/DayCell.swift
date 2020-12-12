@@ -12,6 +12,7 @@ import UIKit
 class DayCell: JTACDayCell {
     
     static let reuseIdentifier = "DayCell"
+    let monthLabel = UILabel()
     let dayOfWeekLabel = UILabel()
     let dateLabel = UILabel()
     let selectedView = UIView()
@@ -19,6 +20,7 @@ class DayCell: JTACDayCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupSelectedView()
+        setupMonthLabel()
         setupDayOfWeekLabel()
         setupDateLabel()
     }
@@ -41,6 +43,21 @@ class DayCell: JTACDayCell {
         selectedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1).isActive = true
     }
     
+    private func setupMonthLabel() {
+        monthLabel.numberOfLines = 1
+        monthLabel.textAlignment = .center
+        monthLabel.font = .boldSystemFontOfSize(size: 14)
+        monthLabel.textColor = .black
+        contentView.addSubview(monthLabel)
+        
+        monthLabel.translatesAutoresizingMaskIntoConstraints = false
+        monthLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        monthLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        monthLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 3).isActive = true
+        monthLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        monthLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+    }
+    
     private func setupDayOfWeekLabel() {
         dayOfWeekLabel.numberOfLines = 1
         dayOfWeekLabel.textAlignment = .center
@@ -50,8 +67,8 @@ class DayCell: JTACDayCell {
         
         dayOfWeekLabel.translatesAutoresizingMaskIntoConstraints = false
         dayOfWeekLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
-        dayOfWeekLabel.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
-        dayOfWeekLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5).isActive = true
+        dayOfWeekLabel.topAnchor.constraint(equalTo: monthLabel.bottomAnchor).isActive = true
+        dayOfWeekLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 3).isActive = true
         dayOfWeekLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         dayOfWeekLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
     }
@@ -64,10 +81,9 @@ class DayCell: JTACDayCell {
         contentView.addSubview(dateLabel)
         
         dateLabel.translatesAutoresizingMaskIntoConstraints = false
-        dateLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.5).isActive = true
+        dateLabel.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 1 / 3).isActive = true
         dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
     }
-    
 }

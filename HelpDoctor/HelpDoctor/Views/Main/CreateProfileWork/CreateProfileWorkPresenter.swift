@@ -80,6 +80,10 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
                         self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -201,11 +205,14 @@ class CreateProfileWorkPresenter: CreateProfileWorkPresenterProtocol {
             presenter.educationArray = educationArray
             view.navigationController?.pushViewController(viewController, animated: true)
         }
-        
     }
-    
+}
+
+// MARK: - Presenter
+extension CreateProfileWorkPresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() { }
 }

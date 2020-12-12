@@ -10,4 +10,5 @@ import UIKit
 
 protocol Presenter: class {
     func back()
+    func toProfile()
 }

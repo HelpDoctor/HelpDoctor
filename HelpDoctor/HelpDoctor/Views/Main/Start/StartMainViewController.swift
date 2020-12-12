@@ -15,7 +15,6 @@ class StartMainViewController: UIViewController {
     
     // MARK: - Constants
     private let headerHeight = 60.f
-    private let contactsButton = HDButton(title: "Контакты", fontSize: 14)
     private let findUsers = HDButton(title: "Поиск коллег", fontSize: 14)
     private let fillProfileButton = HDButton(title: "Заполнить профиль", fontSize: 14)
     private let profileButton = HDButton(title: "Профиль", fontSize: 14)
@@ -27,7 +26,6 @@ class StartMainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .backgroundColor
         setupHeaderView(color: .backgroundColor, height: headerHeight, presenter: presenter)
-        setupContactsButton()
         setupFindUsersButton()
         setupFillProfileButton()
         setupProfileButton()
@@ -53,26 +51,14 @@ class StartMainViewController: UIViewController {
     }
     
     // MARK: - Setup views
-    private func setupContactsButton() {
-        contactsButton.addTarget(self, action: #selector(contactsButtonPressed), for: .touchUpInside)
-        contactsButton.isEnabled = true
-        view.addSubview(contactsButton)
-        
-        contactsButton.translatesAutoresizingMaskIntoConstraints = false
-        contactsButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
-                                            constant: headerHeight + 10).isActive = true
-        contactsButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        contactsButton.widthAnchor.constraint(equalToConstant: 150).isActive = true
-        contactsButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-    }
-    
     private func setupFindUsersButton() {
         findUsers.addTarget(self, action: #selector(findUsersButtonPressed), for: .touchUpInside)
         findUsers.isEnabled = true
         view.addSubview(findUsers)
         
         findUsers.translatesAutoresizingMaskIntoConstraints = false
-        findUsers.topAnchor.constraint(equalTo: contactsButton.bottomAnchor, constant: 10).isActive = true
+        findUsers.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor,
+                                       constant: headerHeight + 10).isActive = true
         findUsers.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         findUsers.widthAnchor.constraint(equalToConstant: 150).isActive = true
         findUsers.heightAnchor.constraint(equalToConstant: 40).isActive = true
@@ -129,10 +115,6 @@ class StartMainViewController: UIViewController {
     }
     
     // MARK: - Buttons methods
-    @objc private func contactsButtonPressed() {
-        presenter?.toContacts()
-    }
-    
     @objc private func findUsersButtonPressed() {
         presenter?.toSearchContacts()
     }

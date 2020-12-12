@@ -21,11 +21,13 @@ class VerificationOkPresenter: VerificationOkPresenterProtocol {
     required init(view: VerificationOkViewController) {
         self.view = view
     }
-    
-    // MARK: - Coordinator
-    /// Переход к предыдущему экрану
+}
+
+// MARK: - Presenter
+extension VerificationOkPresenter {
     func back() {
         view.dismiss(animated: true, completion: nil)
     }
     
+    func toProfile() { }
 }

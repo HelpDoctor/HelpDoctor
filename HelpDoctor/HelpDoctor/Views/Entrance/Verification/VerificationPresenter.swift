@@ -39,10 +39,13 @@ class VerificationPresenter: VerificationPresenterProtocol {
             }
         }
     }
-    
-    /// Переход к предыдущему экрану
+}
+
+// MARK: - Presenter
+extension VerificationPresenter {
     func back() {
         view.dismiss(animated: true, completion: nil)
     }
     
+    func toProfile() { }
 }

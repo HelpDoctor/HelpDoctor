@@ -248,9 +248,6 @@ class StartSearchViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func findButtonPressed() {
-        presenter?.searchUsers(textField.text ?? "", 0, 1)
-//        guard let email = topEmailTextField.text else { return }
-//        presenter?.registerButtonPressed(email: email)
+        presenter?.searchUsers(textField.text ?? "")
     }
-    
 }

@@ -165,18 +165,6 @@ class InterestsPresenter: InterestsPresenterProtocol {
     }
     
     // MARK: - Coordinator
-    /// Переход к предыдущему экрану
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-        let prevVC = view.navigationController?.viewControllers.last
-        if prevVC is CreateProfileSpecViewController {
-            guard let previous = view.navigationController?.viewControllers.last as? CreateProfileSpecViewController
-            else { return }
-            let presenter = previous.presenter
-            presenter?.setInterests(interests: userInterests)
-        } 
-    }
-    
     /// Переход к следующему экрану
     func next() {
         if isEdit {
@@ -192,5 +180,30 @@ class InterestsPresenter: InterestsPresenterProtocol {
             view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
+}
+
+// MARK: - Presenter
+extension InterestsPresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+        let prevVC = view.navigationController?.viewControllers.last
+        if prevVC is CreateProfileSpecViewController {
+            guard let previous = view.navigationController?.viewControllers.last as? CreateProfileSpecViewController
+            else { return }
+            let presenter = previous.presenter
+            presenter?.setInterests(interests: userInterests)
+        }
+    }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

@@ -47,6 +47,7 @@ class Session {
     
     var boundary = "Boundary-\(UUID().uuidString)"
     
+    var userCheck = false
     var user: User?
     var education: [Education]?
     var specialization: [Specialization]?

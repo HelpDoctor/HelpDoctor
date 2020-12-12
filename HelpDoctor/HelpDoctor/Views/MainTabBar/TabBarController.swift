@@ -10,13 +10,17 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
+    private let session = Session.instance
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .backgroundColor
         self.tabBar.tintColor = UIColor.white
         self.tabBar.unselectedItemTintColor = UIColor.lightGray
-        self.tabBar.barTintColor = UIColor.tabBarColor
+        self.tabBar.barTintColor = UIColor.newTabBarColor
         createTabBarController()
+        getStatusUser()
+        getUser()
     }
     
     override func didReceiveMemoryWarning() {
@@ -25,26 +29,94 @@ class TabBarController: UITabBarController {
     
     func createTabBarController() {
         
-        let firstVc = StartMainViewController()
-        firstVc.presenter = StartMainPresenter(view: firstVc)
-        firstVc.tabBarItem = UITabBarItem(title: "Главная", image: UIImage(named: "Main.pdf"), tag: 0)
+        let firstVc = StartScheduleViewController()
+        firstVc.presenter = StartSchedulePresenter(view: firstVc)
+        firstVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "ScheduleTabBarIcon"), tag: 0)
         
-        let secondVc = StartScheduleViewController()
-        secondVc.presenter = StartSchedulePresenter(view: secondVc)
-        secondVc.tabBarItem = UITabBarItem(title: "Расписание", image: UIImage(named: "Schedule.pdf"), tag: 1)
+        let secondVc = ContactsViewController()
+        secondVc.presenter = ContactsPresenter(view: secondVc)
+        secondVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "ContactsTabBarIcon"), tag: 1)
         
-        let thirdVc = StartMessagesViewController()
-//        let thirdVc = ProfileViewController()
-//        thirdVc.presenter = ProfilePresenter(view: thirdVc)
-        thirdVc.tabBarItem = UITabBarItem(title: "Сообщения", image: UIImage(named: "Messages.pdf"), tag: 2)
+//        let thirdVc = StartMessagesViewController()
+        let thirdVc = StartMainViewController()
+        thirdVc.presenter = StartMainPresenter(view: thirdVc)
+        thirdVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "MessageTabBarIcon"), tag: 2)
         
         let fourthVc = StartSettingsViewController()
         fourthVc.presenter = StartSettingsPresenter(view: fourthVc)
-        fourthVc.tabBarItem = UITabBarItem(title: "Настройки", image: UIImage(named: "Settings.pdf"), tag: 3)
+        fourthVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "SettingsTabBarIcon"), tag: 3)
         
         let controllerArray = [firstVc, secondVc, thirdVc, fourthVc]
         self.viewControllers = controllerArray.map { UINavigationController(rootViewController: $0) }
-        
     }
     
+    private func getStatusUser() {
+        NetworkManager.shared.getUserStatus { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let networkResponse):
+                    let status = networkResponse.status
+                    switch status {
+                    case "denied":
+                        UserDefaults.standard.set("denied", forKey: "userStatus")
+                        self?.toErrorVerification(networkResponse.message)
+                    case "not_verification":
+                        UserDefaults.standard.set("not_verification", forKey: "userStatus")
+                        self?.toVerification()
+                    case "processing":
+                        UserDefaults.standard.set("processing", forKey: "userStatus")
+                        self?.toEndVerification()
+                    case "verified":
+                        if UserDefaults.standard.string(forKey: "userStatus") != "verified" {
+                            self?.toOkVerification()
+                        }
+                        UserDefaults.standard.set("verified", forKey: "userStatus")
+                    default:
+                        break
+                    }
+                case .failure(let error):
+                    self?.showAlert(message: error.description)
+                }
+            }
+        }
+    }
+    
+    private func getUser() {
+        NetworkManager.shared.getUser { [weak self] result in
+            switch result {
+            case .success(let profiles):
+                self?.session.user = profiles.user
+                self?.session.education = profiles.educations
+                self?.session.userJob = profiles.job
+                self?.session.specialization = profiles.specializations
+            case .failure(let error):
+                self?.showAlert(message: error.description)
+            }
+        }
+    }
+    
+    func toVerification() {
+        let viewController = VerificationViewController()
+        viewController.presenter = VerificationPresenter(view: viewController)
+        present(viewController, animated: true, completion: nil)
+    }
+    
+    func toEndVerification() {
+        let viewController = VerificationEndViewController()
+        viewController.presenter = VerificationEndPresenter(view: viewController)
+        present(viewController, animated: true, completion: nil)
+    }
+    
+    func toErrorVerification(_ message: String?) {
+        let viewController = VerificationErrorViewController()
+        viewController.presenter = VerificationErrorPresenter(view: viewController)
+        viewController.messageFromServer = message
+        present(viewController, animated: true, completion: nil)
+    }
+    
+    func toOkVerification() {
+        let viewController = VerificationOkViewController()
+        viewController.presenter = VerificationOkPresenter(view: viewController)
+        present(viewController, animated: true, completion: nil)
+    }
 }

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+//swiftlint:disable file_length
 class NetworkManager {
     static let shared = NetworkManager()
     private let router = Router<HelpDoctorApi>()
@@ -544,6 +544,40 @@ extension NetworkManager {
         }
     }
     
+    func getUser(by id: Int,
+                 completion: @escaping (Result<Profiles, NetworkResponse>) -> Void) {
+        router.request(.getProfileById(id: id)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(Profiles.self, from: responseData)
+                        completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        self.handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
     func updateUser(_ user: User?,
                     _ job: [Job]?,
                     _ spec: [Specialization]?,
@@ -648,6 +682,33 @@ extension NetworkManager {
                     } catch {
                         completion(.failure(.unableToDecode))
                     }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func addToBlockList(with id: Int,
+                        completion: @escaping (Result<Int, NetworkResponse>) -> Void) {
+        router.request(.addToBlockList(id: id)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                let result = self.handleNetworkResponse(response)
+                switch result {
+                case .success:
+                    completion(.success(response.statusCode))
                 case .failure(let networkFailureError):
                     do {
                         let apiResponse = try JSONDecoder().decode(ServerResponse.self, from: responseData)
@@ -1128,6 +1189,42 @@ extension NetworkManager {
                         let apiResponse = try JSONDecoder().decode(SearchUserResponseList.self,
                                                                    from: responseData)
                         completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        self.handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func addContact(with id: Int,
+                    completion: @escaping (Result<String, NetworkResponse>) -> Void) {
+        router.request(.addContact(id: id)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse.status))
                     } catch let decodingError as DecodingError {
                         self.handleDecodingError(decodingError)
                     } catch {

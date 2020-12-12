@@ -61,6 +61,10 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
                         self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -184,11 +188,14 @@ class CreateProfileScreen2Presenter: CreateProfileScreen2PresenterProtocol {
             presenter.region = region
             view.navigationController?.pushViewController(viewController, animated: true)
         }
-        
     }
-    
+}
+
+// MARK: - Presenter
+extension CreateProfileScreen2Presenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() { }
 }

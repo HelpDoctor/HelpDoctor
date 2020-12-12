@@ -44,10 +44,23 @@ class InvitePresenter: InvitePresenterProtocol {
             }
         }
     }
-    
-    // MARK: - Coordinator
+}
+
+// MARK: - Presenter
+extension InvitePresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

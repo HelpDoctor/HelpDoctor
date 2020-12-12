@@ -84,6 +84,10 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
                     for viewControllers in controllers where viewControllers is ProfileViewController {
                         self?.view.navigationController?.popToViewController(viewControllers, animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -130,11 +134,6 @@ class CreateProfileStep6Presenter: CreateProfileStep6PresenterProtocol {
         viewController.modalPresentationStyle = .custom
         view.present(viewController, animated: true)
     }
-    
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-    }
-    
 }
 
 // MARK: - SelectYearControllerDelegate
@@ -142,4 +141,13 @@ extension CreateProfileStep6Presenter: SelectYearControllerDelegate {
     func callbackDate(newDate: String) {
         view.setDate(date: newDate)
     }
+}
+
+// MARK: - Presenter
+extension CreateProfileStep6Presenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
+    
+    func toProfile() { }
 }

@@ -55,6 +55,10 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
                         self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -106,10 +110,13 @@ class CreateProfileNamePresenter: CreateProfileNamePresenterProtocol {
             view.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    
-    /// Переход к предыдущему экрану
+}
+
+// MARK: - Presenter
+extension CreateProfileNamePresenter {
     func back() {
         view.navigationController?.popViewController(animated: true)
     }
     
+    func toProfile() { }
 }

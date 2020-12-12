@@ -49,11 +49,6 @@ class SelectRepeatTimePresenter: SelectRepeatTimePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-        delegate?.callbackNoTime()
-    }
-    
     func saveDate(indexHours: Int?, indexMinutes: Int?) {
         guard indexHours != nil else {
             view.showAlert(message: "Выберите час")
@@ -66,5 +61,24 @@ class SelectRepeatTimePresenter: SelectRepeatTimePresenterProtocol {
         view.navigationController?.popViewController(animated: true)
         delegate?.callbackTime()
     }
+}
+
+// MARK: - Presenter
+extension SelectRepeatTimePresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+        delegate?.callbackNoTime()
+    }
     
+    func toProfile() {
+        if Session.instance.userCheck {
+            let viewController = ProfileViewController()
+            viewController.presenter = ProfilePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = CreateProfileNameViewController()
+            viewController.presenter = CreateProfileNamePresenter(view: viewController)
+            view.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
 }

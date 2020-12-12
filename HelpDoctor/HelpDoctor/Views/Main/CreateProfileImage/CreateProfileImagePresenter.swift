@@ -141,6 +141,10 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
                         self?.view.navigationController?.popToViewController(viewControllers,
                                                                              animated: true)
                     }
+                    for viewControllers in controllers where viewControllers is StartSettingsViewController {
+                        self?.view.navigationController?.popToViewController(viewControllers,
+                                                                             animated: true)
+                    }
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }
@@ -150,16 +154,19 @@ class CreateProfileImagePresenter: CreateProfileImagePresenterProtocol {
     }
     
     // MARK: - Coordinator
-    /// Переход к предыдущему экрану
-    func back() {
-        view.navigationController?.popViewController(animated: true)
-    }
-    
     /// Переход к следующему экрану
     private func next() {
         let viewController = ProfileViewController()
         viewController.presenter = ProfilePresenter(view: viewController)
         view.navigationController?.pushViewController(viewController, animated: true)
     }
+}
+
+// MARK: - Presenter
+extension CreateProfileImagePresenter {
+    func back() {
+        view.navigationController?.popViewController(animated: true)
+    }
     
+    func toProfile() { }
 }

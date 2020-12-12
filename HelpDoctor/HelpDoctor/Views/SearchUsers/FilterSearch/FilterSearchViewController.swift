@@ -474,8 +474,46 @@ class FilterSearchViewController: UIViewController, UIScrollViewDelegate {
     }
     
     @objc private func findButtonPressed() {
+        var queryDescription = ""
         var ageTo: Int?
         var ageFrom: Int?
+        
+        if firstNameTextField.text != "" {
+            queryDescription += firstNameTextField.text ?? ""
+        }
+        
+        if middleNameTextField.text != "" {
+            queryDescription += " \(middleNameTextField.text ?? "")"
+        }
+        
+        if lastNameTextField.text != "" {
+            queryDescription += " \(lastNameTextField.text ?? "");"
+        }
+        
+        if minAgeTextField.text == "" && maxAgeTextField.text != "" {
+            queryDescription += " возраст до \(maxAgeTextField.text ?? "");"
+        } else if minAgeTextField.text != "" && maxAgeTextField.text == "" {
+            queryDescription += " возраст от \(minAgeTextField.text ?? "");"
+        } else if minAgeTextField.text != "" && maxAgeTextField.text != "" {
+            queryDescription += " возраст \(minAgeTextField.text ?? "") - \(maxAgeTextField.text ?? "");"
+        }
+        
+        if specTextField.text != "" {
+            queryDescription += " \(specTextField.text ?? "");"
+        }
+        
+        if cityTextField.text != "" {
+            queryDescription += " \(cityTextField.text ?? "");"
+        }
+        
+        if jobTextField.text != "" {
+            queryDescription += " \(jobTextField.text ?? "");"
+        }
+        
+        if universityTextField.text != "" {
+            queryDescription += " \(universityTextField.text ?? "");"
+        }
+        
         if maxAgeTextField.text != nil {
             ageTo = Int(maxAgeTextField.text ?? "99")
         }
@@ -484,7 +522,7 @@ class FilterSearchViewController: UIViewController, UIScrollViewDelegate {
             ageFrom = Int(minAgeTextField.text ?? "0")
         }
         
-        let queryDescription = "\(firstNameTextField.text ?? "") \(middleNameTextField.text ?? "") \(lastNameTextField.text ?? "") \(minAgeTextField.text ?? "") \(maxAgeTextField.text ?? "") \(specTextField.text ?? "") \(cityTextField.text ?? "") \(jobTextField.text ?? "") \(universityTextField.text ?? "")"
+        queryDescription = String(queryDescription.dropLast())
         
         let query = SearchQuery(firstName: firstNameTextField.text,
                                 middleName: middleNameTextField.text,
@@ -496,7 +534,7 @@ class FilterSearchViewController: UIViewController, UIScrollViewDelegate {
                                 specialization: presenter?.getSpecId(),
                                 education: presenter?.getUniversityId(),
                                 yearEnding: nil)
-        presenter?.searchUsers(query, 0, 1, queryDescription)
+        presenter?.searchUsers(query, queryDescription)
     }
     
     @objc private func specSearchButtonPressed() {

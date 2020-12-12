@@ -378,6 +378,7 @@ extension ContactsViewController: UITableViewDataSource {
         else { return UITableViewCell() }
         
         cell.configure(contact: (presenter?.getContact(index: indexPath.section)))
+        cell.messageUsersCell()
         
         return cell
     }

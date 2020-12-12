@@ -41,11 +41,13 @@ class VerificationErrorPresenter: VerificationErrorPresenterProtocol {
             }
         }
     }
-    
-    // MARK: - Coordinator
-    /// Переход к предыдущему экрану
+}
+
+// MARK: - Presenter
+extension VerificationErrorPresenter {
     func back() {
         view.dismiss(animated: true, completion: nil)
     }
     
+    func toProfile() { }
 }

@@ -16,6 +16,7 @@ extension UIColor {
     static let textFieldTextColor = UIColor(named: "textFieldTextColor")!
     static let alertColor = UIColor(named: "alertColor")!
     static let tabBarColor = UIColor(named: "tabBarColor")!
+    static let newTabBarColor = UIColor(named: "newTabBarColor")!
     static let savedColor = UIColor(named: "savedColor")!
     static let backgroundLabelColor = UIColor(named: "backgroundLabelColor")!
     static let searchBarTintColor = UIColor(named: "searchBarTintColor")!
