@@ -54,4 +54,5 @@ class Session {
     var userJob: [Job]?
     var userInterests: [ProfileInterest]?
     var userSettings: Settings?
+    var eventDates: [String] = []
 }

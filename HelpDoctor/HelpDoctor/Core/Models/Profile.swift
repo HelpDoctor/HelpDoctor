@@ -42,6 +42,7 @@ struct SearchQuery: Codable {
     var specialization: Int?
     var education: Int?
     var yearEnding: Int?
+    var interest: Int?
     
     private enum CodingKeys: String, CodingKey {
         case firstName = "first_name"
@@ -54,5 +55,6 @@ struct SearchQuery: Codable {
         case specialization = "specialization"
         case education = "education"
         case yearEnding = "education_year_ending"
+        case interest = "interest"
     }
 }

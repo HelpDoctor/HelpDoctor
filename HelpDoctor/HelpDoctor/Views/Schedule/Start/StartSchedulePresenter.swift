@@ -24,6 +24,7 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
     func deleteEvent(index: Int)
+    func getEvents()
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
@@ -199,6 +200,20 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
                 case .success:
                     guard let newDate = self?.view.getDate() else { return }
                     self?.getEvents(newDate: newDate)
+                case .failure(let error):
+                    self?.view.showAlert(message: error.description)
+                }
+            }
+        }
+    }
+    
+    func getEvents() {
+        NetworkManager.shared.getEvents(from: "2021-01-01", to: "2029-12-31") { [weak self] result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let eventsForDate):
+                    Session.instance.eventDates = eventsForDate.filter { $0.isEvent }.map { $0.date }
+                    self?.view.reloadCalendar()
                 case .failure(let error):
                     self?.view.showAlert(message: error.description)
                 }

@@ -16,6 +16,8 @@ class DayCell: JTACDayCell {
     let dayOfWeekLabel = UILabel()
     let dateLabel = UILabel()
     let selectedView = UIView()
+    let eventedView = UIView()
+    var isEvent = false
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +25,7 @@ class DayCell: JTACDayCell {
         setupMonthLabel()
         setupDayOfWeekLabel()
         setupDateLabel()
+        setupEventedView()
     }
     
     required init?(coder: NSCoder) {
@@ -85,5 +88,21 @@ class DayCell: JTACDayCell {
         dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor).isActive = true
         dateLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
         dateLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+    }
+    
+    private func setupEventedView() {
+        eventedView.isHidden = true
+        eventedView.layer.cornerRadius = 11.5
+        eventedView.clipsToBounds = true
+        eventedView.backgroundColor = .clear
+        eventedView.layer.borderWidth = 2
+        eventedView.layer.borderColor = UIColor.hdButtonColor.cgColor
+        contentView.addSubview(eventedView)
+        
+        eventedView.translatesAutoresizingMaskIntoConstraints = false
+        eventedView.heightAnchor.constraint(equalToConstant: 23).isActive = true
+        eventedView.widthAnchor.constraint(equalToConstant: 23).isActive = true
+        eventedView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor).isActive = true
+        eventedView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1).isActive = true
     }
 }

@@ -532,6 +532,18 @@ extension UserViewController: UserPopoverDelegate {
 // MARK: - ProfileInterestsViewDelegate
 extension UserViewController: ProfileInterestsViewDelegate {
     func findByInterest(_ interest: ProfileInterest) {
-        print(interest)
+        let query = SearchQuery(firstName: "",
+                                middleName: "",
+                                lastName: "",
+                                ageFrom: nil,
+                                ageTo: nil,
+                                cityId: nil,
+                                job: nil,
+                                specialization: nil,
+                                education: nil,
+                                yearEnding: nil,
+                                interest: interest.interest?.id)
+        let queryDescription = interest.interest?.name ?? ""
+        presenter?.searchUsers(query, queryDescription)
     }
 }

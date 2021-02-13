@@ -43,3 +43,13 @@ struct Event: Codable {
         case participants
     }
 }
+
+struct EventForDate: Codable {
+    let date: String
+    let isEvent: Bool
+    
+    private enum CodingKeys: String, CodingKey {
+        case date
+        case isEvent = "is_event"
+    }
+}

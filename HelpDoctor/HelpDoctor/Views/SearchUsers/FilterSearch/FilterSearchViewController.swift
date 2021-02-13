@@ -533,7 +533,8 @@ class FilterSearchViewController: UIViewController, UIScrollViewDelegate {
                                 job: presenter?.getJobId(),
                                 specialization: presenter?.getSpecId(),
                                 education: presenter?.getUniversityId(),
-                                yearEnding: nil)
+                                yearEnding: nil,
+                                interest: nil)
         presenter?.searchUsers(query, queryDescription)
     }
     

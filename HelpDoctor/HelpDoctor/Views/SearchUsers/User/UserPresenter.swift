@@ -13,7 +13,7 @@ protocol UserPresenterProtocol: Presenter {
     func getUser(by id: Int)
     func addContact(with id: Int)
     func addToBlockList(with id: Int)
-    func back()
+    func searchUsers(_ query: SearchQuery, _ queryDescription: String)
 }
 
 class UserPresenter: UserPresenterProtocol {
@@ -94,6 +94,34 @@ class UserPresenter: UserPresenterProtocol {
     /// - Parameter phone: номер телефона
     private func convertPhone(phone: String) -> String {
         return "+\(phone[0]) (\(phone[1 ..< 4])) \(phone[4 ..< 7])-\(phone[7 ..< 9])-\(phone[9 ..< 11])"
+    }
+    
+    func searchUsers(_ query: SearchQuery,
+                     _ queryDescription: String) {
+        view.startActivityIndicator()
+        NetworkManager.shared.searchUsers(query, 20, 1) { [weak self] result in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    let viewController = ResultSearchViewController()
+                    let presenter = ResultSearchPresenter(view: viewController)
+                    viewController.presenter = presenter
+                    viewController.filterParams = queryDescription
+                    presenter.searchQuery = query
+                    do {
+                        presenter.usersList = try result.get().users
+                        presenter.usersCount = try result.get().count
+                    } catch {
+                        return
+                    }
+                    self.view.navigationController?.pushViewController(viewController, animated: true)
+                case .failure(let error):
+                    self.view.showAlert(message: error.description)
+                }
+                self.view.stopActivityIndicator()
+            }
+        }
     }
 }
 

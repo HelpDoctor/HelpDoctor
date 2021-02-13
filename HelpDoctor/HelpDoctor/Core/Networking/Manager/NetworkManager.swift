@@ -852,7 +852,7 @@ extension NetworkManager {
     
     func getEventForId(_ id: Int,
                        completion: @escaping (Result<Event, NetworkResponse>) -> Void) {
-        router.request(.getEvenyForId(id: id)) { data, response, error in
+        router.request(.getEventForId(id: id)) { data, response, error in
             if error != nil {
                 completion(.failure(.noNetwork))
             }
@@ -870,6 +870,44 @@ extension NetworkManager {
                         completion(.success(apiResponse))
                     } catch let decodingError as DecodingError {
                         self.handleDecodingError(decodingError)
+                    } catch {
+                        completion(.failure(.unableToDecode))
+                    }
+                case .failure(let networkFailureError):
+                    do {
+                        let apiResponse = try JSONDecoder().decode(ServerResponse.self,
+                                                                   from: responseData)
+                        completion(.failure(.customError(textError: apiResponse.status)))
+                    } catch {
+                        completion(.failure(networkFailureError))
+                    }
+                }
+            }
+        }
+    }
+    
+    func getEvents(from startDate: String,
+                   to endDate: String,
+                   completion: @escaping (Result<[EventForDate], NetworkResponse>) -> Void) {
+        router.request(.getEvents(startDate: startDate, endDate: endDate)) { data, response, error in
+            if error != nil {
+                completion(.failure(.noNetwork))
+            }
+            if let response = response as? HTTPURLResponse {
+                let result = self.handleNetworkResponse(response)
+                guard let responseData = data else {
+                    completion(.failure(.noData))
+                    return
+                }
+                switch result {
+                case .success:
+                    do {
+                        let apiResponse = try JSONDecoder().decode([EventForDate].self,
+                                                                   from: responseData)
+                        completion(.success(apiResponse))
+                    } catch let decodingError as DecodingError {
+                        self.handleDecodingError(decodingError)
+                        completion(.failure(.unableToDecode))
                     } catch {
                         completion(.failure(.unableToDecode))
                     }

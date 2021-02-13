@@ -37,16 +37,20 @@ class TabBarController: UITabBarController {
         secondVc.presenter = ContactsPresenter(view: secondVc)
         secondVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "ContactsTabBarIcon"), tag: 1)
         
-//        let thirdVc = StartMessagesViewController()
-        let thirdVc = StartMainViewController()
-        thirdVc.presenter = StartMainPresenter(view: thirdVc)
+        let thirdVc = StartMessagesViewController()
+//        let thirdVc = StartMainViewController()
+        thirdVc.presenter = StartMessagesPresenter(view: thirdVc)
         thirdVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "MessageTabBarIcon"), tag: 2)
         
-        let fourthVc = StartSettingsViewController()
-        fourthVc.presenter = StartSettingsPresenter(view: fourthVc)
-        fourthVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "SettingsTabBarIcon"), tag: 3)
+        let fourthVc = StartSearchViewController()
+        fourthVc.presenter = StartSearchPresenter(view: fourthVc)
+        fourthVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "SearchTabBarIcon"), tag: 3)
         
-        let controllerArray = [firstVc, secondVc, thirdVc, fourthVc]
+        let fifthVc = StartSettingsViewController()
+        fifthVc.presenter = StartSettingsPresenter(view: fifthVc)
+        fifthVc.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "SettingsTabBarIcon"), tag: 4)
+        
+        let controllerArray = [firstVc, secondVc, thirdVc, fourthVc, fifthVc]
         self.viewControllers = controllerArray.map { UINavigationController(rootViewController: $0) }
     }
     

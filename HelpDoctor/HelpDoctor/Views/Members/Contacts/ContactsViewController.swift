@@ -333,9 +333,12 @@ extension ContactsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        tableView.cellForRow(at: indexPath)?.isSelected = true
-//        presenter?.addToSelected(index: indexPath.section)
-//        searchBar.searchTextField.resignFirstResponder()
+        guard let contact = presenter?.getContact(index: indexPath.section) else { return }
+        let viewController = UserViewController()
+        let vcPresenter = UserPresenter(view: viewController)
+        viewController.presenter = vcPresenter
+        viewController.userId = contact.id
+        navigationController?.pushViewController(viewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView,

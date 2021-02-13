@@ -134,6 +134,8 @@
 		469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD660245EB921006DBD30 /* EditProfileViewController.swift */; };
 		469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD662245EB934006DBD30 /* EditProfilePresenter.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
+		46B9327A25D6946E00DA8AB7 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B9327925D6946E00DA8AB7 /* PaddingLabel.swift */; };
+		46B9327E25D6965400DA8AB7 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B9327D25D6965400DA8AB7 /* ChatCell.swift */; };
 		46D086352511DDF3007C367F /* AcademicDegree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D086342511DDF3007C367F /* AcademicDegree.swift */; };
 		46D0863725122AA8007C367F /* ServerResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D0863625122AA8007C367F /* ServerResponse.swift */; };
 		46DC65DB257B4D610022F8A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46DC65DA257B4D610022F8A7 /* GoogleService-Info.plist */; };
@@ -149,6 +151,8 @@
 		46EFF4E42435F4E0004B9558 /* ProfilePopoverController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */; };
 		46EFF4E9243797B3004B9558 /* CreateProfileImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4E8243797B3004B9558 /* CreateProfileImageViewController.swift */; };
 		46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46EFF4EA243797C4004B9558 /* CreateProfileImagePresenter.swift */; };
+		46F2818C25D67E6E0077EE05 /* StartMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F2818B25D67E6E0077EE05 /* StartMessagesViewController.swift */; };
+		46F2819025D67E7B0077EE05 /* StartMessagesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F2818F25D67E7B0077EE05 /* StartMessagesPresenter.swift */; };
 		46F87EE123B74CE20095264E /* FirstScreenPresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */; };
 		46F87EEC23B7B0FE0095264E /* RegisterScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */; };
 		46F87EEE23B7B1180095264E /* RegisterScreenPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */; };
@@ -241,7 +245,6 @@
 		C48F167523B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F167423B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift */; };
 		C48F168323BA062D002D04E3 /* StartMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168223BA062D002D04E3 /* StartMainViewController.swift */; };
 		C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168423BA063C002D04E3 /* StartScheduleViewController.swift */; };
-		C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168623BA064C002D04E3 /* StartMessagesViewController.swift */; };
 		C48F168923BA065A002D04E3 /* StartSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */; };
 		C48F168E23BAF535002D04E3 /* StartMainPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F168D23BAF535002D04E3 /* StartMainPresenter.swift */; };
 		C4CBC3A523D025E700434BFB /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4CBC3A423D025E600434BFB /* NetworkService.swift */; };
@@ -385,6 +388,8 @@
 		469DD660245EB921006DBD30 /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		469DD662245EB934006DBD30 /* EditProfilePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfilePresenter.swift; sourceTree = "<group>"; };
 		469E0583242B794E00F60A6F /* PickerField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PickerField.swift; sourceTree = "<group>"; };
+		46B9327925D6946E00DA8AB7 /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
+		46B9327D25D6965400DA8AB7 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		46D086342511DDF3007C367F /* AcademicDegree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcademicDegree.swift; sourceTree = "<group>"; };
 		46D0863625122AA8007C367F /* ServerResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerResponse.swift; sourceTree = "<group>"; };
 		46DC65DA257B4D610022F8A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -400,6 +405,8 @@
 		46EFF4E32435F4DF004B9558 /* ProfilePopoverController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePopoverController.swift; sourceTree = "<group>"; };
 		46EFF4E8243797B3004B9558 /* CreateProfileImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileImageViewController.swift; sourceTree = "<group>"; };
 		46EFF4EA243797C4004B9558 /* CreateProfileImagePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateProfileImagePresenter.swift; sourceTree = "<group>"; };
+		46F2818B25D67E6E0077EE05 /* StartMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMessagesViewController.swift; sourceTree = "<group>"; };
+		46F2818F25D67E7B0077EE05 /* StartMessagesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMessagesPresenter.swift; sourceTree = "<group>"; };
 		46F87EE023B74CE20095264E /* FirstScreenPresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstScreenPresenterProtocol.swift; sourceTree = "<group>"; };
 		46F87EEB23B7B0FE0095264E /* RegisterScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenViewController.swift; sourceTree = "<group>"; };
 		46F87EED23B7B1180095264E /* RegisterScreenPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterScreenPresenter.swift; sourceTree = "<group>"; };
@@ -493,7 +500,6 @@
 		C48F167423B9D548002D04E3 /* RecoveryPasswordEndPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecoveryPasswordEndPresenter.swift; sourceTree = "<group>"; };
 		C48F168223BA062D002D04E3 /* StartMainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMainViewController.swift; sourceTree = "<group>"; };
 		C48F168423BA063C002D04E3 /* StartScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScheduleViewController.swift; sourceTree = "<group>"; };
-		C48F168623BA064C002D04E3 /* StartMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMessagesViewController.swift; sourceTree = "<group>"; };
 		C48F168823BA065A002D04E3 /* StartSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSettingsViewController.swift; sourceTree = "<group>"; };
 		C48F168D23BAF535002D04E3 /* StartMainPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartMainPresenter.swift; sourceTree = "<group>"; };
 		C4CBC3A423D025E600434BFB /* NetworkService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -972,6 +978,16 @@
 			path = CreateProfileImage;
 			sourceTree = "<group>";
 		};
+		46F2818A25D67E4A0077EE05 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				46F2818B25D67E6E0077EE05 /* StartMessagesViewController.swift */,
+				46F2818F25D67E7B0077EE05 /* StartMessagesPresenter.swift */,
+				46B9327D25D6965400DA8AB7 /* ChatCell.swift */,
+			);
+			path = Start;
+			sourceTree = "<group>";
+		};
 		46F87EEA23B7B0CB0095264E /* Register */ = {
 			isa = PBXGroup;
 			children = (
@@ -1038,6 +1054,7 @@
 				46203F2A23CB2A240072653A /* ActivityIndicatorView.swift */,
 				469E0583242B794E00F60A6F /* PickerField.swift */,
 				4682F39D25021E1A005BDA9E /* ScaleSwitch.swift */,
+				46B9327925D6946E00DA8AB7 /* PaddingLabel.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1411,7 +1428,7 @@
 		C48F168023BA05C7002D04E3 /* Messages */ = {
 			isa = PBXGroup;
 			children = (
-				C48F168623BA064C002D04E3 /* StartMessagesViewController.swift */,
+				46F2818A25D67E4A0077EE05 /* Start */,
 			);
 			path = Messages;
 			sourceTree = "<group>";
@@ -1647,6 +1664,7 @@
 				C48F163723B6174C002D04E3 /* UIColor+Extensions.swift in Sources */,
 				4670346723D4178A00AFAA91 /* NotificationDelegate.swift in Sources */,
 				46F87EF323B85B750095264E /* RegisterEndViewController.swift in Sources */,
+				46B9327E25D6965400DA8AB7 /* ChatCell.swift in Sources */,
 				46164BBB24EFF02C00879DE4 /* DimmPresentationController.swift in Sources */,
 				46F87F5923BF7FC10095264E /* MedicalOrganizationViewController.swift in Sources */,
 				C4CBC3D023D1C08200434BFB /* InterestTableViewCell.swift in Sources */,
@@ -1710,6 +1728,7 @@
 				4694E1B2251B284F00F7B696 /* SearchUsersViewController.swift in Sources */,
 				469DD65824594651006DBD30 /* CreateProfileStep6Presenter.swift in Sources */,
 				46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */,
+				46B9327A25D6946E00DA8AB7 /* PaddingLabel.swift in Sources */,
 				4694E1B6251B287A00F7B696 /* SearchUsersPresenter.swift in Sources */,
 				4640B6C6240271480023C3A3 /* ChangePasswordViewController.swift in Sources */,
 				46959B5324ED2D0800139A17 /* Universities.swift in Sources */,
@@ -1731,10 +1750,12 @@
 				46097CD22574FA0A0061B1B7 /* UserPresenter.swift in Sources */,
 				4682F3BC250F4CF7005BDA9E /* HTTPMethod.swift in Sources */,
 				469DD65A245ADAD1006DBD30 /* AttachmentTapGestureRecognizer.swift in Sources */,
+				46F2819025D67E7B0077EE05 /* StartMessagesPresenter.swift in Sources */,
 				46EFF4EB243797C4004B9558 /* CreateProfileImagePresenter.swift in Sources */,
 				4682F3A525023DBE005BDA9E /* GuestCell.swift in Sources */,
 				46203EFC23C46A4E0072653A /* GetAddedProfileInterests.swift in Sources */,
 				4694E1AA251B0B7A00F7B696 /* StartSearchUserViewController.swift in Sources */,
+				46F2818C25D67E6E0077EE05 /* StartMessagesViewController.swift in Sources */,
 				C48F168523BA063C002D04E3 /* StartScheduleViewController.swift in Sources */,
 				C4CBC3FB23E2ABE400434BFB /* PlaceAnnotation.swift in Sources */,
 				C48F162923B5FE87002D04E3 /* Interest.swift in Sources */,
@@ -1759,7 +1780,6 @@
 				4682F3AC250275D6005BDA9E /* ContactTableViewCell.swift in Sources */,
 				46164B9524EE48A000879DE4 /* AddEventViewController.swift in Sources */,
 				46164BBF24EFF1E100879DE4 /* DismissAnimation.swift in Sources */,
-				C48F168723BA064C002D04E3 /* StartMessagesViewController.swift in Sources */,
 				46203F0623C5F6C30072653A /* TileButton.swift in Sources */,
 				46164B9724EE48B000879DE4 /* AddEventPresenter.swift in Sources */,
 				46F87F2B23BC898D0095264E /* CreateProfileWorkPresenter.swift in Sources */,
@@ -1979,6 +1999,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = RLG8X24CCJ;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -1999,6 +2020,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = RLG8X24CCJ;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;

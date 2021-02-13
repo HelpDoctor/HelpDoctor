@@ -33,6 +33,7 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter?.getEvents()
         view.backgroundColor = UIColor.backgroundColor
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
@@ -61,6 +62,10 @@ class StartScheduleViewController: UIViewController {
     }
     
     // MARK: - Public methods
+    func reloadCalendar() {
+        calendarView.reloadData()
+    }
+    
     func reloadTableView() {
         tableView.reloadData()
         let countPatients = presenter?.getCountPatients()
@@ -289,6 +294,8 @@ class StartScheduleViewController: UIViewController {
         guard let myCustomCell = view as? DayCell else { return }
         let dayOfWeek = myCustomCell.dayOfWeekLabel.text
         
+        myCustomCell.eventedView.isHidden = !myCustomCell.isEvent
+        
         if cellState.isSelected {
             myCustomCell.selectedView.isHidden = false
             myCustomCell.dateLabel.textColor = .white
@@ -391,7 +398,7 @@ extension StartScheduleViewController: UITableViewDataSource {
 extension StartScheduleViewController: JTACMonthViewDataSource {
     
     func configureCalendar(_ calendar: JTACMonthView) -> ConfigurationParameters {
-        let startDate = "2020 08 01".toDate(withFormat: "yyyy MM dd") ?? Date()
+        let startDate = "2021 01 01".toDate(withFormat: "yyyy MM dd") ?? Date()
         let endDate = "2029 12 31".toDate(withFormat: "yyyy MM dd") ?? Date()
         return ConfigurationParameters(startDate: startDate,
                                        endDate: endDate,
@@ -439,6 +446,12 @@ extension StartScheduleViewController: JTACMonthViewDelegate {
         myCustomCell.dateLabel.text = cellState.text
         myCustomCell.dayOfWeekLabel.text = dayOfWeek
         myCustomCell.monthLabel.text = month
+        
+        if ((Session.instance.eventDates.first(where: { $0 == date.toString(withFormat: "yyyy-MM-dd") })) != nil) {
+            myCustomCell.isEvent = true
+        } else {
+            myCustomCell.isEvent = false
+        }
         
         if Calendar.current.isDateInToday(date) {
             myCustomCell.isSelected = true

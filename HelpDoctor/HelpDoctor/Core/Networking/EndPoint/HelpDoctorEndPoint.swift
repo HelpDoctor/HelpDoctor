@@ -33,7 +33,8 @@ enum HelpDoctorApi {
     case getBlockedUsers
     case setEvent(event: Event)
     case getEventForDate(date: String)
-    case getEvenyForId(id: Int)
+    case getEventForId(id: Int)
+    case getEvents(startDate: String, endDate: String)
     case deleteEvent(id: Int)
     case feedback(feedback: String)
     case invite(email: String, firstName: String, lastName: String?)
@@ -101,8 +102,10 @@ extension HelpDoctorApi: EndPointType {
             return "public/api/event/set"
         case .getEventForDate(date: let date):
             return "public/api/event/date/\(date)"
-        case .getEvenyForId(id: let id):
+        case .getEventForId(id: let id):
             return "public/api/event/get/\(id)"
+        case .getEvents:
+            return "public/api/event/date/range"
         case .deleteEvent(id: let id):
             return "public/api/event/del/\(id)"
         case .feedback:
@@ -160,7 +163,8 @@ extension HelpDoctorApi: EndPointType {
              .getMedicalSpecialization,
              .getContactList,
              .getEventForDate,
-             .getEvenyForId,
+             .getEventForId,
+             .getEvents,
              .deleteEvent,
              .getSettings,
              .getBlockedUsers,
@@ -282,9 +286,15 @@ extension HelpDoctorApi: EndPointType {
                                                                  "specialization": query.specialization as Any,
                                                                  "education": query.education as Any,
                                                                  "education_year_ending": query.yearEnding as Any,
+                                                                 "interest": query.interest as Any,
                                                                  "page": page,
                                                                  "limit": limit],
                                                 urlParameters: nil,
+                                                additionHeaders: headers)
+        case .getEvents(startDate: let startDate, endDate: let endDate):
+            return .requestParametersAndHeaders(bodyParameters: nil,
+                                                urlParameters: ["start_date": startDate,
+                                                                "end_date": endDate],
                                                 additionHeaders: headers)
         case .deleteUser,
              .logout,
@@ -294,7 +304,7 @@ extension HelpDoctorApi: EndPointType {
              .getProfileById,
              .getContactList,
              .getEventForDate,
-             .getEvenyForId,
+             .getEventForId,
              .deleteEvent,
              .getSettings,
              .verification,
@@ -321,7 +331,8 @@ extension HelpDoctorApi: EndPointType {
              .getContactList,
              .setEvent,
              .getEventForDate,
-             .getEvenyForId,
+             .getEventForId,
+             .getEvents,
              .deleteEvent,
              .feedback,
              .changePassword,
