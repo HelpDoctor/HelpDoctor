@@ -111,4 +111,8 @@ class HeaderView: UIView {
     @objc private func backButtonPressed() {
         presenter?.back()
     }
+    
+    func hideBackButton() {
+        backButton.isHidden = true
+    }
 }

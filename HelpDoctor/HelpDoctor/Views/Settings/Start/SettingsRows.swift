@@ -15,7 +15,7 @@ enum SettingsRow: String {
     case securitySettings = "Изменение пароля"
     case addFriends = "Пригласить коллег в приложение"
     case notificationSettings = "Настройки уведомлений и звука"
-    case emailSettings = "Настройка почтовой рыссылки и приглашений"
+    case emailSettings = "Настройка почтовой рассылки и приглашений"
     case callback = "Связаться с разработчиками"
     case help = "Помощь HelpDoctor"
     case push = "Настройки уведомлений"

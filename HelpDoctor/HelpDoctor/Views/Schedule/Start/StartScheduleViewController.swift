@@ -51,6 +51,8 @@ class StartScheduleViewController: UIViewController {
         setupTableView()
         setupAddButton()
         presenter?.getEvents(newDate: currentDate)
+        guard let headerView = view.viewWithTag(Session.tagHeaderView) as? HeaderView else { return }
+        headerView.hideBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {

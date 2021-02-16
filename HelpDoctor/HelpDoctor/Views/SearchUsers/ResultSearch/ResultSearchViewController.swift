@@ -215,7 +215,7 @@ class ResultSearchViewController: UIViewController {
     }
     
     @objc private func sortButtonPressed() {
-//        presenter?.saveGuests()
+        presenter?.sortByName()
     }
     
     @objc private func closeButtonPressed() {

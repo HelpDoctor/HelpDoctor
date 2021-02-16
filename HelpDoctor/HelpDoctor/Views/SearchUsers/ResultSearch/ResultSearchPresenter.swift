@@ -17,6 +17,7 @@ protocol ResultSearchPresenterProtocol: Presenter {
     func getContact(index: Int) -> Contacts?
     func toFilter()
     func searchUsers(_ query: String, _ limit: Int, _ page: Int)
+    func sortByName()
 }
 
 class ResultSearchPresenter: ResultSearchPresenterProtocol {
@@ -150,6 +151,11 @@ class ResultSearchPresenter: ResultSearchPresenterProtocol {
                 self.view.stopActivityIndicator()
             }
         }
+    }
+    
+    func sortByName() {
+        usersList = usersList.sorted(by: { $0.lastName ?? "" < $1.lastName ?? "" })
+        view.reloadTableView()
     }
 }
 

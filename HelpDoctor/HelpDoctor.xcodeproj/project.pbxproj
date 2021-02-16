@@ -134,6 +134,7 @@
 		469DD661245EB922006DBD30 /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD660245EB921006DBD30 /* EditProfileViewController.swift */; };
 		469DD663245EB934006DBD30 /* EditProfilePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469DD662245EB934006DBD30 /* EditProfilePresenter.swift */; };
 		469E0584242B794E00F60A6F /* PickerField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E0583242B794E00F60A6F /* PickerField.swift */; };
+		46A89F5925DA22C10046F914 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 46A89F5825DA22C10046F914 /* FirebaseAnalytics */; };
 		46B9327A25D6946E00DA8AB7 /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B9327925D6946E00DA8AB7 /* PaddingLabel.swift */; };
 		46B9327E25D6965400DA8AB7 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B9327D25D6965400DA8AB7 /* ChatCell.swift */; };
 		46D086352511DDF3007C367F /* AcademicDegree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D086342511DDF3007C367F /* AcademicDegree.swift */; };
@@ -199,7 +200,6 @@
 		46F87F6923C09E120095264E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6823C09E120095264E /* UIImage+Extensions.swift */; };
 		46F87F6B23C09F240095264E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6A23C09F240095264E /* String+Extensions.swift */; };
 		46F87F6D23C0EB890095264E /* SavedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46F87F6C23C0EB880095264E /* SavedView.swift */; };
-		AD76E3DDA75FF4629E53B114 /* Pods_HelpDoctor.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8617DE43329A02ADBB4B142 /* Pods_HelpDoctor.framework */; };
 		C48F15E223B5FD30002D04E3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15E123B5FD30002D04E3 /* AppDelegate.swift */; };
 		C48F15EB23B5FD5A002D04E3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C48F15EA23B5FD5A002D04E3 /* Assets.xcassets */; };
 		C48F161923B5FE87002D04E3 /* Cities.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48F15FE23B5FE85002D04E3 /* Cities.swift */; };
@@ -261,7 +261,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		318049BDF6E479ABA80847A9 /* Pods-HelpDoctor.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelpDoctor.debug.xcconfig"; path = "Target Support Files/Pods-HelpDoctor/Pods-HelpDoctor.debug.xcconfig"; sourceTree = "<group>"; };
 		46072E0923C1F4D80070F2F6 /* StartSchedulePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartSchedulePresenter.swift; sourceTree = "<group>"; };
 		46072E0B23C1FAAC0070F2F6 /* HeaderViewWithoutLogo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewWithoutLogo.swift; sourceTree = "<group>"; };
 		46072E0E23C20E390070F2F6 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
@@ -513,8 +512,6 @@
 		C4CBC3FA23E2ABE400434BFB /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
 		C4CBC3FD23E2AC0300434BFB /* SearchCompletionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCompletionTableViewCell.swift; sourceTree = "<group>"; };
 		C4CBC3FF23E2ACAD00434BFB /* MapItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapItemTableViewCell.swift; sourceTree = "<group>"; };
-		D3C0EEC8FBBB2AE3575EFB6D /* Pods-HelpDoctor.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-HelpDoctor.release.xcconfig"; path = "Target Support Files/Pods-HelpDoctor/Pods-HelpDoctor.release.xcconfig"; sourceTree = "<group>"; };
-		D8617DE43329A02ADBB4B142 /* Pods_HelpDoctor.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_HelpDoctor.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -522,23 +519,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				46A89F5925DA22C10046F914 /* FirebaseAnalytics in Frameworks */,
 				46164B9A24EE5DA600879DE4 /* JTAppleCalendar in Frameworks */,
-				AD76E3DDA75FF4629E53B114 /* Pods_HelpDoctor.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		003198C508794C1DE1991037 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				318049BDF6E479ABA80847A9 /* Pods-HelpDoctor.debug.xcconfig */,
-				D3C0EEC8FBBB2AE3575EFB6D /* Pods-HelpDoctor.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		46072E0723C1F49B0070F2F6 /* Start */ = {
 			isa = PBXGroup;
 			children = (
@@ -1180,21 +1168,11 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		689A3CD95B5202F7FDF44EB3 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				D8617DE43329A02ADBB4B142 /* Pods_HelpDoctor.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		C48F15D523B5FD30002D04E3 = {
 			isa = PBXGroup;
 			children = (
 				C48F15E023B5FD30002D04E3 /* HelpDoctor */,
 				C48F15DF23B5FD30002D04E3 /* Products */,
-				003198C508794C1DE1991037 /* Pods */,
-				689A3CD95B5202F7FDF44EB3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1493,12 +1471,10 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C48F15F223B5FD5A002D04E3 /* Build configuration list for PBXNativeTarget "HelpDoctor" */;
 			buildPhases = (
-				DF318DB9708B7792A298D378 /* [CP] Check Pods Manifest.lock */,
 				C48F15DA23B5FD30002D04E3 /* Sources */,
 				C48F15DB23B5FD30002D04E3 /* Frameworks */,
 				C48F15DC23B5FD30002D04E3 /* Resources */,
 				46F87EE923B7ACF30095264E /* ShellScript */,
-				C149E51BA487BA562EF44417 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1507,6 +1483,7 @@
 			name = HelpDoctor;
 			packageProductDependencies = (
 				46164B9924EE5DA600879DE4 /* JTAppleCalendar */,
+				46A89F5825DA22C10046F914 /* FirebaseAnalytics */,
 			);
 			productName = HelpDoctor;
 			productReference = C48F15DE23B5FD30002D04E3 /* HelpDoctor.app */;
@@ -1538,6 +1515,7 @@
 			mainGroup = C48F15D523B5FD30002D04E3;
 			packageReferences = (
 				46164B9824EE5DA600879DE4 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
+				46A89F5725DA22C10046F914 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = C48F15DF23B5FD30002D04E3 /* Products */;
 			projectDirPath = "";
@@ -1604,45 +1582,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
-		};
-		C149E51BA487BA562EF44417 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelpDoctor/Pods-HelpDoctor-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-HelpDoctor/Pods-HelpDoctor-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-HelpDoctor/Pods-HelpDoctor-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DF318DB9708B7792A298D378 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-HelpDoctor-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1995,11 +1934,10 @@
 		};
 		C48F15F323B5FD5A002D04E3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 318049BDF6E479ABA80847A9 /* Pods-HelpDoctor.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = RLG8X24CCJ;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -2007,6 +1945,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.helpdoctor.helpdoctor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -2016,11 +1955,10 @@
 		};
 		C48F15F423B5FD5A002D04E3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D3C0EEC8FBBB2AE3575EFB6D /* Pods-HelpDoctor.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = RLG8X24CCJ;
 				INFOPLIST_FILE = HelpDoctor/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
@@ -2028,6 +1966,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = ru.helpdoctor.helpdoctor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -2067,6 +2006,14 @@
 				minimumVersion = 8.0.3;
 			};
 		};
+		46A89F5725DA22C10046F914 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMinorVersion;
+				minimumVersion = 7.6.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -2074,6 +2021,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 46164B9824EE5DA600879DE4 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
 			productName = JTAppleCalendar;
+		};
+		46A89F5825DA22C10046F914 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 46A89F5725DA22C10046F914 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

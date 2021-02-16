@@ -43,6 +43,8 @@ class StartSettingsViewController: UIViewController {
                         font: .boldSystemFontOfSize(size: 14))
         setupTableView()
         presenter?.loadSettings()
+        guard let headerView = view.viewWithTag(Session.tagHeaderView) as? HeaderView else { return }
+        headerView.hideBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {

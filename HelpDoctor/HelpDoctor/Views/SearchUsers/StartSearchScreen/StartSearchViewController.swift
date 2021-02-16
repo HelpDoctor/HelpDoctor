@@ -42,6 +42,8 @@ class StartSearchViewController: UIViewController, UIScrollViewDelegate {
         setupFindButton()
         addTapGestureToHideKeyboard()
         addSwipeGestureToBack()
+        guard let headerView = view.viewWithTag(Session.tagHeaderView) as? HeaderView else { return }
+        headerView.hideBackButton()
     }
     
     override func viewWillAppear(_ animated: Bool) {
