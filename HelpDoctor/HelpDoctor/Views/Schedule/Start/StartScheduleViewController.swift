@@ -33,7 +33,7 @@ class StartScheduleViewController: UIViewController {
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter?.getEvents()
+        presenter?.getEvents(from: "2021-01-01", to: "2029-12-31")
         view.backgroundColor = UIColor.backgroundColor
         setupHeaderView(color: .tabBarColor,
                         height: headerHeight,
@@ -60,6 +60,7 @@ class StartScheduleViewController: UIViewController {
         navigationController?.setNavigationBarHidden(true, animated: animated)
         UIApplication.shared.setStatusBarBackgroundColor(color: .tabBarColor)
         tabBarController?.tabBar.isHidden = false
+        presenter?.getEvents(from: "2021-01-01", to: "2029-12-31")
         refresh(tableView)
     }
     

@@ -22,7 +22,6 @@ class ResultSearchViewController: UIViewController {
     private let resultLabel = UILabel()
     private let centralView = UIView()
     private let contactsLabel = UILabel()
-    private let sortButton = UIButton()
     private let filterButton = UIButton()
     private let tableView = UITableView()
     var filterParams = ""
@@ -42,7 +41,6 @@ class ResultSearchViewController: UIViewController {
         setupResultLabel()
         setupCentralView()
         setupContactsLabel()
-        setupSortButton()
         setupFilterButton()
         setupTableView()
     }
@@ -155,23 +153,6 @@ class ResultSearchViewController: UIViewController {
         contactsLabel.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
     }
     
-    private func setupSortButton() {
-        sortButton.addTarget(self, action: #selector(sortButtonPressed), for: .touchUpInside)
-        sortButton.setImage(UIImage(named: "SortIcon"), for: .normal)
-        sortButton.setTitle(" Сортировать по имени", for: .normal)
-        sortButton.titleLabel?.font = .mediumSystemFontOfSize(size: 12)
-        sortButton.titleLabel?.textColor = .white
-        sortButton.contentHorizontalAlignment = .center
-        centralView.addSubview(sortButton)
-        
-        sortButton.translatesAutoresizingMaskIntoConstraints = false
-        sortButton.topAnchor.constraint(equalTo: centralView.topAnchor).isActive = true
-        sortButton.leadingAnchor.constraint(equalTo: contactsLabel.trailingAnchor,
-                                               constant: verticalInset).isActive = true
-        sortButton.widthAnchor.constraint(equalToConstant: (Session.width - (verticalInset * 4) - 140)).isActive = true
-        sortButton.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
-    }
-    
     private func setupFilterButton() {
         filterButton.addTarget(self, action: #selector(filterButtonPressed), for: .touchUpInside)
         filterButton.setImage(UIImage(named: "FilterHIcon"), for: .normal)
@@ -183,8 +164,8 @@ class ResultSearchViewController: UIViewController {
         
         filterButton.translatesAutoresizingMaskIntoConstraints = false
         filterButton.topAnchor.constraint(equalTo: centralView.topAnchor).isActive = true
-        filterButton.leadingAnchor.constraint(equalTo: sortButton.trailingAnchor,
-                                               constant: verticalInset).isActive = true
+        filterButton.trailingAnchor.constraint(equalTo: centralView.trailingAnchor,
+                                               constant: -verticalInset).isActive = true
         filterButton.widthAnchor.constraint(equalToConstant: 70).isActive = true
         filterButton.bottomAnchor.constraint(equalTo: centralView.bottomAnchor).isActive = true
     }
@@ -212,10 +193,6 @@ class ResultSearchViewController: UIViewController {
     // MARK: - Buttons methods
     @objc private func filterButtonPressed() {
         presenter?.toFilter()
-    }
-    
-    @objc private func sortButtonPressed() {
-        presenter?.sortByName()
     }
     
     @objc private func closeButtonPressed() {

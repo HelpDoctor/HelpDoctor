@@ -24,7 +24,7 @@ protocol StartSchedulePresenterProtocol: Presenter {
     func getMajorFlag(index: Int) -> Bool?
     func getTitleEvent(index: Int) -> String?
     func deleteEvent(index: Int)
-    func getEvents()
+    func getEvents(from startDate: String, to endDate: String)
 }
 
 class StartSchedulePresenter: StartSchedulePresenterProtocol {
@@ -207,8 +207,8 @@ class StartSchedulePresenter: StartSchedulePresenterProtocol {
         }
     }
     
-    func getEvents() {
-        NetworkManager.shared.getEvents(from: "2021-01-01", to: "2029-12-31") { [weak self] result in
+    func getEvents(from startDate: String, to endDate: String) {
+        NetworkManager.shared.getEvents(from: startDate, to: endDate) { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let eventsForDate):
