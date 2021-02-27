@@ -37,6 +37,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
     private var endDate: Date?
     private var notifyDate: Date?
     private var guestList: [Contacts] = []
+    private var replay: String?
     
     // MARK: - Init
     required init(view: AddEventViewController) {
@@ -80,6 +81,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
         let viewController = RepeatEventViewController()
         let presenter = RepeatEventPresenter(view: viewController)
         viewController.presenter = presenter
+        viewController.replay = replay
         presenter.delegate = self
         transition.frameOfPresentedViewInContainerView = CGRect(x: 0,
                                                                 y: Session.height - 356,
@@ -112,16 +114,18 @@ class AddEventPresenter: AddEventPresenterProtocol {
         guard let idEvent = idEvent else { return }
         NetworkManager.shared.getEventForId(idEvent) { [weak self] result in
             DispatchQueue.main.async {
+                guard let self = self else { return }
                 switch result {
                 case .success(let event):
-                    self?.eventType = event.eventType
-                    self?.startDate = event.startDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.endDate = event.endDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.notifyDate = event.notifyDate?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
-                    self?.createGuestList(participants: event.participants ?? [])
-                    self?.view.setEventOnView(event: event)
+                    self.eventType = event.eventType
+                    self.startDate = event.startDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self.endDate = event.endDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self.notifyDate = event.notifyDate?.toDate(withFormat: "yyyy-MM-dd HH:mm:ss")
+                    self.createGuestList(participants: event.participants ?? [])
+                    self.replay = event.replay?.period
+                    self.view.setEventOnView(event: event)
                 case .failure(let error):
-                    self?.view.showAlert(message: error.description)
+                    self.view.showAlert(message: error.description)
                 }
             }
         }
@@ -173,6 +177,8 @@ class AddEventPresenter: AddEventPresenterProtocol {
         guestList.forEach {
             participants.append(Event.Participant(id: $0.id, fullName: $0.fullName))
         }
+        
+        let eventReplay = Event.Replay(period: replay, replayDateTime: nil, parentId: nil)
 
         let newEvent = Event(id: idEvent,
                              startDate: startDate.toString(withFormat: "yyyy-MM-dd HH:mm:ss"),
@@ -183,6 +189,7 @@ class AddEventPresenter: AddEventPresenterProtocol {
                              isMajor: isMajor,
                              eventPlace: location,
                              eventType: eventType,
+                             replay: eventReplay,
                              participants: participants)
         NetworkManager.shared.setEvent(newEvent) { [weak self] result in
             DispatchQueue.main.async {
@@ -307,22 +314,27 @@ extension AddEventPresenter: SelectDateControllerDelegate {
 extension AddEventPresenter: RepeatEventControllerDelegate {
     func callbackDayRepeat() {
         view.setRepeatLabel(repeatText: "Каждый день")
+        replay = "daily"
     }
     
     func callbackWeekRepeat() {
         view.setRepeatLabel(repeatText: "Каждую неделю")
+        replay = "weekly"
     }
     
     func callbackMonthRepeat() {
         view.setRepeatLabel(repeatText: "Каждый месяц")
+        replay = "monthly"
     }
     
     func callbackYearRepeat() {
         view.setRepeatLabel(repeatText: "Каждый год")
+        replay = "yearly"
     }
     
     func callbackNeverRepeat() {
         view.setNeverRepeat()
+        replay = nil
     }
     
     func callbackTimeRepeat() {
@@ -342,6 +354,7 @@ extension AddEventPresenter: SelectRepeatTimeControllerDelegate {
     
     func callbackTime() {
         view.setRepeatLabel(repeatText: "Польз. настройки")
+        replay? = "date"
     }
 }
 

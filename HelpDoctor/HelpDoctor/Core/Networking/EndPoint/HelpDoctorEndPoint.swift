@@ -225,7 +225,11 @@ extension HelpDoctorApi: EndPointType {
                                                                     "primary_consultation": true,
                                                                     "is_major": event.isMajor as Any,
                                                                     "event_place": event.eventPlace as Any,
-                                                                    "event_type": event.eventType?.rawValue as Any],
+                                                                    "event_type": event.eventType?.rawValue as Any,
+                                                                    "replay": [
+                                                                        "period": event.replay?.period as Any,
+                                                                        "datetime": event.replay?.replayDateTime as Any,
+                                                                        "parent_id": event.replay?.parentId as Any]],
                                                                  "participants": participants as Any],
                                                 urlParameters: nil,
                                                 additionHeaders: headers)

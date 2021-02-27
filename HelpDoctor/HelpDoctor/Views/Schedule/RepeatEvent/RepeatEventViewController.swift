@@ -34,6 +34,7 @@ class RepeatEventViewController: UIViewController {
     private let neverLabel = UILabel()
     private let timeButton = RadioButton()
     private let timeLabel = UILabel()
+    var replay: String?
     
     // MARK: - Lifecycle ViewController
     override func viewDidLoad() {
@@ -54,6 +55,25 @@ class RepeatEventViewController: UIViewController {
         setupTimeButton()
         setupTimeLabel()
         configureRadioButtons()
+        switch replay {
+        case "daily":
+            dayButton.isSelected = true
+        case "weekly":
+            weekButton.isSelected = true
+        case "monthly":
+            monthButton.isSelected = true
+        case "yearly":
+            yearButton.isSelected = true
+        case "date":
+            timeButton.isSelected = true
+        default:
+            dayButton.isSelected = false
+            weekButton.isSelected = false
+            monthButton.isSelected = false
+            yearButton.isSelected = false
+            neverButton.isSelected = false
+            timeButton.isSelected = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

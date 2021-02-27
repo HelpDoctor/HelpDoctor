@@ -19,6 +19,18 @@ struct Event: Codable {
         }
     }
     
+    struct Replay: Codable {
+        let period: String?
+        let replayDateTime: String?
+        let parentId: Int?
+        
+        enum CodingKeys: String, CodingKey {
+            case period
+            case replayDateTime = "replay_datetime"
+            case parentId = "parent_id"
+        }
+    }
+    
     let id: Int?
     let startDate: String
     let endDate: String
@@ -28,6 +40,7 @@ struct Event: Codable {
     let isMajor: Bool?
     let eventPlace: String?
     let eventType: EventType?
+    let replay: Replay?
     let participants: [Participant]?
     
     private enum CodingKeys: String, CodingKey {
@@ -40,6 +53,7 @@ struct Event: Codable {
         case isMajor = "is_major"
         case eventPlace = "event_place"
         case eventType = "event_type"
+        case replay
         case participants
     }
 }

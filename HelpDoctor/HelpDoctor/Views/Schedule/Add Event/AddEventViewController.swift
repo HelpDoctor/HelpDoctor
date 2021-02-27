@@ -158,6 +158,25 @@ class AddEventViewController: UIViewController, UIScrollViewDelegate {
             majorSwitch.isOn = true
             majorSwitch.thumbTintColor = UIColor.majorEventColor
         }
+        switch event.replay?.period {
+        case "daily":
+            repeatSwitch.isOn = true
+            setRepeatLabel(repeatText: "Каждый день")
+        case "weekly":
+            repeatSwitch.isOn = true
+            setRepeatLabel(repeatText: "Каждую неделю")
+        case "monthly":
+            repeatSwitch.isOn = true
+            setRepeatLabel(repeatText: "Каждый месяц")
+        case "yearly":
+            repeatSwitch.isOn = true
+            setRepeatLabel(repeatText: "Каждый год")
+        case "date":
+            repeatSwitch.isOn = true
+            setRepeatLabel(repeatText: "Польз. настройки")
+        default:
+            repeatSwitch.isOn = false
+        }
         guard let notifyDate = event.notifyDate else { return }
         guard let startDate = event.startDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss"),
             let notify = notifyDate.toDate(withFormat: "yyyy-MM-dd HH:mm:ss") else { return }
