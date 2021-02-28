@@ -59,6 +59,14 @@ class TabBarController: UITabBarController {
             DispatchQueue.main.async {
                 switch result {
                 case .success(let networkResponse):
+                    if !UserDefaults.standard.bool(forKey: "onboardingMainScreenPassed") {
+                        let navVC = UINavigationController()
+                        navVC.navigationBar.isHidden = true
+                        let onboardingVC = FirstPageOnboardingMainScreen()
+                        navVC.viewControllers = [onboardingVC]
+                        navVC.modalPresentationStyle = .overFullScreen
+                        self?.present(navVC, animated: true)
+                    }
                     let status = networkResponse.status
                     switch status {
                     case "denied":
