@@ -59,6 +59,12 @@ class ProfileViewController: UIViewController, UIScrollViewDelegate {
         setupInterestsPageButton()
         setupLines()
         addSwipeGestureToBack()
+        
+        if !UserDefaults.standard.bool(forKey: "onboardingProfileScreenPassed") {
+            let onboardingVC = OnboardingProfilePageViewController()
+            onboardingVC.modalPresentationStyle = .overFullScreen
+            present(onboardingVC, animated: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

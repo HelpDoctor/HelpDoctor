@@ -60,12 +60,9 @@ class TabBarController: UITabBarController {
                 switch result {
                 case .success(let networkResponse):
                     if !UserDefaults.standard.bool(forKey: "onboardingMainScreenPassed") {
-                        let navVC = UINavigationController()
-                        navVC.navigationBar.isHidden = true
-                        let onboardingVC = FirstPageOnboardingMainScreen()
-                        navVC.viewControllers = [onboardingVC]
-                        navVC.modalPresentationStyle = .overFullScreen
-                        self?.present(navVC, animated: true)
+                        let onboardingVC = OnboardingMainScreenPageViewController()
+                        onboardingVC.modalPresentationStyle = .overFullScreen
+                        self?.present(onboardingVC, animated: true)
                     }
                     let status = networkResponse.status
                     switch status {
